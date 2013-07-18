@@ -22,16 +22,15 @@ Additional permissions under GNU GPL version 3 section 7
 If you modify this Program, or any covered work, by linking or
 combining it with any of RAD Game Tools Bink SDK, Autodesk 3ds Max SDK,
 NVIDIA PhysX SDK, Microsoft DirectX SDK, OpenSSL library, Independent
-JPEG Group JPEG library, Microsoft Windows Media SDK, or Apple QuickTime SDK
-(or a modified version of those libraries),
-containing parts covered by the terms of the Bink SDK EULA, 3ds Max EULA,
-PhysX SDK EULA, DirectX SDK EULA, OpenSSL and SSLeay licenses, IJG
-JPEG Library README, Windows Media SDK EULA, or QuickTime SDK EULA, the
-licensors of this Program grant you additional
-permission to convey the resulting work. Corresponding Source for a
-non-source form of such a combination shall include the source code for
-the parts of OpenSSL and IJG JPEG Library used as well as that of the covered
-work.
+JPEG Group JPEG library, Microsoft Windows Media SDK, or Apple QuickTime
+SDK (or a modified version of those libraries), containing parts covered
+by the terms of the Bink SDK EULA, 3ds Max EULA, PhysX SDK EULA, DirectX
+SDK EULA, OpenSSL and SSLeay licenses, IJG JPEG Library README, Windows
+Media SDK EULA, or QuickTime SDK EULA, the licensors of this Program
+grant you additional permission to convey the resulting work.
+Corresponding Source for a non-source form of such a combination shall
+include the source code for the parts of OpenSSL and IJG JPEG Library
+used as well as that of the covered work.
 
 You can contact Cyan Worlds, Inc. by email legal@cyan.com
  or by snail mail at:
@@ -67,10 +66,14 @@ soGarrisonPoleCollider = ptAttribSceneobject(6, "Grsn pole collider")
 soGardenPoleCollider = ptAttribSceneobject(7, "Grdn pole collider")
 soKadishPoleCollider = ptAttribSceneobject(8, "Kdsh pole collider")
 
-respTeledahnPoleRemove = ptAttribResponder(9, "Tldn remove pole resp", ["Remove", "PutBack", "Reject"])
-respGarrisonPoleRemove = ptAttribResponder(10, "Grsn remove pole resp", ["Remove", "PutBack", "Reject"])
-respGardenPoleRemove = ptAttribResponder(11, "Grdn remove pole resp", ["Remove", "PutBack", "Reject"])
-respKadishPoleRemove = ptAttribResponder(12, "Kdsh remove pole resp", ["Remove", "PutBack", "Reject"])
+respTeledahnPoleRemove = ptAttribResponder(9, "Tldn remove pole resp",
+                                           ["Remove", "PutBack", "Reject"])
+respGarrisonPoleRemove = ptAttribResponder(10, "Grsn remove pole resp",
+                                           ["Remove", "PutBack", "Reject"])
+respGardenPoleRemove = ptAttribResponder(11, "Grdn remove pole resp",
+                                         ["Remove", "PutBack", "Reject"])
+respKadishPoleRemove = ptAttribResponder(12, "Kdsh remove pole resp",
+                                         ["Remove", "PutBack", "Reject"])
 
 respTeledahnJCDisable = ptAttribResponder(13, "Tldn JC disable resp")
 respGarrisonJCDisable = ptAttribResponder(14, "Grsn JC disable resp")
@@ -82,10 +85,18 @@ clickGarrisonJC = ptAttribActivator(18, "Grsn JC clickable")
 clickGardenJC = ptAttribActivator(19, "Grdn JC clickable")
 clickKadishJC = ptAttribActivator(20, "Kdsh JC clickable")
 
-respTeledahnSolutionSymbols = ptAttribResponder(21, "Tldn solution symbols", ["0", "1", "2", "3", "4", "5", "6"])
-respGarrisonSolutionSymbols = ptAttribResponder(22, "Grsn solution symbols", ["0", "1", "2", "3", "4", "5", "6"])
-respGardenSolutionSymbols = ptAttribResponder(23, "Grdn solution symbols", ["0", "1", "2", "3", "4", "5", "6"])
-respKadishSolutionSymbols = ptAttribResponder(24, "Kdsh solution symbols", ["0", "1", "2", "3", "4", "5", "6"])
+respTeledahnSolutionSymbols = ptAttribResponder(21, "Tldn solution symbols",
+                                                ["0", "1", "2", "3",
+                                                 "4", "5", "6"])
+respGarrisonSolutionSymbols = ptAttribResponder(22, "Grsn solution symbols",
+                                                ["0", "1", "2", "3",
+                                                 "4", "5", "6"])
+respGardenSolutionSymbols = ptAttribResponder(23, "Grdn solution symbols",
+                                              ["0", "1", "2", "3",
+                                               "4", "5", "6"])
+respKadishSolutionSymbols = ptAttribResponder(24, "Kdsh solution symbols",
+                                              ["0", "1", "2", "3",
+                                               "4", "5", "6"])
 
 clickTeledahnYS = ptAttribActivator(25, "Tldn YS clickable")
 clickGarrisonYS = ptAttribActivator(26, "Grsn YS clickable")
@@ -102,19 +113,28 @@ respGarrisonJCOneShot = ptAttribResponder(34, "Grsn JC one shot resp")
 respGardenJCOneShot = ptAttribResponder(35, "Grdn JC one shot resp")
 respKadishJCOneShot = ptAttribResponder(36, "Kdsh JC one shot resp")
 
-respTeledahnYSOneShot = ptAttribResponder(37, "Tldn YS one shot resp", ["trigger", "glowstart", "glowend"])
-respGarrisonYSOneShot = ptAttribResponder(38, "Grsn YS one shot resp", ["trigger", "glowstart", "glowend"])
-respGardenYSOneShot = ptAttribResponder(39, "Grdn YS one shot resp", ["trigger", "glowstart", "glowend"])
-respKadishYSOneShot = ptAttribResponder(40, "Kdsh YS one shot resp", ["trigger", "glowstart", "glowend"])
+respTeledahnYSOneShot = ptAttribResponder(37, "Tldn YS one shot resp",
+                                          ["trigger", "glowstart", "glowend"])
+respGarrisonYSOneShot = ptAttribResponder(38, "Grsn YS one shot resp",
+                                          ["trigger", "glowstart", "glowend"])
+respGardenYSOneShot = ptAttribResponder(39, "Grdn YS one shot resp",
+                                        ["trigger", "glowstart", "glowend"])
+respKadishYSOneShot = ptAttribResponder(40, "Kdsh YS one shot resp",
+                                        ["trigger", "glowstart", "glowend"])
 
-respSequentialYS = ptAttribResponder(41, "Sequential yeesha speeches", ["1a", "1b", "2a", "2b", "3a", "3b", "4a", "4b"])
+respSequentialYS = ptAttribResponder(41, "Sequential yeesha speeches",
+                                     ["1a", "1b", "2a", "2b",
+                                      "3a", "3b", "4a", "4b"])
 
 rgnLinkOut = ptAttribActivator(42, "Link out region")
-respLinkOut = ptAttribResponder(43, "Link out responder", ["starfield", "cavern"])
+respLinkOut = ptAttribResponder(43, "Link out responder",
+                                ["starfield", "cavern"])
 
-respStarCavern = ptAttribResponder(44, "Starfield/cavern vis", ["StarVis", "CavernVis"])
+respStarCavern = ptAttribResponder(44, "Starfield/cavern vis",
+                                   ["StarVis", "CavernVis"])
 
-respKillSpeeches = ptAttribResponder(45, "Kill yeesha speeches", ["a", "age", "b"])
+respKillSpeeches = ptAttribResponder(45, "Kill yeesha speeches",
+                                     ["a", "age", "b"])
 
 respBahroScream = ptAttribResponder(46, "Bahro scream")
 
@@ -124,17 +144,21 @@ rgnCaveJump = ptAttribActivator(47, "Cave jump region")
 kWriteTimestamps = 8
 
 # Bahro pole SDL variable states
-#   0: Initial state, no pole, hydrant up, sheath up, clicking hand changes to state 1
-#      Anim sheath down
+#   0: Initial state, no pole, hydrant up, sheath up, clicking hand changes
+#          to state 1, Anim sheath down
 #   1: No pole, hydrant up, sheath down, clicking hand causes full glow
-#   2: After book has been used, No pole, hydrant up, sheath up, clicking hand causes progress glow
+#   2: After book has been used, No pole, hydrant up, sheath up,
+#          clicking hand causes progress glow
 #   3: Animate the hydrant down and proceed to state 4
-#   4: All cloths have been found and pole was sent to psnl age, pole is there, hydrant down, clicking hand does nothing
+#   4: All cloths have been found and pole was sent to psnl age,
+#          pole is there, hydrant down, clicking hand does nothing
 #   5: Anim all hydrants up and proceed to state 6
-#   6: All poles in psnl age, pole is there, hydrant up, clicking hand plays full glow
+#   6: All poles in psnl age, pole is there, hydrant up,
+#          clicking hand plays full glow
 #   7: Anim fissure stuff
 #   8: Pole returned, no pole, hydrant up, clicking hand plays full glow
-#   9: Selfish person unreturned pole, no pole, hydrant up, clicking hand plays full glow
+#   9: Selfish person unreturned pole, no pole, hydrant up,
+#          clicking hand plays full glow
 
 
 class bhroBahroYeeshaCave(ptModifier):
@@ -149,88 +173,92 @@ class bhroBahroYeeshaCave(ptModifier):
         self.SpeechRespReset = 1
         self.IsStarfield = 1
 
-
     def OnFirstUpdate(self):
-        PtDebugPrint("DEBUG: bhroBahroYeeshaCave.OnFirstUpdate():\tEverything ok so far")
+        PtDebugPrint("DEBUG: bhroBahroYeeshaCave.OnFirstUpdate():\t"
+                     "Everything ok so far")
         xRandom.seed()
         xRandom.setmaxseries(1)
 
         self.currentYS = "zz"
-        PtSendKIMessage(kDisableYeeshaBook,0)
+        PtSendKIMessage(kDisableYeeshaBook, 0)
 
         vault = ptVault()
         entry = vault.findChronicleEntry("BahroCave")
 
-        if type(entry) == type(None):
-            PtDebugPrint("DEBUG: bhroBahroYeeshaCave.OnFirstUpdate: Did not find BahroCave chronicle...creating")
-            vault.addChronicleEntry("BahroCave",0,"0")
+        if isinstance(entry, type(None)):
+            PtDebugPrint("DEBUG: bhroBahroYeeshaCave.OnFirstUpdate: "
+                         "Did not find BahroCave chronicle...creating")
+            vault.addChronicleEntry("BahroCave", 0, "0")
 
-        self.varMap = {'YeeshaSymbolTouched': 0, 'SolutionSymbol': 1, 'YeeshaSpeech': 2}
+        self.varMap = {'YeeshaSymbolTouched': 0,
+                       'SolutionSymbol': 1,
+                       'YeeshaSpeech': 2}
 
         self.ageDict = {
-                        'Teledahn': {
-                                     'State': 0,
-                                     'WedgeAnim': respTeledahnWedge,
-                                     'PoleCollider': soTeledahnPoleCollider,
-                                     'JCDisable': respTeledahnJCDisable,
-                                     'JCClickable': clickTeledahnJC,
-                                     'SolutionSymbols': respTeledahnSolutionSymbols,
-                                     'YSClickable': clickTeledahnYS,
-                                     'YeeshaSpeech': respTeledahnYS,
-                                     'PoleRemove': respTeledahnPoleRemove,
-                                     'OneShotYS': respTeledahnYSOneShot,
-                                     'OneShotJC': respTeledahnJCOneShot
-                                    },
-                        'Garrison': {
-                                     'State': 0,
-                                     'WedgeAnim': respGarrisonWedge,
-                                     'PoleCollider': soGarrisonPoleCollider,
-                                     'JCDisable': respGarrisonJCDisable,
-                                     'JCClickable': clickGarrisonJC,
-                                     'SolutionSymbols': respGarrisonSolutionSymbols,
-                                     'YSClickable': clickGarrisonYS,
-                                     'YeeshaSpeech': respGarrisonYS,
-                                     'PoleRemove': respGarrisonPoleRemove,
-                                     'OneShotYS': respGarrisonYSOneShot,
-                                     'OneShotJC': respGarrisonJCOneShot
-                                    },
-                        'Garden': {
-                                     'State': 0,
-                                     'WedgeAnim': respGardenWedge,
-                                     'PoleCollider': soGardenPoleCollider,
-                                     'JCDisable': respGardenJCDisable,
-                                     'JCClickable': clickGardenJC,
-                                     'SolutionSymbols': respGardenSolutionSymbols,
-                                     'YSClickable': clickGardenYS,
-                                     'YeeshaSpeech': respGardenYS,
-                                     'PoleRemove': respGardenPoleRemove,
-                                     'OneShotYS': respGardenYSOneShot,
-                                     'OneShotJC': respGardenJCOneShot
-                                  },
-                        'Kadish': {
-                                     'State': 0,
-                                     'WedgeAnim': respKadishWedge,
-                                     'PoleCollider': soKadishPoleCollider,
-                                     'JCDisable': respKadishJCDisable,
-                                     'JCClickable': clickKadishJC,
-                                     'SolutionSymbols': respKadishSolutionSymbols,
-                                     'YSClickable': clickKadishYS,
-                                     'YeeshaSpeech': respKadishYS,
-                                     'PoleRemove': respKadishPoleRemove,
-                                     'OneShotYS': respKadishYSOneShot,
-                                     'OneShotJC': respKadishJCOneShot
-                                  }
-                       }
-
+            'Teledahn': {
+                'State': 0,
+                'WedgeAnim': respTeledahnWedge,
+                'PoleCollider': soTeledahnPoleCollider,
+                'JCDisable': respTeledahnJCDisable,
+                'JCClickable': clickTeledahnJC,
+                'SolutionSymbols': respTeledahnSolutionSymbols,
+                'YSClickable': clickTeledahnYS,
+                'YeeshaSpeech': respTeledahnYS,
+                'PoleRemove': respTeledahnPoleRemove,
+                'OneShotYS': respTeledahnYSOneShot,
+                'OneShotJC': respTeledahnJCOneShot
+                },
+            'Garrison': {
+                'State': 0,
+                'WedgeAnim': respGarrisonWedge,
+                'PoleCollider': soGarrisonPoleCollider,
+                'JCDisable': respGarrisonJCDisable,
+                'JCClickable': clickGarrisonJC,
+                'SolutionSymbols': respGarrisonSolutionSymbols,
+                'YSClickable': clickGarrisonYS,
+                'YeeshaSpeech': respGarrisonYS,
+                'PoleRemove': respGarrisonPoleRemove,
+                'OneShotYS': respGarrisonYSOneShot,
+                'OneShotJC': respGarrisonJCOneShot
+                },
+            'Garden': {
+                'State': 0,
+                'WedgeAnim': respGardenWedge,
+                'PoleCollider': soGardenPoleCollider,
+                'JCDisable': respGardenJCDisable,
+                'JCClickable': clickGardenJC,
+                'SolutionSymbols': respGardenSolutionSymbols,
+                'YSClickable': clickGardenYS,
+                'YeeshaSpeech': respGardenYS,
+                'PoleRemove': respGardenPoleRemove,
+                'OneShotYS': respGardenYSOneShot,
+                'OneShotJC': respGardenJCOneShot
+                },
+            'Kadish': {
+                'State': 0,
+                'WedgeAnim': respKadishWedge,
+                'PoleCollider': soKadishPoleCollider,
+                'JCDisable': respKadishJCDisable,
+                'JCClickable': clickKadishJC,
+                'SolutionSymbols': respKadishSolutionSymbols,
+                'YSClickable': clickKadishYS,
+                'YeeshaSpeech': respKadishYS,
+                'PoleRemove': respKadishPoleRemove,
+                'OneShotYS': respKadishYSOneShot,
+                'OneShotJC': respKadishJCOneShot
+                }
+            }
 
     def OnServerInitComplete(self):
         self.ageFrom = PtGetPrevAgeName()
         if self.ageFrom == "":
             self.ageFrom = "Garrison"
-            
-        PtDebugPrint("DEBUG: bhroBahroYeeshaCave.OnServerInitComplete():\tCame from: %s" % self.ageFrom)
 
-        # check if a cleft yeesha imager solution has already been created, otherwise create it
+        PtDebugPrint("DEBUG: bhroBahroYeeshaCave.OnServerInitComplete():\t"
+                     "Came from: %s" % (self.ageFrom))
+
+        # check if a cleft yeesha imager solution has already been created,
+        # otherwise create it
         if not self.CheckForSolution():
             PtDebugPrint("No solution found, attempting to create")
             self.CreateSolution()
@@ -241,28 +269,34 @@ class bhroBahroYeeshaCave(ptModifier):
         autostart = 0
 
         # check and see if the yeesha speech variable has been set yet
-        self.UseYeeshaSpeech = self.GetAgeVariable(self.ageFrom, "YeeshaSpeech")
-        if self.UseYeeshaSpeech != None:
-            print "bhroBahroYeeshaCave.OnServerInitComplete(): useYeeshaSpeech = ",self.UseYeeshaSpeech
+        self.UseYeeshaSpeech = self.GetAgeVariable(
+            self.ageFrom, "YeeshaSpeech")
+        if self.UseYeeshaSpeech is not None:
+            print ("bhroBahroYeeshaCave.OnServerInitComplete(): "
+                   "useYeeshaSpeech = ", self.UseYeeshaSpeech)
             if int(self.UseYeeshaSpeech) == 0:
                 serieslen = self.GetNumYSSet()
-                #self.SetAgeVariable(self.ageFrom, "YeeshaSpeech", serieslen + 1)
+                # self.SetAgeVariable(
+                #     self.ageFrom, "YeeshaSpeech", serieslen + 1)
                 self.UseYeeshaSpeech = serieslen + 1
                 if self.GetAutoStartLevel() < self.UseYeeshaSpeech:
                     autostart = 1
                     self.IncrementAutoStartLevel()
-                print "GetAutoStartLevel = ",self.GetAutoStartLevel()
+                print "GetAutoStartLevel = ", self.GetAutoStartLevel()
         else:
-            print "bhroBahroYeeshaCave.OnServerInitComplete(): useYeeshaSpeech = None"
+            print ("bhroBahroYeeshaCave.OnServerInitComplete(): "
+                   "useYeeshaSpeech = None")
 
         UseYS = self.UseYeeshaSpeech
-        print "bhroBahroYeeshaCave.OnServerInitComplete(): useYeeshaSpeech = ",UseYS
-        print "bhroBahroYeeshaCave.OnServerInitComplete(): autostart = ",autostart
+        print ("bhroBahroYeeshaCave.OnServerInitComplete(): "
+               "useYeeshaSpeech = ", UseYS)
+        print ("bhroBahroYeeshaCave.OnServerInitComplete(): "
+               "autostart = ", autostart)
 
         journeyComplete = 0
-        #vault = ptVault()
-        #jcNode = vault.findChronicleEntry("JourneyClothProgress")
-        #if jcNode.chronicleGetValue() == "Z":
+        # vault = ptVault()
+        # jcNode = vault.findChronicleEntry("JourneyClothProgress")
+        # if jcNode.chronicleGetValue() == "Z":
 
         sdl = xPsnlVaultSDL()
         if sdl["CleftVisited"][0]:
@@ -273,14 +307,16 @@ class bhroBahroYeeshaCave(ptModifier):
         agelist = ["Teledahn", "Garrison", "Garden", "Kadish"]
         for age in agelist:
             currentState = self.ageDict[age]['State']
-            PtDebugPrint("Current state: %d" % currentState)
-            
-            # if the age is not the one that I'm from then run the responder to make it back off
+            PtDebugPrint("Current state: %d" % (currentState))
+
+            # if the age is not the one that I'm from
+            # then run the responder to make it back off
             if age != self.ageFrom and currentState < 8:
                 self.ageDict[age]['WedgeAnim'].run(self.key, fastforward=1)
 
             if not starCavernRun and currentState > 5:
-                respStarCavern.run(self.key, state = "CavernVis", fastforward = 1)
+                respStarCavern.run(
+                    self.key, state="CavernVis", fastforward=1)
                 starCavernRun = 1
                 self.IsStarfield = 0
 
@@ -288,27 +324,30 @@ class bhroBahroYeeshaCave(ptModifier):
             if currentState in (4, 5, 6, 9):
                 self.DisablePole(age, 1)
 
-            # check the current state to see if the journey symbol should show up or not
-            if currentState == 4 or (currentState > 6 and not journeyComplete):
-                self.ageDict[age]['JCDisable'].run(self.key,fastforward=1)
+            # check the current state to see if the journey symbol
+            # should show up or not
+            if (currentState == 4 or (currentState > 6 and not
+                                      journeyComplete)):
+                self.ageDict[age]['JCDisable'].run(self.key, fastforward=1)
 
             # display the appropriate solution symbol
             val = self.GetAgeVariable(age, "SolutionSymbol")
-            self.ageDict[age]['SolutionSymbols'].run(self.key, state=val, fastforward=1)
+            self.ageDict[age]['SolutionSymbols'].run(
+                self.key, state=val, fastforward=1)
 
         if not starCavernRun:
-            respStarCavern.run(self.key, state = "StarVis", fastforward = 1)
+            respStarCavern.run(self.key, state="StarVis", fastforward=1)
 
         if autostart:
             PtAtTimeCallback(self.key, 3, 1)
 
-    #def OnSDLNotify(self,VARname,SDLname,playerID,tag):
-    #    PtDebugPrint("DEBUG: bhroBahroYeeshaCave.OnSDLNotify():\tEverything ok so far")
+    #def OnSDLNotify(self, VARname, SDLname, playerID, tag):
+    #    PtDebugPrint("DEBUG: bhroBahroYeeshaCave.OnSDLNotify():\t"
+    #                 "Everything ok so far")
     #    pass
 
-
-    def OnNotify(self,state,id,events):
-        PtDebugPrint("DEBUG: bhroBahroYeeshaCave.OnNotify():\tid = %d" % id)
+    def OnNotify(self, state, id, events):
+        PtDebugPrint("DEBUG: bhroBahroYeeshaCave.OnNotify():\tid = %d" % (id))
 
         if not state:
             return
@@ -412,9 +451,8 @@ class bhroBahroYeeshaCave(ptModifier):
             cam.disableFirstPersonOverride()
             print "undid first person and disabled override"
 
-    
     def OnTimer(self, id):
-        PtDebugPrint("DEBUG: bhroBahroYeeshaCave.OnTimer():\tid = %d" % id)
+        PtDebugPrint("DEBUG: bhroBahroYeeshaCave.OnTimer():\tid = %d" % (id))
         if id == 1:
             self.PostYSOneShot(self.ageFrom, 1)
 
@@ -422,26 +460,25 @@ class bhroBahroYeeshaCave(ptModifier):
             cam = ptCamera()
             cam.enableFirstPersonOverride()
 
-
     def UpdatePoleStates(self):
         psnlSDL = xPsnlVaultSDL()
 
-        sdllist = psnlSDL.BatchGet( ["TeledahnPoleState", "GardenPoleState", "GarrisonPoleState", "KadishPoleState"] )
+        sdllist = psnlSDL.BatchGet(
+            ["TeledahnPoleState", "GardenPoleState",
+             "GarrisonPoleState", "KadishPoleState"])
         for var in ["Teledahn", "Garrison", "Garden", "Kadish"]:
-            self.ageDict[var]['State'] =  sdllist[var + "PoleState"]
-
+            self.ageDict[var]['State'] = sdllist[var + "PoleState"]
 
     def SetState(self, age, state):
-        if type(state) == type(0):
-            #PtDebugPrint("Setting %s state to %d" % (age, state))
+        if isinstance(state, int):
+            # PtDebugPrint("Setting %s state to %d" % (age, state))
             psnlSDL = xPsnlVaultSDL()
 
             psnlSDL[age + "PoleState"] = (state,)
 
-
     def GetAgeNode(self, age):
         vault = ptVault()
-        
+
         chron = vault.findChronicleEntry("BahroCave")
         ageChronRefList = chron.getChildNodeRefList()
 
@@ -455,35 +492,32 @@ class bhroBahroYeeshaCave(ptModifier):
 
         return None
 
-
     def GetAgeVariable(self, age, variable):
         node = self.GetAgeNode(age)
 
-        if node != None:
+        if node is not None:
             varlist = node.chronicleGetValue().split(",")
-            return varlist[ self.varMap[variable] ]            
+            return varlist[self.varMap[variable]]
         else:
             return None
-
 
     def SetAgeVariable(self, age, variable, value):
         node = self.GetAgeNode(age)
 
-        if node != None:
+        if node is not None:
             varlist = node.chronicleGetValue().split(",")
             while len(varlist) < len(self.varMap):
                 varlist.append("0")
-            varlist[ self.varMap[variable] ] = str(value)
+            varlist[self.varMap[variable]] = str(value)
             varstr = ""
             for var in range(len(varlist) - 1):
                 varstr += (varlist[var] + ",")
             varstr += varlist[-1]
-            
+
             node.chronicleSetValue(varstr)
             node.save()
         else:
             raise RuntimeError("Could not find chronicle variable to set")
-
 
     def AreListsEquiv(self, list1, list2):
         if list1[0] in list2 and len(list1) == len(list2):
@@ -498,36 +532,34 @@ class bhroBahroYeeshaCave(ptModifier):
                     return false
 
             return true
-        
-        return false
 
+        return false
 
     def CheckForSolution(self):
         var = self.GetAgeVariable("Teledahn", "SolutionSymbol")
 
-        if var != None:
+        if var is not None:
             return 1
         else:
             return 0
 
-
     def CreateSolution(self):
-        #~ solutionlist = [4,3,6,1]
-        #~ cleftSolList = [4,3,6,1]
-        
-        solutionlist = [3,2,5,0]
-        cleftSolList = [3,2,5,0]
+        #~ solutionlist = [4, 3, 6, 1]
+        #~ cleftSolList = [4, 3, 6, 1]
+
+        solutionlist = [3, 2, 5, 0]
+        cleftSolList = [3, 2, 5, 0]
 
         while self.AreListsEquiv(solutionlist, cleftSolList):
             solutionlist = []
             while len(solutionlist) < 4:
-                newint = xRandom.randint(0,6)
+                newint = xRandom.randint(0, 6)
                 if not newint in solutionlist:
                     solutionlist.append(newint)
 
         vault = ptVault()
         entry = vault.findChronicleEntry("BahroCave")
-        if entry != None:
+        if entry is not None:
             agelist = ["Teledahn", "Garden", "Garrison", "Kadish"]
             for v in range(len(agelist)):
                 newnode = ptVaultChronicleNode(0)
@@ -535,29 +567,30 @@ class bhroBahroYeeshaCave(ptModifier):
                 newnode.chronicleSetValue("0," + str(solutionlist[v]) + ",0")
                 entry.addNode(newnode)
 
-
-    def DisablePole(self, age, fforward = 0):
-        #PtDebugPrint("Disableing %s pole" % age)
-        self.ageDict[age]['PoleRemove'].run(self.key, state="Remove", fastforward=fforward)
+    def DisablePole(self, age, fforward=0):
+        # PtDebugPrint ("Disabling %s pole" % (age))
+        self.ageDict[age]['PoleRemove'].run(
+            self.key, state="Remove", fastforward=fforward)
         self.ageDict[age]['PoleCollider'].value.physics.suppress(1)
         if not fforward:
             vault = ptVault()
-            if type(vault) != type(None): #is the Vault online?
+            if not isinstance(vault, type(None)):  # is the Vault online?
                 psnlSDL = vault.getPsnlAgeSDL()
                 if psnlSDL:
                     ypageSDL = psnlSDL.findVar("YeeshaPage25")
                     if ypageSDL:
                         size, state = divmod(ypageSDL.getInt(), 10)
-                        print "YeeshaPage25 = ",state
+                        print "YeeshaPage25 = ", state
                         if state == 1:
-                            print "bhroBahroYeeshaCave.DisablePole():  sending the pole and YeeshaPage25 is on!  will do the age's wedge..."
+                            print ("bhroBahroYeeshaCave.DisablePole():  "
+                                   "sending the pole and YeeshaPage25 is on! "
+                                   "will do the age's wedge...")
                             self.DoWedge()
 
-
-    def EnablePole(self, age, fforward = 0):
-        self.ageDict[age]['PoleRemove'].run(self.key, state="PutBack", fastforward=fforward)
+    def EnablePole(self, age, fforward=0):
+        self.ageDict[age]['PoleRemove'].run(
+            self.key, state="PutBack", fastforward=fforward)
         self.ageDict[age]['PoleCollider'].value.physics.suppress(0)
-
 
     def JCClickHandle(self, age):
         cam = ptCamera()
@@ -566,33 +599,34 @@ class bhroBahroYeeshaCave(ptModifier):
         PtAtTimeCallback(self.key, 5, 2)
 
         avatar = PtGetLocalAvatar()
-        self.ageDict[age]['OneShotJC'].run(self.key, avatar = avatar)
-
+        self.ageDict[age]['OneShotJC'].run(self.key, avatar=avatar)
 
     def YSClickHandle(self, age):
         avatar = PtGetLocalAvatar()
-        self.ageDict[age]['OneShotYS'].run(self.key, avatar = avatar, state = "trigger")
-
+        self.ageDict[age]['OneShotYS'].run(
+            self.key, avatar=avatar, state="trigger")
 
     def PostPoleRemove(self, age):
         self.ageDict[age]['JCClickable'].enable()
 
-
     def PostJCOneShot(self, age):
         vault = ptVault()
-        if type(vault) != type(None): #is the Vault online?
+        if not isinstance(vault, type(None)):  # is the Vault online?
             psnlSDL = vault.getPsnlAgeSDL()
             if psnlSDL:
                 ypageSDL = psnlSDL.findVar("YeeshaPage25")
                 if ypageSDL:
                     size, state = divmod(ypageSDL.getInt(), 10)
-                    print "YeeshaPage25 = ",state
+                    print "YeeshaPage25 = ", state
                     if state != 1:
-                        print "bhroBahroYeeshaCave.PostJCOneShot():  can't send pole to Relto, YeeshaPage25 is off!  Returning the pole..."
+                        print ("bhroBahroYeeshaCave.PostJCOneShot():  "
+                               "can't send pole to Relto, "
+                               "YeeshaPage25 is off!  Returning the pole...")
                         self.ageDict[age]['JCClickable'].disable()
-                        self.ageDict[age]['PoleRemove'].run(self.key, state="Reject")
+                        self.ageDict[age]['PoleRemove'].run(
+                            self.key, state="Reject")
                         return
-                    
+
         self.UpdatePoleStates()
 
         state = self.ageDict[age]['State']
@@ -626,70 +660,69 @@ class bhroBahroYeeshaCave(ptModifier):
             self.EnablePole(age)
             self.SetState(age, 8)
 
-
-    def PostYSOneShot(self, age, autotriggered = 0):
+    def PostYSOneShot(self, age, autotriggered=0):
         if self.AgePlaying != age:
-            self.ageDict[age]['OneShotYS'].run(self.key, state = "glowstart")
-            
+            self.ageDict[age]['OneShotYS'].run(self.key, state="glowstart")
+
         prevage = self.AgePlaying
         self.AgePlaying = age
-        
+
         if self.currentYS != "zz":
-            PtDebugPrint("Killing speech %s" % self.currentYS)
+            PtDebugPrint("Killing speech %s" % (self.currentYS))
             respKillSpeeches.run(self.key, state=self.currentYS)
             self.currentYS = "zz"
-            self.ageDict[prevage]["OneShotYS"].run(self.key, state = "glowend")
+            self.ageDict[prevage]["OneShotYS"].run(self.key, state="glowend")
             if prevage == age:
                 self.AgePlaying = ""
                 return
 
-        if not int(self.GetAgeVariable(age, "YeeshaSymbolTouched")) and not autotriggered:
-            PtDebugPrint("DEBUG: bhroBahroYeeshaCave.PostYSOneShot:\tFirst time touching the symbol")
+        if not (int(self.GetAgeVariable(age, "YeeshaSymbolTouched")) and not
+                autotriggered):
+            PtDebugPrint("DEBUG: bhroBahroYeeshaCave.PostYSOneShot:\t"
+                         "First time touching the symbol")
             self.SetAgeVariable(age, "YeeshaSymbolTouched", 1)
 
         self.PlayYeeshaSpeech(age)
-
 
     def PlayYeeshaSpeech(self, age):
 
         if not self.SpeechRespReset or self.AgePlaying == "":
             return
-        
+
         if age != self.AgePlaying:
             age = self.AgePlaying
-        
+
         speech = self.GetAgeVariable(age, "YeeshaSpeech")
         if int(speech) == 0:
             speech = str(self.UseYeeshaSpeech)
-        
+
         if self.currentYS == "a":
             self.currentYS = "age"
-            
+
         elif self.currentYS == "age":
             self.currentYS = "b"
-            
+
         elif self.currentYS == "b":
             self.currentYS = "zz"
             self.AgePlaying = ""
-            
+
         else:
             self.currentYS = "a"
 
         if self.currentYS == "age":
-            print "playing 'age' YeeshaSpeech for: ",age
+            print "playing 'age' YeeshaSpeech for: ", age
             self.ageDict[age]["YeeshaSpeech"].run(self.key)
             self.SpeechRespReset = 0
         elif self.currentYS != "zz":
             print "playing 'sequential' YeeshaSpeech..."
-            print "speech = ",speech
-            print "self.currentYS = ",self.currentYS
+            print "speech = ", speech
+            print "self.currentYS = ", self.currentYS
             state = speech + self.currentYS
-            print "state = ",state
+            print "state = ", state
             respSequentialYS.run(self.key, state)
             self.SpeechRespReset = 0
         else:
-            self.ageDict[age]["OneShotYS"].run(self.key, state = "glowend")
-
+            self.ageDict[age]["OneShotYS"].run(self.key, state="glowend")
 
     def GetNumYSSet(self):
         num = 0
@@ -699,35 +732,35 @@ class bhroBahroYeeshaCave(ptModifier):
 
         return num
 
-
     def LinkOut(self):
         polesInPsnl = 0
         updateAgeList = []
 
         psnlSDL = xPsnlVaultSDL()
-        
+
         for age in ["Teledahn", "Garrison", "Garden", "Kadish"]:
             agevar = age + "PoleState"
             sdlval = psnlSDL[agevar][0]
             if sdlval == 4 and age != self.ageFrom:
                 polesInPsnl += 1
-                updateAgeList.append( (agevar, (5,)) )
+                updateAgeList.append((agevar, (5,)))
             elif sdlval == 3 and age == self.ageFrom:
-                if int(self.GetAgeVariable(self.ageFrom, "YeeshaSpeech")) == 0:
-                    self.SetAgeVariable(self.ageFrom, "YeeshaSpeech", self.UseYeeshaSpeech)
+                if int(self.GetAgeVariable(self.ageFrom,
+                                           "YeeshaSpeech")) == 0:
+                    self.SetAgeVariable(self.ageFrom, "YeeshaSpeech",
+                                        self.UseYeeshaSpeech)
 
         if polesInPsnl == 3 and psnlSDL[self.ageFrom + "PoleState"][0] == 3:
             psnlSDL.BatchSet(updateAgeList)
             #for age in updateAgeList:
             #    self.SetState(age, 5)
 
-        #PtSendKIMessage(kEnableYeeshaBook,0)
+        #PtSendKIMessage(kEnableYeeshaBook, 0)
 
         if self.IsStarfield:
-            respLinkOut.run(self.key, state = "starfield")
+            respLinkOut.run(self.key, state="starfield")
         else:
-            respLinkOut.run(self.key, state = "cavern")
-
+            respLinkOut.run(self.key, state="cavern")
 
     def DoWedge(self):
         psnlSDL = xPsnlVaultSDL()
@@ -741,19 +774,22 @@ class bhroBahroYeeshaCave(ptModifier):
         elif self.ageFrom == "Teledahn":
             sdlName = "psnlBahroWedge04"
         else:
-            print "bhroBahroYeeshaCave.DoWedge():  ERROR.  Didn't recognize previous age name, no wedge will be set"
+            print ("bhroBahroYeeshaCave.DoWedge():  "
+                   "ERROR.  Didn't recognize previous age name, "
+                   "no wedge will be set")
             return
 
         sdlVal = psnlSDL[sdlName][0]
         if not sdlVal:
-            print "bhroBahroYeeshaCave.DoWedge():  previous age was %s, turning wedge SDL of %s to On" % (self.ageFrom,sdlName)
+            print ("bhroBahroYeeshaCave.DoWedge():  "
+                   "previous age was %s, "
+                   "turning wedge SDL of %s to On"
+                   % (self.ageFrom, sdlName))
             psnlSDL[sdlName] = (1,)
-
 
     def SetCurrentState(self, age, state):
         ageSDL = xPsnlVaultSDL()
         ageSDL[age + "PoleState"] = (state, )
-
 
     def UpdateToState2(self):
         vault = ptVault()
@@ -771,7 +807,8 @@ class bhroBahroYeeshaCave(ptModifier):
             if ageName == "Gira":
                 ageName = "Garden"
 
-            if ageName == "Teledahn" or ageName == "Garrison" or ageName == "Garden" or ageName == "Kadish":
+            if ageName == ("Teledahn" or ageName == "Garrison" or
+                           ageName == "Garden" or ageName == "Kadish"):
                 for spawnPoint in spawnPoints:
                     if spawnPoint.getName() == "LinkInPointDefault":
                         if self.ageDict[ageName]["State"] == 1:
@@ -779,12 +816,11 @@ class bhroBahroYeeshaCave(ptModifier):
                         break
         self.UpdatePoleStates()
 
-
     def GetAutoStartLevel(self):
         print "bhroBahroYeeshaCave.GetAutoStartLevel()"
         vault = ptVault()
         bc = vault.findChronicleEntry("BahroCave")
-        if type(bc) != type(None):
+        if not isinstance(bc, type(None)):
             val = bc.chronicleGetValue()
             if val == "":
                 return 0
@@ -793,11 +829,10 @@ class bhroBahroYeeshaCave(ptModifier):
         else:
             return 0
 
-
     def IncrementAutoStartLevel(self):
         vault = ptVault()
         bc = vault.findChronicleEntry("BahroCave")
-        if type(bc) != type(None):
+        if not isinstance(bc, type(None)):
             val = bc.chronicleGetValue()
             if val == "":
                 val = 0
@@ -805,14 +840,15 @@ class bhroBahroYeeshaCave(ptModifier):
                 val = int(val)
             bc.chronicleSetValue(str(val + 1))
             bc.save()
-            print "bhroBahroYeeshaCave.IncrementAutoStartLevel(): setting BC chron = ",str(val + 1)
+            print ("bhroBahroYeeshaCave.IncrementAutoStartLevel(): "
+                   "setting BC chron = ", str(val + 1))
         else:
-            print "bhroBahroYeeshaCave.IncrementAutoStartLevel(): no BC chron found"
-
+            print ("bhroBahroYeeshaCave.IncrementAutoStartLevel(): "
+                   "no BC chron found")
 
     def OnBackdoorMsg(self, target, param):
         if target == "kill":
-            respKillSpeeches.run(self.key, state = param)
+            respKillSpeeches.run(self.key, state=param)
             self.currentYS = "b"
 
         elif target == "wedgetoggle":
@@ -830,7 +866,7 @@ class bhroBahroYeeshaCave(ptModifier):
                 psnlSDL = xPsnlVaultSDL(1)
             else:
                 psnlSDL = xPsnlVaultSDL(0)
-            
+
             if param == "Garrison":
                 sdlName = "psnlBahroWedge01"
             elif (param == "Garden") or (param == "Gira"):
@@ -841,14 +877,18 @@ class bhroBahroYeeshaCave(ptModifier):
             elif param == "Teledahn":
                 sdlName = "psnlBahroWedge04"
             else:
-                print "bhroBahroYeeshaCave.OnBackdoorMsg():  ERROR.  Incorrect age specified, no wedge will be set"
+                print ("bhroBahroYeeshaCave.OnBackdoorMsg():  "
+                       "ERROR. Incorrect age specified, no wedge will be set")
                 return
 
             sdlVal = psnlSDL[sdlName][0]
             if sdlVal:
-                print "bhroBahroYeeshaCave.OnBackdoorMsg():  previous age was %s, turning wedge SDL of %s to OFF" % (param,sdlName)
+                print ("bhroBahroYeeshaCave.OnBackdoorMsg():  "
+                       "previous age was %s, turning wedge SDL of %s to OFF"
+                       % (param, sdlName))
                 psnlSDL[sdlName] = (0,)
             else:
-                print "bhroBahroYeeshaCave.OnBackdoorMsg():  previous age was %s, turning wedge SDL of %s to ON" % (param,sdlName)
-                psnlSDL[sdlName] = (1,)                
-
+                print ("bhroBahroYeeshaCave.OnBackdoorMsg():  "
+                       "previous age was %s, turning wedge SDL of %s to ON"
+                       % (param, sdlName))
+                psnlSDL[sdlName] = (1,)

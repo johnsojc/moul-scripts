@@ -22,16 +22,15 @@ Additional permissions under GNU GPL version 3 section 7
 If you modify this Program, or any covered work, by linking or
 combining it with any of RAD Game Tools Bink SDK, Autodesk 3ds Max SDK,
 NVIDIA PhysX SDK, Microsoft DirectX SDK, OpenSSL library, Independent
-JPEG Group JPEG library, Microsoft Windows Media SDK, or Apple QuickTime SDK
-(or a modified version of those libraries),
-containing parts covered by the terms of the Bink SDK EULA, 3ds Max EULA,
-PhysX SDK EULA, DirectX SDK EULA, OpenSSL and SSLeay licenses, IJG
-JPEG Library README, Windows Media SDK EULA, or QuickTime SDK EULA, the
-licensors of this Program grant you additional
-permission to convey the resulting work. Corresponding Source for a
-non-source form of such a combination shall include the source code for
-the parts of OpenSSL and IJG JPEG Library used as well as that of the covered
-work.
+JPEG Group JPEG library, Microsoft Windows Media SDK, or Apple QuickTime
+SDK (or a modified version of those libraries), containing parts covered
+by the terms of the Bink SDK EULA, 3ds Max EULA, PhysX SDK EULA, DirectX
+SDK EULA, OpenSSL and SSLeay licenses, IJG JPEG Library README, Windows
+Media SDK EULA, or QuickTime SDK EULA, the licensors of this Program
+grant you additional permission to convey the resulting work.
+Corresponding Source for a non-source form of such a combination shall
+include the source code for the parts of OpenSSL and IJG JPEG Library
+used as well as that of the covered work.
 
 You can contact Cyan Worlds, Inc. by email legal@cyan.com
  or by snail mail at:
@@ -54,18 +53,21 @@ from PlasmaKITypes import *
 from xPsnlVaultSDL import *
 
 # define the attributes that will be entered in max
-clkNegilahn             = ptAttribActivator(1, "clk: Negilahn Spiral")
-clkDereno               = ptAttribActivator(2, "clk: Dereno Spiral")
-clkPayiferen            = ptAttribActivator(3, "clk: Payiferen Spiral")
-clkTetsonot             = ptAttribActivator(4, "clk: Tetsonot Spiral")
+clkNegilahn = ptAttribActivator(1, "clk: Negilahn Spiral")
+clkDereno = ptAttribActivator(2, "clk: Dereno Spiral")
+clkPayiferen = ptAttribActivator(3, "clk: Payiferen Spiral")
+clkTetsonot = ptAttribActivator(4, "clk: Tetsonot Spiral")
 
-respWedges              = ptAttribResponder(5, "resp: Ground Wedges", ['Negilahn', 'Dereno', 'Payiferen', 'Tetsonot'])
-respNegilahnRing        = ptAttribResponder(6, "resp: Negilahn Floating Ring")
-respDerenoRing          = ptAttribResponder(7, "resp: Dereno Floating Ring")
-respPayiferenRing       = ptAttribResponder(8, "resp: Payiferen Floating Ring")
-respTetsonotRing        = ptAttribResponder(9, "resp: Tetsonot Floating Ring")
+respWedges = ptAttribResponder(5, "resp: Ground Wedges",
+                               ['Negilahn', 'Dereno',
+                                'Payiferen', 'Tetsonot'])
+respNegilahnRing = ptAttribResponder(6, "resp: Negilahn Floating Ring")
+respDerenoRing = ptAttribResponder(7, "resp: Dereno Floating Ring")
+respPayiferenRing = ptAttribResponder(8, "resp: Payiferen Floating Ring")
+respTetsonotRing = ptAttribResponder(9, "resp: Tetsonot Floating Ring")
 
 # define global variables
+
 
 #====================================
 class bhroBahroPod(ptResponder):
@@ -85,13 +87,15 @@ class bhroBahroPod(ptResponder):
         global gAgeStartedIn
 
         gAgeStartedIn = PtGetAgeName()
-        PtSendKIMessage(kDisableYeeshaBook,0)
+        PtSendKIMessage(kDisableYeeshaBook, 0)
 
     ###########################
     def OnServerInitComplete(self):
-        # if the age is not the one that I'm from then run the responder to make it back off
+        # if the age is not the one that I'm from
+        # then run the responder to make it back off
         ageFrom = PtGetPrevAgeName()
-        print "bhroBahroPod.OnServerInitComplete: Came from %s, running opposite responder state" % (ageFrom)
+        print ("bhroBahroPod.OnServerInitComplete: "
+               "Came from %s, running opposite responder state" % (ageFrom))
         if ageFrom == "Negilahn":
             respWedges.run(self.key, state="Dereno", fastforward=1)
             respWedges.run(self.key, state="Payiferen", fastforward=1)
@@ -119,21 +123,26 @@ class bhroBahroPod(ptResponder):
         print psnlSDL["psnlBahroWedge10"][0]
 
         if psnlSDL["psnlBahroWedge07"][0]:
-            print "bhroBahroPod.OnServerInitComplete: You have the Negilahn wedge, no need to display it."
+            print ("bhroBahroPod.OnServerInitComplete: "
+                   "You have the Negilahn wedge, no need to display it.")
             respNegilahnRing.run(self.key, fastforward=1)
         if psnlSDL["psnlBahroWedge08"][0]:
-            print "bhroBahroPod.OnServerInitComplete: You have the Dereno wedge, no need to display it."
+            print ("bhroBahroPod.OnServerInitComplete: "
+                   "You have the Dereno wedge, no need to display it.")
             respDerenoRing.run(self.key, fastforward=1)
         if psnlSDL["psnlBahroWedge09"][0]:
-            print "bhroBahroPod.OnServerInitComplete: You have the Payiferen wedge, no need to display it."
+            print ("bhroBahroPod.OnServerInitComplete: "
+                   "You have the Payiferen wedge, no need to display it.")
             respPayiferenRing.run(self.key, fastforward=1)
         if psnlSDL["psnlBahroWedge10"][0]:
-            print "bhroBahroPod.OnServerInitComplete: You have the Tetsonot wedge, no need to display it."
+            print ("bhroBahroPod.OnServerInitComplete: "
+                   "You have the Tetsonot wedge, no need to display it.")
             respTetsonotRing.run(self.key, fastforward=1)
 
     ###########################
-    def OnNotify(self,state,id,events):
-        #print "bhroBahroPod.OnNotify: state=%s id=%d events=" % (state, id), events
+    def OnNotify(self, state, id, events):
+        # print ("bhroBahroPod.OnNotify: state=%s id=%d events="
+        #        % (state, id), events)
 
         if id == clkNegilahn.id and not state:
             print "bhroBahroPod.OnNotify: clicked Negilahn Spiral"
@@ -141,7 +150,8 @@ class bhroBahroPod(ptResponder):
             psnlSDL = xPsnlVaultSDL()
             sdlVal = psnlSDL["psnlBahroWedge07"][0]
             if not sdlVal:
-                print "bhroBahroPod.OnNotify:  Turning wedge SDL of psnlBahroWedge07 to On"
+                print ("bhroBahroPod.OnNotify:  "
+                       "Turning wedge SDL of psnlBahroWedge07 to On")
                 psnlSDL["psnlBahroWedge07"] = (1,)
 
         elif id == clkDereno.id and not state:
@@ -150,7 +160,8 @@ class bhroBahroPod(ptResponder):
             psnlSDL = xPsnlVaultSDL()
             sdlVal = psnlSDL["psnlBahroWedge08"][0]
             if not sdlVal:
-                print "bhroBahroPod.OnNotify:  Turning wedge SDL of psnlBahroWedge08 to On"
+                print ("bhroBahroPod.OnNotify:  "
+                       "Turning wedge SDL of psnlBahroWedge08 to On")
                 psnlSDL["psnlBahroWedge08"] = (1,)
 
         elif id == clkPayiferen.id and not state:
@@ -159,7 +170,8 @@ class bhroBahroPod(ptResponder):
             psnlSDL = xPsnlVaultSDL()
             sdlVal = psnlSDL["psnlBahroWedge09"][0]
             if not sdlVal:
-                print "bhroBahroPod.OnNotify:  Turning wedge SDL of psnlBahroWedge09 to On"
+                print ("bhroBahroPod.OnNotify:  "
+                       "Turning wedge SDL of psnlBahroWedge09 to On")
                 psnlSDL["psnlBahroWedge09"] = (1,)
 
         elif id == clkTetsonot.id and not state:
@@ -168,6 +180,6 @@ class bhroBahroPod(ptResponder):
             psnlSDL = xPsnlVaultSDL()
             sdlVal = psnlSDL["psnlBahroWedge10"][0]
             if not sdlVal:
-                print "bhroBahroPod.OnNotify:  Turning wedge SDL of psnlBahroWedge10 to On"
+                print ("bhroBahroPod.OnNotify:  "
+                       "Turning wedge SDL of psnlBahroWedge10 to On")
                 psnlSDL["psnlBahroWedge10"] = (1,)
-

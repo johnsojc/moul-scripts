@@ -22,16 +22,15 @@ Additional permissions under GNU GPL version 3 section 7
 If you modify this Program, or any covered work, by linking or
 combining it with any of RAD Game Tools Bink SDK, Autodesk 3ds Max SDK,
 NVIDIA PhysX SDK, Microsoft DirectX SDK, OpenSSL library, Independent
-JPEG Group JPEG library, Microsoft Windows Media SDK, or Apple QuickTime SDK
-(or a modified version of those libraries),
-containing parts covered by the terms of the Bink SDK EULA, 3ds Max EULA,
-PhysX SDK EULA, DirectX SDK EULA, OpenSSL and SSLeay licenses, IJG
-JPEG Library README, Windows Media SDK EULA, or QuickTime SDK EULA, the
-licensors of this Program grant you additional
-permission to convey the resulting work. Corresponding Source for a
-non-source form of such a combination shall include the source code for
-the parts of OpenSSL and IJG JPEG Library used as well as that of the covered
-work.
+JPEG Group JPEG library, Microsoft Windows Media SDK, or Apple QuickTime
+SDK (or a modified version of those libraries), containing parts covered
+by the terms of the Bink SDK EULA, 3ds Max EULA, PhysX SDK EULA, DirectX
+SDK EULA, OpenSSL and SSLeay licenses, IJG JPEG Library README, Windows
+Media SDK EULA, or QuickTime SDK EULA, the licensors of this Program
+grant you additional permission to convey the resulting work.
+Corresponding Source for a non-source form of such a combination shall
+include the source code for the parts of OpenSSL and IJG JPEG Library
+used as well as that of the covered work.
 
 You can contact Cyan Worlds, Inc. by email legal@cyan.com
  or by snail mail at:
@@ -53,16 +52,16 @@ from PlasmaConstants import *
 from PlasmaKITypes import *
 
 
-#rgnSnsrFissureDrop = ptAttribActivator(1, "rgn snsr: fissure drop spawn")
-respFissureDropStart = ptAttribResponder(1,"resp: fissure drop start")
-respFissureDropMain = ptAttribResponder(2,"resp: fissure drop main")
+# rgnSnsrFissureDrop = ptAttribActivator(1, "rgn snsr: fissure drop spawn")
+respFissureDropStart = ptAttribResponder(1, "resp: fissure drop start")
+respFissureDropMain = ptAttribResponder(2, "resp: fissure drop main")
 
 loadTomahna = 0
 loadZandi = 0
 loadBook = 0
 fissureDrop = 0
 
-#kIntroPlayedChronicle = "IntroPlayed"
+# kIntroPlayedChronicle = "IntroPlayed"
 
 
 class Cleft(ptResponder):
@@ -72,32 +71,33 @@ class Cleft(ptResponder):
         self.id = 5209
         self.version = 22
 
-        #var used to load in Cleft/Tomahna specific stuff based on chronicle vals
+        # var used to load in Cleft/Tomahna specific stuff
+        # based on chronicle vals
         global loadTomahna
         global loadZandi
         global loadBook
-        
+
         loadTomahna = 0
         loadZandi = 0
         loadBook = 0
 
-        #checks chronicle entries, if don't exist or is set to no,
-        #then decides if Tomahna or Zandi should be paged in
+        # checks chronicle entries, if don't exist or is set to no,
+        # then decides if Tomahna or Zandi should be paged in
 
         vault = ptVault()
         entryCleft = vault.findChronicleEntry("CleftSolved")
-        if type(entryCleft) != type(None):
+        if not isinstance(entryCleft, type(None)):
             entryCleftValue = entryCleft.chronicleGetValue()
             if entryCleftValue != "yes":
                 loadZandi = 1
                 loadBook = 1
-        elif type(entryCleft) == type(None):
+        elif isinstance(entryCleft, type(None)):
             loadZandi = 1
             loadBook = 1
 
         vault = ptVault()
         entryTomahna = vault.findChronicleEntry("TomahnaLoad")
-        if type(entryTomahna) != type(None):
+        if not isinstance(entryTomahna, type(None)):
             entryTomahnaValue = entryTomahna.chronicleGetValue()
             if entryTomahnaValue == "yes":
                 loadTomahna = 1
@@ -110,110 +110,183 @@ class Cleft(ptResponder):
 
         # Add the age specific pages
         if loadTomahna:
-            pages += ["Cleft","tmnaDesert","MaleShortIdle","FemaleShortIdle","YeeshaFinalEncounter","FemaleTurnRight180","MaleTurnRight180","clftSndLogTracks","clftAtrusGoggles"]
+            pages += ["Cleft",
+                      "tmnaDesert",
+                      "MaleShortIdle",
+                      "FemaleShortIdle",
+                      "YeeshaFinalEncounter",
+                      "FemaleTurnRight180",
+                      "MaleTurnRight180",
+                      "clftSndLogTracks",
+                      "clftAtrusGoggles"]
         else:
-            pages += ["Desert","Cleft","FemaleCleftDropIn","MaleCleftDropIn","clftJCsDesert","clftJCsChasm"]
+            pages += ["Desert",
+                      "Cleft",
+                      "FemaleCleftDropIn",
+                      "MaleCleftDropIn",
+                      "clftJCsDesert",
+                      "clftJCsChasm"]
         if loadZandi:
-            pages += ["clftZandiVis","ZandiCrossLegs","ZandiDirections","ZandiDirections01","ZandiDirections02","ZandiDirections03"]
-            pages += ["ZandiIdle","ZandiRubNose","ZandiScratchHead","ZandiTurnPage","ZandiAllFace","ZandiOpen01Face"]
-            pages += ["ZandiOpen02Face","ZandiRand01Face","ZandiRand02Face","ZandiRand03Face","ZandiRand04Face","ZandiRand05Face"]
-            pages += ["ZandiRes01aFace","ZandiRes01bFace","ZandiRes02aFace","ZandiRes02bFace","ZandiRes03aFace","ZandiRes03bFace"]
-            pages += ["ZandiJC01aFace","ZandiJC01bFace","ZandiJC02aFace","ZandiJC02bFace","ZandiJC03aFace","ZandiJC03bFace"]
-            pages += ["ZandiJC04aFace","ZandiJC04bFace","ZandiJC05aFace","ZandiJC05bFace","ZandiJC06aFace","ZandiJC06bFace"]
-            pages += ["ZandiJC07aFace","ZandiJC07bFace"]
+            pages += ["clftZandiVis",
+                      "ZandiCrossLegs",
+                      "ZandiDirections",
+                      "ZandiDirections01",
+                      "ZandiDirections02",
+                      "ZandiDirections03"]
+            pages += ["ZandiIdle",
+                      "ZandiRubNose",
+                      "ZandiScratchHead",
+                      "ZandiTurnPage",
+                      "ZandiAllFace",
+                      "ZandiOpen01Face"]
+            pages += ["ZandiOpen02Face",
+                      "ZandiRand01Face",
+                      "ZandiRand02Face",
+                      "ZandiRand03Face",
+                      "ZandiRand04Face",
+                      "ZandiRand05Face"]
+            pages += ["ZandiRes01aFace",
+                      "ZandiRes01bFace",
+                      "ZandiRes02aFace",
+                      "ZandiRes02bFace",
+                      "ZandiRes03aFace",
+                      "ZandiRes03bFace"]
+            pages += ["ZandiJC01aFace",
+                      "ZandiJC01bFace",
+                      "ZandiJC02aFace",
+                      "ZandiJC02bFace",
+                      "ZandiJC03aFace",
+                      "ZandiJC03bFace"]
+            pages += ["ZandiJC04aFace",
+                      "ZandiJC04bFace",
+                      "ZandiJC05aFace",
+                      "ZandiJC05bFace",
+                      "ZandiJC06aFace",
+                      "ZandiJC06bFace"]
+            pages += ["ZandiJC07aFace",
+                      "ZandiJC07bFace"]
         else:
-            print "Zandi seems to have stepped away from the Airstream. Hmmm..."
+            print ("Zandi seems to have stepped away "
+                   "from the Airstream. Hmmm...")
         if loadBook:
-            pages += ["clftYeeshaBookVis","FemaleGetPersonalBook","MaleGetPersonalBook"]
+            pages += ["clftYeeshaBookVis",
+                      "FemaleGetPersonalBook",
+                      "MaleGetPersonalBook"]
         else:
-            print "Zandi seems to have stepped away from the Airstream. Hmmm..."
+            print ("Zandi seems to have stepped away "
+                   "from the Airstream. Hmmm...")
 
         # Put in all the common pages
-        pages += ["BookRoom","clftAtrusNote"]
-        pages += ["FemaleClimbOffTreeLadder","FemaleGetOnTreeLadder","FemaleWindmillLockedCCW","FemaleWindmillLockedCW","FemaleWindmillStart"]
-        pages += ["MaleClimbOffTreeLadder","MaleGetOnTreeLadder","MaleWindmillLockedCCW","MaleWindmillLockedCW","MaleWindmillStart"]
-        pages += ["YeeshaVisionBlocked","YeeshaFinalVision"]
+        pages += ["BookRoom",
+                  "clftAtrusNote"]
+        pages += ["FemaleClimbOffTreeLadder",
+                  "FemaleGetOnTreeLadder",
+                  "FemaleWindmillLockedCCW",
+                  "FemaleWindmillLockedCW",
+                  "FemaleWindmillStart"]
+        pages += ["MaleClimbOffTreeLadder",
+                  "MaleGetOnTreeLadder",
+                  "MaleWindmillLockedCCW",
+                  "MaleWindmillLockedCW",
+                  "MaleWindmillStart"]
+        pages += ["YeeshaVisionBlocked",
+                  "YeeshaFinalVision"]
 
         PtPageInNode(pages)
 
         if loadTomahna:
-            #now that Tomahna pages have loaded, reset its chronicle value back to no,
-            #so subsequent linking will default to regular Cleft instead of Tomahna,
-            #unless a Tomahna link is used, of course...
+            # now that Tomahna pages have loaded, reset its chronicle value
+            # back to no, so subsequent linking will default to regular
+            # Cleft instead of Tomahna, unless a Tomahna link is used,
+            # of course...
             entryTomahna.chronicleSetValue("no")
             entryTomahna.save()
 
         pass
-
 
     def OnFirstUpdate(self):
         pass
         #~ # test for first time to play the intro movie
         #~ vault = ptVault()
         #~ entry = vault.findChronicleEntry(kIntroPlayedChronicle)
-        #~ if type(entry) != type(None):
-            #~ # already played intro sometime in the past... just let 'em play
-            #~ PtSendKIMessage(kEnableKIandBB,0)
+        #~ if not isinstance(entry, type(None)):
+        #~     # already played intro sometime in the past...
+        # -    #  just let 'em play
+        #~     PtSendKIMessage(kEnableKIandBB, 0)
         #~ else:
-            #~ # make sure the KI and blackbar is still diabled
-            #~ PtSendKIMessage(kDisableKIandBB,0)
-            #~ # It's the first time... start the intro movie, just by loading the movie dialog
-            #~ PtLoadDialog("IntroMovieGUI")
-
+        #~     # make sure the KI and blackbar is still diabled
+        #~     PtSendKIMessage(kDisableKIandBB, 0)
+        #~     # It's the first time... start the intro movie,
+        #-     #             just by loading the movie dialog
+        #~     PtLoadDialog("IntroMovieGUI")
 
     def OnServerInitComplete(self):
         global loadTomahna
         global fissureDrop
-        
+
         ageSDL = PtGetAgeSDL()
-        
-        # sets Tomahna SDL based on what is being loaded (thanks to chronicle val)
+
+        # sets Tomahna SDL based on what is being loaded
+        #                       (thanks to chronicle val)
         # also settings previously contained in .fni files
         if loadTomahna:
             SDLVarName = "clftTomahnaActive"
             ageSDL[SDLVarName] = (1,)
-            PtDebugPrint("Cleft.OnServerInitComplete: loadTomahna is 1, setting clftTomahnaActive SDL to 1")
-            #PtFogSetDefLinear(start, end, density)
-            PtFogSetDefLinear(0,0,0)
-            PtSetClearColor(.4,.4,.5)
+            PtDebugPrint("Cleft.OnServerInitComplete: "
+                         "loadTomahna is 1, "
+                         "setting clftTomahnaActive SDL to 1")
+            # PtFogSetDefLinear(start, end, density)
+            PtFogSetDefLinear(0, 0, 0)
+            PtSetClearColor(.4, .4, .5)
 
             SDLVarSceneBahro = "clftSceneBahroUnseen"
             boolSceneBahro = ageSDL[SDLVarSceneBahro][0]
             if boolSceneBahro:
-                PtDebugPrint("Cleft.OnServerInitComplete: SDL says bahro hasn't played yet, paging in SceneBahro stuff...")
+                PtDebugPrint("Cleft.OnServerInitComplete: "
+                             "SDL says bahro hasn't played yet, "
+                             "paging in SceneBahro stuff...")
                 PtPageInNode("clftSceneBahro")
             else:
-                PtDebugPrint("Cleft.OnServerInitComplete: SDL says SceneBahro already played, will NOT page in")
-                
-            ageSDL.setNotify(self.key,SDLVarSceneBahro,0.0)
-            
+                PtDebugPrint("Cleft.OnServerInitComplete: "
+                             "SDL says SceneBahro already played, "
+                             "will NOT page in")
+
+            ageSDL.setNotify(self.key, SDLVarSceneBahro, 0.0)
+
             SDLVarSceneYeesha = "clftSceneYeeshaUnseen"
             boolSceneYeesha = ageSDL[SDLVarSceneYeesha][0]
             if boolSceneYeesha:
-                #PtDebugPrint("Cleft.OnServerInitComplete: SDL says Yeesha hasn't played yet, paging in SceneYeesha stuff...")
-                #PtPageInNode("clftSceneYeesha")
+                # PtDebugPrint("Cleft.OnServerInitComplete: "
+                #              "SDL says Yeesha hasn't played yet, "
+                #              "paging in SceneYeesha stuff...")
+                # PtPageInNode("clftSceneYeesha")
                 SDLVarOfficeDoor = "clftOfficeDoorClosed"
                 boolOfficeDoor = ageSDL[SDLVarOfficeDoor][0]
                 if boolOfficeDoor:
-                    PtDebugPrint("Cleft.OnServerInitComplete: SDL says Yeesha will play and office door is shut, will open it")
+                    PtDebugPrint("Cleft.OnServerInitComplete: "
+                                 "SDL says Yeesha will play and "
+                                 "office door is shut, will open it")
                     ageSDL[SDLVarOfficeDoor] = (0,)
             else:
-                PtDebugPrint("Cleft.OnServerInitComplete: SDL says SceneYeesha already played, will NOT page in")
+                PtDebugPrint("Cleft.OnServerInitComplete: "
+                             "SDL says SceneYeesha already played, "
+                             "will NOT page in")
 
         else:
             SDLVarName = "clftTomahnaActive"
             ageSDL[SDLVarName] = (0,)
-            PtDebugPrint("Cleft.OnServerInitComplete: loadTomahna is 0, setting clftTomahnaActive SDL set to 0")
-            PtFogSetDefLinear(0,0,0)
-            PtSetClearColor(0,0,0)
-        
+            PtDebugPrint("Cleft.OnServerInitComplete: loadTomahna is 0, "
+                         "setting clftTomahnaActive SDL set to 0")
+            PtFogSetDefLinear(0, 0, 0)
+            PtSetClearColor(0, 0, 0)
+
         linkmgr = ptNetLinkingMgr()
         link = linkmgr.getCurrAgeLink()
         spawnPoint = link.getSpawnPoint()
 
         spTitle = spawnPoint.getTitle()
         spName = spawnPoint.getName()
-        
+
         if spName == "LinkInPointFissureDrop":
             fissureDrop = 1
             #avatar.physics.suppress(false)
@@ -221,40 +294,42 @@ class Cleft(ptResponder):
             try:
                 avatar = PtGetLocalAvatar()
             except:
-                print"failed to get local avatar"
+                print "failed to get local avatar"
                 return
             avatar.avatar.registerForBehaviorNotify(self.key)
             cam = ptCamera()
             cam.disableFirstPersonOverride()
             cam.undoFirstPerson()
             PtDisableMovementKeys()
-            PtSendKIMessage(kDisableEntireYeeshaBook,0)
-            respFissureDropStart.run(self.key,avatar=PtGetLocalAvatar())
+            PtSendKIMessage(kDisableEntireYeeshaBook, 0)
+            respFissureDropStart.run(self.key, avatar=PtGetLocalAvatar())
 
+    def Load(self):
 
-    def Load(self):        
-        
         ageSDL = PtGetAgeSDL()
 
-        # If both Kitchen and Office Doors are closed when linking into the age, this will open the Kitchen door.
-        #  It prevents Player from being locked out of Kitchen/Office if both doors were left shut when Player was last there...
-        
+        # If both Kitchen and Office Doors are closed when
+        # linking into the age, this will open the Kitchen door.
+        # It prevents Player from being locked out of Kitchen/Office
+        # if both doors were left shut when Player was last there...
+
         SDLVarKitchenDoor = "clftKitchenDoorClosed"
         SDLVarOfficeDoor = "clftOfficeDoorClosed"
-        
+
         boolKitchenDoor = ageSDL[SDLVarKitchenDoor][0]
         boolOfficeDoor = ageSDL[SDLVarOfficeDoor][0]
-        
+
         if boolKitchenDoor and boolOfficeDoor:
-            PtDebugPrint("Cleft.OnLoad: both Kitchen and Office doors are closed... setting Kitchen door SDL to open")
+            PtDebugPrint("Cleft.OnLoad: both Kitchen and Office doors "
+                         "are closed... setting Kitchen door SDL to open")
             ageSDL[SDLVarKitchenDoor] = (0,)
         else:
-            PtDebugPrint("Cleft.OnLoad: either Kitchen and/or Office door is already open... leaving Kitchen door alone")
+            PtDebugPrint("Cleft.OnLoad: either Kitchen and/or Office door "
+                         "is already open... leaving Kitchen door alone")
 
         pass
 
-
-    def OnNotify(self,state,id,events):
+    def OnNotify(self, state, id, events):
         global fissureDrop
 
         if (id == respFissureDropMain.id):
@@ -266,15 +341,16 @@ class Cleft(ptResponder):
                 avatar = PtGetLocalAvatar()
                 avatar.avatar.unRegisterForBehaviorNotify(self.key)
                 PtEnableMovementKeys()
-                PtSendKIMessage(kEnableEntireYeeshaBook,0)
+                PtSendKIMessage(kEnableEntireYeeshaBook, 0)
 
-
-    def OnBehaviorNotify(self,type,id,state):
+    def OnBehaviorNotify(self, type, id, state):
         global fissureDrop
-   
+
         #PtDebugPrint("Cleft.OnBehaviorNotify(): %d" % (type))
         if type == PtBehaviorTypes.kBehaviorTypeLinkIn and not state:
-            print "FISSUREDROP.OnBehaviorNotify: fissureDrop = %d" % (fissureDrop)
+            print ("FISSUREDROP.OnBehaviorNotify: fissureDrop = %d"
+                   % (fissureDrop))
             if fissureDrop:
-                PtDebugPrint("Cleft.OnBehaviorNotify(): will run respFissureDropMain now.")
-                respFissureDropMain.run(self.key,avatar=PtGetLocalAvatar())
+                PtDebugPrint("Cleft.OnBehaviorNotify(): "
+                             "will run respFissureDropMain now.")
+                respFissureDropMain.run(self.key, avatar=PtGetLocalAvatar())
