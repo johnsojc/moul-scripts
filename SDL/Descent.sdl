@@ -1,18 +1,18 @@
 # /*==LICENSE==*
-# 
+#
 # CyanWorlds.com Engine - MMOG client, server and tools
 # Copyright (C) 2011  Cyan Worlds, Inc.
-# 
+#
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
-# 
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
@@ -31,28 +31,27 @@
 # non-source form of such a combination shall include the source code for
 # the parts of OpenSSL and IJG JPEG Library used as well as that of the covered
 # work.
-# 
+#
 # You can contact Cyan Worlds, Inc. by email legal@cyan.com
 #  or by snail mail at:
 #       Cyan Worlds, Inc.
 #       14617 N Newport Hwy
 #       Mead, WA   99021
-# 
+#
 # *==LICENSE==*/
 #==============================================================
-# READ:	When modifying an SDL record, do *not* modify the
-#	existing record. You must copy and paste a new version
-#	below the current one and make your changes there.
+# READ: When modifying an SDL record, do *not* modify the
+#   existing record. You must copy and paste a new version
+#   below the current one and make your changes there.
 #==============================================================
 
 
 #
 # State Description Language for the Descent
 
-
 STATEDESC Descent
 {
-	VERSION 1
+        VERSION 1
 
 # Boolean variables
     VAR BOOL    dsntGZMarkerVis[1]              DEFAULT=0 DEFAULTOPTION=VAULT
@@ -62,12 +61,11 @@ STATEDESC Descent
 
 }
 
-
 # State Description Language for the Descent
 
 STATEDESC Descent
 {
-	VERSION 2
+        VERSION 2
 
 # Boolean variables
     VAR BOOL    dsntGZMarkerVis[1]              DEFAULT=0 DEFAULTOPTION=VAULT
@@ -77,29 +75,26 @@ STATEDESC Descent
 
 }
 
-
 STATEDESC Descent
 {
-	VERSION 3
+        VERSION 3
 
 # Boolean variables
-    VAR BOOL     dsntGZMarkerVis[1]              DEFAULT=0 DEFAULTOPTION=VAULT
-    VAR BOOL     dsntYeeshaPageMusicPlayerVis[1] DEFAULT=0 DEFAULTOPTION=VAULT
-    VAR BOOL     dsntCalendarSpark05[1]          DEFAULT=0 DEFAULTOPTION=VAULT
-    VAR INT      dsntKILightFunc[1]              DEFAULT=0 DEFAULTOPTION=VAULT
+    VAR BOOL    dsntGZMarkerVis[1]              DEFAULT=0 DEFAULTOPTION=VAULT
+    VAR BOOL    dsntYeeshaPageMusicPlayerVis[1] DEFAULT=0 DEFAULTOPTION=VAULT
+    VAR BOOL    dsntCalendarSpark05[1]          DEFAULT=0 DEFAULTOPTION=VAULT
+    VAR INT     dsntKILightFunc[1]              DEFAULT=0 DEFAULTOPTION=VAULT
 
 }
 
-
 STATEDESC Descent
 {
-	VERSION 4
+    VERSION 4
 
 # Boolean variables
-    VAR BOOL     dsntGZMarkerVis[1]              DEFAULT=0 DEFAULTOPTION=VAULT
-    VAR BOOL     dsntYeeshaPageMusicPlayerVis[1] DEFAULT=0 DEFAULTOPTION=VAULT
-    VAR BOOL     dsntCalendarSpark05[1]          DEFAULT=0 DEFAULTOPTION=VAULT
-    VAR BYTE     dsntKILightFunc[1]              DEFAULT=0 DEFAULTOPTION=VAULT
+    VAR BOOL    dsntGZMarkerVis[1]              DEFAULT=0 DEFAULTOPTION=VAULT
+    VAR BOOL    dsntYeeshaPageMusicPlayerVis[1] DEFAULT=0 DEFAULTOPTION=VAULT
+    VAR BOOL    dsntCalendarSpark05[1]          DEFAULT=0 DEFAULTOPTION=VAULT
+    VAR BYTE    dsntKILightFunc[1]              DEFAULT=0 DEFAULTOPTION=VAULT
 
 }
-
