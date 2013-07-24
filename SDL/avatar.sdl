@@ -1,5 +1,4 @@
 # /*==LICENSE==*
-# /*==LICENSE==*
 #
 # CyanWorlds.com Engine - MMOG client, server and tools
 # Copyright (C) 2011  Cyan Worlds, Inc.
@@ -57,7 +56,7 @@
 #
 STATEDESC standardStage
 {
-        VERSION 2
+    VERSION 2
     VAR STRING32        name[1]
     VAR SHORT           numLoops[1]             DEFAULT=0   # -1=loopForever
     VAR BYTE            forward[1]              DEFAULT=0   # 0=none, 1=kbd, 2=auto
@@ -78,7 +77,7 @@ STATEDESC standardStage
 
 STATEDESC standardStage
 {
-        VERSION 3
+    VERSION 3
     VAR STRING32        name[1]
     VAR SHORT           numLoops[1]             DEFAULT=0   # -1=loopForever
     VAR BYTE            forward[1]              DEFAULT=0   # 0=none, 1=kbd, 2=auto
@@ -100,7 +99,7 @@ STATEDESC standardStage
 #
 STATEDESC   genericBrain
 {
-        VERSION 3
+    VERSION 3
     VAR BOOL            noBrain[1]              DEFAULT=true    # set if not a brain
     VAR $standardStage  stages[]
     VAR BYTE            currentStage[1]         DEFAULT=0
@@ -122,7 +121,7 @@ STATEDESC   genericBrain
 #
 STATEDESC climbBrain
 {
-        VERSION 1
+    VERSION 1
     VAR INT             curMode[1]
     VAR INT             nextMode[1]
     VAR INT             allowedDirections[1]
@@ -142,7 +141,7 @@ STATEDESC climbBrain
 
 STATEDESC driveBrain
 {
-        VERSION 1
+    VERSION 1
     VAR INT             unUsed[1]
 
 }
@@ -153,7 +152,7 @@ STATEDESC driveBrain
 # brain at that.
 STATEDESC   brainUnion
 {
-        VERSION 1
+    VERSION 1
     VAR                 $genericBrain           fGenericBrain[]
     VAR                 $climbBrain             fClimbBrain[]
     VAR                 $driveBrain             fDriveBrain[]
@@ -166,7 +165,7 @@ STATEDESC   brainUnion
 #
 STATEDESC avatar
 {
-        VERSION 5
+    VERSION 5
     VAR                 $brainUnion             brainStack[]
     VAR BYTE            invisibilityLevel[1]    DEFAULT=0       # 0 means visible, >0 is CCR level of invisibility
 
@@ -174,7 +173,7 @@ STATEDESC avatar
 
 STATEDESC avatar
 {
-        VERSION 6
+    VERSION 6
     VAR $brainUnion     brainStack[]
     VAR BYTE            invisibilityLevel[1]    DEFAULT=0       # 0 means visible, >0 is CCR level of invisibility
 
@@ -186,7 +185,7 @@ STATEDESC avatar
 
 STATEDESC avatar
 {
-        VERSION 7
+    VERSION 7
     VAR                 $brainUnion             brainStack[]
     VAR BYTE            invisibilityLevel[1]    DEFAULT=0      # 0 means visible, >0 is CCR level of invisibility
 
@@ -194,7 +193,7 @@ STATEDESC avatar
 
 STATEDESC avatarPhysical
 {
-        VERSION 1
+    VERSION 1
 
     VAR POINT3          position[1]             DEFAULT=(0,0,0)
     VAR FLOAT           rotation[1]             DEFAULT=0.0

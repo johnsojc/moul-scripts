@@ -44,7 +44,7 @@
 
 STATEDESC Neighborhood
 {
-        VERSION 19
+    VERSION 19
 
 ## DEFAULTOPTION=VAULT Content ##
 
@@ -143,7 +143,7 @@ STATEDESC Neighborhood
 
 STATEDESC Neighborhood
 {
-        VERSION 20
+    VERSION 20
 
 ## DEFAULTOPTION=VAULT Content ##
 
@@ -245,7 +245,7 @@ STATEDESC Neighborhood
 
 STATEDESC Neighborhood
 {
-        VERSION 21
+    VERSION 21
 
 ## DEFAULTOPTION=VAULT Content ##
 
@@ -349,7 +349,7 @@ STATEDESC Neighborhood
 
 STATEDESC Neighborhood
 {
-        VERSION 22
+    VERSION 22
 
 ## DEFAULTOPTION=VAULT Content ##
 
@@ -455,7 +455,7 @@ STATEDESC Neighborhood
 STATEDESC Neighborhood
 {
 # Updated in build 37
-        VERSION 23
+    VERSION 23
 
 ## DEFAULTOPTION=VAULT Content ##
 
@@ -575,7 +575,7 @@ STATEDESC Neighborhood
 STATEDESC Neighborhood
 {
 # Updated in build 38
-        VERSION 24
+    VERSION 24
 
 ## DEFAULTOPTION=VAULT Content ##
 
@@ -696,7 +696,7 @@ STATEDESC Neighborhood
 STATEDESC Neighborhood
 {
 # Updated in build 110
-        VERSION 25
+    VERSION 25
 
 ## DEFAULTOPTION=VAULT Content ##
 
@@ -817,7 +817,7 @@ STATEDESC Neighborhood
 
 STATEDESC Neighborhood
 {
-        VERSION 26
+    VERSION 26
 
 ## DEFAULTOPTION=VAULT Content ##
 
@@ -939,7 +939,7 @@ STATEDESC Neighborhood
 
 STATEDESC Neighborhood
 {
-        VERSION 27
+    VERSION 27
 
 ## DEFAULTOPTION=VAULT Content ##
 
@@ -1062,7 +1062,7 @@ STATEDESC Neighborhood
 
 STATEDESC Neighborhood
 {
-        VERSION 28
+    VERSION 28
 
 ## DEFAULTOPTION=VAULT Content ##
 
@@ -1186,7 +1186,7 @@ STATEDESC Neighborhood
 
 STATEDESC Neighborhood
 {
-        VERSION 29
+    VERSION 29
 
 ## DEFAULTOPTION=VAULT Content ##
 
@@ -1311,7 +1311,7 @@ STATEDESC Neighborhood
 
 STATEDESC Neighborhood
 {
-        VERSION 30
+    VERSION 30
 
 ## DEFAULTOPTION=VAULT Content ##
 
@@ -1437,7 +1437,7 @@ STATEDESC Neighborhood
 
 STATEDESC Neighborhood
 {
-        VERSION 31
+    VERSION 31
 
 ## DEFAULTOPTION=VAULT Content ##
 
@@ -1564,7 +1564,7 @@ STATEDESC Neighborhood
 
 STATEDESC Neighborhood
 {
-        VERSION 32
+    VERSION 32
 
 ## DEFAULTOPTION=VAULT Content ##
 
@@ -1692,7 +1692,7 @@ STATEDESC Neighborhood
 
 STATEDESC Neighborhood
 {
-        VERSION 33
+    VERSION 33
 
 ## DEFAULTOPTION=VAULT Content ##
 

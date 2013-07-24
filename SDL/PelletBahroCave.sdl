@@ -44,7 +44,7 @@
 
 STATEDESC PelletBahroCave
 {
-        VERSION 1
+    VERSION 1
 
 ## Age Mechanics ##
     VAR INT         bhroGotPellet[1]            DEFAULT=0 DISPLAYOPTION=red
@@ -53,7 +53,7 @@ STATEDESC PelletBahroCave
 
 STATEDESC PelletBahroCave
 {
-        VERSION 2
+    VERSION 2
 
 ## Age Mechanics ##
     VAR INT         bhroGotPellet[1]            DEFAULT=0 DISPLAYOPTION=red
@@ -66,7 +66,7 @@ STATEDESC PelletBahroCave
 
 STATEDESC PelletBahroCave
 {
-        VERSION 3
+    VERSION 3
 
 ## Age Mechanics ##
     VAR INT         bhroGotPellet[1]            DEFAULT=0 DISPLAYOPTION=red

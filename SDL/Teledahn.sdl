@@ -53,7 +53,7 @@
 
 STATEDESC Teledahn
 {
-        VERSION 26
+    VERSION 26
 
 # Boolean variables
     VAR BOOL    tldnJourneyCloth01Vis[1]        DEFAULT=1 DEFAULTOPTION=VAULT
@@ -151,7 +151,7 @@ STATEDESC Teledahn
 
 STATEDESC Teledahn
 {
-        VERSION 27
+    VERSION 27
 
 # Boolean variables
     VAR BOOL    tldnJourneyCloth01Vis[1]        DEFAULT=1 DEFAULTOPTION=VAULT
@@ -258,7 +258,7 @@ STATEDESC Teledahn
 
 STATEDESC Teledahn
 {
-        VERSION 28
+    VERSION 28
 
 # Boolean variables
     VAR BOOL    tldnJourneyCloth01Vis[1]        DEFAULT=1 DEFAULTOPTION=VAULT
@@ -365,7 +365,7 @@ STATEDESC Teledahn
 
 STATEDESC Teledahn
 {
-        VERSION 29
+    VERSION 29
 
 # Boolean variables
     VAR BOOL    tldnJourneyCloth01Vis[1]        DEFAULT=1 DEFAULTOPTION=VAULT
@@ -689,7 +689,7 @@ STATEDESC Teledahn
 
 STATEDESC Teledahn
 {
-        VERSION 32
+    VERSION 32
 
 # Boolean variables
     VAR BOOL    tldnJourneyCloth01Vis[1]        DEFAULT=1 DEFAULTOPTION=VAULT
@@ -804,7 +804,7 @@ STATEDESC Teledahn
 
 STATEDESC Teledahn
 {
-        VERSION 33
+    VERSION 33
 
 # Boolean variables
     VAR BOOL    tldnJourneyCloth01Vis[1]        DEFAULT=1 DEFAULTOPTION=VAULT

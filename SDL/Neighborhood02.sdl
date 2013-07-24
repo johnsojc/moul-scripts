@@ -45,7 +45,7 @@
 
 STATEDESC Neighborhood02
 {
-        VERSION 3
+    VERSION 3
 
 ## DEFAULTOPTION=VAULT Content ##
 
@@ -167,7 +167,7 @@ STATEDESC Neighborhood02
 
 STATEDESC Neighborhood02
 {
-        VERSION 4
+    VERSION 4
 
 ## DEFAULTOPTION=VAULT Content ##
 

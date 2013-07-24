@@ -47,7 +47,7 @@
 
 STATEDESC SpyRoom
 {
-        VERSION 1
+    VERSION 1
 
 ## Age Mechanics
 
@@ -57,10 +57,10 @@ STATEDESC SpyRoom
 
 STATEDESC SpyRoom
 {
-        VERSION 2
+    VERSION 2
 
 # Boolean variables
-#    VAR BOOL    spySharperHat[1]                DEFAULT=0 DEFAULTOPTION=VAULT
+#   VAR BOOL    spySharperHat[1]                DEFAULT=0 DEFAULTOPTION=VAULT
 
 
 ## Age Mechanics

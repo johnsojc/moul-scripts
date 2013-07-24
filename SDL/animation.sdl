@@ -1,5 +1,4 @@
 # /*==LICENSE==*
-# /*==LICENSE==*
 #
 # CyanWorlds.com Engine - MMOG client, server and tools
 # Copyright (C) 2011  Cyan Worlds, Inc.
@@ -55,7 +54,7 @@
 
 STATEDESC AnimTimeConvert
 {
-        VERSION 5
+    VERSION 5
     VAR INT         flags[1]                        DEFAULT=0
     VAR FLOAT       lastStateAnimTime[1]            DEFAULT=0
     VAR FLOAT       loopEnd[1]                      DEFAULT=0
@@ -70,7 +69,7 @@ STATEDESC AnimTimeConvert
 
 STATEDESC AnimTimeConvert
 {
-        VERSION 6
+    VERSION 6
     VAR INT         flags[1]                        DEFAULT=0
     VAR FLOAT       lastStateAnimTime[1]            DEFAULT=0
     VAR FLOAT       loopEnd[1]                      DEFAULT=0
@@ -89,7 +88,7 @@ STATEDESC AnimTimeConvert
 
 STATEDESC AGMaster
 {
-        VERSION 5
+    VERSION 5
     VAR $AnimTimeConvert    atcs[]                  # variable length list
     VAR BYTE                blends[]
 
@@ -102,7 +101,7 @@ STATEDESC AGMaster
 
 STATEDESC Layer
 {
-        VERSION 6
+    VERSION 6
     VAR $AnimTimeConvert    atc[1]
 
     VAR INT                 passThruChannels[1]     DEFAULT=0

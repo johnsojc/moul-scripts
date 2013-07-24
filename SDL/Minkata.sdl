@@ -51,7 +51,7 @@
 
 STATEDESC Minkata
 {
-        VERSION 1
+    VERSION 1
 
 # Boolean variables
     VAR BOOL    minkHikingBootsVis[1]           DEFAULT=0 DEFAULTOPTION=VAULT
@@ -60,7 +60,7 @@ STATEDESC Minkata
 
 STATEDESC Minkata
 {
-        VERSION 2
+    VERSION 2
 
 # Boolean variables
     VAR BOOL    minkHikingBootsVis[1]           DEFAULT=0 DEFAULTOPTION=VAULT
@@ -70,7 +70,7 @@ STATEDESC Minkata
 
 STATEDESC Minkata
 {
-        VERSION 3
+    VERSION 3
 
 # Boolean variables
     VAR BOOL    minkHikingBootsVis[1]           DEFAULT=0 DEFAULTOPTION=VAULT
@@ -86,7 +86,7 @@ STATEDESC Minkata
 
 STATEDESC Minkata
 {
-        VERSION 4
+    VERSION 4
 
 # Boolean variables
     VAR BOOL    minkHikingBootsVis[1]           DEFAULT=0 DEFAULTOPTION=VAULT
@@ -104,7 +104,7 @@ STATEDESC Minkata
 
 STATEDESC Minkata
 {
-        VERSION 5
+    VERSION 5
 
 # Boolean variables
     VAR BOOL    minkHikingBootsVis[1]           DEFAULT=0 DEFAULTOPTION=VAULT
@@ -128,7 +128,7 @@ STATEDESC Minkata
 
 STATEDESC Minkata
 {
-        VERSION 6
+    VERSION 6
 
 # Boolean variables
     VAR BOOL    minkHikingBootsVis[1]           DEFAULT=0 DEFAULTOPTION=VAULT

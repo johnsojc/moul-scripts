@@ -44,7 +44,7 @@
 
 STATEDESC tldnPwrTwrPeriscope
 {
-        VERSION 6
+    VERSION 6
 
     VAR FLOAT   scopeSpdLeft[1]
     VAR FLOAT   scopeSpdUp[1]

@@ -1,5 +1,4 @@
 # /*==LICENSE==*
-# /*==LICENSE==*
 #
 # CyanWorlds.com Engine - MMOG client, server and tools
 # Copyright (C) 2011  Cyan Worlds, Inc.
@@ -45,7 +44,7 @@
 
 STATEDESC Ahnonay
 {
-        VERSION 1
+    VERSION 1
 
     #current sphere for linking in from temple
     VAR BYTE    ahnyCurrentSphere[1]        DEFAULT=1
@@ -53,7 +52,7 @@ STATEDESC Ahnonay
 
 STATEDESC Ahnonay
 {
-        VERSION 2
+    VERSION 2
 
     #current sphere for linking in from temple
     VAR BYTE    ahnyCurrentSphere[1]        DEFAULT=0
@@ -63,7 +62,7 @@ STATEDESC Ahnonay
 
 STATEDESC Ahnonay
 {
-        VERSION 3
+    VERSION 3
 
     ## SPHERE 1 SDLs ##
     VAR BOOL    ahnyCurrent[1]              DEFAULT=1  DISPLAYOPTION=red
@@ -94,7 +93,7 @@ STATEDESC Ahnonay
 
 STATEDESC Ahnonay
 {
-        VERSION 4
+    VERSION 4
 
     ## SPHERE 1 SDLs ##
     VAR BOOL    ahnyCurrent[1]              DEFAULT=1  DISPLAYOPTION=red
@@ -126,7 +125,7 @@ STATEDESC Ahnonay
 
 STATEDESC Ahnonay
 {
-        VERSION 5
+    VERSION 5
 
     VAR INT     ahnyCurrentSphere[1]        DEFAULT=1  DISPLAYOPTION=hidden
 
@@ -160,7 +159,7 @@ STATEDESC Ahnonay
 
 STATEDESC Ahnonay
 {
-        VERSION 6
+    VERSION 6
 
     VAR INT     ahnyCurrentSphere[1]        DEFAULT=1  DISPLAYOPTION=hidden
 
@@ -195,7 +194,7 @@ STATEDESC Ahnonay
 
 STATEDESC Ahnonay
 {
-        VERSION 7
+    VERSION 7
 
     VAR INT     ahnyCurrentSphere[1]        DEFAULT=1  DISPLAYOPTION=hidden
     VAR INT     ahnyCurrentOffset[1]        DEFAULT=0  DISPLAYOPTION=hidden
@@ -231,7 +230,7 @@ STATEDESC Ahnonay
 
 STATEDESC Ahnonay
 {
-        VERSION 8
+    VERSION 8
 
     VAR INT     ahnyCurrentSphere[1]        DEFAULT=1  DISPLAYOPTION=hidden
     VAR INT     ahnyCurrentOffset[1]        DEFAULT=0  DISPLAYOPTION=hidden
@@ -268,7 +267,7 @@ STATEDESC Ahnonay
 
 STATEDESC Ahnonay
 {
-        VERSION 9
+    VERSION 9
 
     VAR INT     ahnyCurrentSphere[1]        DEFAULT=1  DISPLAYOPTION=hidden
     VAR INT     ahnyCurrentOffset[1]        DEFAULT=0  DISPLAYOPTION=hidden
@@ -314,7 +313,7 @@ STATEDESC Ahnonay
 
 STATEDESC Ahnonay
 {
-        VERSION 10
+    VERSION 10
 
     VAR INT     ahnyCurrentSphere[1]        DEFAULT=1  DISPLAYOPTION=hidden
     VAR INT     ahnyCurrentOffset[1]        DEFAULT=0  DISPLAYOPTION=hidden

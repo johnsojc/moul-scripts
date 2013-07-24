@@ -44,7 +44,7 @@
 
 STATEDESC Garden
 {
-        VERSION 8
+    VERSION 8
 
 # Boolean variables
     VAR BOOL    kemoJourneySymbolVis[1]         DEFAULT=1 DEFAULTOPTION=VAULT

@@ -44,7 +44,7 @@
 
 STATEDESC tldnVaporScope
 {
-        VERSION 5
+    VERSION 5
     VAR BOOL        boolOperated[1]
     VAR INT         OperatorID[1]
     VAR INT         scopeAtTop[1]

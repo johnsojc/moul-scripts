@@ -51,7 +51,7 @@
 
 STATEDESC SoundState
 {
-        VERSION 1
+    VERSION 1
     VAR FLOAT           desiredVolume[1]    DEFAULT=0   # 0 to 1
     VAR TIME            time[1]             DEFAULT=0   # time sound was started
     VAR BOOL            playing[1]          DEFAULT=false   # is it playing
@@ -65,7 +65,7 @@ STATEDESC SoundState
 
 STATEDESC Sound
 {
-        VERSION 1
+    VERSION 1
     VAR $SoundState     sounds[]    # List of soundStates on a sceneObject
 
 }

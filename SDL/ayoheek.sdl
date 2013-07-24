@@ -44,7 +44,7 @@
 
 STATEDESC nb01RPSGame
 {
-        VERSION 1
+    VERSION 1
 # game variables
     VAR BOOL    boolSDLSuddenDeath[1]           DEFAULT=(0)
     VAR INT     intSDLRankPot[1]                DEFAULT=(0)

@@ -52,7 +52,7 @@
 
 STATEDESC physical
 {
-        VERSION 2
+    VERSION 2
     VAR POINT3      position[1]         DEFAULT=(0,0,0)
     VAR QUATERNION  orientation[1]      DEFAULT=(0,0,0,1)
     VAR VECTOR3     linear[1]           DEFAULT=(0,0,0)

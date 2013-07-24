@@ -50,7 +50,7 @@
 
 STATEDESC Gira
 {
-        VERSION 7
+    VERSION 7
 
     VAR AGETIMEOFDAY giraTimeOfDay[1]
 
@@ -80,7 +80,7 @@ STATEDESC Gira
 
 STATEDESC Gira
 {
-        VERSION 8
+    VERSION 8
 
     VAR AGETIMEOFDAY giraTimeOfDay[1]
 
@@ -111,7 +111,7 @@ STATEDESC Gira
 
 STATEDESC Gira
 {
-        VERSION 9
+    VERSION 9
 
     VAR AGETIMEOFDAY giraTimeOfDay[1]
 
@@ -141,7 +141,7 @@ STATEDESC Gira
 
 STATEDESC Gira
 {
-        VERSION 10
+    VERSION 10
 
     VAR AGETIMEOFDAY giraTimeOfDay[1]
 
@@ -173,7 +173,7 @@ STATEDESC Gira
 
 STATEDESC Gira
 {
-        VERSION 11
+    VERSION 11
 
     VAR AGETIMEOFDAY giraTimeOfDay[1]
 

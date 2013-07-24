@@ -51,7 +51,7 @@
 
 STATEDESC Cleft
 {
-        VERSION 21
+    VERSION 21
 
 # Boolean variables
 
@@ -90,7 +90,7 @@ STATEDESC Cleft
 
 STATEDESC Cleft
 {
-        VERSION 22
+    VERSION 22
 
 # Boolean variables
 
@@ -131,7 +131,7 @@ STATEDESC Cleft
 
 STATEDESC Cleft
 {
-        VERSION 23
+    VERSION 23
 
 # Boolean variables
 
@@ -173,7 +173,7 @@ STATEDESC Cleft
 
 STATEDESC Cleft
 {
-        VERSION 24
+    VERSION 24
 
 # Boolean variables
 

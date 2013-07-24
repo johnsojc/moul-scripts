@@ -51,7 +51,7 @@
 
 STATEDESC city
 {
-        VERSION 18
+    VERSION 18
 
 # Boolean variables
     VAR BOOL    islmCityBlocker01Vis[1]         DEFAULT=1 DEFAULTOPTION=VAULT
@@ -122,7 +122,7 @@ STATEDESC city
 
 STATEDESC city
 {
-        VERSION 19
+    VERSION 19
 
 # Boolean variables
     VAR BOOL    islmCityBlocker01Vis[1]         DEFAULT=1 DEFAULTOPTION=VAULT
@@ -196,7 +196,7 @@ STATEDESC city
 
 STATEDESC city
 {
-        VERSION 20
+    VERSION 20
 
 # Boolean variables
     VAR BOOL    islmCityBlocker01Vis[1]         DEFAULT=1 DEFAULTOPTION=VAULT
@@ -271,7 +271,7 @@ STATEDESC city
 
 STATEDESC city
 {
-        VERSION 21
+    VERSION 21
 
 # Boolean variables
     VAR BOOL    islmCityBlocker01Vis[1]         DEFAULT=1 DEFAULTOPTION=VAULT
@@ -367,7 +367,7 @@ STATEDESC city
 STATEDESC city
 {
 # This version has been updated in build 37
-        VERSION 22
+    VERSION 22
 
 # Boolean variables
     VAR BOOL    islmCityBlocker01Vis[1]         DEFAULT=1 DEFAULTOPTION=VAULT
@@ -476,7 +476,7 @@ STATEDESC city
 STATEDESC city
 {
 # This version has been updated in build UruTap
-        VERSION 23
+    VERSION 23
 
 # Boolean variables
     VAR BOOL    islmCityBlocker01Vis[1]         DEFAULT=1 DEFAULTOPTION=VAULT
@@ -586,7 +586,7 @@ STATEDESC city
 STATEDESC city
 {
 # This version has been updated in build UruTap
-        VERSION 24
+    VERSION 24
 
 # Boolean variables
     VAR BOOL    islmCityBlocker01Vis[1]         DEFAULT=1 DEFAULTOPTION=VAULT
@@ -729,7 +729,7 @@ STATEDESC city
 STATEDESC city
 {
 # This version has been updated in build UruTap
-        VERSION 25
+    VERSION 25
 
 # Boolean variables
     VAR BOOL    islmCityBlocker01Vis[1]         DEFAULT=1 DEFAULTOPTION=VAULT
@@ -878,7 +878,7 @@ STATEDESC city
 STATEDESC city
 {
 # This version has been updated in build UruTap
-        VERSION 26
+    VERSION 26
 
 # Boolean variables
     VAR BOOL    islmCityBlocker01Vis[1]         DEFAULT=1 DEFAULTOPTION=VAULT
@@ -1031,7 +1031,7 @@ STATEDESC city
 STATEDESC city
 {
 # This version has been updated in build UruTap
-        VERSION 27
+    VERSION 27
 
 # Boolean variables
     VAR BOOL    islmCityBlocker01Vis[1]         DEFAULT=0 DEFAULTOPTION=VAULT
@@ -1185,7 +1185,7 @@ STATEDESC city
 STATEDESC city
 {
 # This version has been updated in build UruTap
-        VERSION 28
+    VERSION 28
 
 # Boolean variables
     VAR BOOL    islmCityBlocker01Vis[1]         DEFAULT=0 DEFAULTOPTION=VAULT
@@ -1340,7 +1340,7 @@ STATEDESC city
 STATEDESC city
 {
 # This version has been updated in build UruTap
-        VERSION 29
+    VERSION 29
 
 # Boolean variables
     VAR BOOL    islmCityBlocker01Vis[1]         DEFAULT=0 DEFAULTOPTION=VAULT
@@ -1498,7 +1498,7 @@ STATEDESC city
 STATEDESC city
 {
 # This version has been updated in build UruTap
-        VERSION 30
+    VERSION 30
 
 # Boolean variables
     VAR BOOL    islmCityBlocker01Vis[1]         DEFAULT=0 DEFAULTOPTION=VAULT
@@ -1657,7 +1657,7 @@ STATEDESC city
 STATEDESC city
 {
 # This version has been updated in build UruTap
-        VERSION 31
+    VERSION 31
 
 # Boolean variables
     VAR BOOL    islmCityBlocker01Vis[1]         DEFAULT=0 DEFAULTOPTION=VAULT
@@ -1817,7 +1817,7 @@ STATEDESC city
 STATEDESC city
 {
 # This version has been updated in build UruTap
-        VERSION 32
+    VERSION 32
 
 # Boolean variables
     VAR BOOL    islmCityBlocker01Vis[1]         DEFAULT=0 DEFAULTOPTION=VAULT
@@ -1984,7 +1984,7 @@ STATEDESC city
 STATEDESC city
 {
 # This version has been updated in build UruTap
-        VERSION 33
+    VERSION 33
 
 # Boolean variables
     VAR BOOL    islmCityBlocker01Vis[1]         DEFAULT=0 DEFAULTOPTION=VAULT
@@ -2151,7 +2151,7 @@ STATEDESC city
 STATEDESC city
 {
 # This version has been updated in build UruTap
-        VERSION 34
+    VERSION 34
 
 # Boolean variables
     VAR BOOL    islmCityBlocker01Vis[1]         DEFAULT=0 DEFAULTOPTION=VAULT
@@ -2320,7 +2320,7 @@ STATEDESC city
 STATEDESC city
 {
 # This version has been updated in build UruTap
-        VERSION 35
+    VERSION 35
 
 # Boolean variables
     VAR BOOL    islmCityBlocker01Vis[1]         DEFAULT=0 DEFAULTOPTION=VAULT
@@ -2490,7 +2490,7 @@ STATEDESC city
 STATEDESC city
 {
 # This version has been updated in build UruTap
-        VERSION 36
+    VERSION 36
 
 # Boolean variables
     VAR BOOL    islmCityBlocker01Vis[1]         DEFAULT=0 DEFAULTOPTION=VAULT
@@ -2661,7 +2661,7 @@ STATEDESC city
 STATEDESC city
 {
 # This version has been updated in build UruTap
-        VERSION 37
+    VERSION 37
 
 # Boolean variables
     VAR BOOL    islmCityBlocker01Vis[1]         DEFAULT=0 DEFAULTOPTION=VAULT
@@ -2833,7 +2833,7 @@ STATEDESC city
 STATEDESC city
 {
 # This version has been updated in build UruTap
-        VERSION 38
+    VERSION 38
 
 # Boolean variables
     VAR BOOL    islmCityBlocker01Vis[1]         DEFAULT=0 DEFAULTOPTION=VAULT
@@ -3008,7 +3008,7 @@ STATEDESC city
 STATEDESC city
 {
 # This version has been updated in build UruTap
-        VERSION 39
+    VERSION 39
 
 # Boolean variables
     VAR BOOL    islmCityBlocker01Vis[1]         DEFAULT=0 DEFAULTOPTION=VAULT
@@ -3186,7 +3186,7 @@ STATEDESC city
 STATEDESC city
 {
 # This version has been updated in build UruTap
-        VERSION 40
+    VERSION 40
 
 # Boolean variables
     VAR BOOL    islmCityBlocker01Vis[1]         DEFAULT=0 DEFAULTOPTION=VAULT
@@ -3365,7 +3365,7 @@ STATEDESC city
 STATEDESC city
 {
 # This version has been updated in build UruTap
-        VERSION 41
+    VERSION 41
 
 # Boolean variables
     VAR BOOL    islmCityBlocker01Vis[1]         DEFAULT=0 DEFAULTOPTION=VAULT
@@ -3545,7 +3545,7 @@ STATEDESC city
 STATEDESC city
 {
 # This version has been updated in build UruTap
-        VERSION 42
+    VERSION 42
 
 # Boolean variables
     VAR BOOL    islmCityBlocker01Vis[1]         DEFAULT=0 DEFAULTOPTION=VAULT
@@ -3718,7 +3718,7 @@ STATEDESC city
     VAR BOOL    islmJalakLinkingBookVis[1]      DEFAULT=0 DEFAULTOPTION=VAULT
 
 # Memorial Imager
-    VAR INT     MemorialImagerStartTime[1]      DEFAULT=0   DISPLAYOPTION=hidden
+    VAR INT     MemorialImagerStartTime[1]      DEFAULT=0 DISPLAYOPTION=hidden
     VAR BOOL    islmMemorialImagerVis[1]        DEFAULT=0 DEFAULTOPTION=VAULT
 
 }
@@ -3726,7 +3726,7 @@ STATEDESC city
 STATEDESC city
 {
 # This version has been updated in build UruTap
-        VERSION 43
+    VERSION 43
 
 # Boolean variables
     VAR BOOL    islmCityBlocker01Vis[1]         DEFAULT=0 DEFAULTOPTION=VAULT

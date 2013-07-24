@@ -48,7 +48,7 @@
 
 STATEDESC Jalak
 {
-        VERSION 1
+    VERSION 1
 
 ## Age Mechanics
 
@@ -58,7 +58,7 @@ STATEDESC Jalak
 
 STATEDESC Jalak
 {
-        VERSION 2
+    VERSION 2
 
 ## Age Mechanics
 
@@ -68,7 +68,7 @@ STATEDESC Jalak
 
 STATEDESC Jalak
 {
-        VERSION 3
+    VERSION 3
 
 ## Age Mechanics
     VAR BOOL        jlakCalendarSpark08[1]      DEFAULT=0 DEFAULTOPTION=VAULT
@@ -111,7 +111,7 @@ STATEDESC Jalak
 
 STATEDESC Jalak
 {
-        VERSION 4
+    VERSION 4
 
 ## Age Mechanics
     VAR BOOL        jlakCalendarSpark08[1]      DEFAULT=0 DEFAULTOPTION=VAULT

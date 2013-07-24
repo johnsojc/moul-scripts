@@ -51,7 +51,7 @@
 
 STATEDESC Payiferen
 {
-        VERSION 1
+    VERSION 1
 
     # Pod Power
     VAR INT         payiBatteryCharge[1]        DEFAULT=100 DISPLAYOPTION=hidden
@@ -70,7 +70,7 @@ STATEDESC Payiferen
 
 STATEDESC Payiferen
 {
-        VERSION 2
+    VERSION 2
 
     # Pod Power
     VAR INT         payiBatteryCharge[1]        DEFAULT=100 DISPLAYOPTION=hidden
@@ -94,7 +94,7 @@ STATEDESC Payiferen
 
 STATEDESC Payiferen
 {
-        VERSION 3
+    VERSION 3
 
     # Pod Power
     VAR INT         payiBatteryCharge[1]        DEFAULT=100 DISPLAYOPTION=hidden

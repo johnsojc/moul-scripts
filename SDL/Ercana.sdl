@@ -44,7 +44,7 @@
 
 STATEDESC Ercana
 {
-        VERSION 25
+    VERSION 25
 
 ## Age Mechanics ##
 
@@ -129,7 +129,7 @@ STATEDESC Ercana
 
 STATEDESC ercaOvenScope
 {
-        VERSION 1
+    VERSION 1
     VAR INT     boolOperated[1]
     VAR INT     OperatorID[1]
 
@@ -137,7 +137,7 @@ STATEDESC ercaOvenScope
 
 STATEDESC Ercana
 {
-        VERSION 26
+    VERSION 26
 
 ## Age Mechanics ##
 
@@ -227,7 +227,7 @@ STATEDESC Ercana
 
 STATEDESC Ercana
 {
-        VERSION 27
+    VERSION 27
 
 ## Age Mechanics ##
 
@@ -317,7 +317,7 @@ STATEDESC Ercana
 
 STATEDESC Ercana
 {
-        VERSION 28
+    VERSION 28
 
 ## Age Mechanics ##
 
@@ -408,7 +408,7 @@ STATEDESC Ercana
 
 STATEDESC Ercana
 {
-    VERSION 29
+VERSION 29
 
 ## Age Mechanics ##
 
@@ -499,7 +499,7 @@ STATEDESC Ercana
 
 STATEDESC Ercana
 {
-    VERSION 30
+VERSION 30
 
 ## Age Mechanics ##
 
@@ -592,7 +592,7 @@ STATEDESC Ercana
 
 STATEDESC Ercana
 {
-        VERSION 31
+    VERSION 31
 
 ## Age Mechanics ##
 
@@ -686,7 +686,7 @@ STATEDESC Ercana
 
 STATEDESC Ercana
 {
-        VERSION 32
+    VERSION 32
 
 ## Age Mechanics ##
 

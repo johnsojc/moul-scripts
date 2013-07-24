@@ -51,7 +51,7 @@
 
 STATEDESC Dereno
 {
-        VERSION 1
+    VERSION 1
 
     # Pod Power
     VAR INT     drnoBatteryCharge[1]        DEFAULT=100 DISPLAYOPTION=hidden

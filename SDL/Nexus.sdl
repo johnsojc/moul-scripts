@@ -42,7 +42,7 @@
 
 STATEDESC Nexus
 {
-        VERSION 2
+    VERSION 2
 
     VAR INT     MaxCityPop[1]                   DEFAULT=20 DEFAULTOPTION=VAULT
     VAR BOOL    nxusCityLinksVis[1]             DEFAULT=1  DEFAULTOPTION=VAULT
@@ -51,7 +51,7 @@ STATEDESC Nexus
 
 STATEDESC Nexus
 {
-        VERSION 3
+    VERSION 3
 
     VAR INT     MaxCityPop[1]                   DEFAULT=20 DEFAULTOPTION=VAULT
     VAR BOOL    nxusCityLinksVis[1]             DEFAULT=1  DEFAULTOPTION=VAULT
@@ -61,7 +61,7 @@ STATEDESC Nexus
 
 STATEDESC Nexus
 {
-        VERSION 4
+    VERSION 4
 
     VAR INT     MaxCityPop[1]                   DEFAULT=20   DEFAULTOPTION=VAULT
     VAR BOOL    nxusCityLinksVis[1]             DEFAULT=1    DEFAULTOPTION=VAULT
@@ -73,7 +73,7 @@ STATEDESC Nexus
 
 STATEDESC Nexus
 {
-        VERSION 5
+    VERSION 5
 
     VAR INT     MaxCityPop[1]                   DEFAULT=20  DEFAULTOPTION=VAULT
     VAR BOOL    nxusCityLinksVis[1]             DEFAULT=1   DEFAULTOPTION=VAULT
@@ -87,7 +87,7 @@ STATEDESC Nexus
 
 STATEDESC Nexus
 {
-        VERSION 6
+    VERSION 6
 
     VAR INT     MaxCityPop[1]                   DEFAULT=20  DEFAULTOPTION=VAULT
     VAR BOOL    nxusCityLinksVis[1]             DEFAULT=1   DEFAULTOPTION=VAULT
@@ -102,7 +102,7 @@ STATEDESC Nexus
 
 STATEDESC Nexus
 {
-        VERSION 7
+    VERSION 7
 
     VAR INT     MaxCityPop[1]                   DEFAULT=20  DEFAULTOPTION=VAULT
     VAR BOOL    nxusCityLinksVis[1]             DEFAULT=1   DEFAULTOPTION=VAULT

@@ -44,7 +44,7 @@
 
 STATEDESC tldnWRCCBrain
 {
-        VERSION 4
+    VERSION 4
     VAR BOOL        boolOperated[1]
     VAR INT         OperatorID[1]
 

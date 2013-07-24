@@ -47,7 +47,7 @@
 
 STATEDESC philRelto
 {
-        VERSION 1
+    VERSION 1
 
     VAR BOOL    philLibraryDoorClosed[1]        DEFAULT=1
     VAR BOOL    philBlindsClosed[1]             DEFAULT=1
@@ -57,7 +57,7 @@ STATEDESC philRelto
 
 STATEDESC philRelto
 {
-        VERSION 2
+    VERSION 2
 
     VAR BOOL    philLibraryDoorClosed[1]        DEFAULT=1
     VAR BOOL    philBlindsClosed[1]             DEFAULT=1

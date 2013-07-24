@@ -51,7 +51,7 @@
 
 STATEDESC RestorationGuild
 {
-        VERSION 3
+    VERSION 3
 
     VAR STRING32    rstrDRCImagerInbox[1]
     VAR BOOL        rstrErcanaLinkingBookVis[1] DEFAULT=0

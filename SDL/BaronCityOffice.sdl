@@ -51,7 +51,7 @@
 
 STATEDESC BaronCityOffice
 {
-        VERSION 5
+    VERSION 5
 
 # Boolean variables
     VAR BOOL    tldnTreasureBook03Vis[1]        DEFAULT=1 DEFAULTOPTION=VAULT
@@ -63,7 +63,7 @@ STATEDESC BaronCityOffice
 
 STATEDESC BaronCityOffice
 {
-        VERSION 6
+    VERSION 6
 
 # Boolean variables
     VAR BOOL    tldnTreasureBook03Vis[1]        DEFAULT=1 DEFAULTOPTION=VAULT
@@ -77,7 +77,7 @@ STATEDESC BaronCityOffice
 
 STATEDESC BaronCityOffice
 {
-        VERSION 7
+    VERSION 7
 
 # Boolean variables
     VAR BOOL    tldnTreasureBook03Vis[1]        DEFAULT=1 DEFAULTOPTION=VAULT

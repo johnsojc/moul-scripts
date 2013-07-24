@@ -48,7 +48,7 @@
 
 STATEDESC Personal
 {
-        VERSION 16
+    VERSION 16
 
 ## Age Mechanics
 
@@ -109,7 +109,7 @@ STATEDESC Personal
 
 STATEDESC Personal
 {
-        VERSION 18
+    VERSION 18
 
 ## Age Mechanics
 
@@ -179,7 +179,7 @@ STATEDESC Personal
 
 STATEDESC Personal
 {
-        VERSION 19
+    VERSION 19
 
 ## Age Mechanics
 
@@ -252,7 +252,7 @@ STATEDESC Personal
 
 STATEDESC Personal
 {
-        VERSION 20
+    VERSION 20
 
 ## Age Mechanics
 
@@ -329,7 +329,7 @@ STATEDESC Personal
 
 STATEDESC Personal
 {
-        VERSION 21
+    VERSION 21
 
 ## Age Mechanics
 
@@ -410,7 +410,7 @@ STATEDESC Personal
 
 STATEDESC Personal
 {
-        VERSION 22
+    VERSION 22
 
 ## Age Mechanics
 
@@ -491,7 +491,7 @@ STATEDESC Personal
 
 STATEDESC Personal
 {
-        VERSION 23
+    VERSION 23
 
 ## Age Mechanics
 
@@ -575,7 +575,7 @@ STATEDESC Personal
 
 STATEDESC Personal
 {
-        VERSION 24
+    VERSION 24
 
 ## Age Mechanics
 
@@ -659,7 +659,7 @@ STATEDESC Personal
 
 STATEDESC Personal
 {
-        VERSION 25
+    VERSION 25
 
 ## Age Mechanics
 
@@ -749,7 +749,7 @@ STATEDESC Personal
 
 STATEDESC Personal
 {
-        VERSION 26
+    VERSION 26
 
 ## Age Mechanics
 
@@ -839,7 +839,7 @@ STATEDESC Personal
 
 STATEDESC Personal
 {
-        VERSION 27
+    VERSION 27
 
 ## Age Mechanics
 
@@ -934,7 +934,7 @@ STATEDESC Personal
 
 STATEDESC Personal
 {
-        VERSION 28
+    VERSION 28
 
 ## Age Mechanics
 
@@ -1031,7 +1031,7 @@ STATEDESC Personal
 
 STATEDESC Personal
 {
-        VERSION 29
+    VERSION 29
 
 ## Age Mechanics
 
@@ -1134,7 +1134,7 @@ STATEDESC Personal
 
 STATEDESC Personal
 {
-        VERSION 30
+    VERSION 30
 
 ## Age Mechanics
 
@@ -1241,7 +1241,7 @@ STATEDESC Personal
 
 STATEDESC Personal
 {
-        VERSION 31
+    VERSION 31
 
 ## Age Mechanics
 
@@ -1359,7 +1359,7 @@ STATEDESC Personal
 
 STATEDESC Personal
 {
-        VERSION 32
+    VERSION 32
 
 ## Age Mechanics
 
@@ -1479,7 +1479,7 @@ STATEDESC Personal
 
 STATEDESC Personal
 {
-        VERSION 33
+    VERSION 33
 
 ## Age Mechanics
 
@@ -1602,7 +1602,7 @@ STATEDESC Personal
 
 STATEDESC Personal
 {
-        VERSION 34
+    VERSION 34
 
 ## Age Mechanics
 
@@ -1727,7 +1727,7 @@ STATEDESC Personal
 
 STATEDESC Personal
 {
-        VERSION 35
+    VERSION 35
 
 ## Age Mechanics
 
@@ -1851,7 +1851,7 @@ STATEDESC Personal
 
 STATEDESC Personal
 {
-        VERSION 36
+    VERSION 36
 
 ## Age Mechanics
 
@@ -1976,7 +1976,7 @@ STATEDESC Personal
 
 STATEDESC Personal
 {
-        VERSION 37
+    VERSION 37
 
 ## Age Mechanics
 
@@ -2102,7 +2102,7 @@ STATEDESC Personal
 
 STATEDESC Personal
 {
-        VERSION 38
+    VERSION 38
 
 ## Age Mechanics
 
@@ -2229,7 +2229,7 @@ STATEDESC Personal
 
 STATEDESC Personal
 {
-        VERSION 39
+    VERSION 39
 
 ## Age Mechanics
 

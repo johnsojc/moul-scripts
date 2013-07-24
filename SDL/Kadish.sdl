@@ -50,7 +50,7 @@
 
 STATEDESC Kadish
 {
-        VERSION 25
+    VERSION 25
 
 #############
 # Content variables
@@ -62,7 +62,7 @@ STATEDESC Kadish
     VAR BOOL    kdshJourneyCloth04Vis[1]        DEFAULT=1 DEFAULTOPTION=VAULT
     VAR BOOL    kdshJourneyCloth05Vis[1]        DEFAULT=1 DEFAULTOPTION=VAULT
     VAR BOOL    kdshJourneyCloth06Vis[1]        DEFAULT=1 DEFAULTOPTION=VAULT
-    #VAR BOOL    kdshJourneyCloth07Vis[1]        DEFAULT=1 DEFAULTOPTION=VAULT  # in kadish gallery in the city
+#   VAR BOOL    kdshJourneyCloth07Vis[1]        DEFAULT=1 DEFAULTOPTION=VAULT  # in kadish gallery in the city
 
     VAR BOOL    kdshBahroDoorClosed[1]          DEFAULT=1
 
@@ -142,7 +142,7 @@ STATEDESC Kadish
 
 STATEDESC Kadish
 {
-        VERSION 26
+    VERSION 26
 
 #############
 # Content variables
@@ -154,7 +154,7 @@ STATEDESC Kadish
     VAR BOOL    kdshJourneyCloth04Vis[1]        DEFAULT=1 DEFAULTOPTION=VAULT
     VAR BOOL    kdshJourneyCloth05Vis[1]        DEFAULT=1 DEFAULTOPTION=VAULT
     VAR BOOL    kdshJourneyCloth06Vis[1]        DEFAULT=1 DEFAULTOPTION=VAULT
-    #VAR BOOL    kdshJourneyCloth07Vis[1]        DEFAULT=1 DEFAULTOPTION=VAULT  # in kadish gallery in the city
+#   VAR BOOL    kdshJourneyCloth07Vis[1]        DEFAULT=1 DEFAULTOPTION=VAULT  # in kadish gallery in the city
 
     VAR BOOL    kdshBahroDoorClosed[1]          DEFAULT=1
 
@@ -233,7 +233,7 @@ STATEDESC Kadish
 
 STATEDESC Kadish
 {
-        VERSION 27
+    VERSION 27
 
 #############
 # Content variables
@@ -245,7 +245,7 @@ STATEDESC Kadish
     VAR BOOL    kdshJourneyCloth04Vis[1]        DEFAULT=1 DEFAULTOPTION=VAULT
     VAR BOOL    kdshJourneyCloth05Vis[1]        DEFAULT=1 DEFAULTOPTION=VAULT
     VAR BOOL    kdshJourneyCloth06Vis[1]        DEFAULT=1 DEFAULTOPTION=VAULT
-    #VAR BOOL    kdshJourneyCloth07Vis[1]        DEFAULT=1 DEFAULTOPTION=VAULT  # in kadish gallery in the city
+#   VAR BOOL    kdshJourneyCloth07Vis[1]        DEFAULT=1 DEFAULTOPTION=VAULT  # in kadish gallery in the city
 
     VAR BOOL    kdshBahroDoorClosed[1]          DEFAULT=1
 
@@ -323,7 +323,7 @@ STATEDESC Kadish
 
 STATEDESC Kadish
 {
-        VERSION 28
+    VERSION 28
 
 #############
 # Content variables
@@ -335,7 +335,7 @@ STATEDESC Kadish
     VAR BOOL    kdshJourneyCloth04Vis[1]        DEFAULT=1 DEFAULTOPTION=VAULT
     VAR BOOL    kdshJourneyCloth05Vis[1]        DEFAULT=1 DEFAULTOPTION=VAULT
     VAR BOOL    kdshJourneyCloth06Vis[1]        DEFAULT=1 DEFAULTOPTION=VAULT
-    #VAR BOOL    kdshJourneyCloth07Vis[1]        DEFAULT=1 DEFAULTOPTION=VAULT  # in kadish gallery in the city
+#   VAR BOOL    kdshJourneyCloth07Vis[1]        DEFAULT=1 DEFAULTOPTION=VAULT  # in kadish gallery in the city
 
     VAR BOOL    kdshBahroDoorClosed[1]          DEFAULT=1
 
@@ -415,7 +415,7 @@ STATEDESC Kadish
 
 STATEDESC Kadish
 {
-        VERSION 29
+    VERSION 29
 
 #############
 # Content variables
@@ -427,7 +427,7 @@ STATEDESC Kadish
     VAR BOOL    kdshJourneyCloth04Vis[1]        DEFAULT=1 DEFAULTOPTION=VAULT
     VAR BOOL    kdshJourneyCloth05Vis[1]        DEFAULT=1 DEFAULTOPTION=VAULT
     VAR BOOL    kdshJourneyCloth06Vis[1]        DEFAULT=1 DEFAULTOPTION=VAULT
-    #VAR BOOL    kdshJourneyCloth07Vis[1]        DEFAULT=1 DEFAULTOPTION=VAULT  # in kadish gallery in the city
+#   VAR BOOL    kdshJourneyCloth07Vis[1]        DEFAULT=1 DEFAULTOPTION=VAULT  # in kadish gallery in the city
 
     VAR BOOL    kdshBahroDoorClosed[1]          DEFAULT=1
 
@@ -508,7 +508,7 @@ STATEDESC Kadish
 
 STATEDESC Kadish
 {
-        VERSION 30
+    VERSION 30
 
 #############
 # Content variables
@@ -520,7 +520,7 @@ STATEDESC Kadish
     VAR BOOL    kdshJourneyCloth04Vis[1]        DEFAULT=1 DEFAULTOPTION=VAULT
     VAR BOOL    kdshJourneyCloth05Vis[1]        DEFAULT=1 DEFAULTOPTION=VAULT
     VAR BOOL    kdshJourneyCloth06Vis[1]        DEFAULT=1 DEFAULTOPTION=VAULT
-    #VAR BOOL    kdshJourneyCloth07Vis[1]        DEFAULT=1 DEFAULTOPTION=VAULT  # in kadish gallery in the city
+#   VAR BOOL    kdshJourneyCloth07Vis[1]        DEFAULT=1 DEFAULTOPTION=VAULT  # in kadish gallery in the city
 
     VAR BOOL    kdshBahroDoorClosed[1]          DEFAULT=1
 
@@ -603,7 +603,7 @@ STATEDESC Kadish
 
 STATEDESC Kadish
 {
-        VERSION 31
+    VERSION 31
 
 #############
 # Content variables
@@ -615,7 +615,7 @@ STATEDESC Kadish
     VAR BOOL    kdshJourneyCloth04Vis[1]        DEFAULT=1 DEFAULTOPTION=VAULT
     VAR BOOL    kdshJourneyCloth05Vis[1]        DEFAULT=1 DEFAULTOPTION=VAULT
     VAR BOOL    kdshJourneyCloth06Vis[1]        DEFAULT=1 DEFAULTOPTION=VAULT
-    #VAR BOOL    kdshJourneyCloth07Vis[1]        DEFAULT=1 DEFAULTOPTION=VAULT  # in kadish gallery in the city
+#   VAR BOOL    kdshJourneyCloth07Vis[1]        DEFAULT=1 DEFAULTOPTION=VAULT  # in kadish gallery in the city
 
     VAR BOOL    kdshBahroDoorClosed[1]          DEFAULT=1
 
@@ -701,7 +701,7 @@ STATEDESC Kadish
 
 STATEDESC Kadish
 {
-        VERSION 32
+    VERSION 32
 
 #############
 # Content variables

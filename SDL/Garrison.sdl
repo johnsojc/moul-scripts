@@ -50,7 +50,7 @@
 
 STATEDESC Garrison
 {
-        VERSION 12
+    VERSION 12
 
 # Boolean variables
     VAR BOOL    grsnJourneyCloth01Vis[1]    DEFAULT=1 DEFAULTOPTION=VAULT
@@ -102,7 +102,7 @@ STATEDESC Garrison
 
 STATEDESC Garrison
 {
-    VERSION 13
+VERSION 13
 
 # Boolean variables
     VAR BOOL    grsnJourneyCloth01Vis[1]    DEFAULT=1 DEFAULTOPTION=VAULT
@@ -122,7 +122,7 @@ STATEDESC Garrison
     VAR BOOL    grsnNexusBookVis[1]         DEFAULT=0 DEFAULTOPTION=VAULT
 
 # Age Mechanics
-    
+
     VAR BOOL    grsnWellMainPowerOn[1]      DEFAULT=0 DEFAULTOPTION=VAULT
     VAR BOOL    grsnBahroDoorClosed[1]      DEFAULT=1
 
@@ -157,7 +157,7 @@ STATEDESC Garrison
 
 STATEDESC Garrison
 {
-    VERSION 17
+VERSION 17
 
 # Boolean variables
     VAR BOOL    grsnJourneyCloth01Vis[1]    DEFAULT=1 DEFAULTOPTION=VAULT
@@ -226,7 +226,7 @@ STATEDESC Garrison
 
 STATEDESC Garrison
 {
-        VERSION 18
+    VERSION 18
 
 # Boolean variables
     VAR BOOL    grsnJourneyCloth01Vis[1]    DEFAULT=1 DEFAULTOPTION=VAULT
@@ -297,7 +297,7 @@ STATEDESC Garrison
 
 STATEDESC Garrison
 {
-        VERSION 19
+    VERSION 19
 
 # Boolean variables
     VAR BOOL    grsnJourneyCloth01Vis[1]    DEFAULT=1 DEFAULTOPTION=VAULT
@@ -369,7 +369,7 @@ STATEDESC Garrison
 
 STATEDESC Garrison
 {
-        VERSION 20
+    VERSION 20
 
 # Boolean variables
     VAR BOOL    grsnJourneyCloth01Vis[1]    DEFAULT=1 DEFAULTOPTION=VAULT
@@ -443,7 +443,7 @@ STATEDESC Garrison
 
 STATEDESC Garrison
 {
-        VERSION 21
+    VERSION 21
 
 # Boolean variables
     VAR BOOL    grsnJourneyCloth01Vis[1]    DEFAULT=1 DEFAULTOPTION=VAULT
@@ -518,7 +518,7 @@ STATEDESC Garrison
 
 STATEDESC Garrison
 {
-        VERSION 22
+    VERSION 22
 
 # Boolean variables
     VAR BOOL    grsnJourneyCloth01Vis[1]    DEFAULT=1 DEFAULTOPTION=VAULT
@@ -541,7 +541,7 @@ STATEDESC Garrison
     VAR BOOL    grsnBahroStoneToShaftVis[1] DEFAULT=0 DEFAULTOPTION=VAULT
 
 # Age Mechanics
-        
+
     VAR BOOL    grsnWellMainPowerOn[1]      DEFAULT=0 DEFAULTOPTION=VAULT
     VAR BOOL    grsnBahroDoorClosed[1]      DEFAULT=1
 
@@ -594,7 +594,7 @@ STATEDESC Garrison
 
 STATEDESC Garrison
 {
-        VERSION 23
+    VERSION 23
 
 # Boolean variables
     VAR BOOL    grsnJourneyCloth01Vis[1]    DEFAULT=1 DEFAULTOPTION=VAULT
@@ -659,7 +659,7 @@ STATEDESC Garrison
 
 STATEDESC Garrison
 {
-        VERSION 24
+    VERSION 24
 
 # Boolean variables
     VAR BOOL    grsnJourneyCloth01Vis[1]    DEFAULT=1 DEFAULTOPTION=VAULT
@@ -684,7 +684,7 @@ STATEDESC Garrison
     VAR BOOL    grsnWellFirstFloorBlocker[1] DEFAULT=0 DEFAULTOPTION=VAULT
 
 # Age Mechanics
-        
+
     VAR BOOL    grsnWellMainPowerOn[1]      DEFAULT=0 DEFAULTOPTION=VAULT
     VAR BOOL    grsnBahroDoorClosed[1]      DEFAULT=1
 
@@ -730,7 +730,7 @@ STATEDESC Garrison
 
 STATEDESC grsn1stFloorClimb
 {
-        VERSION 2
+    VERSION 2
     VAR INT     intSDLClimber[1]            DEFAULT=(-1)
     VAR INT     intSDLDescender[1]          DEFAULT=(-1)
 
@@ -741,7 +741,7 @@ STATEDESC grsn1stFloorClimb
 
 STATEDESC grsnPowerOn
 {
-        VERSION 2
+    VERSION 2
     VAR BOOL    intWellPowerOn[1]           DEFAULT=(0)
 
 }
@@ -751,7 +751,7 @@ STATEDESC grsnPowerOn
 
 STATEDESC grsnGearRide
 {
-        VERSION 2
+    VERSION 2
     VAR INT     avatarRidingGear[10]
     VAR BOOL    crackOpen[1]                DEFAULT=(0)
     VAR BOOL    exitOpen[1]                 DEFAULT=(0)
@@ -761,14 +761,14 @@ STATEDESC grsnGearRide
 
 STATEDESC GarrisonTrnCtrExtTrans
 {
-        VERSION 2
+    VERSION 2
     VAR INT     avatarToTeleport[10]
 
 }
 
 STATEDESC Garrison
 {
-        VERSION 25
+    VERSION 25
 
 # Boolean variables
 
@@ -839,7 +839,7 @@ STATEDESC Garrison
 
 STATEDESC Garrison
 {
-        VERSION 26
+    VERSION 26
 
 # Boolean variables
     VAR BOOL    grsnJourneyCloth01Vis[1]    DEFAULT=1 DEFAULTOPTION=VAULT
@@ -867,7 +867,7 @@ STATEDESC Garrison
     VAR BOOL    grsnCalendarSpark04[1]      DEFAULT=0 DEFAULTOPTION=VAULT
 
 # Age Mechanics
-        
+
     VAR BOOL    grsnWellMainPowerOn[1]      DEFAULT=0 DEFAULTOPTION=VAULT
     VAR BOOL    grsnBahroDoorClosed[1]      DEFAULT=1
 

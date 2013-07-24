@@ -51,7 +51,7 @@
 
 STATEDESC GreatZero
 {
-        VERSION 1
+    VERSION 1
 
 # Boolean variables
     VAR BOOL        grtzGZActive[1]             DEFAULT=0 DEFAULTOPTION=VAULT
@@ -62,7 +62,7 @@ STATEDESC GreatZero
 # GUI Marker Scope SDL record
 STATEDESC grtzMarkerScopes
 {
-        VERSION 1
+    VERSION 1
     VAR INT         boolOperated[1]
     VAR INT         OperatorID[1]
 
@@ -71,14 +71,14 @@ STATEDESC grtzMarkerScopes
 # Access Door SDL record
 STATEDESC grtzAccessDoors
 {
-        VERSION 1
+    VERSION 1
     VAR INT         DoorOpen[1]
 
 }
 
 STATEDESC GreatZero
 {
-        VERSION 2
+    VERSION 2
 
 # Boolean variables
     VAR BOOL        grtzGZActive[1]             DEFAULT=0 DEFAULTOPTION=VAULT
@@ -90,7 +90,7 @@ STATEDESC GreatZero
 STATEDESC GreatZero
 {
 # updated in build 37
-        VERSION 3
+    VERSION 3
 
 # Boolean variables
     VAR BOOL        grtzGZActive[1]             DEFAULT=0 DEFAULTOPTION=VAULT
@@ -102,7 +102,7 @@ STATEDESC GreatZero
 
 STATEDESC GreatZero
 {
-        VERSION 4
+    VERSION 4
 
 # Boolean variables
     VAR BOOL        grtzGZActive[1]             DEFAULT=0 DEFAULTOPTION=VAULT
@@ -115,7 +115,7 @@ STATEDESC GreatZero
 
 STATEDESC GreatZero
 {
-        VERSION 5
+    VERSION 5
 
 # Boolean variables
     VAR BOOL        grtzGZActive[1]             DEFAULT=0 DEFAULTOPTION=VAULT

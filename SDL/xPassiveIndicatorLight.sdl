@@ -45,7 +45,7 @@
 
 STATEDESC xPassiveIndicatorLight
 {
-        VERSION 1
+    VERSION 1
     VAR INT     enabled[1]
 
 }

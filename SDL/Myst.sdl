@@ -51,7 +51,7 @@
 
 STATEDESC Myst
 {
-        VERSION 1
+    VERSION 1
 
 # Boolean variables
     VAR BOOL    KveerBookVis[1]                 DEFAULT=0 DEFAULTOPTION=VAULT
@@ -65,7 +65,7 @@ STATEDESC Myst
 
 STATEDESC Myst
 {
-        VERSION 2
+    VERSION 2
 
 # Boolean variables
     VAR BOOL    KveerBookVis[1]                 DEFAULT=0 DEFAULTOPTION=VAULT
@@ -80,7 +80,7 @@ STATEDESC Myst
 
 STATEDESC Myst
 {
-        VERSION 3
+    VERSION 3
 
 # Boolean variables
     VAR BOOL    KveerBookVis[1]                 DEFAULT=0 DEFAULTOPTION=VAULT
