@@ -22,15 +22,16 @@ Additional permissions under GNU GPL version 3 section 7
 If you modify this Program, or any covered work, by linking or
 combining it with any of RAD Game Tools Bink SDK, Autodesk 3ds Max SDK,
 NVIDIA PhysX SDK, Microsoft DirectX SDK, OpenSSL library, Independent
-JPEG Group JPEG library, Microsoft Windows Media SDK, or Apple
-QuickTime SDK (or a modified version of those libraries),
-containing parts covered by the terms of the Bink SDK EULA, 3ds Max
-EULA, PhysX SDK EULA, DirectX SDK EULA, OpenSSL and SSLeay licenses,
-IJG JPEG Library README, Windows Media SDK EULA, or QuickTime SDK EULA,
-the licensors of this Program grant you additional permission to convey
-the resulting work. Corresponding Source for a non-source form of such
-a combination shall include the source code for the parts of OpenSSL
-and IJG JPEG Library used as well as that of the covered work.
+JPEG Group JPEG library, Microsoft Windows Media SDK, or Apple QuickTime SDK
+(or a modified version of those libraries),
+containing parts covered by the terms of the Bink SDK EULA, 3ds Max EULA,
+PhysX SDK EULA, DirectX SDK EULA, OpenSSL and SSLeay licenses, IJG
+JPEG Library README, Windows Media SDK EULA, or QuickTime SDK EULA, the
+licensors of this Program grant you additional
+permission to convey the resulting work. Corresponding Source for a
+non-source form of such a combination shall include the source code for
+the parts of OpenSSL and IJG JPEG Library used as well as that of the covered
+work.
 
 You can contact Cyan Worlds, Inc. by email legal@cyan.com
  or by snail mail at:
@@ -55,14 +56,12 @@ import copy
 import PlasmaControlKeys
 import xJournalBookDefs
 
-
 respStartCreditsMusic = ptAttribResponder(1, "Resp: Start Credits Music")
 respStopCreditsMusic = ptAttribResponder(2, "Resp: Stop Credits Music")
 respLeaveCredits = ptAttribResponder(3, "Resp: Exit Credits Cam")
 RgnSnsrSndLogTracks = ptAttribActivator(4, "Rgn snsr: SndLogTracks scope")
 ClkSndLogTracks = ptAttribActivator(5, "Clickable: SndLogTracks scope")
 RespSndLogTracks = ptAttribResponder(6, "Resp: SndLogTracks scope")
-
 
 #globals
 gJournalBook = None
@@ -93,7 +92,7 @@ class clftEndingCredits(ptResponder):
         self.id = 8802
         version = 5
         self.version = version
-        print "__init__ clftEndingCredits v. ", version, ".1"
+        PtDebugPrint("__init__ clftEndingCredits v.%d.1" % (version))
 
     def OnServerInitComplete(self):
         ageSDL = PtGetAgeSDL()
@@ -107,33 +106,16 @@ class clftEndingCredits(ptResponder):
 
         SDLVarSceneBahro = "clftSceneBahroUnseen"
         if VARname == SDLVarSceneBahro:
-            print "OnSDL launched the credits."
+            PtDebugPrint("OnSDL launched the credits.")
             boolSceneBahro = ageSDL[SDLVarSceneBahro][0]
             if boolSceneBahro == 0:
-                print ("clftEndingCredits.OnSDLNotify(): "
-                       "we're no longer showing the credits here")
+                PtDebugPrint("clftEndingCredits.OnSDLNotify(): we're no longer showing the credits here")
                 cam = ptCamera()
                 cam.enableFirstPersonOverride()
                 PtEnableMovementKeys()
                 PtSendKIMessage(kEnableKIandBB, 0)
-#                print "\tclftEndingCredits.OnSDLNotify: loading journal"
-#                params = xJournalBookDefs.xJournalBooks["UruCredits"]
-#                if len(params) == 4:
-#                    width, height, locPath, gui = params
-#                else:
-#                    width, height, locPath = params
-#                    gui = "BkBook"
-#                gJournalBook = ptBook(PtGetLocalizedString(locPath), self.key)
-#                gJournalBook.setSize(width, height)
-#                gJournalBook.setGUI(gui)
-#
-#                # PtFadeOut(kDelayFadeSeconds, 1)
-#                PtDisableMovementKeys()
-#                PtAtTimeCallback(self.key,
-#                                 kDelayFadeSeconds,
-#                                 kFadeOutToCreditsID)
             else:
-                print "No credits."
+                PtDebugPrint("No credits.")
 
         pass
 
@@ -143,18 +125,17 @@ class clftEndingCredits(ptResponder):
         if (id == RgnSnsrSndLogTracks.id and state):
             import xSndLogTracks
             if xSndLogTracks.IsLogMode():
-                print "Start of Egg!!! Enable Riven scope clickable"
+                PtDebugPrint("Start of Egg!!! Enable Riven scope clickable")
                 ClkSndLogTracks.enable()
             else:
-                print "not this time"
+                PtDebugPrint("not this time")
                 ClkSndLogTracks.disable()
 
         if (id == ClkSndLogTracks.id and state):
-            # PtPageInNode("clftSndLogTracks")
             RespSndLogTracks.run(self.key, avatar=PtGetLocalAvatar())
 
         if AlreadyClosed:
-            print "failed AlreadyClosed check"
+            PtDebugPrint("failed AlreadyClosed check")
             return
 
         for event in events:
@@ -162,27 +143,18 @@ class clftEndingCredits(ptResponder):
                 if event[1] == PtBookEventTypes.kNotifyHide:
                     AlreadyClosed = true
                     PtFadeOut(kFadeOutToGameSeconds, 1)
-                    print ("clftEndingCredits.OnNotify(): "
-                           "Book hidden. FadeOut over",
-                           kFadeOutToGameSeconds, " seconds")
+                    PtDebugPrint("clftEndingCredits.OnNotify(): Book hidden. FadeOut over %d seconds" % (kFadeOutToGameSeconds))
 
-                    # The book is already hidden,
-                    # so just go ahead and fade back in on the game
-                    PtAtTimeCallback(self.key,
-                                     kFadeOutToGameSeconds,
-                                     kFadeOutToGameID)
+                    # The book is already hidden, so just go ahead and fade back in on the game
+                    PtAtTimeCallback(self.key, kFadeOutToGameSeconds, kFadeOutToGameID)
 
                 elif event[1] == PtBookEventTypes.kNotifyClose:
                     AlreadyClosed = true
                     PtFadeOut(kFadeOutToGameSeconds, 1)
-                    print ("clftEndingCredits.OnNotify(): Book closed. "
-                           "FadeOut over", kFadeOutToGameSeconds, " seconds")
+                    PtDebugPrint("clftEndingCredits.OnNotify(): Book closed. FadeOut over %d seconds" % (kFadeOutToGameSeconds))
 
-                    # We have to hide the book first before
-                    # we fade back in on the game
-                    PtAtTimeCallback(self.key,
-                                     kFadeOutToGameSeconds+1,
-                                     kHideBookID)
+                    # We have to hide the book first before we fade back in on the game
+                    PtAtTimeCallback(self.key, kFadeOutToGameSeconds+1, kHideBookID)
 
     def OnTimer(self, id):
 
@@ -197,14 +169,13 @@ class clftEndingCredits(ptResponder):
         elif id == kFadeOutToGameID:  # 4
             self.IFadeOutToGame()
         elif id == kHideBookID:  # 5
-            print "clftEndingCredits.OnTimer(): The credits book is now hidden"
+            PtDebugPrint("clftEndingCredits.OnTimer(): The credits book is now hidden")
             gJournalBook.hide()
             PtAtTimeCallback(self.key, kFadeOutToGameSeconds, kFadeOutToGameID)
 
         elif id == kFadeInToGameID:  # 6
             PtFadeIn(kFadeInToGameSeconds, 1)
-            print ("clftEndingCredits.OnTimer(): FadeIn over",
-                   kFadeInToGameSeconds, " seconds")
+            PtDebugPrint("clftEndingCredits.OnTimer(): FadeIn over %d seconds" % (kFadeInToGameSeconds))
             cam = ptCamera()
             cam.enableFirstPersonOverride()
             PtEnableMovementKeys()
@@ -212,15 +183,14 @@ class clftEndingCredits(ptResponder):
 
     def IFadeOutToCredits(self):
         PtFadeOut(kFadeOutToCreditsSeconds, 1)
-        print ("clftEndingCredits.IFadeOutToCredits(): FadeOut over",
-               kFadeOutToCreditsSeconds, " seconds.")
+        PtDebugPrint("clftEndingCredits.IFadeOutToCredits(): FadeOut over %d seconds." % (kFadeOutToCreditsSeconds))
         PtAtTimeCallback(self.key, 4, kShowCreditsID)
 
     def IShowCredits(self):
         global gJournalBook
         global AlreadyClosed
 
-        print "clftEndingCredits.IShowCredits(): Showing Journal now."
+        PtDebugPrint("clftEndingCredits.IShowCredits(): Showing Journal now.")
         gJournalBook.show(0)
         AlreadyClosed = false
         PtAtTimeCallback(self.key, 1, kFadeInToCreditsID)
@@ -240,8 +210,7 @@ class clftEndingCredits(ptResponder):
         respStartCreditsMusic.run(self.key)
 
         PtFadeIn(kFadeInToCreditsSeconds, 1)
-        print ("clftEndingCredits.IFadeInToCredits(): FadeIn over",
-               kFadeInToCreditsSeconds, " seconds")
+        PtDebugPrint("clftEndingCredits.IFadeInToCredits(): FadeIn over %d seconds" % (kFadeInToCreditsSeconds))
 
     def IFadeOutToGame(self):
         global gOriginalAmbientVolume

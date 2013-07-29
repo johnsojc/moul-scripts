@@ -22,15 +22,16 @@ Additional permissions under GNU GPL version 3 section 7
 If you modify this Program, or any covered work, by linking or
 combining it with any of RAD Game Tools Bink SDK, Autodesk 3ds Max SDK,
 NVIDIA PhysX SDK, Microsoft DirectX SDK, OpenSSL library, Independent
-JPEG Group JPEG library, Microsoft Windows Media SDK, or Apple QuickTime
-SDK (or a modified version of those libraries), containing parts covered
-by the terms of the Bink SDK EULA, 3ds Max EULA, PhysX SDK EULA, DirectX
-SDK EULA, OpenSSL and SSLeay licenses, IJG JPEG Library README, Windows
-Media SDK EULA, or QuickTime SDK EULA, the licensors of this Program
-grant you additional permission to convey the resulting work.
-Corresponding Source for a non-source form of such a combination shall
-include the source code for the parts of OpenSSL and IJG JPEG Library
-used as well as that of the covered work.
+JPEG Group JPEG library, Microsoft Windows Media SDK, or Apple QuickTime SDK
+(or a modified version of those libraries),
+containing parts covered by the terms of the Bink SDK EULA, 3ds Max EULA,
+PhysX SDK EULA, DirectX SDK EULA, OpenSSL and SSLeay licenses, IJG
+JPEG Library README, Windows Media SDK EULA, or QuickTime SDK EULA, the
+licensors of this Program grant you additional
+permission to convey the resulting work. Corresponding Source for a
+non-source form of such a combination shall include the source code for
+the parts of OpenSSL and IJG JPEG Library used as well as that of the covered
+work.
 
 You can contact Cyan Worlds, Inc. by email legal@cyan.com
  or by snail mail at:
@@ -100,15 +101,15 @@ class ahnyKadishDoor(ptResponder):
         for button in ActButtons.value:
             tempName = button.getName()
             btnList.append(tempName)
-        print "btnList = ", btnList
+        PtDebugPrint("btnList = %s" % (btnList))
         for resp in RespButtons.value:
             tempResp = resp.getName()
             respList.append(tempResp)
-        print "respList = ", respList
+        PtDebugPrint("respList = %s" % (respList))
         for obj in ObjButtons.value:
             tempObj = obj.getName()
             objList.append(tempObj)
-        print "objList = ", objList
+        PtDebugPrint("objList = %s" % (objList))
 
         PtAtTimeCallback(self.key, 0, 1)
 
@@ -119,7 +120,7 @@ class ahnyKadishDoor(ptResponder):
         if VARname == SDLDoor.value:
             boolDoor = ageSDL[SDLDoor.value][0]
             if boolDoor:
-                print "open too"
+                PtDebugPrint("open too")
                 RespDoor.run(self.key, state="open")
             else:
                 RespDoor.run(self.key, state="close")
@@ -132,34 +133,27 @@ class ahnyKadishDoor(ptResponder):
         if id == ActConsole.id and state:
             actingAvatar = PtFindAvatar(events)
             if actingAvatar == PtGetLocalAvatar():
-                print "switch to console close up"
+                PtDebugPrint("switch to console close up")
                 ActConsole.disableActivator()
                 PtEnableControlKeyEvents(self.key)
                 MltStgSeek.run(actingAvatar)
 
         if id == MltStgSeek.id and actingAvatar == PtGetLocalAvatar():
             for event in events:
-                if event[0] == kMultiStageEvent and event[2] == kEnterStage:
-                # Smart seek completed. Exit multistage, and show GUI.
+                if event[0] == kMultiStageEvent and event[2] == kEnterStage:  # Smart seek completed. Exit multistage, and show GUI.
                     MltStgSeek.gotoStage(actingAvatar, -1)
-                    PtDebugPrint("ahnyKadishDoor.onNotify:")
-                    PtDebugPrint(" enter puzzle view mode ")
-                    PtDebugPrint(" now that seek is done")
+                    PtDebugPrint("ahnyKadishDoor.onNotify: enter puzzle view mode now that seek is done")
                     actingAvatar.draw.disable()
-                    #PtFadeLocalAvatar(1)
-                    # Disable First Person Camera
                     cam = ptCamera()
                     cam.disableFirstPersonOverride()
                     cam.undoFirstPerson()
                     RespConsole.run(self.key, state='enter')
                     PtAtTimeCallback(self.key, 0.5, 2)
-                    #PtSendKIMessage(kDisableEntireYeeshaBook, 0)
-                    #PtDisableForwardMovement()
 
         if id == ActButtons.id and state:
             i = 0
             for btn in ActButtons.value:
-                print "ahnyKadishDoor.OnNotify: disabling 8 button clickables"
+                PtDebugPrint("ahnyKadishDoor.OnNotify: disabling 8 button clickables")
                 ActButtons.value[i].disable()
                 i += 1
             for event in events:
@@ -174,14 +168,14 @@ class ahnyKadishDoor(ptResponder):
                         else:
                             i += 1
 
-                    print "btnNum =", btnNum+1
+                    PtDebugPrint("btnNum =%d" % (btnNum+1))
                     RespButtons.run(self.key, objectName=respList[btnNum])
 
         if id == RespButtons.id and actingAvatar == PtGetLocalAvatar():
             self.ICheckButtons()
 
     def ICheckButtons(self):
-        print "ahnyKadishDoor.ICheckButtons"
+        PtDebugPrint("ahnyKadishDoor.ICheckButtons")
         global currentList
 
         ageSDL = PtGetAgeSDL()
@@ -191,24 +185,20 @@ class ahnyKadishDoor(ptResponder):
         while len(currentList) > len(solutionList):
             del currentList[0]
 
-        print "solution list: " + str(solutionList)
-        print "current list: " + str(currentList)
+        PtDebugPrint("solution list: " + str(solutionList))
+        PtDebugPrint("current list: " + str(currentList))
 
         if self.AreListsEquiv(solutionList, currentList):
-            print "Open!"
+            PtDebugPrint("Open!")
             self.IExitConsole()
             ageSDL[SDLDoor.value] = (1,)
-            #RespDoor.run(self.key, state="open")
         else:
             if boolDoor:
                 self.IExitConsole()
                 ageSDL[SDLDoor.value] = (0,)
-                #RespDoor.run(self.key,state="close")
             else:
                 i = 0
                 for btn in ActButtons.value:
-                    # print ("ahnyKadishDoor.ICheckButtons: "
-                    #        "reenabling 8 button clickables")
                     ActButtons.value[i].enable()
                     i += 1
 
@@ -231,28 +221,21 @@ class ahnyKadishDoor(ptResponder):
     def OnControlKeyEvent(self, controlKey, activeFlag):
         if controlKey == PlasmaControlKeys.kKeyExitMode:
             self.IExitConsole()
-        elif (controlKey == PlasmaControlKeys.kKeyMoveBackward or
-              controlKey == PlasmaControlKeys.kKeyRotateLeft or
-              controlKey == PlasmaControlKeys.kKeyRotateRight):
+        elif controlKey == PlasmaControlKeys.kKeyMoveBackward or controlKey == PlasmaControlKeys.kKeyRotateLeft or controlKey == PlasmaControlKeys.kKeyRotateRight:
             self.IExitConsole()
 
     def IExitConsole(self):
-        print "disengage and exit the console"
+        PtDebugPrint("disengage and exit the console")
         i = 0
         for btn in ActButtons.value:
-            #print "ahnyKadishDoor.IExitConsole: disabling 8 button clickables"
             ActButtons.value[i].disable()
             i += 1
-        #PtFadeLocalAvatar(0)
-        #reeneable first person
         cam = ptCamera()
         cam.enableFirstPersonOverride()
         PtDisableControlKeyEvents(self.key)
-        #PtEnableForwardMovement()
         RespConsole.run(self.key, state='exit')
         avatar = PtGetLocalAvatar()
         avatar.draw.enable()
-        #PtSendKIMessage(kEnableEntireYeeshaBook,0)
         PtAtTimeCallback(self.key, 0.5, 3)
 
     def OnTimer(self, id):
@@ -265,8 +248,7 @@ class ahnyKadishDoor(ptResponder):
             try:
                 ageSDL = PtGetAgeSDL()
             except:
-                print ("ahnyKadishDoor.OnServerInitComplete():\t "
-                       "ERROR---Cannot find AhnySphere04 age SDL")
+                PtDebugPrint("ahnyKadishDoor.OnServerInitComplete():\tERROR---Cannot find AhnySphere04 age SDL")
                 ageSDL[SDLDoor.value] = (0,)
             boolDoor = ageSDL[SDLDoor.value][0]
             if boolDoor:
@@ -277,10 +259,10 @@ class ahnyKadishDoor(ptResponder):
         elif id == 2:
             i = 0
             for btn in ActButtons.value:
-                print "ahnyKadishDoor.onTimer: reenabling 8 button clickables"
+                PtDebugPrint("ahnyKadishDoor.onTimer: reenabling 8 button clickables")
                 ActButtons.value[i].enable()
                 i += 1
 
         elif id == 3:
-            print "ahnyKadishDoor.onTimer: reenabling the console's clickable"
+            PtDebugPrint("ahnyKadishDoor.onTimer: reenabling the console's clickable")
             ActConsole.enableActivator()

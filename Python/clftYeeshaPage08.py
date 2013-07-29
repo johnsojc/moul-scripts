@@ -46,8 +46,7 @@ Age: Cleft
 Date: May 2003
 Author: Adam Van Ornum
 Manages and records the finding of Yeesha Pages
-!!! NOTE: This file only applies to the cleft but is only used
-in the global xYeeshaPagesGUI.max file. !!!
+!!! NOTE: This file only applies to the cleft but is only used in the global xYeeshaPagesGUI.max file. !!!
 """
 
 from Plasma import *
@@ -100,11 +99,12 @@ isOpen = 0
 
 class clftYeeshaPage08(ptModifier):
     "The Yeesha Page 08 cleft imager python code"
+
     def __init__(self):
         ptModifier.__init__(self)
         self.id = 5312
         self.version = 1
-        print "__init__clftYeeshaPage08 v.", self.version
+        PtDebugPrint("__init__clftYeeshaPage08 v.%d" % (self.version))
 
     def OnFirstUpdate(self):
         PtLoadDialog(DialogName, self.key)
@@ -112,24 +112,18 @@ class clftYeeshaPage08(ptModifier):
 
     def __del__(self):
         "destructor - get rid of any dialogs that we might have loaded"
-        # PtUnloadDialog(DialogName)
 
     def OnNotify(self, state, id, events):
         global LocalAvatar
         global isOpen
 
-        if (id == actClickableBook.id and state and
-                PtWasLocallyNotified(self.key)):
-            # if not PtIsDialogLoaded(DialogName):
-            #     PtLoadDialog(DialogName, self.key)
-
+        if id == actClickableBook.id and state and PtWasLocallyNotified(self.key):
             self.SetStdGUIVisibility(0)
             PtShowDialog(DialogName)
             RespOpen.run(self.key)
             isOpen = 1
 
-        elif (id == actClickableBook.id and not
-              state and PtWasLocallyNotified(self.key)):
+        elif id == actClickableBook.id and not state and PtWasLocallyNotified(self.key):
             if not isOpen:
                 self.SetStdGUIVisibility(0)
                 PtShowDialog(DialogName)
@@ -147,15 +141,12 @@ class clftYeeshaPage08(ptModifier):
 
         if event == kShowHide:
             if control.isEnabled():
-                #control.show()
                 if self.GotPage():
                     mydialog = PtGetDialogFromString(DialogName)
-                    ptGUIControlButton(
-                        mydialog.getControlFromTag(kYeeshaPage08)).disable()
+                    ptGUIControlButton(mydialog.getControlFromTag(kYeeshaPage08)).disable()
 
         elif event == kAction and btnID == kYeeshaPage08:
-            PtDebugPrint("DEBUG: clftYeeshaPage08.OnGUINotify():\t"
-                         "Picked up page")
+            PtDebugPrint("DEBUG: clftYeeshaPage08.OnGUINotify():\tPicked up page")
 
             RespClose.run(self.key)
             isOpen = 0
@@ -163,27 +154,20 @@ class clftYeeshaPage08(ptModifier):
             self.SetStdGUIVisibility(1)
 
             if self.GotPage():
-                PtDebugPrint("DEBUG: clftYeeshaPage08.py: "
-                             "You've already found Yeesha Page #8. "
-                             "Move along. Move along.")
+                PtDebugPrint("DEBUG: clftYeeshaPage08.py: You've already found Yeesha Page #8. Move along. Move along.")
                 return
             else:
-                PtDebugPrint("DEBUG: clftYeeshaPage08.py: "
-                             "Yeesha Page #8 is new to you.")
-                PtDebugPrint("DEBUG: clftYeeshaPage08.py: "
-                             "Trying to update the value of the "
-                             "SDL variable %s to 1" % ("YeeshaPage8"))
+                PtDebugPrint("DEBUG: clftYeeshaPage08.py: Yeesha Page #8 is new to you.")
+                PtDebugPrint("DEBUG: clftYeeshaPage08.py: Trying to update the value of the SDL variable %s to 1" % ("YeeshaPage8"))
                 vault = ptVault()
-                if not isinstance(vault, type(None)):  # is the Vault online?
+                if vault is not None:  # is the Vault online?
                     psnlSDL = vault.getPsnlAgeSDL()
                     if psnlSDL:
                         YeeshaPageVar = psnlSDL.findVar("YeeshaPage8")
                         YeeshaPageVar.setInt(1)
                         vault.updatePsnlAgeSDL(psnlSDL)
                         mydialog = PtGetDialogFromString(DialogName)
-                        ptGUIControlButton(
-                            mydialog.getControlFromTag(
-                                kYeeshaPage08)).disable()
+                        ptGUIControlButton(mydialog.getControlFromTag(kYeeshaPage08)).disable()
                         PtSendKIMessageInt(kStartBookAlert, 0)
 
         elif event == kAction and btnID == kYeeshaPageCancel:
@@ -194,29 +178,21 @@ class clftYeeshaPage08(ptModifier):
 
     def GotPage(self):
         vault = ptVault()
-        if not isinstance(vault, type(None)):  # is the Vault online?
+        if vault is not None:  # is the Vault online?
             psnlSDL = vault.getPsnlAgeSDL()
             if psnlSDL:
                 YeeshaPageVar = psnlSDL.findVar("YeeshaPage8")
-                PtDebugPrint("DEBUG: clftYeeshaPage08.py: The previous "
-                             "value of the SDL variable %s is %s"
-                             % ("YeeshaPage8", YeeshaPageVar.getInt()))
+                PtDebugPrint("DEBUG: clftYeeshaPage08.py: The previous value of the SDL variable %s is %s" % ("YeeshaPage8", YeeshaPageVar.getInt()))
                 if YeeshaPageVar.getInt() != 0:
-                    PtDebugPrint("DEBUG: clftYeeshaPage08.py: "
-                                 "You've already found Yeesha Page #8. "
-                                 "Move along. Move along.")
+                    PtDebugPrint("DEBUG: clftYeeshaPage08.py: You've already found Yeesha Page #8. Move along. Move along.")
                     return 1
                 else:
                     return 0
             else:
-                PtDebugPrint("ERROR: clftYeeshaPage08: "
-                             "Error trying to access the Chronicle psnlSDL. "
-                             "psnlSDL = %s" % (psnlSDL))
+                PtDebugPrint("ERROR: clftYeeshaPage08: Error trying to access the Chronicle psnlSDL. psnlSDL = %s" % (psnlSDL))
                 return 0
         else:
-            PtDebugPrint("ERROR: clftYeeshaPage08: "
-                         "Error trying to access the Vault. "
-                         "Can't access YeeshaPageChanges chronicle.")
+            PtDebugPrint("ERROR: clftYeeshaPage08: Error trying to access the Vault. Can't access YeeshaPageChanges chronicle.")
             return 0
 
     def SetStdGUIVisibility(self, visible):
@@ -250,6 +226,7 @@ class clftYeeshaPage08(ptModifier):
             ptGUIControlButton(mydialog.getControlFromTag(kYeeshaPage23)).hide()
             ptGUIControlButton(mydialog.getControlFromTag(kYeeshaPage24)).hide()
             ptGUIControlButton(mydialog.getControlFromTag(kYeeshaPage25)).hide()
+
             ptGUIControlButton(mydialog.getControlFromTag(kYeeshaPage08)).show()
 
             GUIDialogObject.value.draw.disable()

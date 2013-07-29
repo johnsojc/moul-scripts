@@ -22,15 +22,16 @@ Additional permissions under GNU GPL version 3 section 7
 If you modify this Program, or any covered work, by linking or
 combining it with any of RAD Game Tools Bink SDK, Autodesk 3ds Max SDK,
 NVIDIA PhysX SDK, Microsoft DirectX SDK, OpenSSL library, Independent
-JPEG Group JPEG library, Microsoft Windows Media SDK, or Apple
-QuickTime SDK (or a modified version of those libraries), containing
-parts covered by the terms of the Bink SDK EULA, 3ds Max EULA, PhysX
-SDK EULA, DirectX SDK EULA, OpenSSL and SSLeay licenses, IJG JPEG
-Library README, Windows Media SDK EULA, or QuickTime SDK EULA, the
-licensors of this Program grant you additional permission to convey
-the resulting work. Corresponding Source for a non-source form of such
-a combination shall include the source code for the parts of OpenSSL
-and IJG JPEG Library used as well as that of the covered work.
+JPEG Group JPEG library, Microsoft Windows Media SDK, or Apple QuickTime SDK
+(or a modified version of those libraries),
+containing parts covered by the terms of the Bink SDK EULA, 3ds Max EULA,
+PhysX SDK EULA, DirectX SDK EULA, OpenSSL and SSLeay licenses, IJG
+JPEG Library README, Windows Media SDK EULA, or QuickTime SDK EULA, the
+licensors of this Program grant you additional
+permission to convey the resulting work. Corresponding Source for a
+non-source form of such a combination shall include the source code for
+the parts of OpenSSL and IJG JPEG Library used as well as that of the covered
+work.
 
 You can contact Cyan Worlds, Inc. by email legal@cyan.com
  or by snail mail at:
@@ -50,7 +51,6 @@ Controls the Intro Music
 from Plasma import *
 from PlasmaTypes import *
 
-
 actStartMusic01 = ptAttribActivator(1, "Start Music Activator 01")
 actStartMusic02 = ptAttribActivator(2, "Start Music Activator 02")
 actStartMusic03 = ptAttribActivator(3, "Start Music Activator 03")
@@ -63,7 +63,7 @@ respStopRandomMusic = ptAttribResponder(8, "Stop Random Music Responder")
 
 # globals
 
-#Music States
+# Music States
 kOff = 0
 kInitialPlay = 1
 kRandomPlay = 2
@@ -85,25 +85,21 @@ class clftIntroMusic(ptResponder):
         if state == false:
             return
 
-        # print "clftIntroMusic: We've got notification from ID #:%s" % (id)
-
         #-----Activators-----
-        startMusicActIDs = (actStartMusic01.id,
-                            actStartMusic02.id,
-                            actStartMusic03.id)
+        startMusicActIDs = (actStartMusic01.id, actStartMusic02.id, actStartMusic03.id)
         if id in startMusicActIDs:
             if musicState == kOff:
-                print "clftIntroMusic: ---Starting Music---"
+                PtDebugPrint("clftIntroMusic: ---Starting Music---")
                 musicState = kInitialPlay
                 respStartMusic.run(self.key)
             return
 
         elif id == actStopMusic.id:
             if musicState == kInitialPlay:
-                print "clftIntroMusic: ###Stopping Music###"
+                PtDebugPrint("clftIntroMusic: ###Stopping Music###")
                 respStopInitialMusic.run(self.key)
             elif musicState == kRandomPlay:
-                print "clftIntroMusic: ###Stopping Music###"
+                PtDebugPrint("clftIntroMusic: ###Stopping Music###")
                 respStopRandomMusic.run(self.key)
             musicState = kOff
             return
@@ -111,7 +107,7 @@ class clftIntroMusic(ptResponder):
         #-----Responders-----
         elif id == respStartMusic.id:
             if musicState == kInitialPlay:
-                print "clftIntroMusic: ___Randomly Starting Music___"
+                PtDebugPrint("clftIntroMusic: ___Randomly Starting Music___")
                 musicState = kRandomPlay
                 respStartRandomMusic.run(self.key)
             return

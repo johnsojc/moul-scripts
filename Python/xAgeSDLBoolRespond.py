@@ -78,6 +78,11 @@ class xAgeSDLBoolRespond(ptResponder):
         value = ageSDL[sdlName.value][0]
         PtDebugPrint("xAgeSDLBoolRespond.OnSDLNotify():\tVARname:%s, SDLname:%s, value:%d, playerID:%d" % (VARname, SDLname, value, playerID), level=kDebugDumpLevel)
 
+        # Hack to make value work properly as an index in _Execute()
+        # Values > 1 are occasionally returned
+        if value:
+            value = 1
+
         # A playerID of zero indicates a vault mangler change
         if playerID:
             try:
@@ -122,5 +127,9 @@ class xAgeSDLBoolRespond(ptResponder):
         ageSDL.sendToClients(sdlName.value)
         ageSDL.setNotify(self.key, sdlName.value, 0.0)
 
-        # Now do the nasty
-        self._Execute(ageSDL[sdlName.value][0], initFastFwd.value)
+        # Now do the nasty and hide any Cyan artist failures
+        try:
+            self._Execute(ageSDL[sdlName.value][0], initFastFwd.value)
+        except LookupError:
+            PtDebugPrint("xAgeSDLBoolRespond._Setup():\tVariable '%s' is invalid on object '%s'" % (sdlName.value, self.sceneobject.getName()))
+            self._Execute(defaultValue.value, initFastFwd.value)

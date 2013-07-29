@@ -22,15 +22,16 @@ Additional permissions under GNU GPL version 3 section 7
 If you modify this Program, or any covered work, by linking or
 combining it with any of RAD Game Tools Bink SDK, Autodesk 3ds Max SDK,
 NVIDIA PhysX SDK, Microsoft DirectX SDK, OpenSSL library, Independent
-JPEG Group JPEG library, Microsoft Windows Media SDK, or Apple
-QuickTime SDK (or a modified version of those libraries), containing
-parts covered by the terms of the Bink SDK EULA, 3ds Max EULA, PhysX
-SDK EULA, DirectX SDK EULA, OpenSSL and SSLeay licenses, IJG JPEG
-Library README, Windows Media SDK EULA, or QuickTime SDK EULA, the
-licensors of this Program grant you additional permission to convey
-the resulting work. Corresponding Source for a non-source form of such
-a combination shall include the source code for the parts of OpenSSL
-and IJG JPEG Library used as well as that of the covered work.
+JPEG Group JPEG library, Microsoft Windows Media SDK, or Apple QuickTime SDK
+(or a modified version of those libraries),
+containing parts covered by the terms of the Bink SDK EULA, 3ds Max EULA,
+PhysX SDK EULA, DirectX SDK EULA, OpenSSL and SSLeay licenses, IJG
+JPEG Library README, Windows Media SDK EULA, or QuickTime SDK EULA, the
+licensors of this Program grant you additional
+permission to convey the resulting work. Corresponding Source for a
+non-source form of such a combination shall include the source code for
+the parts of OpenSSL and IJG JPEG Library used as well as that of the covered
+work.
 
 You can contact Cyan Worlds, Inc. by email legal@cyan.com
  or by snail mail at:
@@ -43,8 +44,7 @@ You can contact Cyan Worlds, Inc. by email legal@cyan.com
 Module: bhroBahroPOTS
 Age: LiveBahroCaves
 Date: May 2007
-Author: Chris Doyle, shameless plagarized off of
-        Derek Odell's bhroBahroPod.py script
+Author: Chris Doyle, shameless plagarized off of Derek Odell's bhroBahroPod.py script
 POTS Bahro Cave
 """
 
@@ -62,11 +62,12 @@ respAhnonayRing = ptAttribResponder(5, "resp: Ahnonay Floating Ring")
 
 
 class bhroBahroPOTS(ptResponder):
+
     def __init__(self):
         ptResponder.__init__(self)
         self.id = 8816
         self.version = 1
-        print "bhroBahroPOTS: init  version = %d" % (self.version)
+        PtDebugPrint("bhroBahroPOTS: init  version = %d" % (self.version))
 
     def OnFirstUpdate(self):
         global gAgeStartedIn
@@ -75,50 +76,42 @@ class bhroBahroPOTS(ptResponder):
         PtSendKIMessage(kDisableYeeshaBook, 0)
 
     def OnServerInitComplete(self):
-        # if the age is not the one that I'm from
-        # then run the responder to make it back off
+        # if the age is not the one that I'm from then run the responder to make it back off
         ageFrom = PtGetPrevAgeName()
-        print ("bhroBahroPOTS.OnServerInitComplete: "
-               "Came from %s, running opposite responder state"
-               % (ageFrom))
+        PtDebugPrint(print "bhroBahroPOTS.OnServerInitComplete: Came from %s, running opposite responder state" % (ageFrom))
         if ageFrom == "Ercana":
             respWedges.run(self.key, state="Ahnonay", fastforward=1)
         elif ageFrom == "Ahnonay":
             respWedges.run(self.key, state="Ercana", fastforward=1)
 
         psnlSDL = xPsnlVaultSDL()
-        print psnlSDL["psnlBahroWedge12"][0]
-        print psnlSDL["psnlBahroWedge13"][0]
+        PtDebugPrint(psnlSDL["psnlBahroWedge12"][0])
+        PtDebugPrint(psnlSDL["psnlBahroWedge13"][0])
 
         if psnlSDL["psnlBahroWedge12"][0]:
-            print ("bhroBahroPOTS.OnServerInitComplete: "
-                   "You have the Ercana wedge, no need to display it.")
+            PtDebugPrint("bhroBahroPOTS.OnServerInitComplete: You have the Ercana wedge, no need to display it.")
             respErcanaRing.run(self.key, fastforward=1)
         if psnlSDL["psnlBahroWedge13"][0]:
-            print ("bhroBahroPOTS.OnServerInitComplete: "
-                   "You have the Ahnonay wedge, no need to display it.")
+            PtDebugPrint("bhroBahroPOTS.OnServerInitComplete: You have the Ahnonay wedge, no need to display it.")
             respAhnonayRing.run(self.key, fastforward=1)
 
     def OnNotify(self, state, id, events):
-        # print ("bhroBahroPOTS.OnNotify: state=%s id=%d events="
-        #        % (state, id), events)
+        #print "bhroBahroPOTS.OnNotify: state=%s id=%d events=" % (state, id), events
 
         if id == clkErcana.id and state:
-            print "bhroBahroPOTS.OnNotify: clicked Ercana symbol"
+            PtDebugPrint("bhroBahroPOTS.OnNotify: clicked Ercana symbol")
             respErcanaRing.run(self.key, avatar=PtFindAvatar(events))
             psnlSDL = xPsnlVaultSDL()
             sdlVal = psnlSDL["psnlBahroWedge12"][0]
             if not sdlVal:
-                print ("bhroBahroPOTS.OnNotify:  "
-                       "Turning wedge SDL of psnlBahroWedge12 to On")
+                PtDebugPrint("bhroBahroPOTS.OnNotify:  Turning wedge SDL of psnlBahroWedge12 to On")
                 psnlSDL["psnlBahroWedge12"] = (1,)
 
         elif id == clkAhnonay.id and state:
-            print "bhroBahroPOTS.OnNotify: clicked Ahnonay symbol"
+            PtDebugPrint("bhroBahroPOTS.OnNotify: clicked Ahnonay symbol")
             respAhnonayRing.run(self.key, avatar=PtFindAvatar(events))
             psnlSDL = xPsnlVaultSDL()
             sdlVal = psnlSDL["psnlBahroWedge13"][0]
             if not sdlVal:
-                print ("bhroBahroPOTS.OnNotify:  "
-                       "Turning wedge SDL of psnlBahroWedge13 to On")
+                PtDebugPrint("bhroBahroPOTS.OnNotify:  Turning wedge SDL of psnlBahroWedge13 to On")
                 psnlSDL["psnlBahroWedge13"] = (1,)

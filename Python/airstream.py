@@ -22,15 +22,16 @@ Additional permissions under GNU GPL version 3 section 7
 If you modify this Program, or any covered work, by linking or
 combining it with any of RAD Game Tools Bink SDK, Autodesk 3ds Max SDK,
 NVIDIA PhysX SDK, Microsoft DirectX SDK, OpenSSL library, Independent
-JPEG Group JPEG library, Microsoft Windows Media SDK, or Apple
-QuickTime SDK (or a modified version of those libraries), containing
-parts covered by the terms of the Bink SDK EULA, 3ds Max EULA, PhysX
-SDK EULA, DirectX SDK EULA, OpenSSL and SSLeay licenses, IJG JPEG
-Library README, Windows Media SDK EULA, or QuickTime SDK EULA, the
-licensors of this Program grant you additional permission to convey
-the resulting work. Corresponding Source for a non-source form of such
-a combination shall include the source code for the parts of OpenSSL
-and IJG JPEG Library used as well as that of the covered work.
+JPEG Group JPEG library, Microsoft Windows Media SDK, or Apple QuickTime SDK
+(or a modified version of those libraries),
+containing parts covered by the terms of the Bink SDK EULA, 3ds Max EULA,
+PhysX SDK EULA, DirectX SDK EULA, OpenSSL and SSLeay licenses, IJG
+JPEG Library README, Windows Media SDK EULA, or QuickTime SDK EULA, the
+licensors of this Program grant you additional
+permission to convey the resulting work. Corresponding Source for a
+non-source form of such a combination shall include the source code for
+the parts of OpenSSL and IJG JPEG Library used as well as that of the covered
+work.
 
 You can contact Cyan Worlds, Inc. by email legal@cyan.com
  or by snail mail at:
@@ -57,13 +58,11 @@ class airstream(ptResponder):
         self.id = 50439
         self.version = 1
 
-        print "__init__airstream v."
+        PtDebugPrint("__init__airstream v.")
 
     def OnNotify(self, state, id, events):
 
         if id == activateAirstream.id:
             avatar = PtFindAvatar(events)
             avatar.draw.disable()
-#            avatar.physics.warpObj(airstreamNode.value.getKey())
-#            PtAttachObject(avatar.getKey(), airstreamNode.value.getKey())
             avatar.physics.enable(0)

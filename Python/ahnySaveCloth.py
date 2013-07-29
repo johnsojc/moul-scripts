@@ -22,15 +22,16 @@ Additional permissions under GNU GPL version 3 section 7
 If you modify this Program, or any covered work, by linking or
 combining it with any of RAD Game Tools Bink SDK, Autodesk 3ds Max SDK,
 NVIDIA PhysX SDK, Microsoft DirectX SDK, OpenSSL library, Independent
-JPEG Group JPEG library, Microsoft Windows Media SDK, or Apple QuickTime
-SDK (or a modified version of those libraries), containing parts covered
-by the terms of the Bink SDK EULA, 3ds Max EULA, PhysX SDK EULA, DirectX
-SDK EULA, OpenSSL and SSLeay licenses, IJG JPEG Library README, Windows
-Media SDK EULA, or QuickTime SDK EULA, the licensors of this Program
-grant you additional permission to convey the resulting work.
-Corresponding Source for a non-source form of such a combination shall
-include the source code for the parts of OpenSSL and IJG JPEG Library
-used as well as that of the covered work.
+JPEG Group JPEG library, Microsoft Windows Media SDK, or Apple QuickTime SDK
+(or a modified version of those libraries),
+containing parts covered by the terms of the Bink SDK EULA, 3ds Max EULA,
+PhysX SDK EULA, DirectX SDK EULA, OpenSSL and SSLeay licenses, IJG
+JPEG Library README, Windows Media SDK EULA, or QuickTime SDK EULA, the
+licensors of this Program grant you additional
+permission to convey the resulting work. Corresponding Source for a
+non-source form of such a combination shall include the source code for
+the parts of OpenSSL and IJG JPEG Library used as well as that of the covered
+work.
 
 You can contact Cyan Worlds, Inc. by email legal@cyan.com
  or by snail mail at:
@@ -68,7 +69,7 @@ class ahnySaveCloth(ptModifier):
         ptModifier.__init__(self)
         self.id = 5424
         self.version = 1
-        print "DEBUG: ahnySaveCloth.__init__: v.", self.version
+        PtDebugPrint("DEBUG: ahnySaveCloth.__init__: v.", self.version)
 
     def OnFirstUpdate(self):
         global sdlSC
@@ -113,20 +114,17 @@ class ahnySaveCloth(ptModifier):
 
             if spTitle == "SCSavePoint":
                 if spName == "SaveClothPoint7" or spName == "SaveClothPoint8":
-                    print "linking to hub or hut"
+                    PtDebugPrint("linking to hub or hut")
                     whereAmI = 4
                 else:
                     offset = str(ageSDL["ahnyCurrentOffset"][0])
-                    print ("Ahnonay.OnPageLoad(): "
-                           "Sphere0%s loaded with offset:%s"
-                           % (sphere, offset))
+                    PtDebugPrint("Ahnonay.OnPageLoad(): Sphere0%s loaded with offset:%s" % (sphere, offset))
                     whereAmI = (int(sphere) - int(offset)) % 4
                     if whereAmI == 0:
                         whereAmI = 4
             else:
                 whereAmI = sphere
-            print ("ahnySaveCloth.OnServerInitComplete(): "
-                   "I am age owner in %d" % (whereAmI))
+            PtDebugPrint("ahnySaveCloth.OnServerInitComplete(): I am age owner in %d" % (whereAmI))
 
         # SaveCloth SDL stuff, for use with POTS symbols
         sdlSC = "ahnyGotSaveCloth" + clothID.value
@@ -136,10 +134,9 @@ class ahnySaveCloth(ptModifier):
             ageSDL.sendToClients(sdlSC)
             ageSDL.setNotify(self.key, sdlSC, 0.0)
             gotSC = ageSDL[sdlSC][0]
-            print ("ahnySaveCloth.OnServerInitComplete():\t "
-                   "found sdl: ", sdlSC, ", which = ", gotSC)
+            PtDebugPrint("ahnySaveCloth.OnServerInitComplete():\t found sdl: %s, which = %d" % (sdlSC, gotSC))
         except:
-            print "ERROR.  Couldn't find sdl: ", sdlSC, ", defaulting to 0"
+            PtDebugPrint("ERROR.  Couldn't find sdl: ", sdlSC, ", defaulting to 0")
 
         ageSDL.setFlags("ahnyCurrentSphere", 1, 1)
         ageSDL.sendToClients("ahnyCurrentSphere")
@@ -156,9 +153,7 @@ class ahnySaveCloth(ptModifier):
         if VARname != sdlSC:
             return
         ageSDL = PtGetAgeSDL()
-        PtDebugPrint("xSaveCloth.OnSDLNotify():\t VARname:%s, "
-                     "SDLname:%s, tag:%s, value:%d"
-                     % (VARname, SDLname, tag, ageSDL[sdlSC][0]))
+        PtDebugPrint("xSaveCloth.OnSDLNotify():\t VARname:%s, SDLname:%s, tag:%s, value:%d" % (VARname, SDLname, tag, ageSDL[sdlSC][0]))
         gotSC = ageSDL[sdlSC][0]
 
     def OnNotify(self, state, id, events):
@@ -166,16 +161,14 @@ class ahnySaveCloth(ptModifier):
         global whereAmI
         global link
 
-        print "DEBUG: ahnySaveCloth::onNotify, id ", id
+        PtDebugPrint("DEBUG: ahnySaveCloth::onNotify, id %d" % (id))
 
         if not state:
             return
 
         if id == Activator.id:
-            # Activator.disable()
             avatar = PtFindAvatar(events)
-            OneShotResp.run(
-                self.key, avatar=PtFindAvatar(events))  # run the oneshot
+            OneShotResp.run(self.key, avatar=PtFindAvatar(events))  # run the oneshot
 
         elif id == OneShotResp.id and avatar == PtGetLocalAvatar():
             agevault = ptAgeVault()
@@ -183,13 +176,12 @@ class ahnySaveCloth(ptModifier):
             guid = ageinfo.getAgeInstanceGuid()
 
             if guid == link:
-                print "I'm the age owner, setting spawnpoint"
-                # Activator.enable()
+                PtDebugPrint("I'm the age owner, setting spawnpoint")
 
                 ageSDL = PtGetAgeSDL()
                 sphere = ageSDL["ahnyCurrentSphere"][0]
                 offset = (sphere - whereAmI) % 4
-                print "ahnySaveCloth.OnNotify: Offset = %d" % (offset)
+                PtDebugPrint("ahnySaveCloth.OnNotify: Offset = %d" % (offset))
                 ageSDL["ahnyCurrentOffset"] = (offset,)
 
                 agevault = ptAgeVault()
@@ -213,74 +205,20 @@ class ahnySaveCloth(ptModifier):
                             for ageDataChildRef in ageDataChildren:
                                 ageDataChild = ageDataChildRef.getChild()
                                 chron = ageDataChild.upcastToChronicleNode()
-                                if (chron and chron.getName() ==
-                                        "AhnonaySpawnPoints"):
+                                if chron and chron.getName() == "AhnonaySpawnPoints":
                                     spawn = chron.getValue().split(";")
-                                    newSpawn = (
-                                        "%s;SCSavePoint,SaveClothPoint%s"
-                                        % (spawn[0], clothID.value))
-                                    print newSpawn
+                                    newSpawn = "%s;SCSavePoint,SaveClothPoint%s" % (spawn[0], clothID.value)
+                                    PtDebugPrint(newSpawn)
                                     chron.setValue(newSpawn)
                                     if not gotSC:
                                         ageSDL = PtGetAgeSDL()
                                         ageSDL[sdlSC] = (1,)
                                     return
 
-                print ("ahnySaveCloth.OnNotify(): "
-                       "ERROR: couldn't find chron node")
+                PtDebugPrint("ahnySaveCloth.OnNotify(): ERROR: couldn't find chron node")
 
             else:
-                print "I'm not the age owner, so I don't do anything."
-
-            '''
-            vault = ptVault()
-            myAges = vault.getAgesIOwnFolder()
-            myAges = myAges.getChildNodeRefList()
-            for ageInfo in myAges:
-                link = ageInfo.getChild()
-                link = link.upcastToAgeLinkNode()
-                info = link.getAgeInfo()
-                if not info:
-                    continue
-                ageName = info.getAgeFilename()
-                spawnPoints = link.getSpawnPoints()
-
-                if ageName == "Ahnonay":
-                    ahnySDL = info.getAgeSDL()
-                    ahnyRecord = ahnySDL.getStateDataRecord()
-                    currentCloth = ahnyRecord.findVar("ahnyCurrentSaveCloth")
-                    currentSphere = ahnyRecord.findVar("ahnyCurrentSphere")
-                    if (clothID.value):
-                        clothNumber = int(clothID.value)
-                        activeSphere = currentSphere.getInt(0)
-
-                        agevault = ptAgeVault()
-                        (currentage=
-                         int(agevault.getAgeInfo().getAgeFilename()[-1]))
-                        print "currently in sphere:", currentage
-
-                        currentpos = (currentage - activeSphere) % 4
-
-                        if clothNumber > 6 and clothNumber < 25:
-                            clothOffset = clothNumber % 6
-                            if clothOffset == 0:
-                                clothOffset = 6
-                        else:
-                            clothOffset = clothNumber
-
-                        currentCloth.setInt(clothOffset, 0)
-                        currentCloth.setInt(currentpos, 1)
-                        print ("current save cloth updated to number",
-                               clothOffset, " from cloth value of",
-                               clothNumber)
-                        print "current save position updated to:", currentpos
-                    else:
-                        print "missing sphere identifier string!"
-                    ahnySDL.setStateDataRecord(ahnyRecord)
-                    ahnySDL.save()
-                    return
-            '''
+                PtDebugPrint("I'm not the age owner, so I don't do anything.")
 
         else:
-            PtDebugPrint("ERROR: ahnySaveCloth.OnNotify: "
-                         "Error trying to access the Vault.")
+            PtDebugPrint("ERROR: ahnySaveCloth.OnNotify: Error trying to access the Vault.")

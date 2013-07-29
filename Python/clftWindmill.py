@@ -22,15 +22,16 @@ Additional permissions under GNU GPL version 3 section 7
 If you modify this Program, or any covered work, by linking or
 combining it with any of RAD Game Tools Bink SDK, Autodesk 3ds Max SDK,
 NVIDIA PhysX SDK, Microsoft DirectX SDK, OpenSSL library, Independent
-JPEG Group JPEG library, Microsoft Windows Media SDK, or Apple
-QuickTime SDK (or a modified version of those libraries), containing
-parts covered by the terms of the Bink SDK EULA, 3ds Max EULA, PhysX
-SDK EULA, DirectX SDK EULA, OpenSSL and SSLeay licenses, IJG JPEG
-Library README, Windows Media SDK EULA, or QuickTime SDK EULA, the
-licensors of this Program grant you additional permission to convey
-the resulting work. Corresponding Source for a non-source form of such
-a combination shall include the source code for the parts of OpenSSL
-and IJG JPEG Library used as well as that of the covered work.
+JPEG Group JPEG library, Microsoft Windows Media SDK, or Apple QuickTime SDK
+(or a modified version of those libraries),
+containing parts covered by the terms of the Bink SDK EULA, 3ds Max EULA,
+PhysX SDK EULA, DirectX SDK EULA, OpenSSL and SSLeay licenses, IJG
+JPEG Library README, Windows Media SDK EULA, or QuickTime SDK EULA, the
+licensors of this Program grant you additional
+permission to convey the resulting work. Corresponding Source for a
+non-source form of such a combination shall include the source code for
+the parts of OpenSSL and IJG JPEG Library used as well as that of the covered
+work.
 
 You can contact Cyan Worlds, Inc. by email legal@cyan.com
  or by snail mail at:
@@ -62,8 +63,7 @@ stringSDLVarRunning = ptAttribString(15, "SDL Bool windmill running")
 respStartAtLoad = ptAttribResponder(16, "start windmill at load")
 respLightsOnOff = ptAttribResponder(17, "lights on off", ['On', 'Off'])
 stringSDLVarUnstuck = ptAttribString(18, "SDL Bool unstuck windmill")
-respImagerButtonLight = ptAttribResponder(19, "Imager button light on off",
-                                          ['On', 'Off'])
+respImagerButtonLight = ptAttribResponder(19, "Imager button light on off", ['On', 'Off'])
 respBrakeOff = ptAttribResponder(20, "resp: Gear lever up")
 respBrakeOn = ptAttribResponder(21, "resp: Gear lever back")
 respBrakeOffAtStart = ptAttribResponder(22, "resp: Gear lever up at start")
@@ -97,37 +97,30 @@ class clftWindmill(ptResponder):
         global windmillUnstuck
         global boolTomahnaActive
 
-        if (isinstance(stringSDLVarLocked.value, type("")) and
-                stringSDLVarLocked.value != ""):
+        if type(stringSDLVarLocked.value) is str and stringSDLVarLocked.value != "":
             self.ageSDL = PtGetAgeSDL()
             self.ageSDL.setFlags(stringSDLVarLocked.value, 1, 1)
             self.ageSDL.sendToClients(stringSDLVarLocked.value)
         else:
-            PtDebugPrint("clftWindmill.OnFirstUpdate():\t"
-                         "ERROR: missing SDL var locked in max file")
+            PtDebugPrint("clftWindmill.OnFirstUpdate():\tERROR: missing SDL var locked in max file")
 
-        if (isinstance(stringSDLVarRunning.value, type("")) and
-                stringSDLVarRunning.value != ""):
+        if type(stringSDLVarRunning.value) is str and stringSDLVarRunning.value != "":
             self.ageSDL = PtGetAgeSDL()
             self.ageSDL.setFlags(stringSDLVarRunning.value, 1, 1)
             self.ageSDL.sendToClients(stringSDLVarRunning.value)
         else:
-            PtDebugPrint("clftWindmill.OnFirstUpdate():\t"
-                         "ERROR: missing SDL var running in max file")
+            PtDebugPrint("clftWindmill.OnFirstUpdate():\tERROR: missing SDL var running in max file")
 
         respLightsOnOff.run(self.key, state='Off')
         respImagerButtonLight.run(self.key, state='Off')
 
-        if (isinstance(stringSDLVarUnstuck.value, type("")) and
-                stringSDLVarUnstuck.value != ""):
+        if type(stringSDLVarUnstuck.value) is str and stringSDLVarUnstuck.value != "":
             self.ageSDL = PtGetAgeSDL()
             self.ageSDL.setFlags(stringSDLVarUnstuck.value, 1, 1)
             self.ageSDL.sendToClients(stringSDLVarUnstuck.value)
         else:
-            PtDebugPrint("clftWindmill.OnFirstUpdate():\t"
-                         "ERROR: missing SDL var unstuck in max file")
+            PtDebugPrint("clftWindmill.OnFirstUpdate():\tERROR: missing SDL var unstuck in max file")
 
-        # self.ResetImager()
         self.ageSDL = PtGetAgeSDL()
 
         # register for notification of locked SDL var changes
@@ -142,9 +135,7 @@ class clftWindmill(ptResponder):
             windmillLocked = self.ageSDL[stringSDLVarLocked.value][0]
         except:
             windmillLocked = 1
-            PtDebugPrint("ERROR: clftWindmill.OnServerInitComplete():\t"
-                         "ERROR: age sdl read failed, "
-                         "defaulting windmill locked")
+            PtDebugPrint("ERROR: clftWindmill.OnServerInitComplete():\tERROR: age sdl read failed, defaulting windmill locked")
         if windmillLocked == 0:
             respBrakeOffAtStart.run(self.key)
         elif windmillLocked == 1:
@@ -159,17 +150,13 @@ class clftWindmill(ptResponder):
             windmillRunning = self.ageSDL[stringSDLVarRunning.value][0]
         except:
             windmillRunning = 0
-            PtDebugPrint("ERROR: clftWindmill.OnServerInitComplete():\t"
-                         "ERROR: age sdl read failed, "
-                         "defaulting windmill stopped")
+            PtDebugPrint("ERROR: clftWindmill.OnServerInitComplete():\tERROR: age sdl read failed, defaulting windmill stopped")
         if windmillRunning == 1:
             respStartAtLoad.run(self.key)
             respLightsOnOff.run(self.key, state='On')
             respGrinderOn.run(self.key)
             if boolTomahnaActive == 0:
-                PtDebugPrint("clftWindmill.OnServerInitComplete: "
-                             "SDL says Tomahna is active, "
-                             "will set Imager light on...")
+                PtDebugPrint("clftWindmill.OnServerInitComplete: SDL says Tomahna is active, will set Imager light on...")
                 respImagerButtonLight.run(self.key, state='On')
 
         # register for notification of running SDL var changes
@@ -181,9 +168,7 @@ class clftWindmill(ptResponder):
             windmillUnstuck = self.ageSDL[stringSDLVarUnstuck.value][0]
         except:
             windmillUnstuck = 0
-            PtDebugPrint("ERROR: clftWindmill.OnServerInitComplete():\t"
-                         "ERROR: age sdl read failed, "
-                         "defaulting windmill stuck")
+            PtDebugPrint("ERROR: clftWindmill.OnServerInitComplete():\tERROR: age sdl read failed, defaulting windmill stuck")
 
     def OnSDLNotify(self, VARname, SDLname, playerID, tag):
         global windmillLocked
@@ -194,7 +179,7 @@ class clftWindmill(ptResponder):
 
         self.ageSDL = PtGetAgeSDL()
 
-        #Avatar bugfix
+        # Avatar bugfix
         if playerID == 0:
             player = None
         else:
@@ -203,37 +188,17 @@ class clftWindmill(ptResponder):
 
         if VARname == stringSDLVarLocked.value:
             windmillLocked = self.ageSDL[stringSDLVarLocked.value][0]
-            PtDebugPrint("clftWindmill.OnSDLNotify():\t windmill locked ",
-                         windmillLocked)
+            PtDebugPrint("clftWindmill.OnSDLNotify():\t windmill locked ", windmillLocked)
             if windmillLocked == 1 and windmillRunning == 0:
                 respBrakeOn.run(self.key, avatar=player)
             if windmillLocked == 1 and windmillRunning == 1:
-                PtDebugPrint("clftWindmill.OnSDLNotify: "
-                             "Both running and locked are 1, "
-                             "so stop windmill.")
+                PtDebugPrint("clftWindmill.OnSDLNotify: Both running and locked are 1, so stop windmill.")
                 stopGrinder = 1
                 respBrakeOn.run(self.key, avatar=player)
-                # respStop.run(self.key, state='Stop',
-                #              avatar=PtGetLocalAvatar())
-                # respLightsOnOff.run(self.key, state='Off',
-                #                     avatar=PtGetLocalAvatar())
-                # respImagerButtonLight.run(self.key, state='Off',
-                #                           avatar=PtGetLocalAvatar())
-                #windmillRunning = 0
-                #self.ageSDL[stringSDLVarRunning.value] = (windmillRunning,)
             elif windmillLocked == 0 and windmillUnstuck == 1:
                 respBrakeOff.run(self.key, avatar=player)
-                PtDebugPrint("clftWindmill.OnSDLNotify: "
-                             "Locked is 0 and windmillUnstuck is 1, "
-                             "run StartAtLoad.")
-                # respStartAtLoad.run(self.key, avatar=PtGetLocalAvatar())
-                # respLightsOnOff.run(self.key, state='On',
-                #                     avatar=PtGetLocalAvatar())
+                PtDebugPrint("clftWindmill.OnSDLNotify: Locked is 0 and windmillUnstuck is 1, run StartAtLoad.")
                 windmillRunning = 1
-                # self.ageSDL[stringSDLVarRunning.value] = (windmillRunning,)
-                # if boolTomahnaActive == 0:
-                #     respImagerButtonLight.run(self.key, state='On',
-                #                               avatar=PtGetLocalAvatar())
             elif windmillLocked == 0 and windmillUnstuck == 0:
                 respBrakeOff.run(self.key, avatar=player)
 
@@ -248,14 +213,11 @@ class clftWindmill(ptResponder):
 
         if (id == clickLockStart.id and state):
             if windmillLocked == 0:
-                respStart.run(self.key, state='Start',
-                              avatar=PtFindAvatar(events))
-                respLightsOnOff.run(self.key, state='On',
-                                    avatar=PtFindAvatar(events))
+                respStart.run(self.key, state='Start', avatar=PtFindAvatar(events))
+                respLightsOnOff.run(self.key, state='On', avatar=PtFindAvatar(events))
                 respGrinderOn.run(self.key)
                 if boolTomahnaActive == 0:
-                    respImagerButtonLight.run(self.key, state='On',
-                                              avatar=PtFindAvatar(events))
+                    respImagerButtonLight.run(self.key, state='On', avatar=PtFindAvatar(events))
                 windmillRunning = 1
                 self.ageSDL[stringSDLVarRunning.value] = (windmillRunning,)
                 windmillUnstuck = 1
@@ -263,26 +225,21 @@ class clftWindmill(ptResponder):
             elif windmillLocked == 1:
                 respLockedCCW.run(self.key, avatar=PtFindAvatar(events))
 
-        if (id == respBrakeOn. id):
+        if (id == respBrakeOn.id):
             if stopGrinder:
                 respGrinderOff.run(self.key)
                 stopGrinder = 0
-                respStop.run(self.key, state='Stop',
-                             avatar=PtFindAvatar(events))
-                respLightsOnOff.run(self.key, state='Off',
-                                    avatar=PtFindAvatar(events))
-                respImagerButtonLight.run(self.key, state='Off',
-                                          avatar=PtFindAvatar(events))
+                respStop.run(self.key, state='Stop', avatar=PtFindAvatar(events))
+                respLightsOnOff.run(self.key, state='Off', avatar=PtFindAvatar(events))
+                respImagerButtonLight.run(self.key, state='Off', avatar=PtFindAvatar(events))
                 windmillRunning = 0
                 self.ageSDL[stringSDLVarRunning.value] = (windmillRunning,)
 
-        if (id == respBrakeOff. id):
+        if (id == respBrakeOff.id):
             if windmillRunning == 1:
                 respGrinderOn.run(self.key)
                 respStartAtLoad.run(self.key, avatar=PtFindAvatar(events))
-                respLightsOnOff.run(self.key, state='On',
-                                    avatar=PtFindAvatar(events))
+                respLightsOnOff.run(self.key, state='On', avatar=PtFindAvatar(events))
                 self.ageSDL[stringSDLVarRunning.value] = (windmillRunning,)
                 if boolTomahnaActive == 0:
-                    respImagerButtonLight.run(self.key, state='On',
-                                              avatar=PtFindAvatar(events))
+                    respImagerButtonLight.run(self.key, state='On', avatar=PtFindAvatar(events))

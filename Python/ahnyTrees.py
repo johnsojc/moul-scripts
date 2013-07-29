@@ -22,15 +22,16 @@ Additional permissions under GNU GPL version 3 section 7
 If you modify this Program, or any covered work, by linking or
 combining it with any of RAD Game Tools Bink SDK, Autodesk 3ds Max SDK,
 NVIDIA PhysX SDK, Microsoft DirectX SDK, OpenSSL library, Independent
-JPEG Group JPEG library, Microsoft Windows Media SDK, or Apple QuickTime
-SDK (or a modified version of those libraries), containing parts covered
-by the terms of the Bink SDK EULA, 3ds Max EULA, PhysX SDK EULA, DirectX
-SDK EULA, OpenSSL and SSLeay licenses, IJG JPEG Library README, Windows
-Media SDK EULA, or QuickTime SDK EULA, the licensors of this Program
-grant you additional permission to convey the resulting work.
-Corresponding Source for a non-source form of such a combination shall
-include the source code for the parts of OpenSSL and IJG JPEG Library
-used as well as that of the covered work.
+JPEG Group JPEG library, Microsoft Windows Media SDK, or Apple QuickTime SDK
+(or a modified version of those libraries),
+containing parts covered by the terms of the Bink SDK EULA, 3ds Max EULA,
+PhysX SDK EULA, DirectX SDK EULA, OpenSSL and SSLeay licenses, IJG
+JPEG Library README, Windows Media SDK EULA, or QuickTime SDK EULA, the
+licensors of this Program grant you additional
+permission to convey the resulting work. Corresponding Source for a
+non-source form of such a combination shall include the source code for
+the parts of OpenSSL and IJG JPEG Library used as well as that of the covered
+work.
 
 You can contact Cyan Worlds, Inc. by email legal@cyan.com
  or by snail mail at:
@@ -50,7 +51,6 @@ Ahnonay Quab control
 from Plasma import *
 from PlasmaTypes import *
 
-
 # define the attributes that will be entered in max
 rgnTrees = ptAttribActivator(1, "act: Tree Detector")
 respTreeAnims = ptAttribResponderList(2, "resp: Tree Anims", byObject=1)
@@ -61,9 +61,8 @@ SDLTrees = ptAttribString(4, "str: SDL Trees (optional)")
 respTreeAnimsList = []
 objTreeList = []
 
+
 #====================================
-
-
 class ahnyTrees(ptModifier):
     ###########################
     def __init__(self):
@@ -71,7 +70,7 @@ class ahnyTrees(ptModifier):
         self.id = 5948
         version = 1
         self.version = version
-        print "__init__ahnyTrees v%d " % (version)
+        PtDebugPrint("__init__ahnyTrees v%d " % (version))
 
     ###########################
     def OnFirstUpdate(self):
@@ -82,11 +81,8 @@ class ahnyTrees(ptModifier):
             ageSDL = PtGetAgeSDL()
             ageSDL[SDLTrees.value][0]
         except:
-            print ("ahnyTrees.OnServerInitComplete(): "
-                   "ERROR --- Cannot find the Ahnonay Age SDL")
-            ageSDL[SDLTrees.value] = (1, 1, 1, 1, 1,
-                                      1, 1, 1, 1, 1,
-                                      1, 1, 1, 1, 1)
+            PtDebugPrint("ahnyTrees.OnServerInitComplete(): ERROR --- Cannot find the Ahnonay Age SDL")
+            ageSDL[SDLTrees.value] = (1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)
 
         ageSDL.setFlags(SDLTrees.value, 1, 1)
         ageSDL.sendToClients(SDLTrees.value)
@@ -104,22 +100,18 @@ class ahnyTrees(ptModifier):
         idx = 0
         for visible in ageSDL[SDLTrees.value]:
             if not visible:
-                respTreeAnims.run(self.key,
-                                  objectName=respTreeAnimsList[idx],
-                                  fastforward=1)
+                respTreeAnims.run(self.key, objectName=respTreeAnimsList[idx], fastforward=1)
             idx += 1
 
     ###########################
     def OnNotify(self, state, id, events):
         global respTreeAnimsList
         global objTreeList
-        print ("ahnyTrees.OnNotify: state=%s id=%d events="
-               % (state, id), events)
+        PtDebugPrint("ahnyTrees.OnNotify: state=%s id=%d events=%s" % (state, id, events))
 
         if id == rgnTrees.id:
             for event in events:
-                if (event[0] == kCollisionEvent and
-                        self.sceneobject.isLocallyOwned()):
+                if event[0] == kCollisionEvent and self.sceneobject.isLocallyOwned():
                     region = event[3]
                     regName = region.getName()
                     for object in objTreeList:
@@ -128,11 +120,7 @@ class ahnyTrees(ptModifier):
                             treeSDL = list(ageSDL[SDLTrees.value])
                             index = objTreeList.index(object)
                             if treeSDL[index]:
-                                (respTreeAnims.run(
-                                    self.key,
-                                    objectName=respTreeAnimsList[index],
-                                    netForce=1))
+                                respTreeAnims.run(self.key, objectName=respTreeAnimsList[index], netForce=1)
                                 treeSDL[index] = 0
                                 ageSDL[SDLTrees.value] = tuple(treeSDL)
-                                print ("ahnyTrees.OnNotify: "
-                                       "Tree knocked down")
+                                PtDebugPrint("ahnyTrees.OnNotify: Tree knocked down")

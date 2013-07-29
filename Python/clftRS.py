@@ -22,15 +22,16 @@ Additional permissions under GNU GPL version 3 section 7
 If you modify this Program, or any covered work, by linking or
 combining it with any of RAD Game Tools Bink SDK, Autodesk 3ds Max SDK,
 NVIDIA PhysX SDK, Microsoft DirectX SDK, OpenSSL library, Independent
-JPEG Group JPEG library, Microsoft Windows Media SDK, or Apple
-QuickTime SDK (or a modified version of those libraries), containing
-parts covered by the terms of the Bink SDK EULA, 3ds Max EULA, PhysX
-SDK EULA, DirectX SDK EULA, OpenSSL and SSLeay licenses, IJG JPEG
-Library README, Windows Media SDK EULA, or QuickTime SDK EULA, the
-licensors of this Program grant you additional permission to convey
-the resulting work. Corresponding Source for a non-source form of such
-a combination shall include the source code for the parts of OpenSSL
-and IJG JPEG Library used as well as that of the covered work.
+JPEG Group JPEG library, Microsoft Windows Media SDK, or Apple QuickTime SDK
+(or a modified version of those libraries),
+containing parts covered by the terms of the Bink SDK EULA, 3ds Max EULA,
+PhysX SDK EULA, DirectX SDK EULA, OpenSSL and SSLeay licenses, IJG
+JPEG Library README, Windows Media SDK EULA, or QuickTime SDK EULA, the
+licensors of this Program grant you additional
+permission to convey the resulting work. Corresponding Source for a
+non-source form of such a combination shall include the source code for
+the parts of OpenSSL and IJG JPEG Library used as well as that of the covered
+work.
 
 You can contact Cyan Worlds, Inc. by email legal@cyan.com
  or by snail mail at:
@@ -57,13 +58,12 @@ Vignette = ptAttribString(4, "Vignette dialog - by Name")
 # ---------
 # globals
 
-
 LocalAvatar = None
 Telescope = ptInputInterface()
 
 
 class clftRS(ptModifier):
-    # Standard telescope modifier class
+    "Standard telescope modifier class"
     def __init__(self):
         ptModifier.__init__(self)
         self.id = 150
@@ -76,22 +76,20 @@ class clftRS(ptModifier):
         pass
 
     def __del__(self):
-        # unload the dialog that we loaded
+        "unload the dialog that we loaded"
         PtUnloadDialog(Vignette.value)
 
     def OnNotify(self, state, id, events):
-        # Activated... start telescope
+        "Activated... start telescope"
         global LocalAvatar
-        PtDebugPrint("xTelescope:OnNotify  state=%f id=%d events="
-                     % (state, id), events, level=kDebugDumpLevel)
+        PtDebugPrint("xTelescope:OnNotify  state=%f id=%d events=" % (state, id), events, level=kDebugDumpLevel)
         if state and id == Activate.id and PtWasLocallyNotified(self.key):
             LocalAvatar = PtFindAvatar(events)
             self.IStartTelescope()
 
     def OnGUINotify(self, id, control, event):
         "Notifications from the vignette"
-        PtDebugPrint("GUI Notify id=%d, event=%d control="
-                     % (id, event), control, level=kDebugDumpLevel)
+        PtDebugPrint("GUI Notify id=%d, event=%d control=" % (id, event), control, level=kDebugDumpLevel)
         if event == kDialogLoaded:
             # if the dialog was just loaded then show it
             control.show()
@@ -99,13 +97,11 @@ class clftRS(ptModifier):
     def OnControlKeyEvent(self, controlKey, activeFlag):
         if controlKey == PlasmaControlKeys.kKeyExitMode:
             self.IQuitTelescope()
-        elif controlKey == (PlasmaControlKeys.kKeyMoveBackward or
-                            controlKey == PlasmaControlKeys.kKeyRotateLeft or
-                            controlKey == PlasmaControlKeys.kKeyRotateRight):
+        elif controlKey == PlasmaControlKeys.kKeyMoveBackward or controlKey == PlasmaControlKeys.kKeyRotateLeft or controlKey == PlasmaControlKeys.kKeyRotateRight:
             self.IQuitTelescope()
 
     def IStartTelescope(self):
-        # Start the action of looking at the telescope
+        "Start the action of looking at the telescope"
         global LocalAvatar
         # disable the activator (only one in the telescope at a time)
         PtSendKIMessage(kDisableKIandBB, 0)
@@ -123,7 +119,7 @@ class clftRS(ptModifier):
         virtCam = ptCamera()
         virtCam.save(Camera.sceneobject.getKey())
         # show the cockpit
-        if not isinstance(Vignette.value, type(None)) and Vignette.value != "":
+        if Vignette.value is not None and Vignette.value != "":
             PtLoadDialog(Vignette.value, self.key)
             if (PtIsDialogLoaded(Vignette.value)):
                 PtShowDialog(Vignette.value)
@@ -131,26 +127,24 @@ class clftRS(ptModifier):
         PtEnableControlKeyEvents(self.key)
 
     def IQuitTelescope(self):
-        # Disengage and exit the telescope mode
+        "Disengage and exit the telescope mode"
         global LocalAvatar
         global Telescope
 
         Telescope.popTelescope()
         # exit every thing
-        if not isinstance(Vignette.value, type(None)) and Vignette.value != "":
+        if Vignette.value is not None and Vignette.value != "":
             PtHideDialog(Vignette.value)
         virtCam = ptCamera()
-        virtCam.restore(Camera.sceneobject. getKey())
+        virtCam.restore(Camera.sceneobject.getKey())
         PtRecenterCamera()
-        # disable the Control key events
+        #disable the Control key events
         PtDisableControlKeyEvents(self.key)
-        # Re-enable first person camera
+        #Re-enable first person camera
         cam = ptCamera()
         cam.enableFirstPersonOverride()
-        PtAtTimeCallback(self.key, 3, 1)  # wait for player to finish exit
-                                          # one-shot, then reenable clickable
-        PtDebugPrint("xTelescope.IQuitTelescope:\tdelaying clickable reenable",
-                     level=kDebugDumpLevel)
+        PtAtTimeCallback(self.key, 3, 1)  # wait for player to finish exit one-shot, then reenable clickable
+        PtDebugPrint("xTelescope.IQuitTelescope:\tdelaying clickable reenable", level=kDebugDumpLevel)
 
     def OnTimer(self, id):
         if id == 1:

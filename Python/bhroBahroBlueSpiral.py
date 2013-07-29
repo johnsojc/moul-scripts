@@ -22,15 +22,16 @@ Additional permissions under GNU GPL version 3 section 7
 If you modify this Program, or any covered work, by linking or
 combining it with any of RAD Game Tools Bink SDK, Autodesk 3ds Max SDK,
 NVIDIA PhysX SDK, Microsoft DirectX SDK, OpenSSL library, Independent
-JPEG Group JPEG library, Microsoft Windows Media SDK, or Apple QuickTime
-SDK (or a modified version of those libraries), containing parts covered
-by the terms of the Bink SDK EULA, 3ds Max EULA, PhysX SDK EULA, DirectX
-SDK EULA, OpenSSL and SSLeay licenses, IJG JPEG Library README, Windows
-Media SDK EULA, or QuickTime SDK EULA, the licensors of this Program
-grant you additional permission to convey the resulting work.
-Corresponding Source for a non-source form of such a combination shall
-include the source code for the parts of OpenSSL and IJG JPEG Library
-used as well as that of the covered work.
+JPEG Group JPEG library, Microsoft Windows Media SDK, or Apple QuickTime SDK
+(or a modified version of those libraries),
+containing parts covered by the terms of the Bink SDK EULA, 3ds Max EULA,
+PhysX SDK EULA, DirectX SDK EULA, OpenSSL and SSLeay licenses, IJG
+JPEG Library README, Windows Media SDK EULA, or QuickTime SDK EULA, the
+licensors of this Program grant you additional
+permission to convey the resulting work. Corresponding Source for a
+non-source form of such a combination shall include the source code for
+the parts of OpenSSL and IJG JPEG Library used as well as that of the covered
+work.
 
 You can contact Cyan Worlds, Inc. by email legal@cyan.com
  or by snail mail at:
@@ -61,16 +62,16 @@ respRings = ptAttribResponder(4, "resp: Floating Rings", ['Delin', 'Tsogal'])
 
 # define global variables
 
+
 #====================================
-
-
 class bhroBahroBlueSpiral(ptResponder):
+
     ###########################
     def __init__(self):
         ptResponder.__init__(self)
         self.id = 8813
         self.version = 1
-        print "bhroBahroBlueSpiral: init  version = %d" % (self.version)
+        PtDebugPrint("bhroBahroBlueSpiral: init  version = %d" % (self.version))
 
     ###########################
     def __del__(self):
@@ -85,12 +86,9 @@ class bhroBahroBlueSpiral(ptResponder):
 
     ###########################
     def OnServerInitComplete(self):
-        # if the age is not the one that I'm from
-        # then run the responder to make it back off
+        # if the age is not the one that I'm from then run the responder to make it back off
         ageFrom = PtGetPrevAgeName()
-        print ("bhroBahroBlueSpiral.OnServerInitComplete: "
-               "Came from %s, running opposite responder state"
-               % (ageFrom))
+        PtDebugPrint("bhroBahroBlueSpiral.OnServerInitComplete: Came from %s, running opposite responder state" % (ageFrom))
         if ageFrom == "EderTsogal":
             respWedges.run(self.key, state="Delin", fastforward=1)
 
@@ -105,27 +103,21 @@ class bhroBahroBlueSpiral(ptResponder):
 
     ###########################
     def OnNotify(self, state, id, events):
-        # print ("bhroBahroBlueSpiral.OnNotify: "
-        #        "state=%s id=%d events=" % (state, id), events)
 
         if id == clkBSTsogal.id and not state:
-            print "bhroBahroBlueSpiral.OnNotify: clicked Tsogal Spiral"
-            respRings.run(self.key, state="Tsogal",
-                          avatar=PtFindAvatar(events))
+            PtDebugPrint("bhroBahroBlueSpiral.OnNotify: clicked Tsogal Spiral")
+            respRings.run(self.key, state="Tsogal", avatar=PtFindAvatar(events))
             psnlSDL = xPsnlVaultSDL()
             sdlVal = psnlSDL["psnlBahroWedge06"][0]
             if not sdlVal:
-                print ("bhroBahroBlueSpiral.OnNotify:  "
-                       "Turning wedge SDL of psnlBahroWedge06 to On")
+                PtDebugPrint("bhroBahroBlueSpiral.OnNotify:  Tturning wedge SDL of psnlBahroWedge06 to On")
                 psnlSDL["psnlBahroWedge06"] = (1,)
 
         elif id == clkBSDelin.id and not state:
-            print "bhroBahroBlueSpiral.OnNotify: clicked Delin Spiral"
-            respRings.run(self.key, state="Delin",
-                          avatar=PtFindAvatar(events))
+            PtDebugPrint("bhroBahroBlueSpiral.OnNotify: clicked Delin Spiral")
+            respRings.run(self.key, state="Delin", avatar=PtFindAvatar(events))
             psnlSDL = xPsnlVaultSDL()
             sdlVal = psnlSDL["psnlBahroWedge05"][0]
             if not sdlVal:
-                print ("bhroBahroBlueSpiral.OnNotify:  "
-                       "Turning wedge SDL of psnlBahroWedge05 to On")
+                PtDebugPrint("bhroBahroBlueSpiral.OnNotify:  Tturning wedge SDL of psnlBahroWedge05 to On")
                 psnlSDL["psnlBahroWedge05"] = (1,)
