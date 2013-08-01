@@ -50,16 +50,14 @@ from PlasmaTypes import *
 from PlasmaKITypes import *
 import string
 
-
 #=============================================================
 # define the attributes that will be entered in max
 #=============================================================
 
-clkDispensor = ptAttribActivator(1,"clk: KI dispensor")
-respDispensor = ptAttribResponder(2,"resp: KI dispensor")
-respGotKI = ptAttribResponder(3,"resp: got KI")
-sdlKILightFunc = ptAttribString(4,"sdl: KI light func")
-
+clkDispensor = ptAttribActivator(1, "clk: KI dispensor")
+respDispensor = ptAttribResponder(2, "resp: KI dispensor")
+respGotKI = ptAttribResponder(3, "resp: got KI")
+sdlKILightFunc = ptAttribString(4, "sdl: KI light func")
 
 #----------
 # globals
@@ -71,13 +69,12 @@ byteKILightFunc = 0
 lightStop = 0
 lightOn = 0
 
-
 #----------
 # constants
 #----------
 kLightTimeShort = 5
 kLightTimeLong = 60
-listLightResps = ["respKILightOff","respKILightOn"]
+listLightResps = ["respKILightOff", "respKILightOn"]
 kLightStopID = 1
 kKILightShortSFXRespName = "respSFX-KILight-Short"
 KILightObjectName = "RTOmniKILight"
@@ -88,76 +85,63 @@ class dsntKILightMachine(ptModifier):
         ptModifier.__init__(self)
         self.id = 5670
         self.version = 3
-        PtDebugPrint("DEBUG: dsntKILightMachine.__init__():\tInitalizing dsntKILightMachine v.%s" % self.version)
-
+        PtDebugPrint("DEBUG: dsntKILightMachine.__init__():\tInitalizing dsntKILightMachine v.%d" % (self.version))
 
     def OnServerInitComplete(self):
-        #PtDebugPrint("DEBUG: dsntKILightMachine.OnServerInitComplete()")
         global byteKILightFunc
 
         if sdlKILightFunc.value != "":
             ageSDL = PtGetAgeSDL()
-            ageSDL.setFlags(sdlKILightFunc.value,1,1)
+            ageSDL.setFlags(sdlKILightFunc.value,  1, 1)
             ageSDL.sendToClients(sdlKILightFunc.value)
-            ageSDL.setNotify(self.key,sdlKILightFunc.value,0.0)
+            ageSDL.setNotify(self.key, sdlKILightFunc.value, 0.0)
         try:
             byteKILightFunc = ageSDL[sdlKILightFunc.value][0]
         except:
             PtDebugPrint("ERROR: dsntKILightMachine.OnServerInitComplete():\tERROR reading SDL name for KI light func")
-            byteKILightFunc = 0        
+            byteKILightFunc = 0
 
-
-    def OnSDLNotify(self,VARname,SDLname,playerID,tag):
-        #PtDebugPrint("DEBUG: dsntKILightMachine.OnSDLNotify()")
+    def OnSDLNotify(self, VARname, SDLname, playerID, tag):
         global byteKILightFunc
 
         if VARname == sdlKILightFunc.value:
             ageSDL = PtGetAgeSDL()
             byteKILightFunc = ageSDL[sdlKILightFunc.value][0]
 
-                
-
-
-
-    def OnNotify(self,state,id,events):
-        #PtDebugPrint("dsntKILightMachine.OnNotify(): Notify event state=%f,id=%d,events=" % (state,id),events)
+    def OnNotify(self, state, id, events):
         global IsAvatarLocal
         global LocalAvatar
 
-#        if not state:
-#            return
-        
         if id == clkDispensor.id:
             LocalAvatar = PtFindAvatar(events)
             if LocalAvatar == PtGetLocalAvatar():
                 IsAvatarLocal = 1
             else:
                 IsAvatarLocal = 0
-            respDispensor.run(self.key,events=events)
+            respDispensor.run(self.key, events=events)
 
         elif id == respDispensor.id:
             kiLevel = PtGetLocalKILevel()
             if kiLevel > 1:
-                print "dsntKILightMachine.OnNotify(): you've got your KI, proceeding..."
+                PtDebugPrint("dsntKILightMachine.OnNotify(): you've got your KI, proceeding...")
                 respGotKI.run(self.key)
             else:
-                print "dsntKILightMachine.OnNotify(): you don't have your KI yet, machine won't respond"
-        
-        elif id == respGotKI.id:        	
+                PtDebugPrint("dsntKILightMachine.OnNotify(): you don't have your KI yet, machine won't respond")
+
+        elif id == respGotKI.id:
             if IsAvatarLocal:
                 IsAvatarLocal = 0
                 if not lightOn:
-                    PtSendKIMessage(kStartKIAlert,0)
+                    PtSendKIMessage(kStartKIAlert, 0)
                     self.SetKILightTime(1)
                 else:
-                    print "light already on, resetting..."
+                    PtDebugPrint("light already on, resetting...")
                     self.SetKILightTime(2)
 
-
-    def SetKILightTime(self,on):
+    def SetKILightTime(self, on):
         global lightStop
         global lightOn
-        print "dsntKILightMachine.SetKILightTime(): byteKILightFunc = ",byteKILightFunc
+        PtDebugPrint("dsntKILightMachine.SetKILightTime(): byteKILightFunc = %d" % (byteKILightFunc))
         lightStart = PtGetDniTime()
 
         if not byteKILightFunc:
@@ -168,44 +152,40 @@ class dsntKILightMachine(ptModifier):
             lightStop = (lightStart + kLightTimeLong)
 
         timeRemaining = (lightStop - lightStart)
-        print "timer set, light will shut off in ",timeRemaining," seconds; lightStop = ",lightStop
+        PtDebugPrint("timer set, light will shut off in %d seconds; lightStop = %d" % (timeRemaining, lightStop))
         self.SetKILightChron(0)
 
         if on == 1:
-            self.DoKILight(1,0,timeRemaining)
+            self.DoKILight(1, 0, timeRemaining)
         elif on == 2:
-            PtAtTimeCallback(self.key,timeRemaining,kLightStopID)
-            print "light was reset, so don't run the responder as it's already on"
+            PtAtTimeCallback(self.key, timeRemaining, kLightStopID)
+            PtDebugPrint("light was reset, so don't run the responder as it's already on")
 
- 
-    def SetKILightChron(self,remaining):
+    def SetKILightChron(self, remaining):
         vault = ptVault()
         entry = vault.findChronicleEntry("KILightStop")
-        if type(entry) != type(None):
+        if entry:
             entryValue = entry.chronicleGetValue()
             oldVal = string.atoi(entryValue)
             if remaining == oldVal:
                 return
-            print "set KI light chron to: ",remaining
+            PtDebugPrint("set KI light chron to: %d" % (remaining))
             entry.chronicleSetValue("%d" % (remaining))
             entry.save()
         else:
-            vault.addChronicleEntry("KILightStop",1,"%d" % (remaining))
+            vault.addChronicleEntry("KILightStop", 1, "%d" % (remaining))
             PtDebugPrint("Chronicle entry KILight not present, adding entry and setting time to shutoff")
 
-
-    def OnTimer(self,id):
-        #print "dsntKILightMachine.OnTimer(): id = ",id
+    def OnTimer(self, id):
         if id == kLightStopID:
             curTime = PtGetDniTime()
-            print "dsntKILightMachine.OnTimer():  lightStop = ",lightStop,", curTime = ",curTime
+            PtDebugPrint("dsntKILightMachine.OnTimer():  lightStop = %d, curTime = %d", (curTime, lightStop))
             if curTime >= (lightStop - 1):
-                self.DoKILight(0,0)
+                self.DoKILight(0, 0)
             else:
-                print "dsntKILightMachine.OnTimer(): timer says shut off light, but times don't match.  Light must have been reset, ignoring this callback"
+                PtDebugPrint("dsntKILightMachine.OnTimer(): timer says shut off light, but times don't match.  Light must have been reset, ignoring this callback")
 
-
-    def DoKILight(self,state,ff,remaining=0):
+    def DoKILight(self, state, ff, remaining=0):
         global lightOn
 
         indexResp = state
@@ -217,7 +197,7 @@ class dsntKILightMachine(ptModifier):
         avatarKey = LocalAvatar.getKey()
         avatarObj = avatarKey.getSceneObject()
         respList = avatarObj.getResponders()
-        
+
         if len(respList) > 0:
             PtDebugPrint("dsntKILightMachine.DoKILight(): ...responder list:")
             for resp in respList:
@@ -226,13 +206,13 @@ class dsntKILightMachine(ptModifier):
                     PtDebugPrint("found KI light resp: %s" % (thisResp))
                     atResp = ptAttribResponder(42)
                     atResp.__setvalue__(resp)
-                    atResp.run(self.key,avatar=LocalAvatar,fastforward=ff)
+                    atResp.run(self.key, avatar=LocalAvatar, fastforward=ff)
                     if state:
-                        PtAtTimeCallback(self.key,remaining,kLightStopID)
-                        print "dsntKILightMachine.DoKILight(): turning light on for ",remaining," seconds"
+                        PtAtTimeCallback(self.key, remaining, kLightStopID)
+                        PtDebugPrint("dsntKILightMachine.DoKILight(): turning light on for %d seconds" % (remaining))
                         lightOn = 1
                     else:
-                        print "dsntKILightMachine.DoKILight(): light is shut off, updating chron if it needs it"
+                        PtDebugPrint("dsntKILightMachine.DoKILight(): light is shut off, updating chron if it needs it")
                         self.SetKILightChron(remaining)
                         lightOn = 0
                         PtSetLightAnimStart(avatarKey, KILightObjectName, false)
@@ -244,15 +224,13 @@ class dsntKILightMachine(ptModifier):
         else:
             PtDebugPrint("dsntKILightMachine.ISetLight():  ERROR! couldn't find any responders")
 
-
-    def BeginAgeUnLoad(self,avObj):
+    def BeginAgeUnLoad(self, avObj):
         if not lightOn:
             return
-        
+
         if (LocalAvatar == avObj):
-            print "dsntKILightMachine.BeginAgeUnLoad()-->\tavatar page out"
+            PtDebugPrint("dsntKILightMachine.BeginAgeUnLoad()-->\tavatar page out")
             curTime = PtGetDniTime()
             timeRemaining = (lightStop - curTime)
             if timeRemaining > 0:
-                self.DoKILight(0,1,timeRemaining)
-
+                self.DoKILight(0, 1, timeRemaining)

@@ -2245,7 +2245,7 @@ class xKI(ptModifier):
         jlakDestroy = ptGUIControlButton(KIJalakGUIDialog.dialog.getControlFromTag(kJalakDestroyBtn))
 
         self.jalakGUIButtons = [jlakRandom, jlakExtreme, jlakWall, jlakAllLow, jlakAllMed, jlakAllHigh,
-                          jlakRamp, jlakSphere, jlakBigBox, jlakLilBox, jlakRect, jlakDestroy]
+                                jlakRamp, jlakSphere, jlakBigBox, jlakLilBox, jlakRect, jlakDestroy]
 
         obj = PtFindSceneobject("JalakDONOTTOUCH", "Jalak")
         pythonScripts = obj.getPythonMods()
@@ -2882,7 +2882,6 @@ class xKI(ptModifier):
         noBtnText.setStringW(PtGetLocalizedString("KI.YesNoDialog.OKButton"))
         KIYesNo.dialog.show()
 
-
     ## Display an error message in the SendTo field.
     def SetSendToErrorMessage(self, message):
 
@@ -3127,7 +3126,7 @@ class xKI(ptModifier):
                     if PLR.playerIsOnline():
                         playerlist.addStringWithColor(PLR.playerGetName(), kColors.DniSelectable, kSelectUseGUIColor)
                     else:
-                        playerlist.addStringWithColor(PLR.playerGetName(), kColors.AgenBlueDk,kSelectDetermined)
+                        playerlist.addStringWithColor(PLR.playerGetName(), kColors.AgenBlueDk, kSelectDetermined)
                 else:
                     PtDebugPrint(u"xKI.RefreshPlayerListDisplay(): Unknown player element type {}.".format(PLR.getType()), level=kErrorLevel)
             elif isinstance(plyr, ptPlayer):
@@ -3397,7 +3396,7 @@ class xKI(ptModifier):
                     showMarkers = 0
                 try:
                     selectedMarker = self.markerGameDisplay.selectedMarker
-                except :
+                except:
                     selectedMarker = -1
                 try:
                     gameLoaded = self.markerGameManager.gameLoaded()
@@ -3469,7 +3468,7 @@ class xKI(ptModifier):
                         toggleCB.setChecked(1)
 
     ## Put away the miniKI (and the BigKI, if up).
-    def ToggleMiniKI(self, forceOpen = 0):
+    def ToggleMiniKI(self, forceOpen=0):
 
         if self.KILevel > kMicroKI and (not self.KIDisabled or KIMini.dialog.isEnabled()):
             if KIMini.dialog.isEnabled():
@@ -3999,7 +3998,7 @@ class xKI(ptModifier):
     def BigKICheckElementRefresh(self, element):
 
         if self.BKCurrentContent is not None:
-            if isinstance(self.BKCurrentContent,ptVaultNodeRef) and element == self.BKCurrentContent.getChild():
+            if isinstance(self.BKCurrentContent, ptVaultNodeRef) and element == self.BKCurrentContent.getChild():
                 if self.BKRightSideMode == kGUI.BKListMode:
                     self.BigKIRefreshContentListDisplay()
                 elif self.BKRightSideMode == kGUI.BKJournalExpanded:
@@ -4626,7 +4625,7 @@ class xKI(ptModifier):
                 dwnBtn.hide()
             # If there are more content lines, fill them out to be blank
             # and disable the button fields.
-            for tagID in range(ID,kGUI.BKILMOffsetLineLast + 10, 10):
+            for tagID in range(ID, kGUI.BKILMOffsetLineLast + 10, 10):
                 iconPic = ptGUIControlDynamicText(KIListModeDialog.dialog.getControlFromTag(tagID + kGUI.BKILMIconPictureOffset))
                 iconPic.hide()
                 iconJrn = ptGUIControlButton(KIListModeDialog.dialog.getControlFromTag(tagID + kGUI.BKILMIconJournalOffset))
@@ -4961,7 +4960,7 @@ class xKI(ptModifier):
         # If the currently played game is the game being edited, load its data.
         if self.markerGameManager is not None and self.markerGameManager.gameLoaded():
             if self.markerGameManager.gameData.data["svrGameTemplateID"] == element.getGameGuid():
-                self.markerGameDisplay = xMarkerGameKIDisplay(self, cachedData = self.markerGameManager.gameData.data)
+                self.markerGameDisplay = xMarkerGameKIDisplay(self, cachedData=self.markerGameManager.gameData.data)
                 self.BigKIFinishDisplayMarkerGame()
                 return
 
@@ -5071,7 +5070,7 @@ class xKI(ptModifier):
         self.RefreshMiniKIMarkerDisplay()
 
         self.SetBigKIToButtons()
-        
+
         # Hide the invite buttons controls.
         ptGUIControlButton(getControl(kGUI.MarkerFolderInvitePlayer)).hide()
         mtbInvitePlayer = ptGUIControlTextBox(getControl(kGUI.MarkerFolderInvitePlayerTB))
@@ -5483,12 +5482,12 @@ class xKI(ptModifier):
                 # Set the new title.
                 myAge.setAgeUserDefinedName(control.getStringW())
                 myAge.save()
-                PtDebugPrint(u"xKI.SaveAgeNameFromEdit(): Updating title to \"{}\".".format(control.getStringW()), level=kDebugDumpLevel )
+                PtDebugPrint(u"xKI.SaveAgeNameFromEdit(): Updating title to \"{}\".".format(control.getStringW()), level=kDebugDumpLevel)
             else:
-                PtDebugPrint(u"xKI.SaveAgeNameFromEdit(): Escape hit.", level=kDebugDumpLevel )
+                PtDebugPrint(u"xKI.SaveAgeNameFromEdit(): Escape hit.", level=kDebugDumpLevel)
             newTitle = myAge.getDisplayName()
         except LookupError:
-            PtDebugPrint(u"xKI.SaveAgeNameFromEdit(): The current Age could not be found.", level=kDebugDumpLevel )
+            PtDebugPrint(u"xKI.SaveAgeNameFromEdit(): The current Age could not be found.", level=kDebugDumpLevel)
             myAge = None
         control.hide()
         # Re-enable the button and text.
@@ -5516,11 +5515,11 @@ class xKI(ptModifier):
                             element.setGameName(control.getString())
                             title.setString(control.getString())
                             element.save()
-                            PtDebugPrint(u"xKI.SaveMarkerGameNameFromEdit(): Updating title to \"{}\".".format(newText), level=kDebugDumpLevel )
+                            PtDebugPrint(u"xKI.SaveMarkerGameNameFromEdit(): Updating title to \"{}\".".format(newText), level=kDebugDumpLevel)
                             self.RefreshPlayerList()
                             self.markerGameDisplay.setGameName(newText)
                         else:
-                            PtDebugPrint(u"xKI.SaveMarkerGameNameFromEdit(): Escape hit.", level=kDebugDumpLevel )
+                            PtDebugPrint(u"xKI.SaveMarkerGameNameFromEdit(): Escape hit.", level=kDebugDumpLevel)
         control.hide()
         # Re-enable the button and text.
         titlebtn = ptGUIControlTextBox(KIMarkerFolderExpanded.dialog.getControlFromTag(kGUI.MarkerFolderTitleBtn))
@@ -5543,7 +5542,7 @@ class xKI(ptModifier):
                             # Find the selected marker.
                             self.markerGameDisplay.setNameOfSelectedMarker(newText)
                         else:
-                            PtDebugPrint(u"xKI.SaveMarkerTextFromEdit(): escape hit!", level=kDebugDumpLevel )
+                            PtDebugPrint(u"xKI.SaveMarkerTextFromEdit(): escape hit!", level=kDebugDumpLevel)
         control.hide()
         # Re-enable the button and text.
         titlebtn = ptGUIControlTextBox(KIMarkerFolderExpanded.dialog.getControlFromTag(kGUI.MarkerFolderMarkerTextBtn))
@@ -5914,7 +5913,7 @@ class xKI(ptModifier):
         elif event == kShowHide:
             if control.isEnabled():
                 # Hide the long folder names.
-                for ID in range(kGUI.LONGBKIIncomingLine,kGUI.LONGBKIFolderLineLast+1):
+                for ID in range(kGUI.LONGBKIIncomingLine, kGUI.LONGBKIFolderLineLast+1):
                     longTB = ptGUIControlTextBox(BigKI.dialog.getControlFromTag(ID))
                     longTB.hide()
 

@@ -542,10 +542,10 @@ class clftImager(ptResponder):
         vault = ptVault()
 
         chron = vault.findChronicleEntry("BahroCave")
-        if chron is not None:
+        if chron:
             ageChronRefList = chron.getChildNodeRefList()
 
-            if ageChronRefList is not None:
+            if ageChronRefList:
                 for ageChron in ageChronRefList:
                     ageChild = ageChron.getChild()
 
@@ -559,7 +559,7 @@ class clftImager(ptResponder):
     def GetAgeSolutionSymbol(self, age):
         node = self.GetAgeNode(age)
 
-        if node is not None:
+        if node:
             varlist = node.chronicleGetValue().split(",")
             return varlist[1]
         else:
@@ -585,7 +585,7 @@ class clftImager(ptResponder):
         boolCleftSolved = 0
         vault = ptVault()
         entry = vault.findChronicleEntry("CleftSolved")
-        if entry is not None:
+        if entry:
             if entry.chronicleGetValue() == "yes":
                 boolCleftSolved = 1
 
@@ -822,7 +822,7 @@ class clftImager(ptResponder):
         CityLinks = []
         vault = ptVault()
         entryCityLinks = vault.findChronicleEntry("CityBookLinks")
-        if entryCityLinks is not None:
+        if entryCityLinks:
             valCityLinks = entryCityLinks.chronicleGetValue()
             PtDebugPrint("valCityLinks = %s" % (valCityLinks))
             CityLinks = valCityLinks.split(",")

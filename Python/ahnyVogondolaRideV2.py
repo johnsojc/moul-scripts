@@ -165,7 +165,7 @@ actStopVogSoundBackward.setVisInfo(1, ["Vogondola"])
 def DisableVogControls(enabledControlList):
     disableControlList = [actVogEjectFront, actVogEjectRear, actVogThrottleF, actVogThrottleB, actVogThrottleRevF, actVogThrottleRevB, actVogDirection, actVogDirectionRev]
 
-    if type(enabledControlList) is list:
+    if isinstance(enabledControlList, list):
         for control in enabledControlList:
             disableControlList.remove(control)
             control.enable()
@@ -661,7 +661,7 @@ class ahnyVogondolaRideV2(ptResponder):
         PtDebugPrint("-------------------------------------------------")
         PtDebugPrint("     notify: id= %d    state= %d" % (id, state))
         if PtFindAvatar(events):
-            PtDebugPrint("     notify: Trigger= %s    Self= %s" % (str(PtGetClientIDFromAvatarKey(PtFindAvatar(events).getKey())), str(PtGetClientIDFromAvatarKey(PtGetLocalAvatar().getKey()))))
+            PtDebugPrint("     notify: Trigger= %s    Self= %d" % (str(PtGetClientIDFromAvatarKey(PtFindAvatar(events).getKey())), PtGetClientIDFromAvatarKey(PtGetLocalAvatar().getKey())))
         PtDebugPrint("     notify: events= %s" % (str(events)))
         PtDebugPrint(" ")
 

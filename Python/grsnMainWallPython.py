@@ -52,17 +52,17 @@ import cPickle
 ##############################################################
 # define the attributes/parameters that we need from the 3dsMax scene
 ##############################################################
-northWall = ptAttribSceneobjectList(1,"North Wall Decals",byObject=1)
-southWall = ptAttribSceneobjectList(2,"South Wall Decals",byObject=1)
-northBlocker = ptAttribSceneobjectList(3,"North Wall Blockers",byObject=1)
-southBlocker = ptAttribSceneobjectList(4,"South Wall Blockers",byObject=1)
+northWall = ptAttribSceneobjectList(1, "North Wall Decals", byObject=1)
+southWall = ptAttribSceneobjectList(2, "South Wall Decals", byObject=1)
+northBlocker = ptAttribSceneobjectList(3, "North Wall Blockers", byObject=1)
+southBlocker = ptAttribSceneobjectList(4, "South Wall Blockers", byObject=1)
 ##############################################################
 # grsnMainWallPython
 ##############################################################
 
 ## keep track of what to draw
-NorthBlockers = [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1]
-SouthBlockers = [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1]
+NorthBlockers = [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
+SouthBlockers = [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
 
 ReceiveInit = false
 """
@@ -77,9 +77,9 @@ kTeamLightsBlink = 2
 
 ## game states
 
-kWaiting    = 0
-kNorthSit   = 1
-kSouthSit   = 2
+kWaiting = 0
+kNorthSit = 1
+kSouthSit = 2
 kNorthSelect = 3
 kSouthSelect = 4
 kNorthReady = 5
@@ -94,21 +94,21 @@ kNorthQuit = 13
 
 
 class grsnMainWallPython(ptResponder):
-   
+
     # constants
-    
+
     def __init__(self):
         "construction"
         PtDebugPrint("grsnMainWallPython::init begin")
         ptResponder.__init__(self)
         self.id = 52394
         self.version = 1
-        PtDebugPrint("grsnMainWallPython::init end")        
-"""    
+        PtDebugPrint("grsnMainWallPython::init end")
+"""
     def OnServerInitComplete(self):
         global ReceiveInit
-        
-        PtDebugPrint("grsnWallPython::OnServerInitComplete")        
+
+        PtDebugPrint("grsnWallPython::OnServerInitComplete")
         solo = true
         if len(PtGetPlayerList()):
             solo = false
@@ -116,9 +116,9 @@ class grsnMainWallPython(ptResponder):
             return
         else:
             print"solo in climbing wall"
-    
+
     def OnClimbingBlockerEvent(self,blocker):
-        
+
         print"looking for blocker named ",blocker.getName()
         i = 0
         while i < 171:
@@ -131,13 +131,13 @@ class grsnMainWallPython(ptResponder):
                 print"found matching texture named ",southWall.value[i].getName()
                 return
             i = i + 1
-        
-                
+
+
     def OnClimbingWallInit(self,type,state,value):
         global ReceiveInit
         global SouthState
         global NorthState
-        
+
         print"grsnMainClimbingWall::OnClimbingWallInit type ",type," state ",state," value ",value
         if (ReceiveInit == false):
             print"failed to receive init"
@@ -145,7 +145,7 @@ class grsnMainWallPython(ptResponder):
         if (type == ptClimbingWallMsgType.kEndGameState):
             ReceiveInit = false
             print "finished receiving total game state"
-            # update lights display 
+            # update lights display
             if (SouthState == ptClimbingWallMsgState.kSouthWin or \
                 NorthState == ptClimbingWallMsgState.kNorthWin or \
                 NorthState == ptClimbingWallMsgState.kNorthQuit or \
@@ -153,33 +153,33 @@ class grsnMainWallPython(ptResponder):
                     #display wall settings
                 i = 0
                 while (i < 20):
-                    value = SouthBlockers[i] 
+                    value = SouthBlockers[i]
                     if (value > -1):
                         southWall.value[value].runAttachedResponder(kTeamLightsOn)
                         print"drawing s wall index",value
-                    value = NorthBlockers[i] 
+                    value = NorthBlockers[i]
                     if (value >  -1):
                         northWall.value[value].runAttachedResponder(kTeamLightsOn)
                         print"drawing n wall index",value
                     i = i + 1
-        
+
         if (type == ptClimbingWallMsgType.kTotalGameState):
             SouthState = state
             NorthState = value
             print "begin receiving total game state"
-        
+
         elif (type == ptClimbingWallMsgType.kAddBlocker and state > 0):
             self.SetWallIndex(state,true,value)
-                        
-        
+
+
     def OnClimbingWallEvent(self,type,state,value):
         global NorthState
         global SouthState
         global NorthBlockers
         global SouthBlockers
-        
+
         print"grsnMainClimbingWall::OnClimbingWallInit type ",type," state ",state," value ",value
-        
+
         if (type == ptClimbingWallMsgType.kNewState):
             if (value == 1):
                 NorthState = state
@@ -192,11 +192,11 @@ class grsnMainWallPython(ptResponder):
                     #display wall settings
                 i = 0
                 while (i < 20):
-                    value = SouthBlockers[i] 
+                    value = SouthBlockers[i]
                     if (value > -1):
                         southWall.value[value].runAttachedResponder(kTeamLightsOn)
                         print"drawing s wall index",value
-                    value = NorthBlockers[i] 
+                    value = NorthBlockers[i]
                     if (value >  -1):
                         northWall.value[value].runAttachedResponder(kTeamLightsOn)
                         print"drawing n wall index",value
@@ -220,15 +220,15 @@ class grsnMainWallPython(ptResponder):
 
         elif (type == ptClimbingWallMsgType.kAddBlocker):
             self.SetWallIndex(state,true,value)
-            
-        
+
+
         elif (type == ptClimbingWallMsgType.kRemoveBlocker):
             self.SetWallIndex(state,false,value)
-    
+
     def SetWallIndex(self,index,value,north):
         global SouthBlockers
         global NorthBlockers
-        
+
         i = 0
         if (value):
             if (north):
@@ -264,7 +264,7 @@ class grsnMainWallPython(ptResponder):
                         return
                 SouthBlockers[i] = -1
                 print"removed index ",index," from list slot ",i
-    
-        
+
+
 
         """

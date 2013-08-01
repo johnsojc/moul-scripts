@@ -50,7 +50,6 @@ manages page loading for public vs. non-public Garrisons
 from Plasma import *
 from PlasmaTypes import *
 
-
 IsPublic = 0
 
 
@@ -73,61 +72,54 @@ class grsnPageMaster(ptResponder):
             parentname = parentinfo.getAgeFilename()
         except:
             pass
-    
+
         if parentname == "Neighborhood":
             IsPublic = 1
-            print "grsnPageMaster.__init__(): Garrison version = public"
+            PtDebugPrint("grsnPageMaster.__init__(): Garrison version = public")
         else:
-            print "grsnPageMaster.__init__(): Garrison version = Yeesha"
+            PtDebugPrint("grsnPageMaster.__init__(): Garrison version = Yeesha")
 
         pages = []
 
-        # Add the common pages
-        ## actually, we'll just set these to load automatically in the .age file
-        #pages += ["grsnWellInner","grsnWellFirstFloorRooms","grsnWellCameras"]
+        # common pages - set to load automatically in the .age file
 
         # for public version, add any pages specific only for that
         if IsPublic:
-            pages += ["WellWindowFake"]        
+            pages += ["WellWindowFake"]
+
         # for non-public version, add all the remaining pages
         else:
-            pages += ["grsnWellOccluders","grsnWellSecondFloorRooms","grsnWellSecondFloorGearRoom","grsnElevator","grsnExterior"]
-            pages += ["grsnVeranda","grsnVerandaExterior","grsnObsRoom01Imager","grsnObsRoom02Imager","grsnPrison","grsnPrisonTunnels"]
-            pages += ["grsnTeamRoom01","grsnTeamRoom02","grsnTrainingCenterHalls","grsnTrainingCenterMudRooms","grsnTrainingCntrLinkRm"]
-            pages += ["TrnCtrControlRoom01","TrnCtrControlRoom02","trainingCenterObservationRooms","NexusBlackRoom","NexusWhiteRoom"]
-            pages += ["WallRoom","grsnWallRoomClimbingPhys"]
-            pages += ["FemaleElevatorArrivingBottom","FemaleElevatorArrivingTop","FemaleElevatorLeavingBottom","FemaleElevatorLeavingTop"]
-            pages += ["FemaleLandingRoll","FemaleReadyIdle","FemaleReadyJump","FemaleTubeFall"]
-            pages += ["FemaleWallClimbDismountDown","FemaleWallClimbDismountLeft","FemaleWallClimbDismountRight","FemaleWallClimbDismountUp"]
-            pages += ["FemaleWallClimbDown","FemaleWallClimbFallOff","FemaleWallClimbIdle","FemaleWallClimbLeft"]
-            pages += ["FemaleWallClimbMountDown","FemaleWallClimbMountLeft","FemaleWallClimbMountRight","FemaleWallClimbMountUp"]
-            pages += ["FemaleWallClimbRelease","FemaleWallClimbRight","FemaleWallClimbUp"]
-            pages += ["MaleElevatorArrivingBottom","MaleElevatorArrivingTop","MaleElevatorLeavingBottom","MaleElevatorLeavingTop"]
-            pages += ["MaleLandingRoll","MaleReadyIdle","MaleReadyJump","MaleTubeFall"]
-            pages += ["MaleWallClimbDismountDown","MaleWallClimbDismountLeft","MaleWallClimbDismountRight","MaleWallClimbDismountUp"]
-            pages += ["MaleWallClimbDown","MaleWallClimbFallOff","MaleWallClimbIdle","MaleWallClimbLeft"]
-            pages += ["MaleWallClimbMountDown","MaleWallClimbMountLeft","MaleWallClimbMountRight","MaleWallClimbMountUp"]
-            pages += ["MaleWallClimbRelease","MaleWallClimbRight","MaleWallClimbUp"]
-            
-        PtPageInNode(pages)
+            pages += ["grsnWellOccluders", "grsnWellSecondFloorRooms", "grsnWellSecondFloorGearRoom", "grsnElevator"]
+            pages += ["grsnExterior", "grsnVeranda", "grsnVerandaExterior", "grsnObsRoom01Imager", "grsnObsRoom02Imager"]
+            pages += ["grsnPrison", "grsnPrisonTunnels", "grsnTeamRoom01", "grsnTeamRoom02", "grsnTrainingCenterHalls"]
+            pages += ["grsnTrainingCenterMudRooms", "grsnTrainingCntrLinkRm", "TrnCtrControlRoom01", "TrnCtrControlRoom02"]
+            pages += ["trainingCenterObservationRooms", "NexusBlackRoom", "NexusWhiteRoom", "WallRoom", "grsnWallRoomClimbingPhys"]
+            pages += ["FemaleElevatorArrivingBottom", "FemaleElevatorArrivingTop", "FemaleElevatorLeavingBottom"]
+            pages += ["FemaleElevatorLeavingTop", "FemaleLandingRoll", "FemaleReadyIdle", "FemaleReadyJump", "FemaleTubeFall"]
+            pages += ["FemaleWallClimbDismountDown", "FemaleWallClimbDismountLeft", "FemaleWallClimbDismountRight"]
+            pages += ["FemaleWallClimbDismountUp", "FemaleWallClimbDown", "FemaleWallClimbFallOff", "FemaleWallClimbIdle"]
+            pages += ["FemaleWallClimbLeft", "FemaleWallClimbMountDown", "FemaleWallClimbMountLeft", "FemaleWallClimbMountRight"]
+            pages += ["FemaleWallClimbMountUp", "FemaleWallClimbRelease", "FemaleWallClimbRight", "FemaleWallClimbUp"]
+            pages += ["MaleElevatorArrivingBottom", "MaleElevatorArrivingTop", "MaleElevatorLeavingBottom", "MaleElevatorLeavingTop"]
+            pages += ["MaleLandingRoll", "MaleReadyIdle", "MaleReadyJump", "MaleTubeFall", "MaleWallClimbDismountDown"]
+            pages += ["MaleWallClimbDismountLeft", "MaleWallClimbDismountRight", "MaleWallClimbDismountUp"]
+            pages += ["MaleWallClimbDown", "MaleWallClimbFallOff", "MaleWallClimbIdle", "MaleWallClimbLeft"]
+            pages += ["MaleWallClimbMountDown", "MaleWallClimbMountLeft", "MaleWallClimbMountRight", "MaleWallClimbMountUp"]
+            pages += ["MaleWallClimbRelease", "MaleWallClimbRight", "MaleWallClimbUp"]
 
+        PtPageInNode(pages)
 
     def OnFirstUpdate(self):
         pass
 
-    
     def OnServerInitComplete(self):
         pass
-
 
     def Load(self):
         pass
 
-
-    def OnSDLNotify(self,VARname,SDLname,playerID,tag):
+    def OnSDLNotify(self, VARname, SDLname, playerID, tag):
         pass
 
-
-    def OnNotify(self,state,id,events):
+    def OnNotify(self, state, id, events):
         pass
-

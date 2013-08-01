@@ -58,6 +58,5 @@ class Ercana(ptResponder):
         self.id = 7021
         self.version = 1
 
-
-    def OnNotify(self,state,id,events):
+    def OnNotify(self, state, id, events):
         pass

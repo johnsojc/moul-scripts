@@ -201,7 +201,7 @@ class clftNpcZandi(ptModifier):
         vault = ptVault()
         chron = vault.findChronicleEntry("JourneyClothProgress")
         jcProgress = ""
-        if chron is not None:
+        if chron:
             ageChronRefList = chron.getChildNodeRefList()
             for ageChron in ageChronRefList:
                 ageChild = ageChron.getChild()

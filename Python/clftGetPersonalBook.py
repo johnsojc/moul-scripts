@@ -229,7 +229,7 @@ class clftGetPersonalBook(ptResponder):
             gDemoMovie.playPaused()
         elif id == kTrailerFadeInID:
             PtDebugPrint("xLiveTrailer - roll the movie", level=kDebugDumpLevel)
-            if gDemoMovie is not None:
+            if gDemoMovie:
                 gDemoMovie.resume()
         elif id == kTrailerDoneID:
             PtDebugPrint("Quitting demo now...")

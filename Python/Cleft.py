@@ -82,7 +82,7 @@ class Cleft(ptResponder):
 
         vault = ptVault()
         entryCleft = vault.findChronicleEntry("CleftSolved")
-        if entryCleft is not None:
+        if entryCleft:
             entryCleftValue = entryCleft.chronicleGetValue()
             if entryCleftValue != "yes":
                 loadZandi = 1
@@ -93,7 +93,7 @@ class Cleft(ptResponder):
 
         vault = ptVault()
         entryTomahna = vault.findChronicleEntry("TomahnaLoad")
-        if entryTomahna is not None:
+        if entryTomahna:
             entryTomahnaValue = entryTomahna.chronicleGetValue()
             if entryTomahnaValue == "yes":
                 loadTomahna = 1

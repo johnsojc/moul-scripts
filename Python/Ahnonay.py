@@ -51,14 +51,14 @@ from PlasmaTypes import *
 from PlasmaNetConstants import *
 from xPsnlVaultSDL import *
 
-spherePages = set(["Ahnonay_District_ahnySphere01",
-                   "Ahnonay_District_ahnySphere02",
-                   "Ahnonay_District_ahnySphere03",
-                   "Ahnonay_District_ahnySphere04",
-                   "Ahnonay_ahnySphere01",
-                   "Ahnonay_ahnySphere02",
-                   "Ahnonay_ahnySphere03",
-                   "Ahnonay_ahnySphere04"])
+spherePages = {"Ahnonay_District_ahnySphere01",
+               "Ahnonay_District_ahnySphere02",
+               "Ahnonay_District_ahnySphere03",
+               "Ahnonay_District_ahnySphere04",
+               "Ahnonay_ahnySphere01",
+               "Ahnonay_ahnySphere02",
+               "Ahnonay_ahnySphere03",
+               "Ahnonay_ahnySphere04"}
 
 
 class Ahnonay(ptResponder):

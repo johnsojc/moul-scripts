@@ -44,7 +44,7 @@ You can contact Cyan Worlds, Inc. by email legal@cyan.com
 Module: grsnEmgrPhase0.py
 Age: Garrison
 Date: January 2002
-Event Manager interface for Garrison Phase 0 content 
+Event Manager interface for Garrison Phase 0 content
 """
 
 from Plasma import *
@@ -54,12 +54,9 @@ import string
 #globals
 variable = None
 
-BooleanVARs = [
-
-    ]
+BooleanVARs = []
 
 AgeStartedIn = None
-
 
 
 class grsnEmgrPhase0(ptResponder):
@@ -80,39 +77,34 @@ class grsnEmgrPhase0(ptResponder):
         if AgeStartedIn == PtGetAgeName():
             ageSDL = PtGetAgeSDL()
             for variable in BooleanVARs:
-                print "tying together", variable
-                ageSDL.setNotify(self.key,variable,0.0)
+                PtDebugPrint("tying together %s" % (variable))
+                ageSDL.setNotify(self.key, variable, 0.0)
                 self.IManageBOOLs(variable, "")
-       
-    def OnSDLNotify(self,VARname,SDLname,PlayerID,tag):
+
+    def OnSDLNotify(self, VARname, SDLname, PlayerID, tag):
         global variable
         global sdlvalue
 
-        
-        PtDebugPrint("grsnEmgrPhase0.SDLNotify - name = %s, SDLname = %s" % (VARname,SDLname))
-        
+        PtDebugPrint("grsnEmgrPhase0.SDLNotify - name = %s, SDLname = %s" % (VARname, SDLname))
+
         if VARname in BooleanVARs:
-            print "grsnEmgrPhase0.OnSDLNotify : %s is a BOOLEAN Variable" % (VARname)
-            self.IManageBOOLs(VARname,SDLname)
-            
+            PtDebugPrint("grsnEmgrPhase0.OnSDLNotify : %s is a BOOLEAN Variable" % (VARname))
+            self.IManageBOOLs(VARname, SDLname)
+
         else:
             PtDebugPrint("grsnEmgrPhase0.OnSDLNotify:\tERROR: Variable %s was not recognized as a Boolean, Performance, or State Variable. " % (VARname))
             pass
 
-
-    def IManageBOOLs(self,VARname,SDLname):
+    def IManageBOOLs(self, VARname, SDLname):
         if AgeStartedIn == PtGetAgeName():
             ageSDL = PtGetAgeSDL()
-            if ageSDL[VARname][0] == 1: # are we paging things in?
+            if ageSDL[VARname][0] == 1:  # are we paging things in?
                 PtDebugPrint("grsnEmgrPhase0.OnSDLNotify:\tPaging in room ", VARname)
                 PtPageInNode(VARname)
-            elif ageSDL[VARname][0] == 0:  #are we paging things out?
-                print "variable = ", VARname
+            elif ageSDL[VARname][0] == 0:  # are we paging things out?
+                PtDebugPrint("variable = %s" % (VARname))
                 PtDebugPrint("grsnEmgrPhase0.OnSDLNotify:\tPaging out room ", VARname)
                 PtPageOutNode(VARname)
             else:
                 sdlvalue = ageSDL[VARname][0]
-                PtDebugPrint("grsnEmgrPhase0.OnSDLNotify:\tERROR: Variable %s had unexpected SDL value of %s" % (VARname,sdlvalue))
-
-
-
+                PtDebugPrint("grsnEmgrPhase0.OnSDLNotify:\tERROR: Variable %s had unexpected SDL value of %s" % (VARname, sdlvalue))

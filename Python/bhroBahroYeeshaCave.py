@@ -237,7 +237,7 @@ class bhroBahroYeeshaCave(ptModifier):
 
         # check and see if the yeesha speech variable has been set yet
         self.UseYeeshaSpeech = self.GetAgeVariable(self.ageFrom, "YeeshaSpeech")
-        if self.UseYeeshaSpeech is not None:
+        if self.UseYeeshaSpeech:
             PtDebugPrint("bhroBahroYeeshaCave.OnServerInitComplete(): useYeeshaSpeech = %s" % (self.UseYeeshaSpeech))
             if int(self.UseYeeshaSpeech) == 0:
                 serieslen = self.GetNumYSSet()
@@ -439,7 +439,7 @@ class bhroBahroYeeshaCave(ptModifier):
     def GetAgeVariable(self, age, variable):
         node = self.GetAgeNode(age)
 
-        if node is not None:
+        if node:
             varlist = node.chronicleGetValue().split(",")
             return varlist[self.varMap[variable]]
         else:
@@ -448,7 +448,7 @@ class bhroBahroYeeshaCave(ptModifier):
     def SetAgeVariable(self, age, variable, value):
         node = self.GetAgeNode(age)
 
-        if node is not None:
+        if node:
             varlist = node.chronicleGetValue().split(",")
             while len(varlist) < len(self.varMap):
                 varlist.append("0")
@@ -482,7 +482,7 @@ class bhroBahroYeeshaCave(ptModifier):
     def CheckForSolution(self):
         var = self.GetAgeVariable("Teledahn", "SolutionSymbol")
 
-        if var is not None:
+        if var:
             return 1
         else:
             return 0
@@ -503,7 +503,7 @@ class bhroBahroYeeshaCave(ptModifier):
 
         vault = ptVault()
         entry = vault.findChronicleEntry("BahroCave")
-        if entry is not None:
+        if entry:
             agelist = ["Teledahn", "Garden", "Garrison", "Kadish"]
             for v in range(len(agelist)):
                 newnode = ptVaultChronicleNode(0)
@@ -516,7 +516,7 @@ class bhroBahroYeeshaCave(ptModifier):
         self.ageDict[age]['PoleCollider'].value.physics.suppress(1)
         if not fforward:
             vault = ptVault()
-            if vault is not None:  # is the Vault online?
+            if vault:  # is the Vault online?
                 psnlSDL = vault.getPsnlAgeSDL()
                 if psnlSDL:
                     ypageSDL = psnlSDL.findVar("YeeshaPage25")
@@ -549,7 +549,7 @@ class bhroBahroYeeshaCave(ptModifier):
 
     def PostJCOneShot(self, age):
         vault = ptVault()
-        if vault is not None:  # is the Vault online?
+        if vault:  # is the Vault online?
             psnlSDL = vault.getPsnlAgeSDL()
             if psnlSDL:
                 ypageSDL = psnlSDL.findVar("YeeshaPage25")
@@ -741,7 +741,7 @@ class bhroBahroYeeshaCave(ptModifier):
         PtDebugPrint("bhroBahroYeeshaCave.GetAutoStartLevel()")
         vault = ptVault()
         bc = vault.findChronicleEntry("BahroCave")
-        if bc is not None:
+        if bc:
             val = bc.chronicleGetValue()
             if val == "":
                 return 0
@@ -753,7 +753,7 @@ class bhroBahroYeeshaCave(ptModifier):
     def IncrementAutoStartLevel(self):
         vault = ptVault()
         bc = vault.findChronicleEntry("BahroCave")
-        if bc is not None:
+        if bc:
             val = bc.chronicleGetValue()
             if val == "":
                 val = 0

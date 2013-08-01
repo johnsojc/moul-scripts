@@ -58,6 +58,5 @@ class EderTsogal(ptResponder):
         self.id = 5360
         self.version = 1
 
-
-    def OnNotify(self,state,id,events):
+    def OnNotify(self, state, id, events):
         pass

@@ -50,9 +50,9 @@ event manager hooks for the GarrisonTrnCtrExtTrans
 from Plasma import *
 from PlasmaTypes import *
 
-arrivePt     = ptAttribSceneobject(1,"warp point")
-triggerRgn1 = ptAttribActivator(2,"upper box")
-triggerRgn2 = ptAttribActivator(3,"lower box")
+arrivePt = ptAttribSceneobject(1, "warp point")
+triggerRgn1 = ptAttribActivator(2, "upper box")
+triggerRgn2 = ptAttribActivator(3, "lower box")
 
 inRegion1 = false
 
@@ -64,26 +64,25 @@ class grsnTrnCtrBridgeSafety(ptResponder):
         self.id = 3278
         self.version = 1
 
-    def OnNotify(self,state,id,events):
+    def OnNotify(self, state, id, events):
         global inRegion1
-        
+
         local = PtGetLocalAvatar()
         avatar = PtFindAvatar(events)
         if (avatar != local):
             return
-        
+
         if (id == triggerRgn1.id):
             for event in events:
-                if (event[0]==1):
-                    print "in region 1 ",event[1]
+                if (event[0] == 1):
+                    PtDebugPrint("in region 1 %d" % (event[1]))
                     inRegion1 = event[1]
                     return
-        
-        if (id == triggerRgn2.id):
-            if (inRegion1):
+
+        if id == triggerRgn2.id:
+            if inRegion1:
                 for event in events:
-                    if (event[0]==1 and event[1]==1):
-                        print"in both regions - warp up"
+                    if (event[0] == 1 and event[1] == 1):
+                        PtDebugPrint("in both regions - warp up")
                         PtGetLocalAvatar().physics.warpObj(arrivePt.value.getKey())
                         return
- 

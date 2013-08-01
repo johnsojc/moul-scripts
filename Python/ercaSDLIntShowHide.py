@@ -53,10 +53,11 @@ from Plasma import *
 from PlasmaTypes import *
 import string
 
-stringVarName = ptAttribString(1,"Age SDL Var Name")
-stringShowStates = ptAttribString(2,"States in which hidden")
+stringVarName = ptAttribString(1, "Age SDL Var Name")
+stringShowStates = ptAttribString(2, "States in which hidden")
 
 AgeStartedIn = None
+
 
 class ercaSDLIntShowHide(ptMultiModifier):
 
@@ -70,11 +71,10 @@ class ercaSDLIntShowHide(ptMultiModifier):
         global AgeStartedIn
         AgeStartedIn = PtGetAgeName()
 
-
     def OnServerInitComplete(self):
-        if type(stringVarName.value) == type("") and stringVarName.value != "":
+        if type(stringVarName.value) is str and stringVarName.value != "":
             ageSDL = PtGetAgeSDL()
-            ageSDL.setFlags(stringVarName.value,1,1)
+            ageSDL.setFlags(stringVarName.value, 1, 1)
             ageSDL.sendToClients(stringVarName.value)
             try:
                 self.enabledStateList = stringShowStates.value.split(",")
@@ -86,12 +86,11 @@ class ercaSDLIntShowHide(ptMultiModifier):
         else:
             PtDebugPrint("ERROR: ercaSDLIntShowHide.OnFirstUpdate():\tERROR: missing SDL var name")
             pass
-        
+
         if AgeStartedIn == PtGetAgeName():
             ageSDL = PtGetAgeSDL()
-            if type(stringVarName.value) == type("") and stringVarName.value != "":
-                #PtDebugPrint("Setting notify on %s..." % stringVarName.value)
-                ageSDL.setNotify(self.key,stringVarName.value,0.0)
+            if type(stringVarName.value) is str and stringVarName.value != "":
+                ageSDL.setNotify(self.key, stringVarName.value, 0.0)
                 try:
                     SDLvalue = ageSDL[stringVarName.value][0]
                 except:
@@ -113,15 +112,15 @@ class ercaSDLIntShowHide(ptMultiModifier):
             else:
                 PtDebugPrint("ERROR: ercaSDLIntShowHide.OnServerInitComplete():\tERROR: missing SDL var name")
                 pass
-        
-    def OnSDLNotify(self,VARname,SDLname,playerID,tag):        
+
+    def OnSDLNotify(self, VARname, SDLname, playerID, tag):
         if VARname != stringVarName.value:
             return
-        
+
         if AgeStartedIn == PtGetAgeName():
             ageSDL = PtGetAgeSDL()
             SDLvalue = ageSDL[stringVarName.value][0]
-            if  SDLvalue in self.enabledStateList:
+            if SDLvalue in self.enabledStateList:
                 self.DisableObject()
             else:
                 self.EnableObject()
@@ -137,7 +136,7 @@ class ercaSDLIntShowHide(ptMultiModifier):
         self.sceneobject.physics.suppress(true)
 
     def OnBackdoorMsg(self, target, param):
-        if type(stringVarName.value) != type(None) and stringVarName.value != "":
+        if stringVarName.value and stringVarName.value != "":
             if target == stringVarName.value:
                 if param.lower() in self.enabledStateList:
                     self.DisableObject()

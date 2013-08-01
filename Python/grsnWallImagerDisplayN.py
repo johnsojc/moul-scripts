@@ -52,7 +52,7 @@ import cPickle
 ##############################################################
 # define the attributes/parameters that we need from the 3dsMax scene
 ##############################################################
-northWall = ptAttribSceneobjectList(1,"North Wall",byObject=1)
+northWall = ptAttribSceneobjectList(1, "North Wall", byObject=1)
 ##############################################################
 # grsnWallImagerDisplayN
 ##############################################################
@@ -64,9 +64,9 @@ kTeamLightsOff = 1
 
 ## game states
 
-kWaiting    = 0
-kNorthSit   = 1
-kSouthSit   = 2
+kWaiting = 0
+kNorthSit = 1
+kSouthSit = 2
 kNorthSelect = 3
 kSouthSelect = 4
 kNorthReady = 5
@@ -81,21 +81,21 @@ kNorthQuit = 13
 
 
 class grsnWallImagerDisplayN(ptResponder):
-   
+
     # constants
-    
+
     def __init__(self):
         "construction"
         PtDebugPrint("grsnWallImagerDisplayN::init begin")
         ptResponder.__init__(self)
         self.id = 52398
         self.version = 1
-        PtDebugPrint("grsnWallImagerDisplayN::init end")        
+        PtDebugPrint("grsnWallImagerDisplayN::init end")
 """
     def OnServerInitComplete(self):
         global ReceiveInit
-        
-        PtDebugPrint("grsnWallPython::OnServerInitComplete")        
+
+        PtDebugPrint("grsnWallPython::OnServerInitComplete")
         solo = true
         if len(PtGetPlayerList()):
             solo = false
@@ -103,11 +103,11 @@ class grsnWallImagerDisplayN(ptResponder):
             return
         else:
             print"solo in climbing wall"
-            
-        
+
+
     def OnClimbingWallInit(self,type,state,value):
         global ReceiveInit
-        
+
         print"grsnClimbingWall::OnClimbingWallInit type ",type," state ",state," value ",value
         if (ReceiveInit == false):
             print"failed to receive init"
@@ -115,23 +115,23 @@ class grsnWallImagerDisplayN(ptResponder):
         if (type == ptClimbingWallMsgType.kEndGameState):
             ReceiveInit = false
             print "finished receiving total game state"
-        
+
         if (type == ptClimbingWallMsgType.kTotalGameState):
             print "begin receiving total game state"
-        
+
         elif (type == ptClimbingWallMsgType.kAddBlocker and state > 0 and value):
             northWall.value[state].runAttachedResponder(kTeamLightsOn)
-    
+
     def OnClimbingWallEvent(self,type,state,value):
-        
+
         if (type == ptClimbingWallMsgType.kAddBlocker and value == true):            #display wall settings
             northWall.value[state].runAttachedResponder(kTeamLightsOn)
             print"Imager display N drawing n wall index",state
-                    
+
         elif (type == ptClimbingWallMsgType.kRemoveBlocker and value == true):
             northWall.value[state].runAttachedResponder(kTeamLightsOff)
             print"Imager display N clearing n wall index",state
-        
+
         elif (type == ptClimbingWallMsgType.kNewState):
             if (state == ptClimbingWallMsgState.kSouthSit or state == ptClimbingWallMsgState.kNorthSit ):
                 #clear wall settings
@@ -140,8 +140,3 @@ class grsnWallImagerDisplayN(ptResponder):
                     northWall.value[i].runAttachedResponder(kTeamLightsOff)
                     i = i + 1
 """
-
-
-
-
-

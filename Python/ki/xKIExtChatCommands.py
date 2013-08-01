@@ -52,13 +52,13 @@ import xInvite
 # The value is a string that is a console command or a python function that
 # will be executed.
 xChatExtendedChat = {
-    Plasma.PtGetLocalizedString("KI.Commands.Sit") : Plasma.PtAvatarSitOnGround,
-    Plasma.PtGetLocalizedString("KI.Commands.Afk") : Plasma.PtAvatarEnterAFK,
-    Plasma.PtGetLocalizedString("KI.Commands.Invite") : xInvite.CreateInvitation,
-    Plasma.PtGetLocalizedString("KI.Commands.Uninvite") : xInvite.DeleteInvitation,
-    Plasma.PtGetLocalizedString("KI.Commands.Accept") : xInvite.AcceptInvitation,
-    Plasma.PtGetLocalizedString("KI.Commands.ShowInvites") : xInvite.ShowInvitations,
-    Plasma.PtGetLocalizedString("KI.Commands.Me") : xInvite.MeChat
+    Plasma.PtGetLocalizedString("KI.Commands.Sit"): Plasma.PtAvatarSitOnGround,
+    Plasma.PtGetLocalizedString("KI.Commands.Afk"): Plasma.PtAvatarEnterAFK,
+    Plasma.PtGetLocalizedString("KI.Commands.Invite"): xInvite.CreateInvitation,
+    Plasma.PtGetLocalizedString("KI.Commands.Uninvite"): xInvite.DeleteInvitation,
+    Plasma.PtGetLocalizedString("KI.Commands.Accept"): xInvite.AcceptInvitation,
+    Plasma.PtGetLocalizedString("KI.Commands.ShowInvites"): xInvite.ShowInvitations,
+    Plasma.PtGetLocalizedString("KI.Commands.Me"): xInvite.MeChat
 }
 
 # Enter new commands in the dictionary below.
@@ -91,7 +91,7 @@ xChatEmoteXlate = {
     Plasma.PtGetLocalizedString("KI.Commands.Cower"): ("Cower", "KI.EmoteStrings.Cower"),
     Plasma.PtGetLocalizedString("KI.Commands.Groan"): ("Groan", "KI.EmoteStrings.Groan"),
     Plasma.PtGetLocalizedString("KI.Commands.LeanLeft"): ("LeanLeft", "KI.EmoteStrings.LeanLeft"),
-    Plasma.PtGetLocalizedString("KI.Commands.LeanRight"): ("LeanRight", "KI.EmoteStrings.LeanRight"),    
+    Plasma.PtGetLocalizedString("KI.Commands.LeanRight"): ("LeanRight", "KI.EmoteStrings.LeanRight"),
     Plasma.PtGetLocalizedString("KI.Commands.Okay"): ("Okay", "KI.EmoteStrings.Okay"),
     Plasma.PtGetLocalizedString("KI.Commands.OverHere"): ("OverHere", "KI.EmoteStrings.OverHere"),
     Plasma.PtGetLocalizedString("KI.Commands.Stop"): ("Stop", "KI.EmoteStrings.Stop"),
