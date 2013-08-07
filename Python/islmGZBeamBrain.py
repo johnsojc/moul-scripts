@@ -50,14 +50,8 @@ from Plasma import *
 from PlasmaTypes import *
 from PlasmaKITypes import *
 
-Beamlight = ptAttribSceneobject (1,"GZBeam RT Light")
-respRotateBeam = ptAttribResponder (2,"resp: Rotate GZBeam")
-#respShowShell = ptAttribResponder(3, "resp: Shell pulse")
-#actBeamAlign = ptAttribActivator(4,"rgn: Shell beam detector")
-#actShellJump = ptAttribActivator(5,"rgn: Shell jump detector")
-
-#shellseen = 0
-#timeforloop = 0
+Beamlight = ptAttribSceneobject(1, "GZBeam RT Light")
+respRotateBeam = ptAttribResponder(2, "resp: Rotate GZBeam")
 
 boolGZBeamVis = 0
 
@@ -71,59 +65,42 @@ class islmGZBeamBrain(ptResponder):
 
         version = 2
         self.version = version
-        print "__init__islmGZBeamBrain v.", version,".3"
-
+        PtDebugPrint("__init__islmGZBeamBrain v.%d.3" % (version))
 
     def OnServerInitComplete(self):
         global boolGZBeamVis
 
         try:
             ageSDL = PtGetAgeSDL()
-            ageSDL.setFlags("islmGZBeamVis",1,1)
-            ageSDL.sendToClients("islmGZBeamVis") 
-            ageSDL.setNotify(self.key,"islmGZBeamVis",0.0)
+            ageSDL.setFlags("islmGZBeamVis", 1, 1)
+            ageSDL.sendToClients("islmGZBeamVis")
+            ageSDL.setNotify(self.key, "islmGZBeamVis", 0.0)
             boolGZBeamVis = ageSDL["islmGZBeamVis"][0]
         except:
-            print "islmGZBeamBrain.OnServerInitComplete:  ERROR!  Can't find the boolGZBeamVis sdl, doing nothing."
+            PtDebugPrint("islmGZBeamBrain.OnServerInitComplete:  ERROR!  Can't find the boolGZBeamVis sdl, doing nothing.")
             return
 
         if boolGZBeamVis:
-            print "islmGZBeamBrain.OnServerInitComplete: The Great Zero beam IS active."
+            PtDebugPrint("islmGZBeamBrain.OnServerInitComplete: The Great Zero beam IS active.")
             self.TurnBeamOn()
         else:
-            print "islmGZBeamBrain.OnServerInitComplete: The Great Zero beam is NOT active."
+            PtDebugPrint("islmGZBeamBrain.OnServerInitComplete: The Great Zero beam is NOT active.")
             self.TurnBeamOff()
 
-    
     def TurnBeamOn(self):
-        print "islmGZBeamBrain.RotateBeam: Trying to turn the beam ON."
+        PtDebugPrint("islmGZBeamBrain.RotateBeam: Trying to turn the beam ON.")
         Beamlight.sceneobject.draw.enable()
         respRotateBeam.run(self.key)
 
-
     def TurnBeamOff(self):
-        print "islmGZBeamBrain.RotateBeam: Trying to turn the beam OFF."
+        PtDebugPrint("islmGZBeamBrain.RotateBeam: Trying to turn the beam OFF.")
         Beamlight.sceneobject.draw.disable()
-        #~ respRotateBeam.animation.stop()
 
-
-    def OnNotify(self,state,id,events):
+    def OnNotify(self, state, id, events):
         pass
-        #global shellseen 
-        
-#        if id == actBeamAlign.id:
-#            shellseen = shellseen + 1
-#            #print "islmGZBeamBrain: The Shell has been seen", shellseen," times."
-#            respShowShell.run(self.key)
-#        
-#        elif id == actShellJump.id:
-#            print "islmGZBeamBrain: The avatar has jumped into the Shell. Stopping the fall."
-#            avatar = PtGetLocalAvatar()
-#            avatar.physics.suppress(1)
-            
-                    
-    def OnSDLNotify(self,VARname,SDLname,playerID,tag):
-        print "islmGZBeamBrain.OnSDLNotify(): VARname = ", VARname
+
+    def OnSDLNotify(self, VARname, SDLname, playerID, tag):
+        PtDebugPrint("islmGZBeamBrain.OnSDLNotify(): VARname = %s" % (VARname))
         global boolGZBeamVis
 
         if VARname == "islmGZBeamVis":
@@ -134,4 +111,3 @@ class islmGZBeamBrain(ptResponder):
                 self.TurnBeamOn()
             else:
                 self.TurnBeamOff()
-

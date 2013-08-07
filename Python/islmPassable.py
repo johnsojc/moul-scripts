@@ -52,8 +52,9 @@ from PlasmaKITypes import *
 # max wiring
 # ---------
 
-respBoolTrue = ptAttribResponder(1,"Run if passable:")
-respBoolFalse = ptAttribResponder(2,"Run if not passable:")
+respBoolTrue = ptAttribResponder(1, "Run if passable:")
+respBoolFalse = ptAttribResponder(2, "Run if not passable:")
+
 
 class islmPassable(ptResponder):
 
@@ -64,10 +65,10 @@ class islmPassable(ptResponder):
 
     def OnServerInitComplete(self):
         if PtDetermineKIMarkerLevel() >= kKIMarkerFirstLevel:
-            print "islmPassable: The Player has started the GZ marker game."
-            print "islmPassable: Disabling baracades at the bottom of the Great Stair."
-            respBoolTrue.run(self.key,fastforward=1)
+            PtDebugPrint("islmPassable: The Player has started the GZ marker game.")
+            PtDebugPrint("islmPassable: Disabling baracades at the bottom of the Great Stair.")
+            respBoolTrue.run(self.key, fastforward=1)
         else:
-            print "islmPassable: The player has NOT started the GZ marker game."
-            print "islmPassable: Enabling baracades at the bottom of the Great Stair."
-            respBoolFalse.run(self.key,fastforward=1)
+            PtDebugPrint("islmPassable: The player has NOT started the GZ marker game.")
+            PtDebugPrint("islmPassable: Enabling baracades at the bottom of the Great Stair.")
+            respBoolFalse.run(self.key, fastforward=1)

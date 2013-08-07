@@ -58,6 +58,5 @@ class Jalak(ptResponder):
         self.id = 6000
         self.version = 1
 
-
-    def OnNotify(self,state,id,events):
+    def OnNotify(self, state, id, events):
         pass
