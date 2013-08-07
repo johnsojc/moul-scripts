@@ -49,6 +49,7 @@ Date: March 2004
 from Plasma import *
 from PlasmaTypes import *
 
+
 class Myst(ptResponder):
 
     def __init__(self):
@@ -58,10 +59,9 @@ class Myst(ptResponder):
 
     def OnFirstUpdate(self):
         pass
-        
+
     def Load(self):
-        pass        
-        
-    def OnNotify(self,state,id,events):
         pass
-        
+
+    def OnNotify(self, state, id, events):
+        pass

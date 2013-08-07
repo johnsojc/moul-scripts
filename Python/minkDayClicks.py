@@ -51,56 +51,54 @@ from Plasma import *
 from PlasmaTypes import *
 
 # define the attributes that will be entered in max
-clkCave01        = ptAttribActivator(1, "clk: Cave 01", netForce=1)
-clkCave02        = ptAttribActivator(2, "clk: Cave 02", netForce=1)
-clkCave03        = ptAttribActivator(3, "clk: Cave 03", netForce=1)
-clkCave04        = ptAttribActivator(4, "clk: Cave 04", netForce=1)
-clkCave05        = ptAttribActivator(5, "clk: Cave 05", netForce=1)
-clkCage          = ptAttribActivator(6, "clk: Cage", netForce=1)
+clkCave01 = ptAttribActivator(1, "clk: Cave 01", netForce=1)
+clkCave02 = ptAttribActivator(2, "clk: Cave 02", netForce=1)
+clkCave03 = ptAttribActivator(3, "clk: Cave 03", netForce=1)
+clkCave04 = ptAttribActivator(4, "clk: Cave 04", netForce=1)
+clkCave05 = ptAttribActivator(5, "clk: Cave 05", netForce=1)
+clkCage = ptAttribActivator(6, "clk: Cage", netForce=1)
 
-behRespCave01    = ptAttribResponder(7, "beh resp: Cave 01")
-behRespCave02    = ptAttribResponder(8, "beh resp: Cave 02")
-behRespCave03    = ptAttribResponder(9, "beh resp: Cave 03")
-behRespCave04    = ptAttribResponder(10, "beh resp: Cave 04")
-behRespCave05    = ptAttribResponder(11, "beh resp: Cave 05")
-behRespCage      = ptAttribResponder(12, "beh resp: Cage")
+behRespCave01 = ptAttribResponder(7, "beh resp: Cave 01")
+behRespCave02 = ptAttribResponder(8, "beh resp: Cave 02")
+behRespCave03 = ptAttribResponder(9, "beh resp: Cave 03")
+behRespCave04 = ptAttribResponder(10, "beh resp: Cave 04")
+behRespCave05 = ptAttribResponder(11, "beh resp: Cave 05")
+behRespCage = ptAttribResponder(12, "beh resp: Cage")
 
 # define globals
-ClickToResponder = {
-                    clkCave01.id   : behRespCave01,
-                    clkCave02.id   : behRespCave02,
-                    clkCave03.id   : behRespCave03,
-                    clkCave04.id   : behRespCave04,
-                    clkCave05.id   : behRespCave05,
-                    clkCage.id     : behRespCage,
-                   }
+ClickToResponder = {clkCave01.id: behRespCave01,
+                    clkCave02.id: behRespCave02,
+                    clkCave03.id: behRespCave03,
+                    clkCave04.id: behRespCave04,
+                    clkCave05.id: behRespCave05,
+                    clkCage.id: behRespCage, }
 
-ResponderId = [
-               behRespCave01.id,
+ResponderId = [behRespCave01.id,
                behRespCave02.id,
                behRespCave03.id,
                behRespCave04.id,
                behRespCave05.id,
-               behRespCage.id,
-              ]
+               behRespCage.id, ]
 
 #====================================
 
+
 class minkDayClicks(ptResponder):
+
     ###########################
     def __init__(self):
         ptResponder.__init__(self)
         self.id = 5259
         version = 1
         self.version = version
-        print "__init__minkDayClicks v.", version,".0"
+        PtDebugPrint("__init__minkDayClicks v.%d.0" % (version))
 
     ###########################
     def OnFirstUpdate(self):
         ageSDL = PtGetAgeSDL()
 
         if not len(PtGetPlayerList()) and ageSDL["minkIsDayTime"][0]:
-            print "minkDayClicks.OnFirstUpdate(): Resetting Show and Touch vars."
+            PtDebugPrint("minkDayClicks.OnFirstUpdate(): Resetting Show and Touch vars.")
             ageSDL["minkSymbolShow01"] = (0,)
             ageSDL["minkSymbolShow02"] = (0,)
             ageSDL["minkSymbolShow03"] = (0,)
@@ -114,11 +112,11 @@ class minkDayClicks(ptResponder):
             ageSDL["minkSymbolTouch05"] = (0,)
 
     ###########################
-    def OnNotify(self,state,id,events):
-        print "minkDayClicks.OnNotify(): state=%s id=%d events=" % (state, id), events
+    def OnNotify(self, state, id, events):
+        PtDebugPrint("minkDayClicks.OnNotify(): state=%s id=%d events=" % (state, id), events)
 
         if id in ClickToResponder.keys() and state and PtFindAvatar(events) == PtGetLocalAvatar():
-            print "minkDayClicks.OnNotify(): Clicked on %d, running %d" % (id, ClickToResponder[id].id)
+            PtDebugPrint("minkDayClicks.OnNotify(): Clicked on %d, running %d" % (id, ClickToResponder[id].id))
             LocalAvatar = PtFindAvatar(events)
             clkCave01.disable()
             clkCave02.disable()
@@ -129,12 +127,12 @@ class minkDayClicks(ptResponder):
             ClickToResponder[id].run(self.key, avatar=LocalAvatar)
 
         elif id in ResponderId:
-            print "minkDayClicks.OnNotify(): Responder Finished, Updating SDL"
+            PtDebugPrint("minkDayClicks.OnNotify(): Responder Finished, Updating SDL")
             ageSDL = PtGetAgeSDL()
             ageSDL["minkIsDayTime"] = (not ageSDL["minkIsDayTime"][0],)
 
             if id != behRespCage.id:
                 num = ResponderId.index(id) + 1
-                print "minkDayClicks.OnNotify(): Should show %d" % (num)
+                PtDebugPrint("minkDayClicks.OnNotify(): Should show %d" % (num))
                 code = "ageSDL[\"minkSymbolShow0%d\"] = (1,)" % (num)
                 exec code

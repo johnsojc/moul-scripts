@@ -50,10 +50,10 @@ from Plasma import *
 from PlasmaTypes import *
 
 ## constants
-BlueSpiral = ["EderDelin","EderTsogal"]
-Pods = ["Negilahn","Dereno","Payiferen","Tetsonot"]
+BlueSpiral = ["EderDelin", "EderTsogal"]
+Pods = ["Negilahn", "Dereno", "Payiferen", "Tetsonot"]
 Live5 = ["Minkata"]
-Live6 = ["Ercana","Ahnonay"]
+Live6 = ["Ercana", "Ahnonay"]
 
 
 class LiveBahroCaves(ptResponder):
@@ -63,36 +63,20 @@ class LiveBahroCaves(ptResponder):
         self.version = 1
 
         ageFrom = PtGetPrevAgeName()
-
         pages = []
 
-        print "LiveBahroCaves.__init__(): came from: %s" % (ageFrom)
+        PtDebugPrint("LiveBahroCaves.__init__(): came from: %s" % (ageFrom))
         if ageFrom in BlueSpiral:
             pages += ["BlueSpiralCave"]
         elif ageFrom in Pods:
-        	pages += ["PODcave"]
+            pages += ["PODcave"]
         elif ageFrom in Live5:
-        	pages += ["MINKcave"]
+            pages += ["MINKcave"]
         elif ageFrom in Live6:
-        	pages += ["POTScave"]
+            pages += ["POTScave"]
         else:
             print "LiveBahroCaves.__init__(): age not recognized, will page in BlueSpiralCave as default"
             pages += ["BlueSpiralCave"]
 
-        print "LiveBahroCaves.__init__(): paging in: %s" % (pages)
+        PtDebugPrint("LiveBahroCaves.__init__(): paging in: %s" % (pages))
         PtPageInNode(pages)
-
-
-#    def OnFirstUpdate(self):
-#        pass
-#
-#    def OnServerInitComplete(self):
-#        pass
-#
-#    def Load(self):
-#        pass
-#
-#    def OnNotify(self,state,id,events):
-#        pass
-
-

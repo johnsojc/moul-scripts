@@ -45,12 +45,13 @@ from Plasma import *
 from PlasmaTypes import *
 import random
 
+
 # These are helper functions for the special state variables that need custom code.
 def Ayhoheek5Man1State(VARname, NewSDLValue):
     PtDebugPrint("nb01EmgrPhase0.Ayhoheek5Man1State(): Attempting to set '{}' to a value of {}".format(VARname, NewSDLValue))
 
     nb01Ayhoheek5Man1StateMaxINT = 2
-    
+
     if NewSDLValue > nb01Ayhoheek5Man1StateMaxINT:
         PtDebugPrint("ERROR: nb01EmgrPhase0.Ayhoheek5Man1State:\tERROR: Variable '{}'' expected range from  0-{}. Received value of {}.".format(VARname, nb01Ayhoheek5Man1StateMaxINT, NewSDLValue))
         return
@@ -69,7 +70,7 @@ def Ayhoheek5Man1State(VARname, NewSDLValue):
         PtDebugPrint("DEBUG: nb01EmgrPhase0.Ayhoheek5Man1State:\tPaging in functional 5 Man Heek table.")
         PtPageInNode("nb01Ayhoheek5Man1State")
         PtPageOutNode("nb01Ayhoheek5Man1Dead")
-        
+
     else:
         PtDebugPrint("ERROR: nb01EmgrPhase0.Ayhoheek5Man1State:\tERROR: Invalid value ({}) for variable '{}'.".format(NewSDLValue, VARname))
         return
@@ -105,22 +106,11 @@ class nb01EmgrPhase0(ptResponder):
 
     # Link Room Pedestal randomization options
     Pedestals = {
-        "Left": {
-            #  ----
-            #"sdlState": "nb01LinkBookGarrisonVis",
-            #"sdlGlass": "nb01StainedWindowOption",
-            #"Books" : {
-            #    1: {"Name": "Gahreesen", "Glasses": (1, 2)},
-            #}
-            # ----
-            # The Gahreesen Stained Glass doesn't observe the proper on/off rules
-            # So we won't try to regulate the Left position
-        },
+        "Left": {},
         "Center": {
             "sdlState": "nb01LinkBookEderToggle",
             "sdlGlass": "nb01StainedGlassEders",
-            "Books" : {
-                #1: Kemo -- deprecated
+            "Books": {
                 2: {"Name": "EderDelin", "Glasses": (1, 2, 3)},
                 3: {"Name": "EderTsogal", "Glasses": (4, 5, 6)},
             }
@@ -128,7 +118,7 @@ class nb01EmgrPhase0(ptResponder):
         "Right": {
             "sdlState": "nb01LinkBookGZVis",
             "sdlGlass": "nb01StainedGlassGZ",
-            "Books" : {
+            "Books": {
                 1: {"Name": "GreatZero", "Glasses": (1, 2, 3)},
             }
         }
@@ -322,7 +312,7 @@ class nb01EmgrPhase0(ptResponder):
         """Load or unload a page based on the value of the specified SDL"""
         ageSDL = PtGetAgeSDL()
         try:
-            if ageSDL[VARname][0] == 1: # Are we paging things in?
+            if ageSDL[VARname][0] == 1:  # Are we paging things in?
                 PtDebugPrint("DEBUG: nb01EmgrPhase0.IManageSimplePagingVar:\tPaging in {}".format(VARname))
                 PtPageInNode(VARname)
             elif ageSDL[VARname][0] == 0:  # Are we paging things out?

@@ -44,7 +44,7 @@ You can contact Cyan Worlds, Inc. by email legal@cyan.com
 Module: kemoEmgrPhase0.py
 Age: Eder Kemo
 Date: January 2002
-Event Manager interface for the Garden Phase 0 content 
+Event Manager interface for the Garden Phase 0 content
 """
 
 from Plasma import *
@@ -54,10 +54,7 @@ import string
 #globals
 variable = None
 
-BooleanVARs = [
-    "kemoJourneySymbolVis",
-]
-
+BooleanVARs = ["kemoJourneySymbolVis", ]
 
 AgeStartedIn = None
 
@@ -70,7 +67,7 @@ class kemoEmgrPhase0(ptResponder):
 
         version = 1
         self.version = version
-        print "__init__kemoEmgrPhase0 v.", version
+        PtDebugPrint("__init__kemoEmgrPhase0 v.%d" % (version))
 
     def OnFirstUpdate(self):
         global AgeStartedIn
@@ -80,39 +77,34 @@ class kemoEmgrPhase0(ptResponder):
         if AgeStartedIn == PtGetAgeName():
             ageSDL = PtGetAgeSDL()
             for variable in BooleanVARs:
-                print "tying together", variable
-                ageSDL.setNotify(self.key,variable,0.0)
+                PtDebugPrint("tying together %s" % (variable))
+                ageSDL.setNotify(self.key, variable, 0.0)
                 self.IManageBOOLs(variable, "")
-       
-    def OnSDLNotify(self,VARname,SDLname,PlayerID,tag):
+
+    def OnSDLNotify(self, VARname, SDLname, PlayerID, tag):
         global variable
         global sdlvalue
 
-        
-        PtDebugPrint("kemoEmgrPhase0.SDLNotify - name = %s, SDLname = %s" % (VARname,SDLname))
-        
+        PtDebugPrint("kemoEmgrPhase0.SDLNotify - name = %s, SDLname = %s" % (VARname, SDLname))
+
         if VARname in BooleanVARs:
-            print "kemoEmgrPhase0.OnSDLNotify : %s is a BOOLEAN Variable" % (VARname)
-            self.IManageBOOLs(VARname,SDLname)
-            
+            PtDebugPrint("kemoEmgrPhase0.OnSDLNotify : %s is a BOOLEAN Variable" % (VARname))
+            self.IManageBOOLs(VARname, SDLname)
+
         else:
             PtDebugPrint("kemoEmgrPhase0.OnSDLNotify:\tERROR: Variable %s was not recognized as a Boolean, Performance, or State Variable. " % (VARname))
             pass
 
-
-    def IManageBOOLs(self,VARname,SDLname):
+    def IManageBOOLs(self, VARname, SDLname):
         if AgeStartedIn == PtGetAgeName():
             ageSDL = PtGetAgeSDL()
-            if ageSDL[VARname][0] == 1: # are we paging things in?
-                PtDebugPrint("kemoEmgrPhase0.OnSDLNotify:\tPaging in room ", VARname)
+            if ageSDL[VARname][0] == 1:  # are we paging things in?
+                PtDebugPrint("kemoEmgrPhase0.OnSDLNotify:\tPaging in room ", (VARname))
                 PtPageInNode(VARname)
-            elif ageSDL[VARname][0] == 0:  #are we paging things out?
-                print "variable = ", VARname
-                PtDebugPrint("kemoEmgrPhase0.OnSDLNotify:\tPaging out room ", VARname)
+            elif ageSDL[VARname][0] == 0:  # are we paging things out?
+                PtDebugPrint("variable = %s" % (VARname))
+                PtDebugPrint("kemoEmgrPhase0.OnSDLNotify:\tPaging out room %s" % (VARname))
                 PtPageOutNode(VARname)
             else:
                 sdlvalue = ageSDL[VARname][0]
-                PtDebugPrint("kemoEmgrPhase0.OnSDLNotify:\tERROR: Variable %s had unexpected SDL value of %s" % (VARname,sdlvalue))
-
-
-
+                PtDebugPrint("kemoEmgrPhase0.OnSDLNotify:\tERROR: Variable %s had unexpected SDL value of %s" % (VARname, sdlvalue))
