@@ -52,6 +52,7 @@ from PlasmaTypes import *
 from PlasmaKITypes import *
 import time
 
+
 class Neighborhood02(ptResponder):
 
     def __init__(self):
@@ -61,7 +62,8 @@ class Neighborhood02(ptResponder):
 
     def OnFirstUpdate(self):
         pass
-    def OnNotify(self,state,id,events):
+
+    def OnNotify(self, state, id, events):
         pass
 
     def OnServerInitComplete(self):
@@ -77,7 +79,7 @@ class Neighborhood02(ptResponder):
             deviceNode = None
             deviceInbox = None
             playerlist = None
-            
+
             # find the device
             avault = ptAgeVault()
             adevicesfolder = avault.getAgeDevicesFolder()
@@ -130,7 +132,7 @@ class Neighborhood02(ptResponder):
                         currenttimestr = time.strftime("%m/%d/%Y %I:%M %p", currenttime)
                         playername = PtGetLocalPlayer().getPlayerName()
                         thetext = currenttimestr + (" " * (30 - len(currenttimestr))) + playername
-                        
+
                         playerlist = ptVaultTextNoteNode(0)
                         playerlist.setTitle("Visitors, Visiteurs, Besucher")
                         playerlist.setText(thetext)

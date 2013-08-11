@@ -55,13 +55,13 @@ import PlasmaControlKeys
 
 actBookshelf = ptAttribActivator(1, "Actvtr:Bookshelf")
 
-actBook = ptAttribActivator(2,"Actvtr:Book")
-respPresentBook = ptAttribResponder(3,"Rspndr:PresentBook")
-respShelveBook = ptAttribResponder(4,"Rspndr:ShelveBook")
+actBook = ptAttribActivator(2, "Actvtr:Book")
+respPresentBook = ptAttribResponder(3, "Rspndr:PresentBook")
+respShelveBook = ptAttribResponder(4, "Rspndr:ShelveBook")
 
-SeekBehavior = ptAttribBehavior(5, "Smart seek before GUI") # used to make user walk in front of shelf before using it
-ShelfCamera = ptAttribSceneobject(6,"Bookshelf camera") # the camera used when engaging the shelf
-HutCamera = ptAttribSceneobject(7,"Hut circle camera") # the camera which was used before engaging the shelf
+SeekBehavior = ptAttribBehavior(5, "Smart seek before GUI")  # used to make user walk in front of shelf before using it
+ShelfCamera = ptAttribSceneobject(6, "Bookshelf camera")  # the camera used when engaging the shelf
+HutCamera = ptAttribSceneobject(7, "Hut circle camera")  # the camera which was used before engaging the shelf
 actBookshelfExit = ptAttribActivator(8, "Actvr: Exit bookshelf")
 respLinkOut = ptAttribResponder(9, "Resp: link out")
 respMoveShelf = ptAttribResponder(10, "Resp: move shelf", ["raise", "lower"])
@@ -76,25 +76,22 @@ class philBookshelf(ptModifier):
         self.id = 5327
         self.version = 1
         minor = 1
-        print ('__init__philBookshelf v. %d.%d' % (self.version, minor))
-
-
+        PtDebugPrint('__init__philBookshelf v. %d.%d' % (self.version, minor))
 
     def OnServerInitComplete(self):
         global LocalAvatar
 
-        respMoveShelf.run(self.key, state = "lower", fastforward = 1)
+        respMoveShelf.run(self.key, state="lower", fastforward=1)
         actBookshelfExit.disable()
 
         LocalAvatar = PtGetLocalAvatar()
 
-
-    def OnNotify(self,state,id,events):
+    def OnNotify(self, state, id, events):
         boolLinkerIsMe = false
         if PtWasLocallyNotified(self.key):
             boolLinkerIsMe = true
-        print ('philBookshelf.OnNotify(): state = %d, id = %d, me = %s' % (state, id, boolLinkerIsMe))
-        
+        PtDebugPrint('philBookshelf.OnNotify(): state = %d, id = %d, me = %s' % (state, id, boolLinkerIsMe))
+
         if id == actBookshelfExit.id:
             self.IDisengageShelf(boolLinkerIsMe)
             return
@@ -102,9 +99,9 @@ class philBookshelf(ptModifier):
         if id == SeekBehavior.id:
             for event in events:
                 avatar = PtFindAvatar(events)
-                if event[0] == kMultiStageEvent and event[1] == 0 and LocalAvatar == avatar: # Smart seek completed. Exit multistage, and show GUI.
-                    SeekBehavior.gotoStage(avatar, -1) 
-                    print "philBookshelf.OnNotify():\tengaging bookshelf"
+                if event[0] == kMultiStageEvent and event[1] == 0 and LocalAvatar == avatar:  # Smart seek completed. Exit multistage, and show GUI.
+                    SeekBehavior.gotoStage(avatar, -1)
+                    PtDebugPrint("philBookshelf.OnNotify():\tengaging bookshelf")
                     avatar.draw.disable()
                     # set camera to Shelf Camera
                     virtCam = ptCamera()
@@ -113,11 +110,11 @@ class philBookshelf(ptModifier):
                     PtAtTimeCallback(self.key, .1, 1)
 
         if id == actBookshelf.id and state:
-            respMoveShelf.run(self.key, state = "raise", fastforward = 1)
+            respMoveShelf.run(self.key, state="raise", fastforward=1)
             avatar = PtFindAvatar(events)
             if LocalAvatar == avatar:
                 # disable blackbar so people can't bring up other
-                PtSendKIMessage(kDisableKIandBB,0)
+                PtSendKIMessage(kDisableKIandBB, 0)
                 # Disable First Person Camera
                 cam = ptCamera()
                 cam.undoFirstPerson()
@@ -125,73 +122,67 @@ class philBookshelf(ptModifier):
                 PtRecenterCamera()
                 SeekBehavior.run(avatar)
                 PtDisableMovementKeys()
-                    
+
         elif id == actBook.id and state:
             actBook.disable()
             respPresentBook.run(self.key)
-        
+
         # no linking book in MOUL but fix it anyway
-        elif ((id == respPresentBook.id) and boolLinkerIsMe):
+        elif id == respPresentBook.id and boolLinkerIsMe:
             global theBook
-            
+
             # book is finished presenting - now link
             bookcode = '<font size=10><img src="xDRCBookRubberStamp2*1#0.hsm" pos=125,120 blend=alpha><pb><img src="xLinkPanelKirelDefault*1#0.hsm" align=center link=0 blend=alpha>'
-            
+
             theBook = ptBook(bookcode, self.key)
             theBook.setGUI("BkBook")
             theBook.setSize(1.0, 1.0)
             theBook.show(1)
-            
+
         elif id == respShelveBook.id:
             actBook.enable()
 
         else:
             for event in events:
                 if event[0] == PtEventType.kBook:
-                    PtDebugPrint("philBookshelf: BookNotify  event=%d, id=%d" % (event[1],event[2]))
+                    PtDebugPrint("philBookshelf: BookNotify  event=%d, id=%d" % (event[1], event[2]))
                     if event[1] == PtBookEventTypes.kNotifyImageLink:
                         if event[2] >= 0:
                             PtDebugPrint("philBookshelf:Book: hit linking panel %s" % (event[2]))
                             theBook.hide()
-                            #respShelveBook.run(self.key)
                             self.IDisengageShelf(boolLinkerIsMe)
                             respLinkOut.run(self.key)
-                            
+
                     elif event[1] == PtBookEventTypes.kNotifyHide:
                         PtDebugPrint("philBookshelf:Book: NotifyHide")
-                        
-                        respShelveBook.run(self.key)
-    
 
-    def IDisengageShelf(self, boolLinkerIsMe = false):
-        print ('philBookshelf.IDisengageShelf(): me = %s' % boolLinkerIsMe)
+                        respShelveBook.run(self.key)
+
+    def IDisengageShelf(self, boolLinkerIsMe=false):
+        PtDebugPrint('philBookshelf.IDisengageShelf(): me = %s' % (boolLinkerIsMe))
         actBookshelfExit.disable()
         # fastforward removed because it disables netPropagate
-        respMoveShelf.run(self.key, state = "lower")
+        respMoveShelf.run(self.key, state="lower")
         if boolLinkerIsMe:
             LocalAvatar.draw.enable()
-            #reeneable first person
+            # reeneable first person
             cam = ptCamera()
             cam.enableFirstPersonOverride()
             # go back to the Hut Circle Cam
             virtCam = ptCamera()
             virtCam.save(HutCamera.sceneobject.getKey())
             PtEnableMovementKeys()
-            PtGetControlEvents(false,self.key)
-            PtSendKIMessage(kEnableKIandBB,0)
+            PtGetControlEvents(false, self.key)
+            PtSendKIMessage(kEnableKIandBB, 0)
 
-
-
-    def OnControlKeyEvent(self,controlKey,activeFlag):
+    def OnControlKeyEvent(self, controlKey, activeFlag):
         if controlKey == PlasmaControlKeys.kKeyExitMode or controlKey == PlasmaControlKeys.kKeyMoveBackward:
             self.IDisengageShelf(true)
 
-
     def OnTimer(self, id):
         if id == 1:
-            PtGetControlEvents(true,self.key)
+            PtGetControlEvents(true, self.key)
             actBookshelfExit.enable()
-
 
     def OnBackdoorMsg(self, target, param):
         if target == 'book':
@@ -207,4 +198,3 @@ class philBookshelf(ptModifier):
             elif param == 'disable':
                 actBookshelf.disable()
                 actBookshelf.value[0].getSceneObject().physics.suppress(1)
-

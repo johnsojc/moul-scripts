@@ -52,7 +52,6 @@ from PlasmaTypes import *
 from PlasmaKITypes import *
 import string
 
-
 kEmptyGuid = '0000000000000000'
 kIntroPlayedChronicle = "IntroPlayed"
 
@@ -63,10 +62,9 @@ class Personal(ptResponder):
         ptResponder.__init__(self)
         self.id = 5022
         self.version = 5
-        PtDebugPrint("Personal: __init__ version %d.%d" % (self.version,1),level=kWarningLevel)
+        PtDebugPrint("Personal: __init__ version %d.%d" % (self.version, 1), level=kWarningLevel)
 
-
-    def gotPublicAgeList(self,ages):
+    def gotPublicAgeList(self, ages):
         # got a list of cities, now we save our var!
         # we're going to pick the one with the highest guid (nexus picks the lowest guid)
         highestGuid = 0
@@ -75,7 +73,7 @@ class Personal(ptResponder):
             if guid > highestGuid:
                 highestGuid = guid
 
-        PtDebugPrint("Personal.gotPublicAgeList(): Using city GUID "+str(highestGuid))
+        PtDebugPrint("Personal.gotPublicAgeList(): Using city GUID %s" % (str(highestGuid)))
         vault = ptVault()
         l = ptAgeInfoStruct()
         l.setAgeFilename('city')
@@ -86,21 +84,20 @@ class Personal(ptResponder):
                 cityInfo.setAgeInstanceGuid(highestGuid)
                 cityInfo.save()
 
-
     def OnFirstUpdate(self):
         # test for first time to play the intro movie
         vault = ptVault()
         entry = vault.findChronicleEntry(kIntroPlayedChronicle)
-        if type(entry) != type(None):
+        if entry is not None:
             # already played intro sometime in the past... just let 'em play
             # enable twice because if we came from the ACA (closet->ACA->personal) it was disabled twice
-            PtSendKIMessage(kEnableKIandBB,0)
-            PtSendKIMessage(kEnableKIandBB,0)
+            PtSendKIMessage(kEnableKIandBB, 0)
+            PtSendKIMessage(kEnableKIandBB, 0)
             # enable yeesha book in case we came from the bahro cave
-            PtSendKIMessage(kEnableYeeshaBook,0)
+            PtSendKIMessage(kEnableYeeshaBook, 0)
         else:
             # make sure the KI and blackbar is still diabled
-            PtSendKIMessage(kDisableKIandBB,0)
+            PtSendKIMessage(kDisableKIandBB, 0)
             # It's the first time... start the intro movie, just by loading the movie dialog
             PtLoadDialog("IntroMovieGUI")
 
@@ -115,36 +112,15 @@ class Personal(ptResponder):
         if myCity:
             cityInfo = myCity.getAgeInfo()
             if cityInfo:
-                if cityInfo.getAgeInstanceGuid()==kEmptyGuid:
+                if cityInfo.getAgeInstanceGuid() == kEmptyGuid:
                     # we don't have it yet, so make it! (the callback will make it for us)
-                    PtGetPublicAgeList('city',self)
+                    PtGetPublicAgeList('city', self)
             else:
                 PtDebugPrint("hmm. city link has no age info node")
         else:
             PtDebugPrint("hmm. player has no city link")
 
-        #~ # record our visit in player's chronicle
-        #~ kModuleName = "Personal"
-        #~ kChronicleVarName = "LinksIntoPersonalAge"
-        #~ kChronicleVarType = 0
-        #~ vault = ptVault()
-        #~ if type(vault) != type(None):
-            #~ entry = vault.findChronicleEntry(kChronicleVarName)
-            #~ if type(entry) == type(None):
-                #~ # not found... add current level chronicle
-                #~ vault.addChronicleEntry(kChronicleVarName,kChronicleVarType,"%d" %(1))
-                #~ PtDebugPrint("%s:\tentered new chronicle counter %s" % (kModuleName,kChronicleVarName))
-            #~ else:
-                #~ import string
-                #~ count = string.atoi(entry.chronicleGetValue())
-                #~ count = count + 1
-                #~ entry.chronicleSetValue("%d" % (count))
-                #~ entry.save()
-                #~ PtDebugPrint("%s:\tyour current count for %s is %s" % (kModuleName,kChronicleVarName,entry.chronicleGetValue()))
-        #~ else:
-            #~ PtDebugPrint("%s:\tERROR trying to access vault -- can't update %s variable in chronicle." % (kModuleName,kChronicleVarName))
         pass
-
 
     def OnServerInitComplete(self):
         ageSDL = PtGetAgeSDL()
@@ -164,19 +140,20 @@ class Personal(ptResponder):
                 clothingName = "MReward_Beta"
             clothingList = avatar.avatar.getWardrobeClothingList()
             if clothingName not in clothingList:
-                PtDebugPrint("Adding "+clothingName+" clothing item to your closet! Aren't you lucky?")
-                avatar.avatar.addWardrobeClothingItem(clothingName,ptColor().white(),ptColor().white())
+                PtDebugPrint("Adding %s clothing item to your closet! Aren't you lucky?" % (clothingName))
+                avatar.avatar.addWardrobeClothingItem(clothingName, ptColor().white(), ptColor().white())
             else:
-                PtDebugPrint("You already have " + clothingName + " so I'm not going to add it again.")
+                PtDebugPrint("You already have %s so I'm not going to add it again." % (clothingName))
         else:
             PtDebugPrint("I guess you're too late, you don't get the first week clothing item")
-        
+
         PtDebugPrint("Personal.OnServerInitComplete(): Checking to see if we need to add reward clothing to your closet")
         try:
             rewardList = ageSDL["RewardClothing"][0]
         except:
             PtDebugPrint("Unable to grab the reward clothing list from SDL, not going to add anything")
             rewardList = ""
+
         PtDebugPrint("Personal.OnServerInitComplete(): Checking to see if we need to add global reward clothing to your closet")
         try:
             globalRewardList = ageSDL["GlobalRewardClothing"][0]
@@ -186,11 +163,11 @@ class Personal(ptResponder):
 
         nameSuffixList = []
         if rewardList != "":
-            nameSuffixList += rewardList.split(";") # get all the suffixes
+            nameSuffixList += rewardList.split(";")  # get all the suffixes
         if globalRewardList != "":
-            nameSuffixList += globalRewardList.split(";") # add the global items
+            nameSuffixList += globalRewardList.split(";")  # add the global items
         for suffix in nameSuffixList:
-            suffix = suffix.strip() # get rid of all the whitespace
+            suffix = suffix.strip()  # get rid of all the whitespace
             if currentgender == kFemaleClothingGroup:
                 genderPrefix = "FReward_"
             else:
@@ -198,22 +175,17 @@ class Personal(ptResponder):
             clothingName = genderPrefix + suffix
             clothingList = avatar.avatar.getWardrobeClothingList()
             if clothingName not in clothingList:
-                PtDebugPrint("Adding "+clothingName+" to your closet")
-                avatar.avatar.addWardrobeClothingItem(clothingName,ptColor().white(),ptColor().white())
+                PtDebugPrint("Adding %s to your closet" % (clothingName))
+                avatar.avatar.addWardrobeClothingItem(clothingName, ptColor().white(), ptColor().white())
             else:
-                PtDebugPrint("You already have " + clothingName + " so I'm not going to add it again.")
+                PtDebugPrint("You already have %s so I'm not going to add it again." % (clothingName))
         if rewardList != "":
-            ageSDL["RewardClothing"] = ("",)
+            ageSDL["RewardClothing"] = ("", )
         else:
             PtDebugPrint("Reward clothing list empty, not adding any clothing")
-
 
     def Load(self):
         pass
 
-
-    def OnNotify(self,state,id,events):
+    def OnNotify(self, state, id, events):
         pass
-
-
-

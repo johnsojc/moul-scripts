@@ -54,10 +54,11 @@ from PlasmaTypes import *
 from xPsnlVaultSDL import *
 import string
 
-stringVarName = ptAttribString(1,"Psnl SDL Var Name")
-boolShowOnTrue = ptAttribBoolean(2,"Show on true",1)
-boolDefault = ptAttribBoolean(3,"Default setting",0)
-boolFirstUpdate = ptAttribBoolean(4,"Eval On First Update?",0)
+stringVarName = ptAttribString(1, "Psnl SDL Var Name")
+boolShowOnTrue = ptAttribBoolean(2, "Show on true", 1)
+boolDefault = ptAttribBoolean(3, "Default setting", 0)
+boolFirstUpdate = ptAttribBoolean(4, "Eval On First Update?", 0)
+
 
 class psnlVaultSDLBoolShowHide(ptMultiModifier):
 
@@ -67,14 +68,14 @@ class psnlVaultSDLBoolShowHide(ptMultiModifier):
         self.version = 1
 
     def OnFirstUpdate(self):
-        if not (type(stringVarName.value) == type("") and stringVarName.value != ""):
+        if not (type(stringVarName.value) str and stringVarName.value != ""):
             PtDebugPrint("ERROR: psnlVaultSDLBoolShowHide.OnFirstUpdate():\tERROR: missing SDL var name on %s" % self.sceneobject.getName())
             pass
 
         if boolFirstUpdate.value:
             try:
                 ageSDL = xPsnlVaultSDL(1)
-                if type(stringVarName.value) == type("") and stringVarName.value != "":
+                if type(stringVarName.value) is str and stringVarName.value != "":
                     if not (ageSDL[stringVarName.value][0] ^ boolShowOnTrue.value):
                         self.EnableObject()
                     else:
@@ -89,7 +90,7 @@ class psnlVaultSDLBoolShowHide(ptMultiModifier):
         if not boolFirstUpdate.value:
             try:
                 ageSDL = xPsnlVaultSDL(1)
-                if type(stringVarName.value) == type("") and stringVarName.value != "":
+                if type(stringVarName.value) is str and stringVarName.value != "":
                     if not (ageSDL[stringVarName.value][0] ^ boolShowOnTrue.value):
                         self.EnableObject()
                     else:
@@ -107,11 +108,10 @@ class psnlVaultSDLBoolShowHide(ptMultiModifier):
         else:
             self.DisableObject()
 
-    def OnSDLNotify(self,VARname,SDLname,playerID,tag):        
+    def OnSDLNotify(self, VARname, SDLname, playerID, tag):
         if VARname != stringVarName.value:
             return
         ageSDL = xPsnlVaultSDL(1)
-        #PtDebugPrint("Received SDLNotify on %s" % self.sceneobject.getName())
         try:
             if not (ageSDL[stringVarName.value][0] ^ boolShowOnTrue.value):
                 self.EnableObject()
@@ -132,7 +132,7 @@ class psnlVaultSDLBoolShowHide(ptMultiModifier):
         self.sceneobject.physics.suppress(true)
 
     def OnBackdoorMsg(self, target, param):
-        if type(stringVarName.value) != type(None) and stringVarName.value != "":
+        if type(stringVarName.value) is not None and stringVarName.value != "":
             if target == stringVarName.value:
                 if param.lower() in ("on", "1", "true"):
                     self.EnableObject()

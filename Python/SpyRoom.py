@@ -50,6 +50,7 @@ from Plasma import *
 from PlasmaTypes import *
 import time
 
+
 class SpyRoom(ptResponder):
 
     def __init__(self):
@@ -59,11 +60,11 @@ class SpyRoom(ptResponder):
 
     def OnFirstUpdate(self):
         pass
-        
+
     def Load(self):
-        pass        
-        
-    def OnNotify(self,state,id,events):
+        pass
+
+    def OnNotify(self, state, id, events):
         pass
 
     def OnServerInitComplete(self):
@@ -72,8 +73,7 @@ class SpyRoom(ptResponder):
         # i know this isn't bevin but this is just in case they haven't gone to bevin yet
         entry = vault.findChronicleEntry("sjBevinVisted")
         if not entry:
-            print "spyroom: did not find the chron var"
-            vault.addChronicleEntry("sjBevinVisted", 0, str(int( time.time() )) )
+            PtDebugPrint("spyroom: did not find the chron var")
+            vault.addChronicleEntry("sjBevinVisted", 0, str(int(time.time())))
         else:
-            print "spyroom: found the chron var"
-
+            PtDebugPrint("spyroom: found the chron var")

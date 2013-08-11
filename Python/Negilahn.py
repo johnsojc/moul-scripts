@@ -50,13 +50,13 @@ AgeSDL hooks for Negilahn
 from Plasma import *
 from PlasmaTypes import *
 
+
 class Negilahn(ptResponder):
 
     def __init__(self):
         ptResponder.__init__(self)
         self.id = 5239
         self.version = 1
-        
-    def OnNotify(self,state,id,events):
+
+    def OnNotify(self, state, id, events):
         pass
-        

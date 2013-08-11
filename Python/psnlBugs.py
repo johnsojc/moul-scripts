@@ -50,10 +50,11 @@ from PlasmaTypes import *
 from PlasmaConstants import *
 from xPsnlVaultSDL import *
 
-bugEmitter = ptAttribSceneobject(1,"bug emitter obj")
+bugEmitter = ptAttribSceneobject(1, "bug emitter obj")
 
 chronicleEntryName = "BugsOnAvatar"
 bugLightObjectName = "RTOmni-BugLightTest"
+
 
 class psnlBugs(ptResponder):
 
@@ -62,47 +63,47 @@ class psnlBugs(ptResponder):
         self.id = 53427
         self.version = 2
         self.bugCount = 0
-    
+
     def ISaveBugCount(self, count):
         vault = ptVault()
-        if type(vault) != type(None):
+        if vault ia not None:
             entry = vault.findChronicleEntry(chronicleEntryName)
-            if type(entry) == type(None):
+            if entry is None:
                 # not found... add chronicle
-                vault.addChronicleEntry(chronicleEntryName,0,str(count))
+                vault.addChronicleEntry(chronicleEntryName, 0, str(count))
             else:
                 entry.chronicleSetValue(str(count))
                 entry.save()
-    
+
     def IGetBugCount(self):
         vault = ptVault()
-        if type(vault) != type(None):
+        if vault is not None:
             entry = vault.findChronicleEntry(chronicleEntryName)
-            if type(entry) != type(None):
+            if entry is not None:
                 return int(entry.chronicleGetValue())
-        return 0 # no vault or no chronicle var
+
+        return 0  # no vault or no chronicle var
 
     def OnServerInitComplete(self):
         avatar = 0
         try:
             avatar = PtGetLocalAvatar()
         except:
-            print"failed to get local avatar"
+            PtDebugPrint("failed to get local avatar")
             return
-        
+
         self.bugCount = self.IGetBugCount()
-        print"psnl Bugs: ", self.bugCount
+        PtDebugPrint("psnl Bugs: %d" % (self.bugCount))
 
         thisAge = PtGetAgeName()
-        #print "psnlBugs.OnServerInitComplete(): thisAge = ",thisAge
 
         if (self.bugCount != 0):
-            PtSetParticleDissentPoint(0,0,10000,avatar.getKey())
-            PtKillParticles(10.0,1,avatar.getKey())
+            PtSetParticleDissentPoint(0, 0, 10000, avatar.getKey())
+            PtKillParticles(10.0, 1, avatar.getKey())
             PtSetLightAnimStart(avatar.getKey(), bugLightObjectName, false)
-            print "kill all bugs in age: ",thisAge
+            PtDebugPrint("kill all bugs in age: %s" % (thisAge))
             self.ISaveBugCount(0)
-        
+
         if thisAge != "Personal":
             return
 
@@ -113,7 +114,7 @@ class psnlBugs(ptResponder):
         sdl = PtGetAgeSDL()
         bugState = sdl["psnlBugsVis"]
         if rainState == 1 or (rainState == 4 and len(PtGetPlayerList()) == 0) or (rainState == 3 and len(PtGetPlayerList()) > 0):
-            print "turning off bugs"
+            PtDebugPrint("turning off bugs")
             if bugState != 0:
                 sdl["psnlBugsVis"] = (0,)
         else:
@@ -121,14 +122,3 @@ class psnlBugs(ptResponder):
                 print "turning on bugs"
                 if bugState != 1:
                     sdl["psnlBugsVis"] = (1,)
-
-##    def AvatarPage(self, avatar, pageIn, lastOut):
-##        print "in avatar page"
-##        self.bugCount = PtGetNumParticles(avatar.getKey())
-##        print "number of bugs:", self.bugCount
-##        if (self.bugCount > 0):
-##            PtSetParticleDissentPoint(0,0,10000,avatar.getKey())
-##            PtKillParticles(10.0,1,avatar.getKey())
-##            PtSetLightAnimStart(avatar.getKey(), bugLightObjectName, false)     
-##            print "kill all bugs in psnl age"
-##            self.ISaveBugCount(0)

@@ -50,13 +50,13 @@ AgeSDL hooks for Payiferen
 from Plasma import *
 from PlasmaTypes import *
 
+
 class Payiferen(ptResponder):
 
     def __init__(self):
         ptResponder.__init__(self)
         self.id = 5255
         self.version = 1
-        
-    def OnNotify(self,state,id,events):
+
+    def OnNotify(self, state, id, events):
         pass
-        
