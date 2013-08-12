@@ -69,7 +69,7 @@ class ahnySaveCloth(ptModifier):
         ptModifier.__init__(self)
         self.id = 5424
         self.version = 1
-        PtDebugPrint("DEBUG: ahnySaveCloth.__init__: v.", self.version)
+        PtDebugPrint("DEBUG: ahnySaveCloth.__init__: v.%d" % (self.version))
 
     def OnFirstUpdate(self):
         global sdlSC

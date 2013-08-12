@@ -87,7 +87,7 @@ respInvisible = ptAttribResponder(26, "resp: Shroomie Invisible")
 
 # define globals
 
-#probability that shroomie will appear
+# probability that shroomie will appear
 LeverProb = .25
 Shore01Prob = .10
 Shore02Prob = .10
@@ -105,6 +105,7 @@ Delay4Max = 600
 ShroomieTotalTimesSeen = 0
 ShroomieTimeLastSeen = 0
 
+
 class tldnShroomieBrain(ptResponder):
 
     def __init__(self):
@@ -112,143 +113,133 @@ class tldnShroomieBrain(ptResponder):
         self.id = 5237
         version = 3
         self.version = version
-        print "__init__tldnShroomieBrain v.", version,".2"
+        PtDebugPrint("__init__tldnShroomieBrain v.%d.2" % (version))
         random.seed()
 
     def OnServerInitComplete(self):
         try:
             ageSDL = PtGetAgeSDL()
         except:
-            print "tldnShroomieBrain:\tERROR---Cannot find the Teledahn Age SDL"
-            ageSDL["ShroomieTotalTimesSeen"] = (0, ) 
-            ageSDL["ShroomieTimeLastSeen"] = (0, ) 
+            PtDebugPrint("tldnShroomieBrain:\tERROR---Cannot find the Teledahn Age SDL")
+            ageSDL["ShroomieTotalTimesSeen"] = (0, )
+            ageSDL["ShroomieTimeLastSeen"] = (0, )
 
         ageSDL.sendToClients("ShroomieTotalTimesSeen")
         ageSDL.sendToClients("ShroomieTimeLastSeen")
-        
-        ageSDL.setFlags("ShroomieTotalTimesSeen",1,1)  
-        ageSDL.setFlags("ShroomieTimeLastSeen",1,1)  
+
+        ageSDL.setFlags("ShroomieTotalTimesSeen", 1, 1)
+        ageSDL.setFlags("ShroomieTimeLastSeen", 1, 1)
 
         ShroomieTotalTimesSeen = ageSDL["ShroomieTotalTimesSeen"][0]
         ShroomieTimeLastSeen = ageSDL["ShroomieTimeLastSeen"][0]
-        
-        print "tldnShroomieBrain: When I got here:"
-        print "\tShroomie has been seen", ShroomieTotalTimesSeen," times."
-        
-        if ShroomieTotalTimesSeen:            
-            CurrentTime = PtGetDniTime()            
-            print "\tShroomie was last seen ", (CurrentTime - ShroomieTimeLastSeen)," seconds ago."
-            
-    def OnNotify(self,state,id,events):
+
+        PtDebugPrint("tldnShroomieBrain: When I got here:")
+        PtDebugPrint("\tShroomie has been seen %d times." % (ShroomieTotalTimesSeen))
+
+        if ShroomieTotalTimesSeen:
+            CurrentTime = PtGetDniTime()
+            PtDebugPrint("\tShroomie was last seen %d seconds ago." % (CurrentTime - ShroomieTimeLastSeen))
+
+    def OnNotify(self, state, id, events):
         ageSDL = PtGetAgeSDL()
-        
-        #~ print "tldnShroomieBrain.OnNotify:  state=%f id=%d events=" % (state,id),events
 
         if not state:
             return
-            
-        if id in [1,2,3,4]:
+
+        if id in [1, 2, 3, 4]:
             CurrentTime = PtGetDniTime()
-            
+
             if self.CanShroomieBeSeen(CurrentTime):
-            
+
                 if id == actLever.id:
                     if self.WillShroomieBeSeen(LeverProb):
                         self.ShroomieSurfaces(1)
-                    
+
                 elif id == rgnShore01.id:
                     if self.WillShroomieBeSeen(Shore01Prob):
                         self.ShroomieSurfaces(2)
-                    
+
                 elif id == rgnShore02.id:
                     if self.WillShroomieBeSeen(Shore02Prob):
                         self.ShroomieSurfaces(3)
-        
+
                 elif id == rgnShore03.id:
                     if self.WillShroomieBeSeen(Shore03Prob):
                         self.ShroomieSurfaces(4)
-                        
-        elif id in [20,21,22,23]: #Shroomie has just finished his trick. Make him invisible again.
-            respInvisible.run(self.key)            
 
-    def CanShroomieBeSeen(self,CurrentTime):
+        elif id in [20, 21, 22, 23]:  # Shroomie has just finished his trick. Make him invisible again.
+            respInvisible.run(self.key)
+
+    def CanShroomieBeSeen(self, CurrentTime):
         ageSDL = PtGetAgeSDL()
         CurrentTime = PtGetDniTime()
-        
+
         ShroomieTimeLastSeen = ageSDL["ShroomieTimeLastSeen"][0]
 
-        print "tldnShroomieBrain: Shroomie was last seen", CurrentTime - ShroomieTimeLastSeen," seconds ago."
+        PtDebugPrint("tldnShroomieBrain: Shroomie was last seen %d seconds ago." % (CurrentTime - ShroomieTimeLastSeen))
 
         if (CurrentTime - ShroomieTimeLastSeen) > 240:
-            print "\tShroomie CAN be seen."
+            PtDebugPrint("\tShroomie CAN be seen.")
             return true
-            
-        else:
-            print "\tShroomie CAN'T be seen."
-            return false
-            
 
-    def WillShroomieBeSeen(self,probability):
-        randnum = random.randint(0,100)
-        
-        #~ print "randnum = ",randnum,"probability = ", probability*100
-        
+        else:
+            PtDebugPrint("\tShroomie CAN'T be seen.")
+            return false
+
+    def WillShroomieBeSeen(self, probability):
+        randnum = random.randint(0, 100)
+
         if randnum < (probability*100):
-            print "\t Shroomie WILL be seen."
+            PtDebugPrint("\t Shroomie WILL be seen.")
             return true
         else:
-            print "\tShroomie WON'T be seen."
-            
-    def ShroomieSurfaces(self,spawn):
+            PtDebugPrint("\tShroomie WON'T be seen.")
+
+    def ShroomieSurfaces(self, spawn):
         ageSDL = PtGetAgeSDL()
 
         respVisible.run(self.key)
 
-
-        if spawn == 1: # it was the lever pull which attracted Shroomie
+        if spawn == 1:  # it was the lever pull which attracted Shroomie
             tldnMainPowerOn = ageSDL["tldnMainPowerOn"][0]
-            whichbehavior = random.randint(1,4)
-            
-            if tldnMainPowerOn:
-                print "tldnShroomieBrain: The Power Tower noise has scared Shroomie. He'll come, but not very close."
-                NearOrFar = "Far"
-                
-            else:                 #Determine how far out Shroomie will be seen. Added 12/12/2004
-                print "tldnShroomieBrain: The Power Tower is down, so Shroomie isn't scared by the noise."
+            whichbehavior = random.randint(1, 4)
 
-                howclose = random.randint(1,100)
+            if tldnMainPowerOn:
+                PtDebugPrint("tldnShroomieBrain: The Power Tower noise has scared Shroomie. He'll come, but not very close.")
+                NearOrFar = "Far"
+
+            else:  # Determine how far out Shroomie will be seen. Added 12/12/2004
+                PtDebugPrint("tldnShroomieBrain: The Power Tower is down, so Shroomie isn't scared by the noise.")
+
+                howclose = random.randint(1, 100)
                 if howclose == 1:
                     NearOrFar = "Near"
                 elif howclose > 1 and howclose < 50:
                     NearOrFar = "Mid"
                 elif howclose >= 50:
                     NearOrFar = "Far"
-            
-            
-        else: # it was entering a shoreside zone that attracted Shroomie
-            whichbehavior = random.randint(2,4)
+
+        else:  # it was entering a shoreside zone that attracted Shroomie
+            whichbehavior = random.randint(2, 4)
             NearOrFar = "Far"
-            
-        print "tldnShroomieBrain: whichbehavior = ",whichbehavior," NearOrFar = ",NearOrFar
 
+        PtDebugPrint("tldnShroomieBrain: whichbehavior = %i NearOrFar = %s" % (whichbehavior, NearOrFar))
 
-        whichspawnpoint = random.randint(1,5)
-
+        whichspawnpoint = random.randint(1, 5)
 
         if NearOrFar == "Near":
-            code = "target = SpawnNear0" + str(whichspawnpoint) + ".sceneobject.getKey()"        
+            code = "target = SpawnNear0" + str(whichspawnpoint) + ".sceneobject.getKey()"
         elif NearOrFar == "Mid":
-            code = "target = SpawnMid0" + str(whichspawnpoint) + ".sceneobject.getKey()"            
+            code = "target = SpawnMid0" + str(whichspawnpoint) + ".sceneobject.getKey()"
         elif NearOrFar == "Far":
             code = "target = SpawnFar0" + str(whichspawnpoint) + ".sceneobject.getKey()"
-        print "target code:", code
+
+        PtDebugPrint("target code: %s" % (code))
         exec code
         ShroomieMaster.sceneobject.physics.warpObj(target)
-        
-        code = "respTrick0" + str(whichbehavior) + ".run(self.key)"
-        #~ print "code = ", code
-        exec code
 
+        code = "respTrick0" + str(whichbehavior) + ".run(self.key)"
+        exec code
 
         CurrentTime = PtGetDniTime()
         ageSDL["ShroomieTimeLastSeen"] = (CurrentTime,)
@@ -256,4 +247,4 @@ class tldnShroomieBrain(ptResponder):
         ShroomieTotalTimesSeen = ageSDL["ShroomieTotalTimesSeen"][0]
         ShroomieTotalTimesSeen = ShroomieTotalTimesSeen + 1
         ageSDL["ShroomieTotalTimesSeen"] = (ShroomieTotalTimesSeen,)
-        print "tldnShroomieBrain: Shroomie has been seen", ShroomieTotalTimesSeen,"times."
+        PtDebugPrint("tldnShroomieBrain: Shroomie has been seen %d times." % (ShroomieTotalTimesSeen))

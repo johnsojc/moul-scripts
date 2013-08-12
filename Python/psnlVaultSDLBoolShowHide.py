@@ -68,7 +68,7 @@ class psnlVaultSDLBoolShowHide(ptMultiModifier):
         self.version = 1
 
     def OnFirstUpdate(self):
-        if not (type(stringVarName.value) str and stringVarName.value != ""):
+        if not (type(stringVarName.value) is str and stringVarName.value != ""):
             PtDebugPrint("ERROR: psnlVaultSDLBoolShowHide.OnFirstUpdate():\tERROR: missing SDL var name on %s" % self.sceneobject.getName())
             pass
 
