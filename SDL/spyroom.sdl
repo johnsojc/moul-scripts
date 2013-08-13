@@ -45,7 +45,7 @@
 #   below the current one and make your changes there.
 #==============================================================
 
-STATEDESC SpyRoom
+STATEDESC spyroom
 {
     VERSION 1
 
@@ -55,7 +55,7 @@ STATEDESC SpyRoom
 
 }
 
-STATEDESC SpyRoom
+STATEDESC spyroom
 {
     VERSION 2
 

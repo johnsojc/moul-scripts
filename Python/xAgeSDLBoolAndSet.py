@@ -56,9 +56,10 @@ import string
 # max wiring
 # ---------
 
-stringOpA = ptAttribString(1,"AgeSDL Operand 1")
-stringOpB = ptAttribString(2,"AgeSDL Operand 2")
-stringResult = ptAttribString(3,"AgeSDL Result")
+stringOpA = ptAttribString(1, "AgeSDL Operand 1")
+stringOpB = ptAttribString(2, "AgeSDL Operand 2")
+stringResult = ptAttribString(3, "AgeSDL Result")
+
 
 class xAgeSDLBoolAndSet(ptResponder):
 
@@ -68,39 +69,39 @@ class xAgeSDLBoolAndSet(ptResponder):
         self.version = 1
 
     def OnFirstUpdate(self):
-        if not (type(stringOpA.value) == type("") and stringOpA.value != ""):
+        if not (type(stringOpA.value) is str and stringOpA.value != ""):
             PtDebugPrint("ERROR: xAgeSDLBoolAndSet.OnFirstUpdate():\tERROR: missing SDLOpA var name in max file")
-        if not (type(stringOpB.value) == type("") and stringOpB.value != ""):
+        if not (type(stringOpB.value) is str and stringOpB.value != ""):
             PtDebugPrint("ERROR: xAgeSDLBoolAndSet.OnFirstUpdate():\tERROR: missing SDLOpB var name in max file")
-        if not (type(stringResult.value) == type("") and stringResult.value != ""):
+        if not (type(stringResult.value) is str and stringResult.value != ""):
             PtDebugPrint("ERROR: xAgeSDLBoolAndSet.OnFirstUpdate():\tERROR: missing SDLResult var name in max file")
-            
+
     def OnServerInitComplete(self):
         ageSDL = PtGetAgeSDL()
-        ageSDL.setFlags(stringResult.value,1,1)
+        ageSDL.setFlags(stringResult.value, 1, 1)
         ageSDL.sendToClients(stringResult.value)
-        ageSDL.setNotify(self.key,stringOpA.value,0.0)
-        ageSDL.setNotify(self.key,stringOpB.value,0.0)
+        ageSDL.setNotify(self.key, stringOpA.value, 0.0)
+        ageSDL.setNotify(self.key, stringOpB.value, 0.0)
         # correct state (doesn't hurt if it's already correct)
         try:
             result = (ageSDL[stringOpA.value][0] and ageSDL[stringOpB.value][0])
-            ageSDL[stringResult.value] = ( result, )
-            PtDebugPrint("DEBUG: xAgeSDLBoolAndSet.OnServerInitComplete:\tset %s=%d" % (stringResult.value,result))
+            ageSDL[stringResult.value] = (result,)
+            PtDebugPrint("DEBUG: xAgeSDLBoolAndSet.OnServerInitComplete:\tset %s=%d" % (stringResult.value, result))
         except:
             PtDebugPrint("ERROR: xAgeSDLBoolAndSet.OnServerInitComplete:\tcan't access age sdl")
-        
-    def OnSDLNotify(self,VARname,SDLname,playerID,tag):
+
+    def OnSDLNotify(self, VARname, SDLname, playerID, tag):
         # is it a var we care about?
         if VARname != stringOpA.value and VARname != stringOpB.value:
             return
+
         ageSDL = PtGetAgeSDL()
-        PtDebugPrint("DEBUG: xAgeSDLBoolAndSet.OnSDLNotify():\t VARname:%s, SDLname:%s, tag:%s, value:%d" % (VARname,SDLname,tag,ageSDL[VARname][0]))
+        PtDebugPrint("DEBUG: xAgeSDLBoolAndSet.OnSDLNotify():\t VARname:%s, SDLname:%s, tag:%s, value:%d" % (VARname, SDLname, tag, ageSDL[VARname][0]))
 
         # Set the sdl value
         try:
             result = (ageSDL[stringOpA.value][0] and ageSDL[stringOpB.value][0])
-            ageSDL[stringResult.value] = ( result, )
-            PtDebugPrint("DEBUG: xAgeSDLBoolAndSet.OnSDLNotify:\tset %s=%d" % (stringResult.value,result))
+            ageSDL[stringResult.value] = (result,)
+            PtDebugPrint("DEBUG: xAgeSDLBoolAndSet.OnSDLNotify:\tset %s=%d" % (stringResult.value, result))
         except:
             PtDebugPrint("ERROR: xAgeSDLBoolAndSet.OnServerInitComplete:\tcan't access age sdl")
-

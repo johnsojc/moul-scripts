@@ -55,15 +55,16 @@ import string
 # max wiring
 # ---------
 
-actTrigger = ptAttribActivator(1,"Activator")
-stringVarName = ptAttribString(2,"Age SDL Var Name")
-stringInfo = ptAttribString(5,"Extra info to pass along") # string passed as hint to listeners if needed (e.g. which side of the door did the player click on?)
+actTrigger = ptAttribActivator(1, "Activator")
+stringVarName = ptAttribString(2, "Age SDL Var Name")
+stringInfo = ptAttribString(5, "Extra info to pass along")  # string passed as hint to listeners if needed (e.g. which side of the door did the player click on?)
 
 # ---------
 # globals
 # ---------
 
 boolCurrentValue = false
+
 
 class xAgeSDLBoolToggle(ptResponder):
 
@@ -73,57 +74,57 @@ class xAgeSDLBoolToggle(ptResponder):
         self.version = 1
 
     def OnFirstUpdate(self):
-        if not (type(stringVarName.value) == type("") and stringVarName.value != ""):
+        if not (type(stringVarName.value) is str and stringVarName.value != ""):
             PtDebugPrint("ERROR: xAgeSDLBoolToggle.OnFirstUpdate():\tERROR: missing SDL var name")
 
     def OnServerInitComplete(self):
         global boolCurrentValue
-        
+
         ageSDL = PtGetAgeSDL()
-        ageSDL.setFlags(stringVarName.value,1,1)
+        ageSDL.setFlags(stringVarName.value, 1, 1)
         ageSDL.sendToClients(stringVarName.value)
-        if type(stringVarName.value) == type("") and stringVarName.value != "":
-            ageSDL.setNotify(self.key,stringVarName.value,0.0)
+        if type(stringVarName.value) is str and stringVarName.value != "":
+            ageSDL.setNotify(self.key, stringVarName.value, 0.0)
             try:
                 boolCurrentValue = ageSDL[stringVarName.value][0]
             except:
                 PtDebugPrint("ERROR: xAgeSDLBoolToggle.OnServerInitComplete():\tERROR reading age SDL")
-            PtDebugPrint("DEBUG: xAgeSDLBoolToggle.OnServerInitComplete():\t%s = %d" % (stringVarName.value,boolCurrentValue) )
+            PtDebugPrint("DEBUG: xAgeSDLBoolToggle.OnServerInitComplete():\t%s = %d" % (stringVarName.value, boolCurrentValue))
         else:
             PtDebugPrint("ERROR: xAgeSDLBoolToggle.OnServerInitComplete():\tERROR: missing SDL var name")
-        
-    def OnNotify(self,state,id,events):
+
+    def OnNotify(self, state, id, events):
         global boolCurrentValue
 
         # is this notify something I should act on?
         if id == actTrigger.id and state and PtFindAvatar(events) == PtGetLocalAvatar():
-            if type(actTrigger.value) == type([]) and len(actTrigger.value) > 0:
-                PtDebugPrint("DEBUG: xAgeSDLBoolToggle.OnNotify():\t local player requesting %s change via %s" % (stringVarName.value,actTrigger.value[0].getName()) )
+            if type(actTrigger.value) is list and len(actTrigger.value) > 0:
+                PtDebugPrint("DEBUG: xAgeSDLBoolToggle.OnNotify():\t local player requesting %s change via %s" % (stringVarName.value, actTrigger.value[0].getName()))
         else:
             return
-                
+
         # error check
-        if type(stringVarName.value) != type("") or stringVarName.value == "":
+        if type(stringVarName.value) is not str or stringVarName.value == "":
             PtDebugPrint("ERROR: xAgeSDLBoolToggle.OnNotify():\tERROR: missing SDL var name")
             return
-            
+
         ageSDL = PtGetAgeSDL()
         # Toggle the sdl value
         if boolCurrentValue:
             boolCurrentValue = false
-            ageSDL.setTagString(stringVarName.value,stringInfo.value)
+            ageSDL.setTagString(stringVarName.value, stringInfo.value)
         else:
             boolCurrentValue = true
-            ageSDL.setTagString(stringVarName.value,stringInfo.value)
+            ageSDL.setTagString(stringVarName.value, stringInfo.value)
+
         ageSDL[stringVarName.value] = (boolCurrentValue,)
-        PtDebugPrint("DEBUG: xAgeSDLBoolToggle.OnNotify():\tset age SDL var %s to %d" % (stringVarName.value,boolCurrentValue) )
+        PtDebugPrint("DEBUG: xAgeSDLBoolToggle.OnNotify():\tset age SDL var %s to %d" % (stringVarName.value, boolCurrentValue))
 
     # in case someone other than me changes my var(s)
-    def OnSDLNotify(self,VARname,SDLname,playerID,tag):
+    def OnSDLNotify(self, VARname, SDLname, playerID, tag):
         global boolCurrentValue
-        
+
         ageSDL = PtGetAgeSDL()
         if VARname == stringVarName.value:
-            PtDebugPrint("DEBUG: xAgeSDLBoolToggle.OnSDLNotify():\t VARname:%s, SDLname:%s, tag:%s, value:%d" % (VARname,SDLname,tag,ageSDL[stringVarName.value][0]))
+            PtDebugPrint("DEBUG: xAgeSDLBoolToggle.OnSDLNotify():\t VARname:%s, SDLname:%s, tag:%s, value:%d" % (VARname, SDLname, tag, ageSDL[stringVarName.value][0]))
             boolCurrentValue = ageSDL[stringVarName.value][0]
-

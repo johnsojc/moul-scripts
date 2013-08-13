@@ -52,7 +52,7 @@ Author: Tye Hooley
 #-------------------Notes---------------------
 # * States are entered as touples in the
 #   following format: (value, respState).
-#   Example:  (1,0)(2,2)(3,9) 
+#   Example:  (1,0)(2,2)(3,9)
 #   Spaces are allowed...
 ##############################################
 
@@ -64,36 +64,37 @@ from PlasmaTypes import *
 # not allow integer states...  This could be easily
 # moved into a module, or integrated into the base class
 # to help keep this file a bit more tidy.
+
+
 class ptAttribStateResponder(ptAttribResponder):
-    def run(self,key,state=None,events=None,avatar=None,objectName=None,netForce=0,netPropagate=1,fastforward=0):
+    def run(self, key, state=None, events=None, avatar=None, objectName=None, netForce=0, netPropagate=1, fastforward=0):
         # has the value been set?
-        if type(self.value) != type(None):
+        if self.value is not None:
             nt = ptNotify(key)
             nt.clearReceivers()
             # see if the value is a list or byObject or a single
-            if type(objectName) != type(None) and type(self.byObject) != type(None):
+            if objectName is not None and self.byObject is not None:
                 nt.addReceiver(self.byObject[objectName])
-            elif type(self.value)==type([]):
+            elif type(self.value) is list:
                 for resp in self.value:
                     nt.addReceiver(resp)
             else:
                 nt.addReceiver(self.value)
             if not netPropagate:
                 nt.netPropagate(0)
-                # ptNotify defaults to netPropagate=1
             if netForce or self.netForce:
                 nt.netForce(1)
             # see if the state is specified
-            if type(state) == type(0) and state >= 0:
+            if type(state) is int and state >= 0:
                 nt.addResponderState(state)
             else:
                 raise ptResponderStateError("State must be a positive integer")
-            
+
             # see if there are events to pass on
-            if type(events) != type(None):
-                PtAddEvents(nt,events)
-            if type(avatar) != type(None):
-                nt.addCollisionEvent(1,avatar.getKey(),avatar.getKey())
+            if events is not None:
+                PtAddEvents(nt, events)
+            if avatar is not None:
+                nt.addCollisionEvent(1, avatar.getKey(), avatar.getKey())
             if fastforward:
                 nt.setType(PtNotificationType.kResponderFF)
                 # if fast forwarding, then only do it on the local client
@@ -102,31 +103,30 @@ class ptAttribStateResponder(ptAttribResponder):
             nt.setActivate(1.0)
             nt.send()
 
-
-
 # define the attributes that will be entered in max
-strSDLVarName = ptAttribString(1,"SDL Variable")
-respEnterState = ptAttribStateResponder(2,"Enter State Responder")
-strStates = ptAttribString(3,"Value/State Pairs")
-boolStartFF = ptAttribBoolean(4,"F-Forward on start",0)
-boolVaultManagerFF = ptAttribBoolean(5,"F-Forward on VM notifications", 0)
-intDefault = ptAttribInt(6,"Default setting",0)
-boolFirstUpdate = ptAttribBoolean(7,"Eval On First Update?",0)
+strSDLVarName = ptAttribString(1, "SDL Variable")
+respEnterState = ptAttribStateResponder(2, "Enter State Responder")
+strStates = ptAttribString(3, "Value/State Pairs")
+boolStartFF = ptAttribBoolean(4, "F-Forward on start", 0)
+boolVaultManagerFF = ptAttribBoolean(5, "F-Forward on VM notifications", 0)
+intDefault = ptAttribInt(6, "Default setting", 0)
+boolFirstUpdate = ptAttribBoolean(7, "Eval On First Update?", 0)
 
 # Globals
 
 
 class xAgeSDLIntStateListResp(ptResponder):
+
     def __init__(self):
         ptModifier.__init__(self)
         self.id = 5350
         version = 1
         self.version = version
         self.enabledStateList = []
-        print "__init__xAgeSDLIntStateListResp v", version
-    
+        PtDebugPrint("__init__xAgeSDLIntStateListResp v%d" % (version))
+
     def OnFirstUpdate(self):
-        if not (type(strSDLVarName.value) == type("") and strSDLVarName.value != ""):
+        if not (type(strSDLVarName.value) is str and strSDLVarName.value != ""):
             PtDebugPrint("ERROR: xAgeSDLIntStateListResp.OnFirstUpdate():\tERROR: missing SDL var name in max file")
 
         if boolFirstUpdate.value:
@@ -139,15 +139,14 @@ class xAgeSDLIntStateListResp(ptResponder):
     def Initialize(self):
         # Setup SDL callback...
         ageSDL = PtGetAgeSDL()
-        ageSDL.setNotify(self.key,strSDLVarName.value,0.0)
+        ageSDL.setNotify(self.key, strSDLVarName.value, 0.0)
         try:
             SDLvalue = ageSDL[strSDLVarName.value][0]
         except:
-            PtDebugPrint("ERROR: xAgeSDLIntShowHide.OnServerInitComplete():\tERROR: age sdl read failed, SDLvalue = %d by default. stringVarName = %s" % (intDefault.value,stringVarName.value))
+            PtDebugPrint("ERROR: xAgeSDLIntShowHide.OnServerInitComplete():\tERROR: age sdl read failed, SDLvalue = %d by default. stringVarName = %s" % (intDefault.value, stringVarName.value))
             SDLvalue = intDefault.value
 
-        
-        try:   # Decompose state list
+        try:  # Decompose state list
             self.dictStates = {}
             stateList = strStates.value.replace(" ", "")[1:-1].split(")(")
 
@@ -158,23 +157,17 @@ class xAgeSDLIntStateListResp(ptResponder):
         except:  # oops, something bad happened while decomposing the list
             PtDebugPrint("ERROR: xAgeSDLIntStateListResp.OnServerInitComplete():\tERROR: couldn't process state list")
             PtDebugPrint("ERROR: xAgeSDLIntStateListResp.OnServerInitComplete():\tPlease enter states in the format: (val,stateNum)(val,stateNum)")
-            """
-            import sys
-            print "ERROR: Caught Exception: ", sys.exc_type, " --> ", sys.exc_value
-            """
             return
 
-            
-        PtDebugPrint("DEBUG: xAgeSDLIntStateListResp.OnServerInitComplete():\t Registered State List: %s " % self.dictStates)
-        
-        #Set to current state
+        PtDebugPrint("DEBUG: xAgeSDLIntStateListResp.OnServerInitComplete():\t Registered State List: %s " % (self.dictStates))
+
+        # Set to current state
         self.UpdateState(SDLvalue, None, boolStartFF.value)
 
-
-    def OnSDLNotify(self,VARname,SDLname,PlayerID,tag):
+    def OnSDLNotify(self, VARname, SDLname, PlayerID, tag):
         if VARname != strSDLVarName.value:
             return
-        
+
         # Grab SDL Variable
         ageSDL = PtGetAgeSDL()
         SDLvalue = ageSDL[strSDLVarName.value][0]
@@ -182,12 +175,12 @@ class xAgeSDLIntStateListResp(ptResponder):
         PtDebugPrint("DEBUG: xAgeSDLIntStateListResp.OnSDLNotify received: %s = %d" % (VARname, SDLvalue))
 
         # is state change from player or vault manager?
-        if PlayerID: # non-zero means it's a player
+        if PlayerID:  # non-zero means it's a player
             objAvatar = ptSceneobject(PtGetAvatarKeyFromClientID(PlayerID), self.key)
             fastforward = 0
-        else:   # invalid player aka Vault Manager
+        else:  # invalid player aka Vault Manager
             objAvatar = None
-            fastforward = boolVaultManagerFF.value # we need to skip any vault manager updates
+            fastforward = boolVaultManagerFF.value  # we need to skip any vault manager updates
         if tag == "fastforward":
             objAvatar = None
             fastforward = 1
@@ -195,14 +188,9 @@ class xAgeSDLIntStateListResp(ptResponder):
         # Update State
         self.UpdateState(SDLvalue, objAvatar, fastforward)
 
-
-
     def UpdateState(self, SDLval, avatar, fastforward):
-        if  self.dictStates.has_key(SDLval):  #Run the responder only if we have the state
-            PtDebugPrint("DEBUG: xAgeSDLIntStateListResp.OnSDLNotify: running state responder: %s" % self.dictStates[SDLval])
-            respEnterState.run(self.key,state=self.dictStates[SDLval], avatar=avatar, fastforward=fastforward)
+        if SDLval in self.dictStates:  # Run the responder only if we have the state
+            PtDebugPrint("DEBUG: xAgeSDLIntStateListResp.OnSDLNotify: running state responder: %s" % (self.dictStates[SDLval]))
+            respEnterState.run(self.key, state=self.dictStates[SDLval], avatar=avatar, fastforward=fastforward)
         else:
-            PtDebugPrint("ERROR: xAgeSDLIntStateListResp.OnSDLNotify: Couldn't find state: %d " % SDLval)
-
-        
-
+            PtDebugPrint("ERROR: xAgeSDLIntStateListResp.OnSDLNotify: Couldn't find state: %d " % (SDLval))

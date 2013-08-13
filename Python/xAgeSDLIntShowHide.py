@@ -53,10 +53,11 @@ from Plasma import *
 from PlasmaTypes import *
 import string
 
-stringVarName = ptAttribString(1,"Age SDL Var Name")
-stringShowStates = ptAttribString(2,"States in which shown")
-intDefault = ptAttribInt(3,"Default setting",0)
-boolFirstUpdate = ptAttribBoolean(4,"Eval On First Update?",0)
+stringVarName = ptAttribString(1, "Age SDL Var Name")
+stringShowStates = ptAttribString(2, "States in which shown")
+intDefault = ptAttribInt(3, "Default setting", 0)
+boolFirstUpdate = ptAttribBoolean(4, "Eval On First Update?", 0)
+
 
 class xAgeSDLIntShowHide(ptMultiModifier):
 
@@ -67,21 +68,21 @@ class xAgeSDLIntShowHide(ptMultiModifier):
         self.enabledStateList = []
 
     def OnFirstUpdate(self):
-        if not (type(stringVarName.value) == type("") and stringVarName.value != ""):
+        if not (type(stringVarName.value) is str and stringVarName.value != ""):
             PtDebugPrint("ERROR: xAgeSDLIntShowHide.OnFirstUpdate():\tERROR: missing SDL var name")
             pass
-        
+
         if boolFirstUpdate.value:
             self.Initialize()
 
     def OnServerInitComplete(self):
         if not boolFirstUpdate.value:
             self.Initialize()
-    
+
     def Initialize(self):
         ageSDL = PtGetAgeSDL()
-        if type(stringVarName.value) == type("") and stringVarName.value != "":
-            ageSDL.setFlags(stringVarName.value,1,1)
+        if type(stringVarName.value) is str and stringVarName.value != "":
+            ageSDL.setFlags(stringVarName.value, 1, 1)
             ageSDL.sendToClients(stringVarName.value)
             try:
                 self.enabledStateList = stringShowStates.value.split(",")
@@ -90,21 +91,21 @@ class xAgeSDLIntShowHide(ptMultiModifier):
             except:
                 PtDebugPrint("ERROR: xAgeSDLIntShowHide.OnServerInitComplete():\tERROR: couldn't process start state list")
                 pass
-            
-            ageSDL.setNotify(self.key,stringVarName.value,0.0)
+
+            ageSDL.setNotify(self.key, stringVarName.value, 0.0)
             try:
                 SDLvalue = ageSDL[stringVarName.value][0]
             except:
-                PtDebugPrint("ERROR: xAgeSDLIntShowHide.OnServerInitComplete():\tERROR: age sdl read failed, SDLvalue = %d by default. stringVarName = %s" % (intDefault.value,stringVarName.value))
+                PtDebugPrint("ERROR: xAgeSDLIntShowHide.OnServerInitComplete():\tERROR: age sdl read failed, SDLvalue = %d by default. stringVarName = %s" % (intDefault.value, stringVarName.value))
                 SDLvalue = intDefault.value
 
             try:
-                if  SDLvalue in self.enabledStateList:
-                    PtDebugPrint("DEBUG: xAgeSDLIntShowHide.OnServerInitComplete: Attempting to enable drawing and collision on %s..." % self.sceneobject.getName())
+                if SDLvalue in self.enabledStateList:
+                    PtDebugPrint("DEBUG: xAgeSDLIntShowHide.OnServerInitComplete: Attempting to enable drawing and collision on %s..." % (self.sceneobject.getName()))
                     self.sceneobject.draw.enable()
                     self.sceneobject.physics.suppress(false)
                 else:
-                    PtDebugPrint("DEBUG: xAgeSDLIntShowHide.OnServerInitComplete: Attempting to disable drawing and collision on %s..." % self.sceneobject.getName())
+                    PtDebugPrint("DEBUG: xAgeSDLIntShowHide.OnServerInitComplete: Attempting to disable drawing and collision on %s..." % (self.sceneobject.getName()))
                     self.sceneobject.draw.disable()
                     self.sceneobject.physics.suppress(true)
             except:
@@ -116,38 +117,38 @@ class xAgeSDLIntShowHide(ptMultiModifier):
 
     def runDefault(self):
         PtDebugPrint("xAgeSDLIntShowHide: running internal default")
-        if  intDefault.value in self.enabledStateList:
-            PtDebugPrint("DEBUG: xAgeSDLIntShowHide.OnServerInitComplete: Attempting to enable drawing and collision on %s..." % self.sceneobject.getName())
+        if intDefault.value in self.enabledStateList:
+            PtDebugPrint("DEBUG: xAgeSDLIntShowHide.OnServerInitComplete: Attempting to enable drawing and collision on %s..." % (self.sceneobject.getName()))
             self.sceneobject.draw.enable()
             self.sceneobject.physics.suppress(false)
         else:
-            PtDebugPrint("DEBUG: xAgeSDLIntShowHide.OnServerInitComplete: Attempting to disable drawing and collision on %s..." % self.sceneobject.getName())
+            PtDebugPrint("DEBUG: xAgeSDLIntShowHide.OnServerInitComplete: Attempting to disable drawing and collision on %s..." % (self.sceneobject.getName()))
             self.sceneobject.draw.disable()
             self.sceneobject.physics.suppress(true)
 
-    def OnSDLNotify(self,VARname,SDLname,playerID,tag):        
+    def OnSDLNotify(self, VARname, SDLname, playerID, tag):
         if VARname != stringVarName.value:
             return
 
         ageSDL = PtGetAgeSDL()
         SDLvalue = ageSDL[stringVarName.value][0]
-        if  SDLvalue in self.enabledStateList:
+        if SDLvalue in self.enabledStateList:
             self.EnableObject()
         else:
             self.DisableObject()
 
     def EnableObject(self):
-        PtDebugPrint("DEBUG: xAgeSDLIntShowHide.EnableObject:  Attempting to enable drawing and collision on %s..." % self.sceneobject.getName())
+        PtDebugPrint("DEBUG: xAgeSDLIntShowHide.EnableObject:  Attempting to enable drawing and collision on %s..." % (self.sceneobject.getName()))
         self.sceneobject.draw.enable()
         self.sceneobject.physics.suppress(false)
 
     def DisableObject(self):
-        PtDebugPrint("DEBUG: xAgeSDLIntShowHide.DisableObject:  Attempting to disable drawing and collision on %s..." % self.sceneobject.getName())
+        PtDebugPrint("DEBUG: xAgeSDLIntShowHide.DisableObject:  Attempting to disable drawing and collision on %s..." % (self.sceneobject.getName()))
         self.sceneobject.draw.disable()
         self.sceneobject.physics.suppress(true)
 
     def OnBackdoorMsg(self, target, param):
-        if type(stringVarName.value) != type(None) and stringVarName.value != "":
+        if type(stringVarName.value) is not None and stringVarName.value != "":
             if target == stringVarName.value:
                 if int(param) in self.enabledStateList:
                     self.EnableObject()
