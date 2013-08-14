@@ -60,122 +60,128 @@ import re
 import webbrowser
 
 # define the attributes that will be entered in max
-GUIDiag4a   = ptAttribGUIDialog(1, "GUI Dialog 4a")
-GUIDiag4b   = ptAttribGUIDialog(2, "GUI Dialog 4b")
-GUIDiag4c   = ptAttribGUIDialog(3, "GUI Dialog 4c")
-GUIDiag4d   = ptAttribGUIDialog(4, "GUI Dialog 4d")
-GUIDiag5    = ptAttribGUIDialog(5, "GUI Dialog 5")
-GUIDiag6    = ptAttribGUIDialog(6, "GUI Dialog 6")
+GUIDiag4a = ptAttribGUIDialog(1, "GUI Dialog 4a")
+GUIDiag4b = ptAttribGUIDialog(2, "GUI Dialog 4b")
+GUIDiag4c = ptAttribGUIDialog(3, "GUI Dialog 4c")
+GUIDiag4d = ptAttribGUIDialog(4, "GUI Dialog 4d")
+GUIDiag5 = ptAttribGUIDialog(5, "GUI Dialog 5")
+GUIDiag6 = ptAttribGUIDialog(6, "GUI Dialog 6")
 
-resp4aPlayer01  = ptAttribResponder(7, "resp: 4A Player01", ["in", "out"])
-resp4aPlayer02  = ptAttribResponder(8, "resp: 4A Player02", ["in", "out"])
-resp4aPlayer03  = ptAttribResponder(9, "resp: 4A Player03", ["in", "out"])
-resp4aPlayer04  = ptAttribResponder(10, "resp: 4A Player04", ["in", "out"])
-resp4aPlayer05  = ptAttribResponder(11, "resp: 4A Player05", ["in", "out"])
-resp4aPlayer06  = ptAttribResponder(12, "resp: 4A Player06", ["in", "out"])
+resp4aPlayer01 = ptAttribResponder(7, "resp: 4A Player01", ["in", "out"])
+resp4aPlayer02 = ptAttribResponder(8, "resp: 4A Player02", ["in", "out"])
+resp4aPlayer03 = ptAttribResponder(9, "resp: 4A Player03", ["in", "out"])
+resp4aPlayer04 = ptAttribResponder(10, "resp: 4A Player04", ["in", "out"])
+resp4aPlayer05 = ptAttribResponder(11, "resp: 4A Player05", ["in", "out"])
+resp4aPlayer06 = ptAttribResponder(12, "resp: 4A Player06", ["in", "out"])
 
-resp4bPlayer01  = ptAttribResponder(13, "resp: 4B Player01", ["in", "out"])
-resp4bPlayer02  = ptAttribResponder(14, "resp: 4B Player02", ["in", "out"])
-resp4bPlayer03  = ptAttribResponder(15, "resp: 4B Player03", ["in", "out"])
-resp4bPlayer04  = ptAttribResponder(16, "resp: 4B Player04", ["in", "out"])
-resp4bPlayer05  = ptAttribResponder(17, "resp: 4B Player05", ["in", "out"])
-resp4bPlayer06  = ptAttribResponder(18, "resp: 4B Player06", ["in", "out"])
+resp4bPlayer01 = ptAttribResponder(13, "resp: 4B Player01", ["in", "out"])
+resp4bPlayer02 = ptAttribResponder(14, "resp: 4B Player02", ["in", "out"])
+resp4bPlayer03 = ptAttribResponder(15, "resp: 4B Player03", ["in", "out"])
+resp4bPlayer04 = ptAttribResponder(16, "resp: 4B Player04", ["in", "out"])
+resp4bPlayer05 = ptAttribResponder(17, "resp: 4B Player05", ["in", "out"])
+resp4bPlayer06 = ptAttribResponder(18, "resp: 4B Player06", ["in", "out"])
 
-respLink        = ptAttribResponder(19, "resp: Link", ["ACA", "Personal"])
+respLink = ptAttribResponder(19, "resp: Link", ["ACA", "Personal"])
 
-mapPlayer01     = ptAttribDynamicMap(20, "map: Player01")
-mapPlayer02     = ptAttribDynamicMap(21, "map: Player02")
-mapPlayer03     = ptAttribDynamicMap(22, "map: Player03")
-mapPlayer04     = ptAttribDynamicMap(23, "map: Player04")
-mapPlayer05     = ptAttribDynamicMap(24, "map: Player05")
-mapPlayer06     = ptAttribDynamicMap(25, "map: Player06")
+mapPlayer01 = ptAttribDynamicMap(20, "map: Player01")
+mapPlayer02 = ptAttribDynamicMap(21, "map: Player02")
+mapPlayer03 = ptAttribDynamicMap(22, "map: Player03")
+mapPlayer04 = ptAttribDynamicMap(23, "map: Player04")
+mapPlayer05 = ptAttribDynamicMap(24, "map: Player05")
+mapPlayer06 = ptAttribDynamicMap(25, "map: Player06")
 
-GUIDiag6a       = ptAttribGUIDialog(26, "GUI Dialog 6a")
-respLinkOutSND  = ptAttribResponder(27, "resp: Link Out SND")
+GUIDiag6a = ptAttribGUIDialog(26, "GUI Dialog 6a")
+respLinkOutSND = ptAttribResponder(27, "resp: Link Out SND")
 
 #====================================
 # GUI Dialog globals
 
 #----Dialog 4a ## Text MUST Be +10 From HotSpot ##
-k4aVisitID          = 100
-k4aQuitID           = 101
-k4aDeleteID         = 102
-k4aPlayer01         = 103
-k4aPlayerTxt01      = 113
-k4aPlayer02         = 104
-k4aPlayerTxt02      = 114
-k4aPlayer03         = 105
-k4aPlayerTxt03      = 115
-k4aPlayer04         = 106
-k4aPlayerTxt04      = 116
-k4aPlayer05         = 107
-k4aPlayerTxt05      = 117
-k4aPlayer06         = 108
-k4aPlayerTxt06      = 118
+k4aVisitID = 100
+k4aQuitID = 101
+k4aDeleteID = 102
+k4aPlayer01 = 103
+k4aPlayerTxt01 = 113
+k4aPlayer02 = 104
+k4aPlayerTxt02 = 114
+k4aPlayer03 = 105
+k4aPlayerTxt03 = 115
+k4aPlayer04 = 106
+k4aPlayerTxt04 = 116
+k4aPlayer05 = 107
+k4aPlayerTxt05 = 117
+k4aPlayer06 = 108
+k4aPlayerTxt06 = 118
 
 #----Dialog 4b ## Text MUST Be +10 From HotSpot ##
-k4bExploreID        = 200
-k4bQuitID           = 201
-k4bDeleteID         = 202
-k4bPlayer01         = 203
-k4bPlayerTxt01      = 213
-k4bPlayer02         = 204
-k4bPlayerTxt02      = 214
-k4bPlayer03         = 205
-k4bPlayerTxt03      = 215
-k4bPlayer04         = 206
-k4bPlayerTxt04      = 216
-k4bPlayer05         = 207
-k4bPlayerTxt05      = 217
-k4bPlayer06         = 208
-k4bPlayerTxt06      = 218
+k4bExploreID = 200
+k4bQuitID = 201
+k4bDeleteID = 202
+k4bPlayer01 = 203
+k4bPlayerTxt01 = 213
+k4bPlayer02 = 204
+k4bPlayerTxt02 = 214
+k4bPlayer03 = 205
+k4bPlayerTxt03 = 215
+k4bPlayer04 = 206
+k4bPlayerTxt04 = 216
+k4bPlayer05 = 207
+k4bPlayerTxt05 = 217
+k4bPlayer06 = 208
+k4bPlayerTxt06 = 218
 
 #----Dialog 4c
-k4cYesID            = 300
-k4cNoID             = 301
-k4cStaticID         = 302
+k4cYesID = 300
+k4cNoID = 301
+k4cStaticID = 302
 
 #----Dialog 4d
-k4dYesID            = 400
-k4dTextID           = 401
+k4dYesID = 400
+k4dTextID = 401
 
 #----Dialog 5
-k5PayID             = 500
-k5VisitID           = 501
-k5BackID            = 502
-k5LinkID            = 503
+k5PayID = 500
+k5VisitID = 501
+k5BackID = 502
+k5LinkID = 503
 
 #----Dialog 6
-k6QuitID            = 600
-k6BackID            = 601
-k6PlayID            = 602
-k6PayingID          = 603
-k6NameID            = 604
-k6InviteID          = 605
-k6MaleID            = 606
-k6FemaleID          = 607
-k6PlayTxtID         = 608
+k6QuitID = 600
+k6BackID = 601
+k6PlayID = 602
+k6PayingID = 603
+k6NameID = 604
+k6InviteID = 605
+k6MaleID = 606
+k6FemaleID = 607
+k6PlayTxtID = 608
 
 #====================================
 # Globals
-gIsExplorer         = 0
-gPlayerList         = None
-gSelectedSlot       = 0
-gClickedWrongSlot   = 0
-gBlueColor          = ptColor(0.414, 0.449, 0.617, 1.0)
-gTanColor           = ptColor(0.500, 0.449, 0.375, 1.0)
-gExp_HotSpot        = [k4bPlayer01,k4bPlayer02,k4bPlayer03,k4bPlayer04,k4bPlayer05,k4bPlayer06]
-gVis_HotSpot        = [k4aPlayer01,k4aPlayer02,k4aPlayer03,k4aPlayer04,k4aPlayer05,k4aPlayer06]
-gExp_TxtBox         = [k4bPlayerTxt01,k4bPlayerTxt02,k4bPlayerTxt03,k4bPlayerTxt04,k4bPlayerTxt05,k4bPlayerTxt06]
-gVis_TxtBox         = [k4aPlayerTxt01,k4aPlayerTxt02,k4aPlayerTxt03,k4aPlayerTxt04,k4aPlayerTxt05,k4aPlayerTxt06]
-gExp_HiLite         = [resp4bPlayer01,resp4bPlayer02,resp4bPlayer03,resp4bPlayer04,resp4bPlayer05,resp4bPlayer06]
-gVis_HiLite         = [resp4aPlayer01,resp4aPlayer02,resp4aPlayer03,resp4aPlayer04,resp4aPlayer05,resp4aPlayer06]
-gMinusExplorer      = 203
-gMinusVisitor       = 103
+gIsExplorer = 0
+gPlayerList = None
+gSelectedSlot = 0
+gClickedWrongSlot = 0
+gBlueColor = ptColor(0.414, 0.449, 0.617, 1.0)
+gTanColor = ptColor(0.500, 0.449, 0.375, 1.0)
+gExp_HotSpot = [k4bPlayer01, k4bPlayer02, k4bPlayer03, k4bPlayer04, k4bPlayer05, k4bPlayer06]
+gVis_HotSpot = [k4aPlayer01, k4aPlayer02, k4aPlayer03, k4aPlayer04, k4aPlayer05, k4aPlayer06]
+gExp_TxtBox = [k4bPlayerTxt01, k4bPlayerTxt02, k4bPlayerTxt03, k4bPlayerTxt04, k4bPlayerTxt05, k4bPlayerTxt06]
+gVis_TxtBox = [k4aPlayerTxt01, k4aPlayerTxt02, k4aPlayerTxt03, k4aPlayerTxt04, k4aPlayerTxt05, k4aPlayerTxt06]
+gExp_HiLite = [resp4bPlayer01, resp4bPlayer02, resp4bPlayer03, resp4bPlayer04, resp4bPlayer05, resp4bPlayer06]
+gVis_HiLite = [resp4aPlayer01, resp4aPlayer02, resp4aPlayer03, resp4aPlayer04, resp4aPlayer05, resp4aPlayer06]
+gMinusExplorer = 203
+gMinusVisitor = 103
 
 WebLaunchCmd = None
 
+
+###########################
+def id_comp(elem1, elem2):
+    return cmp(elem1[1], elem2[1])
+
 #====================================
+
 
 class xDialogStartUp(ptResponder):
     ###########################
@@ -184,7 +190,7 @@ class xDialogStartUp(ptResponder):
         self.id = 5340
         self.version = 3
         self.ageLink = None
-        print "xDialogStartUp: init  version = %d" % self.version
+        PtDebugPrint("xDialogStartUp: init  version = %d" % (self.version))
 
     ###########################
     def OnServerInitComplete(self):
@@ -206,7 +212,7 @@ class xDialogStartUp(ptResponder):
 
         ptGUIControlEditBox(GUIDiag6.dialog.getControlFromTag(k6NameID)).setStringSize(63)
         ptGUIControlEditBox(GUIDiag6.dialog.getControlFromTag(k6InviteID)).setStringSize(63)
-        
+
         if not gIsExplorer:
             ptGUIControlTextBox(GUIDiag6.dialog.getControlFromTag(k6PayingID)).setString("VISITOR Name")
             ptGUIControlTextBox(GUIDiag6.dialog.getControlFromTag(k6PlayTxtID)).setString("Visit URU")
@@ -214,7 +220,7 @@ class xDialogStartUp(ptResponder):
         WebLaunchCmd = webbrowser.open_new
 
     ###########################
-    def BeginAgeUnLoad(self,avatar):
+    def BeginAgeUnLoad(self, avatar):
         if GUIDiag4a.dialog.isEnabled():
             PtHideDialog("GUIDialog04a")
         if GUIDiag4b.dialog.isEnabled():
@@ -231,13 +237,13 @@ class xDialogStartUp(ptResponder):
             PtHideDialog("GUIDialog06a")
 
     ###########################
-    def OnNotify(self,state,id,events):
-        if id==(-1): ## callback from delete yes/no dialog (hopefully) ##
+    def OnNotify(self, state, id, events):
+        if id == (-1):  # callback from delete yes/no dialog (hopefully) #
             if state:
                 PtConsole("App.Quit")
 
     ###########################
-    def OnGUINotify(self,id,control,event):
+    def OnGUINotify(self, id, control, event):
         global gIsExplorer
         global gSelectedSlot
         global gPlayerList
@@ -246,7 +252,6 @@ class xDialogStartUp(ptResponder):
         global gMinusVisitor
         global gClickedWrongSlot
 
-        #print "xDialogStartUp: GUI Notify id=%d, event=%d control=" % (id,event),control
         if control:
             tagID = control.getTagID()
 
@@ -255,16 +260,16 @@ class xDialogStartUp(ptResponder):
         #################################
         if id == GUIDiag4a.id:
             if event == kAction or event == kValueChanged:
-                if  tagID == k4aVisitID: ## Visit Uru ##
+                if tagID == k4aVisitID:  # Visit Uru #
                     PtHideDialog("GUIDialog04a")
                     PtShowDialog("GUIDialog05")
 
-                elif  tagID == k4aQuitID: ## Quit ##
-                    PtYesNoDialog(self.key,"Are you sure you want to quit?")
+                elif tagID == k4aQuitID:  # Quit #
+                    PtYesNoDialog(self.key, "Are you sure you want to quit?")
 
-                elif  tagID == k4aDeleteID: ## Delete Visitor ##
-                    print gSelectedSlot
-                    print type(gSelectedSlot)
+                elif tagID == k4aDeleteID:  # Delete Visitor #
+                    PtDebugPrint(gSelectedSlot)
+                    PtDebugPrint(type(gSelectedSlot))
                     if gSelectedSlot:
                         deleteString = U"Would you like to delete the VISITOR " + unicode(gPlayerList[gSelectedSlot-gMinusVisitor][0]) + U"?"
                         ptGUIControlTextBox(GUIDiag4c.dialog.getControlFromTag(k4cStaticID)).setStringW(deleteString)
@@ -272,14 +277,14 @@ class xDialogStartUp(ptResponder):
                         PtShowDialog("GUIDialog04c")
                     ## Or Else?? ##
 
-                elif  tagID == k4aPlayer01: ## Click Event ##
+                elif tagID == k4aPlayer01:  # Click Event #
                     if gPlayerList[0]:
                         self.SelectSlot(GUIDiag4a, tagID)
                     else:
                         PtHideDialog("GUIDialog04a")
                         PtShowDialog("GUIDialog06")
 
-                elif  tagID == k4aPlayer02 or tagID == k4aPlayer03 or k4aPlayer04 or k4aPlayer05 or k4aPlayer06: ## Shortcut Skip to Create Visitor ##
+                elif tagID == k4aPlayer02 or tagID == k4aPlayer03 or k4aPlayer04 or k4aPlayer05 or k4aPlayer06:  # Shortcut Skip to Create Visitor #
                     gClickedWrongSlot = 1
                     PtHideDialog("GUIDialog04a")
                     PtShowDialog("GUIDialog05")
@@ -292,22 +297,22 @@ class xDialogStartUp(ptResponder):
         #################################
         elif id == GUIDiag4b.id:
             if event == kAction or event == kValueChanged:
-                if  tagID == k4bExploreID: ## Explore Uru ##
+                if tagID == k4bExploreID:  # Explore Uru #
                     if gSelectedSlot:
                         PtShowDialog("GUIDialog06a")
-                        print "Player selected."
-                        
+                        PtDebugPrint("Player selected.")
+
                         # start setting active player (we'll link out when this operation completes)
                         playerID = gPlayerList[gSelectedSlot-gMinusExplorer][1]
-                        print "Setting active player."
+                        PtDebugPrint("Setting active player.")
                         PtSetActivePlayer(playerID)
-                        
+
                     ## Or Else?? ##
 
-                elif  tagID == k4bQuitID: ## Quit ##
-                    PtYesNoDialog(self.key,"Are you sure you want to quit?")
+                elif tagID == k4bQuitID:  # Quit #
+                    PtYesNoDialog(self.key, "Are you sure you want to quit?")
 
-                elif  tagID == k4bDeleteID: ## Delete Explorer ##
+                elif tagID == k4bDeleteID:  # Delete Explorer #
                     if gSelectedSlot:
                         deleteString = U"Would you like to delete the EXPLORER " + unicode(gPlayerList[gSelectedSlot-gMinusExplorer][0]) + U"?"
                         ptGUIControlTextBox(GUIDiag4c.dialog.getControlFromTag(k4cStaticID)).setStringW(deleteString)
@@ -315,21 +320,21 @@ class xDialogStartUp(ptResponder):
                         PtShowDialog("GUIDialog04c")
                     ## Or Else?? ##
 
-                elif  tagID == k4bPlayer01: ## Click Event ##
+                elif tagID == k4bPlayer01:  # Click Event #
                     errorString = "As an URU subscriber, you are an EXPLORER (not a VISITOR) and are free to enjoy complete and unlimited access to URU content."
                     ptGUIControlTextBox(GUIDiag4d.dialog.getControlFromTag(k4dTextID)).setString(errorString)
                     PtShowDialog("GUIDialog04d")
                     self.ToggleColor(GUIDiag4b, k4bPlayer01)
                     self.PlayerListNotify(GUIDiag4b, gExp_HotSpot, 0)
 
-                elif  (tagID == k4bPlayer02 or tagID == k4bPlayer03 or tagID == k4bPlayer04 or tagID == k4bPlayer05 or tagID == k4bPlayer06) and not (tagID == gSelectedSlot):
+                elif (tagID == k4bPlayer02 or tagID == k4bPlayer03 or tagID == k4bPlayer04 or tagID == k4bPlayer05 or tagID == k4bPlayer06) and not (tagID == gSelectedSlot):
                     if gPlayerList[tagID-gMinusExplorer]:
                         self.SelectSlot(GUIDiag4b, tagID)
                     else:
                         PtHideDialog("GUIDialog04b")
                         PtShowDialog("GUIDialog06")
 
-            elif event == kInterestingEvent: ## RollOver Event ##
+            elif event == kInterestingEvent:  # RollOver Event #
                 self.ToggleColor(GUIDiag4b, tagID)
 
         #################################
@@ -337,7 +342,7 @@ class xDialogStartUp(ptResponder):
         #################################
         elif id == GUIDiag4c.id:
             if event == kAction or event == kValueChanged:
-                if  tagID == k4cYesID: ## Confirm Delete ##
+                if tagID == k4cYesID:  # Confirm Delete #
                     playerID = 0
                     if gIsExplorer:
                         playerID = gPlayerList[gSelectedSlot-gMinusExplorer][1]
@@ -345,7 +350,7 @@ class xDialogStartUp(ptResponder):
                         playerID = gPlayerList[gSelectedSlot-gMinusVisitor][1]
                     PtDeletePlayer(playerID)
 
-                elif  tagID == k4cNoID: ## Cancel Delete ##
+                elif tagID == k4cNoID:  # Cancel Delete #
                     if not (gSelectedSlot == k4bPlayer03) or not (gSelectedSlot == k4aPlayer03):
                         if gIsExplorer:
                             self.ToggleColor(GUIDiag4b, k4bPlayer03)
@@ -362,7 +367,7 @@ class xDialogStartUp(ptResponder):
         #################################
         elif id == GUIDiag4d.id:
             if event == kAction or event == kValueChanged:
-                if  tagID == k4dYesID: ## Continue ##
+                if tagID == k4dYesID:  # Continue #
                     if gIsExplorer:
                         self.ToggleColor(GUIDiag4b, k4bPlayer03)
                         self.PlayerListNotify(GUIDiag4b, gExp_HotSpot, 1)
@@ -373,35 +378,35 @@ class xDialogStartUp(ptResponder):
                     ptGUIControlButton(GUIDiag6.dialog.getControlFromTag(k6PlayID)).enable()
 
         #################################
-        ##         Nag Screen          ##  
+        ##         Nag Screen          ##
         #################################
         elif id == GUIDiag5.id:
             if event == kAction or event == kValueChanged:
-                if  tagID == k5PayID: ## Quit And Register ##
+                if tagID == k5PayID:  # Quit And Register #
                     WebLaunchCmd("https://account.gametap.com/storefront/myst/login/login.do")
 
-                elif  tagID == k5VisitID: ## Continue As Visitor ##
+                elif tagID == k5VisitID:  # Continue As Visitor #
                     if gClickedWrongSlot:
                         gClickedWrongSlot = 0
                         PtHideDialog("GUIDialog05")
                         PtShowDialog("GUIDialog04a")
                     elif gPlayerList[0]:
                         PtShowDialog("GUIDialog06a")
-                        print "Player selected."
-                                                
+                        PtDebugPrint("Player selected.")
+
                         # start setting active player (we'll link out when this operation completes)
                         playerID = gPlayerList[0][1]
-                        print "Setting active player."
+                        PtDebugPrint("Setting active player.")
                         PtSetActivePlayer(playerID)
                     else:
                         PtHideDialog("GUIDialog05")
                         PtShowDialog("GUIDialog06")
 
-                elif  tagID == k5BackID: ## Back To Player Select ##
+                elif tagID == k5BackID:  # Back To Player Select #
                     PtHideDialog("GUIDialog05")
                     PtShowDialog("GUIDialog04a")
 
-                elif  tagID == k5LinkID: ## Link ##
+                elif tagID == k5LinkID:  # Link #
                     WebLaunchCmd("https://account.gametap.com/storefront/myst/login/login.do")
 
         #################################
@@ -409,25 +414,25 @@ class xDialogStartUp(ptResponder):
         #################################
         elif id == GUIDiag6.id:
             if event == kAction or event == kValueChanged:
-                if  tagID == k6QuitID: ## Quit ##
-                    PtYesNoDialog(self.key,"Are you sure you want to quit?")
+                if tagID == k6QuitID:  # Quit #
+                    PtYesNoDialog(self.key, "Are you sure you want to quit?")
 
-                elif  tagID == k6BackID: ## Back To Player Select ##
+                elif tagID == k6BackID:  # Back To Player Select #
                     PtHideDialog("GUIDialog06")
                     if gIsExplorer:
                         PtShowDialog("GUIDialog04b")
                     else:
                         PtShowDialog("GUIDialog04a")
 
-                elif  tagID == k6PlayID: ## Play ##
-                    playerName = ptGUIControlEditBox(GUIDiag6.dialog.getControlFromTag(k6NameID)).getString()  #                 <---
-                    playerNameW = ptGUIControlEditBox(GUIDiag6.dialog.getControlFromTag(k6NameID)).getStringW()  #                 <---
+                elif tagID == k6PlayID:  # Play #
+                    playerName = ptGUIControlEditBox(GUIDiag6.dialog.getControlFromTag(k6NameID)).getString()
+                    playerNameW = ptGUIControlEditBox(GUIDiag6.dialog.getControlFromTag(k6NameID)).getStringW()
                     inviteCode = ptGUIControlEditBox(GUIDiag6.dialog.getControlFromTag(k6InviteID)).getString()
 
                     # since the code is in hex we know letters like i, l, and o can't be in the code so try
                     # converting any to 1 or 0 in case the user thought they were the wrong thing
                     inviteCode = inviteCode.lower().replace("i", "1").replace("l", "1").replace("o", "0")
-                    
+
                     try:
                         playerName == playerNameW
                     except:
@@ -465,7 +470,7 @@ class xDialogStartUp(ptResponder):
                     else:
                         fixedPlayerName = playerName.strip()
                         (fixedPlayerName, whitespacefixedcount) = re.subn("\s{2,}|[\t\n\r\f\v]", " ", fixedPlayerName)
-                        
+
                         (fixedPlayerName, RogueCount,) = re.subn('[\x00-\x1f]', '', fixedPlayerName)
                         if RogueCount > 0 or whitespacefixedcount > 0:
                             if RogueCount > 0:
@@ -481,16 +486,16 @@ class xDialogStartUp(ptResponder):
 
                             ptGUIControlEditBox(GUIDiag6.dialog.getControlFromTag(k6NameID)).setString(fixedPlayerName)
                         else:
-                            print "Creating Player"
+                            PtDebugPrint("Creating Player")
                             PtShowDialog("GUIDialog06a")
                             ptGUIControlButton(GUIDiag6.dialog.getControlFromTag(k6PlayID)).disable()
-                            PtCreatePlayer(fixedPlayerName, playerGender, inviteCode)  #                                                  <---
+                            PtCreatePlayer(fixedPlayerName, playerGender, inviteCode)
 
-                elif  tagID == k6MaleID: ## Gender Male ##
+                elif tagID == k6MaleID:  # Gender Male #
                     if ptGUIControlCheckBox(GUIDiag6.dialog.getControlFromTag(k6FemaleID)).isChecked():
                         ptGUIControlCheckBox(GUIDiag6.dialog.getControlFromTag(k6FemaleID)).setChecked(0)
 
-                elif  tagID == k6FemaleID: ## Gender Female ##
+                elif tagID == k6FemaleID:  # Gender Female #
                     if ptGUIControlCheckBox(GUIDiag6.dialog.getControlFromTag(k6MaleID)).isChecked():
                         ptGUIControlCheckBox(GUIDiag6.dialog.getControlFromTag(k6MaleID)).setChecked(0)
 
@@ -506,7 +511,7 @@ class xDialogStartUp(ptResponder):
         global gPlayerList
 
         if result != 0:
-            print "OnAccountUpdate type %u failed: %u" % (opType, result)
+            PtDebugPrint("OnAccountUpdate type %u failed: %u" % (opType, result))
             PtHideDialog("GUIDialog06a")
             if gIsExplorer:
                 self.ToggleColor(GUIDiag4b, k4bPlayer03)
@@ -538,12 +543,12 @@ class xDialogStartUp(ptResponder):
                 ptGUIControlTextBox(GUIDiag4d.dialog.getControlFromTag(k4dTextID)).setString(errorString)
                 PtShowDialog("GUIDialog04d")
             return
-        
+
         if playerInt == 0:
             return
-        
+
         if opType == PtAccountUpdateType.kActivePlayer:
-            print "Active player set."
+            PtDebugPrint("Active player set.")
 
             pythonBox = PtFindSceneobject("OptionsDialog", "GUI")
             pmlist = pythonBox.getPythonMods()
@@ -560,20 +565,20 @@ class xDialogStartUp(ptResponder):
 
             vault = ptVault()
             entry = vault.findChronicleEntry("InitialAvCustomizationsDone")
-            if type(entry) != type(None):
+            if entry is not None:
                 ageInfo.setAgeFilename("Personal")
             else:
                 ageInfo.setAgeFilename("AvatarCustomization")
             self.ageLink.setAgeInfo(ageInfo)
             self.ageLink.setLinkingRules(PtLinkingRules.kOwnedBook)
 
-            print "Linking to %s" % (self.ageLink.getAgeInfo().getAgeFilename())
+            PtDebugPrint("Linking to %s" % (self.ageLink.getAgeInfo().getAgeFilename()))
             respLinkOutSND.run(self.key)
             ptNetLinkingMgr().linkToAge(self.ageLink)
             self.ageLink = None
 
         elif opType == PtAccountUpdateType.kCreatePlayer:
-            print "Player created."	
+            PtDebugPrint("Player created.")
 
             # setup the link to ACA
             self.ageLink = ptAgeLinkStruct()
@@ -581,10 +586,9 @@ class xDialogStartUp(ptResponder):
             ageInfo.setAgeFilename("AvatarCustomization")
             self.ageLink.setAgeInfo(ageInfo)
             self.ageLink.setLinkingRules(PtLinkingRules.kBasicLink)
-            
 
             # start setting active player (we'll link out once this operation completes)
-            print "Setting active player."
+            PtDebugPrint("Setting active player.")
             PtSetActivePlayer(playerInt)
 
         elif opType == PtAccountUpdateType.kDeletePlayer:
@@ -600,22 +604,22 @@ class xDialogStartUp(ptResponder):
             PtHideDialog("GUIDialog04c")
 
         elif opType == PtAccountUpdateType.kUpgradePlayer:
-            print "xDialogStartUp: upgraded player %d" % playerInt
+            PtDebugPrint("xDialogStartUp: upgraded player %d" % (playerInt))
             if gIsExplorer:
                 self.SelectSlot(GUIDiag4b, 0)
                 self.InitPlayerList(GUIDiag4b, gExp_HotSpot, gExp_TxtBox, gExp_HiLite)
                 self.ToggleColor(GUIDiag4b, k4bPlayer03)
             else:
-                print "xDialogStartUp: we shouldn't have gotten here...apparently we upgraded a player without paying"
+                PtDebugPrint("xDialogStartUp: we shouldn't have gotten here...apparently we upgraded a player without paying")
                 self.SelectSlot(GUIDiag4a, 0)
                 self.InitPlayerList(GUIDiag4a, gVis_HotSpot, gVis_TxtBox, gVis_HiLite)
                 self.ToggleColor(GUIDiag4a, k4aPlayer03)
 
         else:
-            print "AccountUpdate - Unknown: optype = %d, result = %d, playerInt = %d" % (opType, result, playerInt)
+            PtDebugPrint("AccountUpdate - Unknown: optype = %d, result = %d, playerInt = %d" % (opType, result, playerInt))
 
     ###########################
-    def ToggleColor(self,dlgObj,tagID):
+    def ToggleColor(self, dlgObj, tagID):
         global gTanColor
         global gBlueColor
         global gExp_HotSpot
@@ -633,34 +637,32 @@ class xDialogStartUp(ptResponder):
             respToRun = gVis_HiLite[idx]
 
         if currentColor == gBlueColor:
-            #print "toggle tagID(%d) off" % (tagID)
             ptGUIControlTextBox(dlgObj.dialog.getControlFromTag(tagID+10)).setForeColor(gTanColor)
-            respToRun.run(self.key,state="out")
+            respToRun.run(self.key, state="out")
         else:
-            #print "toggle tagID(%d) on" % (tagID)
             ptGUIControlTextBox(dlgObj.dialog.getControlFromTag(tagID+10)).setForeColor(gBlueColor)
-            respToRun.run(self.key,state="in")
+            respToRun.run(self.key, state="in")
 
     ###########################
-    def SelectSlot(self,dlgObj,tagID):
+    def SelectSlot(self, dlgObj, tagID):
         global gSelectedSlot
 
-        if tagID and tagID != gSelectedSlot: ## If there's a currently selected slot, return it to normal ##
-            print "xDialogStartUp.SelectSlot: tagID = %d   gSelectedSlot = %d" % (tagID, gSelectedSlot)
+        if tagID and tagID != gSelectedSlot:  # If there's a currently selected slot, return it to normal #
+            PtDebugPrint("xDialogStartUp.SelectSlot: tagID = %d   gSelectedSlot = %d" % (tagID, gSelectedSlot))
             if gSelectedSlot:
                 self.ToggleColor(dlgObj, gSelectedSlot)
                 ptGUIControlButton(dlgObj.dialog.getControlFromTag(gSelectedSlot)).setNotifyOnInteresting(1)
-                print "xDialogStartUp.SelectSlot: Setting old slot to Interesting"
+                PtDebugPrint("xDialogStartUp.SelectSlot: Setting old slot to Interesting")
 
             gSelectedSlot = tagID
             ptGUIControlButton(dlgObj.dialog.getControlFromTag(gSelectedSlot)).setNotifyOnInteresting(0)
-            print "xDialogStartUp.SelectSlot: Setting gSelectedSlot to new val and removing Interesting"
+            PtDebugPrint("xDialogStartUp.SelectSlot: Setting gSelectedSlot to new val and removing Interesting")
         elif tagID == 0:
-            print "xDialogStartUp.SelectSlot: Setting gSelectedSlot to %d" % (tagID)
+            PtDebugPrint("xDialogStartUp.SelectSlot: Setting gSelectedSlot to %d" % (tagID))
             gSelectedSlot = tagID
 
     ###########################
-    def InitPlayerList(self,dlgObj,listHotSpot,listTxtBox,listHiLite):
+    def InitPlayerList(self, dlgObj, listHotSpot, listTxtBox, listHiLite):
         global gTanColor
         global gPlayerList
 
@@ -672,47 +674,47 @@ class xDialogStartUp(ptResponder):
             for Explorer in ExplorerList:
                 gPlayerList.append(Explorer)
 
-        print "xDialogStartUp.InitPlayerList Enter: gPlayerList = %s" % (str(gPlayerList))
+        PtDebugPrint("xDialogStartUp.InitPlayerList Enter: gPlayerList = %s" % (str(gPlayerList)))
 
-        for tagID in listTxtBox: ## Setup The Slot Colors And Default Titles ##
+        for tagID in listTxtBox:  # Setup The Slot Colors And Default Titles #
             ptGUIControlTextBox(dlgObj.dialog.getControlFromTag(tagID)).setString("CREATE EXPLORER")
             ptGUIControlTextBox(dlgObj.dialog.getControlFromTag(tagID)).setForeColor(gTanColor)
         for respToRun in listHiLite:
-            respToRun.run(self.key,state="out")
+            respToRun.run(self.key, state="out")
 
         self.PlayerListNotify(dlgObj, listHotSpot, 1)
-        
+
         basePath = PtGetUserPath() + U"\\Avatars\\"
-        if gPlayerList[0]: ## Setup The Visitor Slot ##
+        if gPlayerList[0]:  # Setup The Visitor Slot #
             ptGUIControlTextBox(dlgObj.dialog.getControlFromTag(listTxtBox[0])).setStringW(unicode(gPlayerList[0][0]))
             try:
                 filename = basePath + unicode(gPlayerList[0][1]) + U".jpg"
-                print U"xDialogStartUp: Trying to load \"" + filename + "\""
+                PtDebugPrint(U"xDialogStartUp: Trying to load \"" + filename + "\"")
                 theImage = PtLoadJPEGFromDisk(filename, 0, 0)
                 mapPlayer01.textmap.drawImage(0, 0, theImage, 1)
                 mapPlayer01.textmap.flush()
             except:
-                print "xDialogStartUp: Load failed. This avatar probably doesn't have a snapshot"
+                PtDebugPrint("xDialogStartUp: Load failed. This avatar probably doesn't have a snapshot")
 
         else:
             ptGUIControlTextBox(dlgObj.dialog.getControlFromTag(listTxtBox[0])).setString("CREATE VISITOR")
 
-        TextMaps = [mapPlayer01,mapPlayer02,mapPlayer03,mapPlayer04,mapPlayer05,mapPlayer06]
+        TextMaps = [mapPlayer01, mapPlayer02, mapPlayer03, mapPlayer04, mapPlayer05, mapPlayer06]
         for Tex in TextMaps:
             Tex.textmap.clearToColor(ptColor(0, 0, 0, 0))
             Tex.textmap.flush()
 
-        for idx in range(1, len(gPlayerList[1:]) + 1): ## Setup The Explorer Slots ##
+        for idx in range(1, len(gPlayerList[1:]) + 1):  # Setup The Explorer Slots #
             player = gPlayerList[idx]
             ptGUIControlTextBox(dlgObj.dialog.getControlFromTag(listTxtBox[idx])).setStringW(unicode(player[0]))
             try:
                 filename = basePath + unicode(player[1]) + U".jpg"
-                print "xDialogStartUp: Trying to load \"" + filename + "\""
+                PtDebugPrint("xDialogStartUp: Trying to load \"" + filename + "\"")
                 theImage = PtLoadJPEGFromDisk(filename, 0, 0)
                 TextMaps[idx].textmap.drawImage(0, 0, theImage, 0)
                 TextMaps[idx].textmap.flush()
             except:
-                print "xDialogStartUp: Load failed. This avatar probably doesn't have a snapshot"
+                PtDebugPrint("xDialogStartUp: Load failed. This avatar probably doesn't have a snapshot")
 
         if gIsExplorer:
             try:
@@ -730,25 +732,21 @@ class xDialogStartUp(ptResponder):
                 self.SelectSlot(dlgObj, 0)
 
         if gIsExplorer and len(gPlayerList) > 0 and len(gPlayerList) < 6 and gPlayerList[0]:
-            print "xDialogStartUp: upgrading player %d to explorer status" % gPlayerList[0][1]
+            PtDebugPrint("xDialogStartUp: upgrading player %d to explorer status" % (gPlayerList[0][1]))
             PtUpgradeVisitorToExplorer(gPlayerList[0][1])
 
-        while len(gPlayerList) < 6:   ## Now That Slots Are Initialized, Fill Out The List ##
-            gPlayerList.append(None)  ##    So We Don't Have Out Of Bounds Errors Later    ##
-        print "xDialogStartUp.InitPlayerList Exit: gPlayerList = %s" % (str(gPlayerList))
+        while len(gPlayerList) < 6:  # Now That Slots Are Initialized, Fill Out The List #
+            gPlayerList.append(None)  # So We Don't Have Out Of Bounds Errors Later #
+        PtDebugPrint("xDialogStartUp.InitPlayerList Exit: gPlayerList = %s" % (str(gPlayerList)))
 
     ###########################
-    def PlayerListNotify(self,dlgObj,listHotSpot,toggle):
+    def PlayerListNotify(self, dlgObj, listHotSpot, toggle):
         global gSelectedSlot
 
         for tagID in listHotSpot:
-            print "xDialogStartUp.PlayerListNotify: setting tagID (%d) to Interesting = %d" % (tagID, toggle)
+            PtDebugPrint("xDialogStartUp.PlayerListNotify: setting tagID (%d) to Interesting = %d" % (tagID, toggle))
             ptGUIControlButton(dlgObj.dialog.getControlFromTag(tagID)).setNotifyOnInteresting(toggle)
 
         if toggle and gSelectedSlot:
-            print "xDialogStartUp.PlayerListNotify: setting gSelectedSlot (%d) to not Interesting" % (gSelectedSlot)
+            PtDebugPrint("xDialogStartUp.PlayerListNotify: setting gSelectedSlot (%d) to not Interesting" % (gSelectedSlot))
             ptGUIControlButton(dlgObj.dialog.getControlFromTag(gSelectedSlot)).setNotifyOnInteresting(0)
-
-###########################
-def id_comp(elem1, elem2):
-    return cmp(elem1[1], elem2[1])

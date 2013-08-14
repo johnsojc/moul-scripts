@@ -51,12 +51,13 @@ from Plasma import *
 from PlasmaTypes import *
 import string
 
-EventName = ptAttribString(1,"Event name")
-PageNames = ptAttribString(2,"Page node name(s) - comma separated")
-Responder = ptAttribResponder(3,"Responder to trigger",statelist=["true","false"])
-RunFalse = ptAttribBoolean(4,"When zero run State 2 on responder")
+EventName = ptAttribString(1, "Event name")
+PageNames = ptAttribString(2, "Page node name(s) - comma separated")
+Responder = ptAttribResponder(3, "Responder to trigger", statelist=["true", "false"])
+RunFalse = ptAttribBoolean(4, "When zero run State 2 on responder")
 
 AgeStartedIn = None
+
 
 class xEventTrigger(ptResponder):
 
@@ -69,33 +70,31 @@ class xEventTrigger(ptResponder):
     def OnFirstUpdate(self):
         global AgeStartedIn
         AgeStartedIn = PtGetAgeName()
-    
+
     def OnServerInitComplete(self):
-        if type(EventName.value) == type("") and EventName.value != "":
+        if type(EventName.value) is str and EventName.value != "":
             ageSDL = PtGetAgeSDL()
-            ageSDL.setNotify(self.key,EventName.value,0.0)
-        
-    def OnSDLNotify(self,VARname,SDLname,playerID,tag):
+            ageSDL.setNotify(self.key, EventName.value, 0.0)
+
+    def OnSDLNotify(self, VARname, SDLname, playerID, tag):
         if AgeStartedIn == PtGetAgeName():
             ageSDL = PtGetAgeSDL()
-            PtDebugPrint("xEventTrigger: SDLNotify - name = %s, SDLname = %s" % (VARname,SDLname))
+            PtDebugPrint("xEventTrigger: SDLNotify - name = %s, SDLname = %s" % (VARname, SDLname))
             if VARname == EventName.value:
-                print "xEventTrigger: value is %f" % ageSDL[EventName.value]
+                PtDebugPrint("xEventTrigger: value is %f" % (ageSDL[EventName.value]))
                 if ageSDL[EventName.value][0]:
-                    #~ PtDebugPrint("Event %s is true!" % (VARname))
                     # are we paging things in?
-                    if type(PageNames.value) == type("") and PageNames.value != "":
-                        names = string.split(PageNames.value,",")
+                    if type(PageNames.value) is str and PageNames.value != "":
+                        names = string.split(PageNames.value, ",")
                         for name in names:
                             PtPageInNode(name)
-                    if type(Responder.value) != type(None):
-                        Responder.run(self.key,state="true")
+                    if Responder.value is not None:
+                        Responder.run(self.key, state="true")
                 else:
-                    #~ PtDebugPrint("Event %s is false!" % (VARname))
                     # are we paging things in?
-                    if type(PageNames.value) == type("") and PageNames.value != "":
-                        names = string.split(PageNames.value,",")
+                    if type(PageNames.value) is str and PageNames.value != "":
+                        names = string.split(PageNames.value, ",")
                         for name in names:
                             PtPageOutNode(name)
-                    if RunFalse.value and type(Responder.value) != type(None):
-                        Responder.run(self.key,state="false")
+                    if RunFalse.value and Responder.value is not None:
+                        Responder.run(self.key, state="false")

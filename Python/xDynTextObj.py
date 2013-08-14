@@ -56,10 +56,12 @@ import xDynTextDefs
 dynTextMap = ptAttribDynamicMap(1, "The Dynamic Texture Map")
 sourceFile = ptAttribString(2, "Text name")
 
+
 #====================================
 # This is the class where my code is
 #====================================
 class xDynTextObj(ptModifier):
+
     def __init__(self):
         ptModifier.__init__(self)
         self.id = 204
@@ -76,29 +78,29 @@ class xDynTextObj(ptModifier):
             PtDebugPrint("Missing "+index+" table entry")
             return
         if len(textObj) == 7:
-            fontName,fontSize,fontColor,marginSize,spacing,locPath,justify = textObj;
+            fontName, fontSize, fontColor, marginSize, spacing, locPath, justify = textObj
         else:
-            fontName,fontSize,fontColor,marginSize,spacing,locPath = textObj;
+            fontName, fontSize, fontColor, marginSize, spacing, locPath = textObj
             justify = PtJustify.kLeftJustify
         theMap = dynTextMap.textmap
-        
-        color = ptColor(fontColor[0],fontColor[1],fontColor[2],fontColor[3])
-        clearcolor = ptColor(0,0,0,0)
+
+        color = ptColor(fontColor[0], fontColor[1], fontColor[2], fontColor[3])
+        clearcolor = ptColor(0, 0, 0, 0)
         wrappingWidth = theMap.getWidth()-marginSize[3]-marginSize[1]
         wrappingHeight = theMap.getHeight()-marginSize[2]-marginSize[0]
         textX = marginSize[1]
         textY = marginSize[0]
-        
-        PtDebugPrint("Displaying text in the following rectangle: (%d,%d,%d,%d)" % (marginSize[1],marginSize[0],theMap.getWidth()-marginSize[3],theMap.getHeight()-marginSize[2]))
+
+        PtDebugPrint("Displaying text in the following rectangle: (%d,%d,%d,%d)" % (marginSize[1], marginSize[0], theMap.getWidth()-marginSize[3], theMap.getHeight()-marginSize[2]))
         PtDebugPrint("Rendering \""+locPath+"\" on the target dynamic text object")
-        
-        theMap.netPropagate(false) # we don't want our text appearing on other machines, since we are going to be localized
-        
+
+        theMap.netPropagate(false)  # we don't want our text appearing on other machines, since we are going to be localized
+
         theMap.clearToColor(clearcolor)
         theMap.setTextColor(color, true)
-        theMap.setWrapping(wrappingWidth,wrappingHeight)
+        theMap.setWrapping(wrappingWidth, wrappingHeight)
         theMap.setFont(fontName, fontSize)
         theMap.setJustify(justify)
         theMap.setLineSpacing(spacing)
-        theMap.drawTextW(textX,textY,PtGetLocalizedString(locPath))
+        theMap.drawTextW(textX, textY, PtGetLocalizedString(locPath))
         theMap.flush()

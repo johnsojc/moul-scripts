@@ -55,33 +55,31 @@ sitnode = ptAttribActivator(1, "No FPC Region node:")
 
 # global variables
 
+
 class xDisableFirstPersonCam(ptResponder):
 
     def __init__(self):
         ptResponder.__init__(self)
         self.id = 5220
-
         self.version = 1
-        print "__init__xDisableFirstPersonCam v.", self.version
+        PtDebugPrint("__init__xDisableFirstPersonCam v.%d" % (self.version))
 
     def OnFirstUpdate(self):
         pass
- 
+
     def Load(self):
         pass
-        
 
-    def OnNotify(self,state,id,events):
+    def OnNotify(self, state, id, events):
         if id == sitnode.id:
             for event in events:
-                if event[0] == 1 and event[1] == 1: # entering the no FPC region
-                    print "FP Disabled."
+                if event[0] == 1 and event[1] == 1:  # entering the no FPC region
+                    PtDebugPrint("FP Disabled.")
                     cam = ptCamera()
                     cam.undoFirstPerson()
                     cam.disableFirstPersonOverride()
 
-
-                elif event[0] == 1 and event[1] == 0: # exiting the no FPC region
-                    print "FP Enabled."
+                elif event[0] == 1 and event[1] == 0:  # exiting the no FPC region
+                    PtDebugPrint("FP Enabled.")
                     cam = ptCamera()
                     cam.enableFirstPersonOverride()

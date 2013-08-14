@@ -44,31 +44,34 @@ You can contact Cyan Worlds, Inc. by email legal@cyan.com
 # Written by Will Ware, 2001/08/23
 # Modified by Adam Van Ornum, 4/17/2003
 
-import types, string
+import types
+import string
+
 
 class EnumException(Exception):
     def __init__(self, value):
         Exception.__init__(self, value)
 
+
 class Enum:
     def __init__(self, enumStr):
-        lookup = { }
+        lookup = {}
         i = 0
-        uniqueNames = [ ]
-        uniqueValues = [ ]
+        uniqueNames = []
+        uniqueValues = []
         enumList = enumStr.split(",")
         for x in enumList:
             x = x.split("=")
             if len(x) == 2:
-                x = ( x[0].strip(), int(x[1].strip()) )
+                x = (x[0].strip(), int(x[1].strip()))
             else:
                 x = x[0].strip()
-                
-            if type(x) == types.TupleType:
+
+            if isinstance(x, types.TupleType):
                 x, i = x
-            if type(x) != types.StringType:
+            if isinstance(x, types.StringType):
                 raise EnumException("enum name is not a string: " + x)
-            if type(i) != types.IntType:
+            if isinstance(i, types.IntType):
                 raise EnumException("enum value is not an integer: " + i)
             if x in uniqueNames:
                 raise EnumException("enum name is not unique: " + x)
@@ -81,14 +84,13 @@ class Enum:
 
         self.lookup = lookup
 
-
     def __getattr__(self, attr):
-        if not self.lookup.has_key(attr):
+        if not attr in self.lookup:
             raise AttributeError
         return self.lookup[attr]
 
     def __getitem__(self, sub):
-        if not self.lookup.has_key(sub):
+        if not sub in self.lookup:
             raise AttributeError
         return self.lookup[sub]
 
@@ -106,9 +108,9 @@ class Enum:
 if __name__ == "__main__":
     animal = Enum("Cow, Pig, Dog = 5, Cat, Lizard")
 
-    print animal.Cow
-    print animal["Cow"]
-    print animal.Pig
-    print animal.Dog
-    print animal.Cat
-    print animal.Lizard
+    PtDebugPrint(animal.Cow)
+    PtDebugPrint(animal["Cow"])
+    PtDebugPrint(animal.Pig)
+    PtDebugPrint(animal.Dog)
+    PtDebugPrint(animal.Cat)
+    PtDebugPrint(animal.Lizard)

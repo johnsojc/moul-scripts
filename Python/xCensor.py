@@ -65,18 +65,20 @@ SpecialPunctuation = '#$%&*+-@_|~'
 
 SentenceFilters = xCensorFilters.xSentenceFilters
 
-def xCensor(sentence,censorLevel):
+
+def xCensor(sentence, censorLevel):
     "censors sentence for words for above ratingLevel. Returns censored sentence"
     # make sure they stay within reasonable censorLevels
     if censorLevel > xRatedR:
         censorLevel = xRatedR
     for sfilter in SentenceFilters:
-        sentence = sfilter.censor(sentence,censorLevel)
+        sentence = sfilter.censor(sentence, censorLevel)
     return sentence
+
 
 def xWhatRating(sentence):
     "Returns the censorship level of a sentence"
-    rated = xRatedG   # assume rated lowest level
+    rated = xRatedG  # assume rated lowest level
     for sfilter in SentenceFilters:
         thisRating = sfilter.test(sentence)
         if thisRating > rated:

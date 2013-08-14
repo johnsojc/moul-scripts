@@ -53,6 +53,7 @@ from PlasmaTypes import *
 
 boolSinglePlayerDisable = ptAttribBoolean(1, "Disable in single player (else multiplayer)", 1)
 
+
 class xDisableOnGameMode(ptMultiModifier):
 
     def __init__(self):
@@ -60,7 +61,7 @@ class xDisableOnGameMode(ptMultiModifier):
         self.id = 5316
         self.version = 1
 
-        PtDebugPrint("DEBUG: xDisableOnGameMode.__init__: version = %d" % self.version)
+        PtDebugPrint("DEBUG: xDisableOnGameMode.__init__: version = %d" % (self.version))
 
     def OnFirstUpdate(self):
         if boolSinglePlayerDisable.value:
@@ -75,11 +76,11 @@ class xDisableOnGameMode(ptMultiModifier):
                 self.EnableObject()
 
     def EnableObject(self):
-        PtDebugPrint("DEBUG: xDisableOnGameMode.EnableObject:  Attempting to enable drawing and collision on %s..." % self.sceneobject.getName())
+        PtDebugPrint("DEBUG: xDisableOnGameMode.EnableObject:  Attempting to enable drawing and collision on %s..." % (self.sceneobject.getName()))
         self.sceneobject.draw.enable()
         self.sceneobject.physics.suppress(false)
 
     def DisableObject(self):
-        PtDebugPrint("DEBUG: xDisableOnGameMode.DisableObject:  Attempting to disable drawing and collision on %s..." % self.sceneobject.getName())
+        PtDebugPrint("DEBUG: xDisableOnGameMode.DisableObject:  Attempting to disable drawing and collision on %s..." % (self.sceneobject.getName()))
         self.sceneobject.draw.disable()
         self.sceneobject.physics.suppress(true)

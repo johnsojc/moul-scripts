@@ -49,8 +49,8 @@ from Plasma import *
 from PlasmaTypes import *
 from PlasmaConstants import *
 
-exitRgn = ptAttribActivator(1,"exit region")
-safetyRgn = ptAttribActivator(2,"safety region")
+exitRgn = ptAttribActivator(1, "exit region")
+safetyRgn = ptAttribActivator(2, "safety region")
 
 #globals
 
@@ -63,17 +63,15 @@ class xExitSubworld(ptResponder):
         ptResponder.__init__(self)
         self.id = 53634
         self.version = 1
-    
-        
-            
-    def OnNotify(self,state,id,events):
+
+    def OnNotify(self, state, id, events):
         global inSafetyRegion
-        
+
         local = PtGetLocalAvatar()
         avatar = PtFindAvatar(events)
-        if (avatar != local):
+        if avatar != local:
             return
-        
+
         for event in events:
             if (event[0] == kCollisionEvent):
                 entry = event[1]  # are we entering or exiting?
@@ -81,8 +79,6 @@ class xExitSubworld(ptResponder):
                     avatar.avatar.exitSubWorld()
                     return
                 elif (id == safetyRgn.id):
-                    print "in safety region = ",entry
-                    inSafetyRegion  = entry
+                    PtDebugPrint("in safety region = ", entry)
+                    inSafetyRegion = entry
                     return
-        
-        
