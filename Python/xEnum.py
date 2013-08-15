@@ -69,9 +69,9 @@ class Enum:
 
             if isinstance(x, types.TupleType):
                 x, i = x
-            if isinstance(x, types.StringType):
+            if not isinstance(x, types.StringType):
                 raise EnumException("enum name is not a string: " + x)
-            if isinstance(i, types.IntType):
+            if not isinstance(i, types.IntType):
                 raise EnumException("enum value is not an integer: " + i)
             if x in uniqueNames:
                 raise EnumException("enum name is not unique: " + x)

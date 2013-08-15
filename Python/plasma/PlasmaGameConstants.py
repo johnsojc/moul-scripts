@@ -40,6 +40,8 @@ You can contact Cyan Worlds, Inc. by email legal@cyan.com
       Mead, WA   99021
 
  *==LICENSE==* """
+
+
 class PtBlueSpiralMsgTypes:
     """(none)"""
     kBlueSpiralGameStarted = 8
@@ -47,6 +49,7 @@ class PtBlueSpiralMsgTypes:
     kBlueSpiralSuccessfulHit = 5
     kBlueSpiralGameWon = 6
     kBlueSpiralGameOver = 7
+
 
 class PtClimbingWallMsgTypes:
     """(none)"""
@@ -57,10 +60,12 @@ class PtClimbingWallMsgTypes:
     kClimbingWallSuitMachineLocked = 8
     kClimbingWallGameOver = 9
 
+
 class PtClimbingWallReadyTypes:
     """(none)"""
     kClimbingWallReadyNumBlockers = 0
     kClimbingWallReadyBlockers = 1
+
 
 class PtGameCliInviteErrors:
     """(none)"""
@@ -72,6 +77,7 @@ class PtGameCliInviteErrors:
     kGameInviteErrGameOver = 5
     kGameInviteErrGameFull = 6
     kGameInviteErrNoJoin = 7
+
 
 class PtGameCliMsgTypes:
     """(none)"""
@@ -86,10 +92,12 @@ class PtGameCliMsgTypes:
     kGameCliClimbingWallMsg = 8
     kGameCliVarSyncMsg = 9
 
+
 class PtGameMgrMsgTypes:
     """(none)"""
     kGameMgrInviteReceivedMsg = 1
     kGameMgrInviteRevokedMsg = 2
+
 
 class PtHeekCountdownStates:
     """(none)"""
@@ -97,11 +105,13 @@ class PtHeekCountdownStates:
     kHeekCountdownStop = 1
     kHeekCountdownIdle = 2
 
+
 class PtHeekGameChoice:
     """(none)"""
     kHeekGameChoiceRock = 0
     kHeekGameChoicePaper = 1
     kHeekGameChoiceScissors = 2
+
 
 class PtHeekGameSeq:
     """(none)"""
@@ -109,11 +119,13 @@ class PtHeekGameSeq:
     kHeekGameSeqChoiceAnim = 1
     kHeekGameSeqGameWinAnim = 2
 
+
 class PtHeekLightStates:
     """(none)"""
     kHeekLightOn = 0
     kHeekLightOff = 1
     kHeekLightFlash = 2
+
 
 class PtHeekMsgTypes:
     """(none)"""
@@ -129,12 +141,14 @@ class PtHeekMsgTypes:
     kHeekGameWin = 13
     kHeekPointUpdate = 14
 
+
 class PtMarkerGameTypes:
     """(none)"""
     kMarkerGameQuest = 0
     kMarkerGameCGZ = 1
     kMarkerGameCapture = 2
     kMarkerGameCaptureAndHold = 3
+
 
 class PtMarkerMsgTypes:
     """(none)"""
@@ -153,6 +167,7 @@ class PtMarkerMsgTypes:
     kMarkerMarkerNameChanged = 16
     kMarkerMarkerCaptured = 17
 
+
 class PtTTTGameResult:
     """(none)"""
     kTTTGameResultWinner = 0
@@ -160,11 +175,13 @@ class PtTTTGameResult:
     kTTTGameResultGave = 2
     kTTTGameResultError = 3
 
+
 class PtTTTMsgTypes:
     """(none)"""
     kTTTGameStarted = 4
     kTTTGameOver = 5
     kTTTMoveMade = 6
+
 
 class PtVarSyncMsgTypes:
     """(none)"""
@@ -173,4 +190,3 @@ class PtVarSyncMsgTypes:
     kVarSyncNumericVarChanged = 5
     kVarSyncAllVarsSent = 6
     kVarSyncStringVarCreated = 7
-

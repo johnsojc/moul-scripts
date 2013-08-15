@@ -40,76 +40,96 @@ You can contact Cyan Worlds, Inc. by email legal@cyan.com
       Mead, WA   99021
 
  *==LICENSE==* """
-def PtCreateMarkerGame(callbackKey, gameType, gameName = "", timeLimit = 0, templateId = ""):
+
+
+def PtCreateMarkerGame(callbackKey, gameType, gameName="", timeLimit=0, templateId=""):
     """Creates a new Marker game with the specified callback key, game type (from PtMarkerGameTypes), time limit (in ms), and template id (guid string)"""
     pass
+
 
 def PtCreateTTTGame(callbackKey, numPlayers):
     """Creates a new TicTacToe game with the specified callback key and number of players (1 or 2)"""
     pass
 
+
 def PtGetGameCli(gameID):
     """Returns a ptGameCli associated with the specified id"""
     pass
+
 
 def PtGetGameIDs():
     """Returns a list of game IDs that the player is currently joined to"""
     pass
 
+
 def PtGetGameNameByTypeID(guid):
     """Returns the name of the game represented by guid passed in as a string"""
     pass
+
 
 def PtIsBlueSpiralGame(typeID):
     """Returns true if the specifed typeID (guid as a string) is a BlueSpiral game"""
     pass
 
+
 def PtIsClimbingWallGame(typeID):
     """Returns true if the specifed typeID (guid as a string) is a ClimbingWall game"""
     pass
+
 
 def PtIsHeekGame(typeID):
     """Returns true if the specifed typeID (guid as a string) is a Heek game"""
     pass
 
+
 def PtIsMarkerGame(typeID):
     """Returns true if the specifed typeID (guid as a string) is a Marker game"""
     pass
+
 
 def PtIsTTTGame(typeID):
     """Returns true if the specifed typeID (guid as a string) is a TicTacToe game"""
     pass
 
+
 def PtIsVarSyncGame(typeID):
     """Returns true if the specifed typeID (guid as a string) is a VarSync game"""
     pass
+
 
 def PtJoinCommonBlueSpiralGame(callbackKey, gameID):
     """Joins a common BlueSpiral game with the specified ID. If one doesn't exist, it creates it"""
     pass
 
+
 def PtJoinCommonClimbingWallGame(callbackKey, gameID):
     """Joins a common ClimbingWall game with the specified ID. If one doesn't exist, it creates it"""
     pass
+
 
 def PtJoinCommonHeekGame(callbackKey, gameID):
     """Joins a common Heek game with the specified ID. If one doesn't exist, it creates it"""
     pass
 
+
 def PtJoinCommonTTTGame(callbackKey, gameID, numPlayers):
     """Joins a common TicTacToe game with the specified ID. If one doesn't exist, it creates it with the specified number of players"""
     pass
+
 
 def PtJoinCommonVarSyncGame(callbackKey):
     """Joins the common VarSync game. If one doesn't exist, it creates it"""
     pass
 
+
 def PtJoinGame(callbackKey, gameID):
     """Sends a join request to the specified game. Messages are sent to the callback key"""
     pass
 
+
 class ptGameCliMsg:
     """Message from the game server from a game"""
+
     def __init__(self):
         """None"""
         pass
@@ -130,8 +150,10 @@ class ptGameCliMsg:
         """Returns this message as the base class of message for the game it is associated with (ttt, heek, marker, etc)"""
         pass
 
+
 class ptBlueSpiralMsg(ptGameCliMsg):
     """Base class for BlueSpiral game messages"""
+
     def __init__(self):
         """None"""
         pass
@@ -160,8 +182,10 @@ class ptBlueSpiralMsg(ptGameCliMsg):
         """Returns this message as the base class of message for the game it is associated with (ttt, heek, marker, etc)"""
         pass
 
+
 class ptBlueSpiralClothOrderMsg(ptBlueSpiralMsg):
     """BlueSpiral message received when the game is started and the cloth order is set"""
+
     def __init__(self):
         """None"""
         pass
@@ -194,8 +218,10 @@ class ptBlueSpiralClothOrderMsg(ptBlueSpiralMsg):
         """Returns this message as the base class of message for the game it is associated with (ttt, heek, marker, etc)"""
         pass
 
+
 class ptGameCli:
     """Base class for all game client interfaces"""
+
     def __init__(self):
         """None"""
         pass
@@ -208,7 +234,7 @@ class ptGameCli:
         """Returns the game type ID for this game (as a guid string)"""
         pass
 
-    def invitePlayer(self,playerID):
+    def invitePlayer(self, playerID):
         """Invites the specified player to join the game"""
         pass
 
@@ -224,7 +250,7 @@ class ptGameCli:
         """Returns the current number of players"""
         pass
 
-    def uninvitePlayer(self,playerID):
+    def uninvitePlayer(self, playerID):
         """Revokes the invitation for the specified player"""
         pass
 
@@ -252,8 +278,10 @@ class ptGameCli:
         """Returns this game client as a ptVarSyncGame"""
         pass
 
+
 class ptBlueSpiralGame(ptGameCli):
     """Game client for the BlueSpiral game"""
+
     def __init__(self):
         """None"""
         pass
@@ -266,11 +294,11 @@ class ptBlueSpiralGame(ptGameCli):
         """Returns the game type ID for this game (as a guid string)"""
         pass
 
-    def hitCloth(self,clothNum):
+    def hitCloth(self, clothNum):
         """Tells the server you hit the specified cloth"""
         pass
 
-    def invitePlayer(self,playerID):
+    def invitePlayer(self, playerID):
         """Invites the specified player to join the game"""
         pass
 
@@ -290,7 +318,7 @@ class ptBlueSpiralGame(ptGameCli):
         """Starts a new game"""
         pass
 
-    def uninvitePlayer(self,playerID):
+    def uninvitePlayer(self, playerID):
         """Revokes the invitation for the specified player"""
         pass
 
@@ -318,8 +346,10 @@ class ptBlueSpiralGame(ptGameCli):
         """Returns this game client as a ptVarSyncGame"""
         pass
 
+
 class ptBlueSpiralGameOverMsg(ptBlueSpiralMsg):
     """BlueSpiral message received when the timer runs out, someone hits the wrong cloth, or the game is restarted (before a game start msg in that last case)"""
+
     def __init__(self):
         """None"""
         pass
@@ -348,8 +378,10 @@ class ptBlueSpiralGameOverMsg(ptBlueSpiralMsg):
         """Returns this message as the base class of message for the game it is associated with (ttt, heek, marker, etc)"""
         pass
 
+
 class ptBlueSpiralGameStartedMsg(ptBlueSpiralMsg):
     """BlueSpiral message received when someone starts the game (or when you join a game that is running)"""
+
     def __init__(self):
         """None"""
         pass
@@ -382,8 +414,10 @@ class ptBlueSpiralGameStartedMsg(ptBlueSpiralMsg):
         """Returns this message as the base class of message for the game it is associated with (ttt, heek, marker, etc)"""
         pass
 
+
 class ptBlueSpiralGameWonMsg(ptBlueSpiralMsg):
     """BlueSpiral message received when the last cloth is successfully hit"""
+
     def __init__(self):
         """None"""
         pass
@@ -411,9 +445,11 @@ class ptBlueSpiralGameWonMsg(ptBlueSpiralMsg):
     def upcastToGameMsg(self):
         """Returns this message as the base class of message for the game it is associated with (ttt, heek, marker, etc)"""
         pass
+
 
 class ptBlueSpiralSuccessfulHitMsg(ptBlueSpiralMsg):
     """BlueSpiral message received when a cloth is hit in the correct order"""
+
     def __init__(self):
         """None"""
         pass
@@ -442,8 +478,10 @@ class ptBlueSpiralSuccessfulHitMsg(ptBlueSpiralMsg):
         """Returns this message as the base class of message for the game it is associated with (ttt, heek, marker, etc)"""
         pass
 
+
 class ptClimbingWallMsg(ptGameCliMsg):
     """Base class for ClimbingWall game messages"""
+
     def __init__(self):
         """None"""
         pass
@@ -472,8 +510,10 @@ class ptClimbingWallMsg(ptGameCliMsg):
         """Returns this message as the base class of message for the game it is associated with (ttt, heek, marker, etc)"""
         pass
 
+
 class ptClimbingWallBlockersChangedMsg(ptClimbingWallMsg):
     """ClimbingWall message received when the blocker state changes"""
+
     def __init__(self):
         """None"""
         pass
@@ -514,17 +554,19 @@ class ptClimbingWallBlockersChangedMsg(ptClimbingWallMsg):
         """Returns this message as the base class of message for the game it is associated with (ttt, heek, marker, etc)"""
         pass
 
+
 class ptClimbingWallGame(ptGameCli):
     """Game client for the ClimbingWall game"""
+
     def __init__(self):
         """None"""
         pass
 
-    def changeBlocker(self,teamNumber, blockerNumber, added):
+    def changeBlocker(self, teamNumber, blockerNumber, added):
         """Changes the specified marker's state for the specified team"""
         pass
 
-    def changeNumBlockers(self,amountToAdjust):
+    def changeNumBlockers(self, amountToAdjust):
         """Adjusts the number of blockers we are playing with"""
         pass
 
@@ -540,7 +582,7 @@ class ptClimbingWallGame(ptGameCli):
         """Returns the game type ID for this game (as a guid string)"""
         pass
 
-    def invitePlayer(self,playerID):
+    def invitePlayer(self, playerID):
         """Invites the specified player to join the game"""
         pass
 
@@ -560,11 +602,11 @@ class ptClimbingWallGame(ptGameCli):
         """Returns the current number of players"""
         pass
 
-    def playerEntered(self,teamNumber):
+    def playerEntered(self, teamNumber):
         """Tells the server that you are trying to play the game for the specified team"""
         pass
 
-    def ready(self,readyType, teamNumber):
+    def ready(self, readyType, teamNumber):
         """Marks the specified team as ready for the specified type (See PtClimbingWallReadyTypes)"""
         pass
 
@@ -572,7 +614,7 @@ class ptClimbingWallGame(ptGameCli):
         """Attempts to reset the game's control panel"""
         pass
 
-    def uninvitePlayer(self,playerID):
+    def uninvitePlayer(self, playerID):
         """Revokes the invitation for the specified player"""
         pass
 
@@ -600,8 +642,10 @@ class ptClimbingWallGame(ptGameCli):
         """Returns this game client as a ptVarSyncGame"""
         pass
 
+
 class ptClimbingWallGameOverMsg(ptClimbingWallMsg):
     """ClimbingWall message received when the game is over"""
+
     def __init__(self):
         """None"""
         pass
@@ -646,8 +690,10 @@ class ptClimbingWallGameOverMsg(ptClimbingWallMsg):
         """Returns this message as the base class of message for the game it is associated with (ttt, heek, marker, etc)"""
         pass
 
+
 class ptClimbingWallNumBlockersChangedMsg(ptClimbingWallMsg):
     """ClimbingWall message received when the number of blockers is changed"""
+
     def __init__(self):
         """None"""
         pass
@@ -684,8 +730,10 @@ class ptClimbingWallNumBlockersChangedMsg(ptClimbingWallMsg):
         """Returns this message as the base class of message for the game it is associated with (ttt, heek, marker, etc)"""
         pass
 
+
 class ptClimbingWallPlayerEnteredMsg(ptClimbingWallMsg):
     """ClimbingWall message received when you successfully enter the suit machine"""
+
     def __init__(self):
         """None"""
         pass
@@ -714,8 +762,10 @@ class ptClimbingWallPlayerEnteredMsg(ptClimbingWallMsg):
         """Returns this message as the base class of message for the game it is associated with (ttt, heek, marker, etc)"""
         pass
 
+
 class ptClimbingWallReadyMsg(ptClimbingWallMsg):
     """ClimbingWall message received when the ready state of the teams is changed"""
+
     def __init__(self):
         """None"""
         pass
@@ -760,8 +810,10 @@ class ptClimbingWallReadyMsg(ptClimbingWallMsg):
         """Returns this message as the base class of message for the game it is associated with (ttt, heek, marker, etc)"""
         pass
 
+
 class ptClimbingWallSuitMachineLockedMsg(ptClimbingWallMsg):
     """ClimbingWall message received when the locked state of the suit machines is changed"""
+
     def __init__(self):
         """None"""
         pass
@@ -802,8 +854,10 @@ class ptClimbingWallSuitMachineLockedMsg(ptClimbingWallMsg):
         """Returns this message as the base class of message for the game it is associated with (ttt, heek, marker, etc)"""
         pass
 
+
 class ptGameCliInviteFailedMsg(ptGameCliMsg):
     """Game client message when an invite failed message is received"""
+
     def __init__(self):
         """None"""
         pass
@@ -836,8 +890,10 @@ class ptGameCliInviteFailedMsg(ptGameCliMsg):
         """Returns this message as the base class of message for the game it is associated with (ttt, heek, marker, etc)"""
         pass
 
+
 class ptGameCliOwnerChangeMsg(ptGameCliMsg):
     """Game client message when a owner change message is received"""
+
     def __init__(self):
         """None"""
         pass
@@ -862,8 +918,10 @@ class ptGameCliOwnerChangeMsg(ptGameCliMsg):
         """Returns this message as the base class of message for the game it is associated with (ttt, heek, marker, etc)"""
         pass
 
+
 class ptGameCliPlayerJoinedMsg(ptGameCliMsg):
     """Game client message when a player joined message is received"""
+
     def __init__(self):
         """None"""
         pass
@@ -887,9 +945,11 @@ class ptGameCliPlayerJoinedMsg(ptGameCliMsg):
     def upcastToGameMsg(self):
         """Returns this message as the base class of message for the game it is associated with (ttt, heek, marker, etc)"""
         pass
+
 
 class ptGameCliPlayerLeftMsg(ptGameCliMsg):
     """Game client message when a player left message is received"""
+
     def __init__(self):
         """None"""
         pass
@@ -914,8 +974,10 @@ class ptGameCliPlayerLeftMsg(ptGameCliMsg):
         """Returns this message as the base class of message for the game it is associated with (ttt, heek, marker, etc)"""
         pass
 
+
 class ptGameMgrMsg:
     """Message from the game manager"""
+
     def __init__(self):
         """None"""
         pass
@@ -931,9 +993,11 @@ class ptGameMgrMsg:
     def upcastToInviteRevokedMsg(self):
         """Returns this message as a ptGameMgrInviteRevokedMsg"""
         pass
+
 
 class ptGameMgrInviteReceivedMsg(ptGameMgrMsg):
     """Game manager message when an invite is received"""
+
     def __init__(self):
         """None"""
         pass
@@ -961,9 +1025,11 @@ class ptGameMgrInviteReceivedMsg(ptGameMgrMsg):
     def upcastToInviteRevokedMsg(self):
         """Returns this message as a ptGameMgrInviteRevokedMsg"""
         pass
+
 
 class ptGameMgrInviteRevokedMsg(ptGameMgrMsg):
     """Game manager message when an invite is received"""
+
     def __init__(self):
         """None"""
         pass
@@ -992,8 +1058,10 @@ class ptGameMgrInviteRevokedMsg(ptGameMgrMsg):
         """Returns this message as a ptGameMgrInviteRevokedMsg"""
         pass
 
+
 class ptHeekMsg(ptGameCliMsg):
     """Base class for Heek game messages"""
+
     def __init__(self):
         """None"""
         pass
@@ -1021,6 +1089,7 @@ class ptHeekMsg(ptGameCliMsg):
     def upcastToGameMsg(self):
         """Returns this message as the base class of message for the game it is associated with (ttt, heek, marker, etc)"""
         pass
+
 
 class ptHeekCountdownStateMsg(ptHeekMsg):
     """Heek message received by game admin when the countdown state needs to change"""
@@ -1056,8 +1125,10 @@ class ptHeekCountdownStateMsg(ptHeekMsg):
         """Returns this message as the base class of message for the game it is associated with (ttt, heek, marker, etc)"""
         pass
 
+
 class ptHeekDropMsg(ptHeekMsg):
     """Heek message received when another player's position needs to be reset/modified"""
+
     def __init__(self):
         """None"""
         pass
@@ -1090,13 +1161,15 @@ class ptHeekDropMsg(ptHeekMsg):
         """Returns this message as the base class of message for the game it is associated with (ttt, heek, marker, etc)"""
         pass
 
+
 class ptHeekGame(ptGameCli):
     """Game client for the Heek game"""
+
     def __init__(self):
         """None"""
         pass
 
-    def choose(self,choice):
+    def choose(self, choice):
         """Makes the specified move (see PtHeekGameChoice)"""
         pass
 
@@ -1108,7 +1181,7 @@ class ptHeekGame(ptGameCli):
         """Returns the game type ID for this game (as a guid string)"""
         pass
 
-    def invitePlayer(self,playerID):
+    def invitePlayer(self, playerID):
         """Invites the specified player to join the game"""
         pass
 
@@ -1120,7 +1193,7 @@ class ptHeekGame(ptGameCli):
         """Returns the name of the game"""
         pass
 
-    def playGame(self,position, points, name):
+    def playGame(self, position, points, name):
         """Requests to start playing the game in the specified position"""
         pass
 
@@ -1128,11 +1201,11 @@ class ptHeekGame(ptGameCli):
         """Returns the current number of players"""
         pass
 
-    def sequenceFinished(self,sequence):
+    def sequenceFinished(self, sequence):
         """Tells the server that the specified animation finished (see PtHeekGameSeq)"""
         pass
 
-    def uninvitePlayer(self,playerID):
+    def uninvitePlayer(self, playerID):
         """Revokes the invitation for the specified player"""
         pass
 
@@ -1160,8 +1233,10 @@ class ptHeekGame(ptGameCli):
         """Returns this game client as a ptVarSyncGame"""
         pass
 
+
 class ptHeekGameWinMsg(ptHeekMsg):
     """Heek message received by game admin when a game is won"""
+
     def __init__(self):
         """None"""
         pass
@@ -1194,8 +1269,10 @@ class ptHeekGameWinMsg(ptHeekMsg):
         """Returns this message as the base class of message for the game it is associated with (ttt, heek, marker, etc)"""
         pass
 
+
 class ptHeekGoodbyeMsg(ptHeekMsg):
     """Heek message received when the server processes leave request"""
+
     def __init__(self):
         """None"""
         pass
@@ -1224,8 +1301,10 @@ class ptHeekGoodbyeMsg(ptHeekMsg):
         """Returns this message as the base class of message for the game it is associated with (ttt, heek, marker, etc)"""
         pass
 
+
 class ptHeekInterfaceStateMsg(ptHeekMsg):
     """Heek message received when your interface buttons need to enable or disable"""
+
     def __init__(self):
         """None"""
         pass
@@ -1258,8 +1337,10 @@ class ptHeekInterfaceStateMsg(ptHeekMsg):
         """Returns this message as the base class of message for the game it is associated with (ttt, heek, marker, etc)"""
         pass
 
+
 class ptHeekLightStateMsg(ptHeekMsg):
     """Heek message received when one of your local lights needs to change state"""
+
     def __init__(self):
         """None"""
         pass
@@ -1296,8 +1377,10 @@ class ptHeekLightStateMsg(ptHeekMsg):
         """Returns this message as the base class of message for the game it is associated with (ttt, heek, marker, etc)"""
         pass
 
+
 class ptHeekPlayGameMsg(ptHeekMsg):
     """Heek message received when the server processes your play game request"""
+
     def __init__(self):
         """None"""
         pass
@@ -1338,8 +1421,10 @@ class ptHeekPlayGameMsg(ptHeekMsg):
         """Returns this message as the base class of message for the game it is associated with (ttt, heek, marker, etc)"""
         pass
 
+
 class ptHeekPointUpdateMsg(ptHeekMsg):
     """Heek message received when the number of points you have needs to be changed"""
+
     def __init__(self):
         """None"""
         pass
@@ -1380,8 +1465,10 @@ class ptHeekPointUpdateMsg(ptHeekMsg):
         """Returns this message as the base class of message for the game it is associated with (ttt, heek, marker, etc)"""
         pass
 
+
 class ptHeekSetupMsg(ptHeekMsg):
     """Heek message for setting up each position's state"""
+
     def __init__(self):
         """None"""
         pass
@@ -1422,8 +1509,10 @@ class ptHeekSetupMsg(ptHeekMsg):
         """Returns this message as the base class of message for the game it is associated with (ttt, heek, marker, etc)"""
         pass
 
+
 class ptHeekWelcomeMsg(ptHeekMsg):
     """Heek message received when a new player sits down"""
+
     def __init__(self):
         """None"""
         pass
@@ -1464,8 +1553,10 @@ class ptHeekWelcomeMsg(ptHeekMsg):
         """Returns this message as the base class of message for the game it is associated with (ttt, heek, marker, etc)"""
         pass
 
+
 class ptHeekWinLoseMsg(ptHeekMsg):
     """Heek message received when the round is over and you won or lost"""
+
     def __init__(self):
         """None"""
         pass
@@ -1502,29 +1593,31 @@ class ptHeekWinLoseMsg(ptHeekMsg):
         """Returns true if you won"""
         pass
 
+
 class ptMarkerGame(ptGameCli):
     """Game client for the Marker game"""
+
     def __init__(self):
         """None"""
         pass
 
-    def addMarker(self,x, y, z, name = "", age = ""):
+    def addMarker(self, x, y, z, name="", age=""):
         """Adds a marker to the game. Age is ignored in a non-quest game. Won't work if you're not the owner/creator"""
         pass
 
-    def captureMarker(self,markerId):
+    def captureMarker(self, markerId):
         """Captures the specified marker"""
         pass
 
-    def changeGameName(self,newName):
+    def changeGameName(self, newName):
         """Changes the name of the game. Won't work if you're not the game owner/creator"""
         pass
 
-    def changeMarkerName(self,markerId, newName):
+    def changeMarkerName(self, markerId, newName):
         """Changes the name of the specified marker. Won't work if you're not the game owner/creator"""
         pass
 
-    def changeTimeLimit(self,newTimeLimit):
+    def changeTimeLimit(self, newTimeLimit):
         """Changes the time limit on the game (in ms). Won't work if you're not the game owner/creator, or if it's a quest game"""
         pass
 
@@ -1532,7 +1625,7 @@ class ptMarkerGame(ptGameCli):
         """Tells the server to delete the game. Won't work if you're not the game owner/creator"""
         pass
 
-    def deleteMarker(self,markerId):
+    def deleteMarker(self, markerId):
         """Deletes the specified marker from the game. Won't work if you're not the game owner/creator"""
         pass
 
@@ -1544,7 +1637,7 @@ class ptMarkerGame(ptGameCli):
         """Returns the game type ID for this game (as a guid string)"""
         pass
 
-    def invitePlayer(self,playerID):
+    def invitePlayer(self, playerID):
         """Invites the specified player to join the game"""
         pass
 
@@ -1572,7 +1665,7 @@ class ptMarkerGame(ptGameCli):
         """Starts the game. Won't work on MP games if you're not the owner/creator"""
         pass
 
-    def uninvitePlayer(self,playerID):
+    def uninvitePlayer(self, playerID):
         """Revokes the invitation for the specified player"""
         pass
 
@@ -1600,8 +1693,10 @@ class ptMarkerGame(ptGameCli):
         """Returns this game client as a ptVarSyncGame"""
         pass
 
+
 class ptMarkerMsg(ptGameCliMsg):
     """Base class for Marker game messages"""
+
     def __init__(self):
         """None"""
         pass
@@ -1630,8 +1725,10 @@ class ptMarkerMsg(ptGameCliMsg):
         """Returns this message as the base class of message for the game it is associated with (ttt, heek, marker, etc)"""
         pass
 
+
 class ptMarkerGameDeletedMsg(ptMarkerMsg):
     """Marker message received when the game is deleted"""
+
     def __init__(self):
         """None"""
         pass
@@ -1664,8 +1761,10 @@ class ptMarkerGameDeletedMsg(ptMarkerMsg):
         """Returns this message as the base class of message for the game it is associated with (ttt, heek, marker, etc)"""
         pass
 
+
 class ptMarkerGameNameChangedMsg(ptMarkerMsg):
     """Marker message received when the game name is changed"""
+
     def __init__(self):
         """None"""
         pass
@@ -1698,8 +1797,10 @@ class ptMarkerGameNameChangedMsg(ptMarkerMsg):
         """Returns this message as the base class of message for the game it is associated with (ttt, heek, marker, etc)"""
         pass
 
+
 class ptMarkerGameOverMsg(ptMarkerMsg):
     """Marker message received when the server determines the game is over (usually via timeout)"""
+
     def __init__(self):
         """None"""
         pass
@@ -1728,8 +1829,10 @@ class ptMarkerGameOverMsg(ptMarkerMsg):
         """Returns this message as the base class of message for the game it is associated with (ttt, heek, marker, etc)"""
         pass
 
+
 class ptMarkerGamePausedMsg(ptMarkerMsg):
     """Marker message received when the game is paused by the owner"""
+
     def __init__(self):
         """None"""
         pass
@@ -1762,8 +1865,10 @@ class ptMarkerGamePausedMsg(ptMarkerMsg):
         """Returns this message as the base class of message for the game it is associated with (ttt, heek, marker, etc)"""
         pass
 
+
 class ptMarkerGameResetMsg(ptMarkerMsg):
     """Marker message received when the game is reset by the owner"""
+
     def __init__(self):
         """None"""
         pass
@@ -1791,9 +1896,11 @@ class ptMarkerGameResetMsg(ptMarkerMsg):
     def upcastToGameMsg(self):
         """Returns this message as the base class of message for the game it is associated with (ttt, heek, marker, etc)"""
         pass
+
 
 class ptMarkerGameStartedMsg(ptMarkerMsg):
     """Marker message received when the game is started by the owner"""
+
     def __init__(self):
         """None"""
         pass
@@ -1822,8 +1929,10 @@ class ptMarkerGameStartedMsg(ptMarkerMsg):
         """Returns this message as the base class of message for the game it is associated with (ttt, heek, marker, etc)"""
         pass
 
+
 class ptMarkerGameTypeMsg(ptMarkerMsg):
     """Marker message received when you are assigned a team number"""
+
     def __init__(self):
         """None"""
         pass
@@ -1856,8 +1965,10 @@ class ptMarkerGameTypeMsg(ptMarkerMsg):
         """Returns this message as the base class of message for the game it is associated with (ttt, heek, marker, etc)"""
         pass
 
+
 class ptMarkerMarkerAddedMsg(ptMarkerMsg):
     """Marker message received when a marker is added to the game"""
+
     def __init__(self):
         """None"""
         pass
@@ -1910,8 +2021,10 @@ class ptMarkerMarkerAddedMsg(ptMarkerMsg):
         """Returns z coord of the marker"""
         pass
 
+
 class ptMarkerMarkerCapturedMsg(ptMarkerMsg):
     """Marker message received when a marker is captured"""
+
     def __init__(self):
         """None"""
         pass
@@ -1948,8 +2061,10 @@ class ptMarkerMarkerCapturedMsg(ptMarkerMsg):
         """Returns this message as the base class of message for the game it is associated with (ttt, heek, marker, etc)"""
         pass
 
+
 class ptMarkerMarkerDeletedMsg(ptMarkerMsg):
     """Marker message received when a marker is deleted"""
+
     def __init__(self):
         """None"""
         pass
@@ -1982,8 +2097,10 @@ class ptMarkerMarkerDeletedMsg(ptMarkerMsg):
         """Returns this message as the base class of message for the game it is associated with (ttt, heek, marker, etc)"""
         pass
 
+
 class ptMarkerMarkerNameChangedMsg(ptMarkerMsg):
     """Marker message received when the name of a marker is changed"""
+
     def __init__(self):
         """None"""
         pass
@@ -2020,8 +2137,10 @@ class ptMarkerMarkerNameChangedMsg(ptMarkerMsg):
         """Returns this message as the base class of message for the game it is associated with (ttt, heek, marker, etc)"""
         pass
 
+
 class ptMarkerTeamAssignedMsg(ptMarkerMsg):
     """Marker message received when you are assigned a team number"""
+
     def __init__(self):
         """None"""
         pass
@@ -2054,8 +2173,10 @@ class ptMarkerTeamAssignedMsg(ptMarkerMsg):
         """Returns this message as the base class of message for the game it is associated with (ttt, heek, marker, etc)"""
         pass
 
+
 class ptMarkerTemplateCreatedMsg(ptMarkerMsg):
     """Marker message received when a quest game template is created"""
+
     def __init__(self):
         """None"""
         pass
@@ -2088,8 +2209,10 @@ class ptMarkerTemplateCreatedMsg(ptMarkerMsg):
         """Returns this message as the base class of message for the game it is associated with (ttt, heek, marker, etc)"""
         pass
 
+
 class ptMarkerTimeLimitChangedMsg(ptMarkerMsg):
     """Marker message received when the game name is changed"""
+
     def __init__(self):
         """None"""
         pass
@@ -2122,8 +2245,10 @@ class ptMarkerTimeLimitChangedMsg(ptMarkerMsg):
         """Returns this message as the base class of message for the game it is associated with (ttt, heek, marker, etc)"""
         pass
 
+
 class ptTTTGame(ptGameCli):
     """Game client for the TicTacToe game"""
+
     def __init__(self):
         """None"""
         pass
@@ -2136,7 +2261,7 @@ class ptTTTGame(ptGameCli):
         """Returns the game type ID for this game (as a guid string)"""
         pass
 
-    def invitePlayer(self,playerID):
+    def invitePlayer(self, playerID):
         """Invites the specified player to join the game"""
         pass
 
@@ -2144,7 +2269,7 @@ class ptTTTGame(ptGameCli):
         """Leaves this game"""
         pass
 
-    def makeMove(self,row, col):
+    def makeMove(self, row, col):
         """Makes a move in the specified spot"""
         pass
 
@@ -2160,7 +2285,7 @@ class ptTTTGame(ptGameCli):
         """Prints the current board layout to the console"""
         pass
 
-    def uninvitePlayer(self,playerID):
+    def uninvitePlayer(self, playerID):
         """Revokes the invitation for the specified player"""
         pass
 
@@ -2188,8 +2313,10 @@ class ptTTTGame(ptGameCli):
         """Returns this game client as a ptVarSyncGame"""
         pass
 
+
 class ptTTTMsg(ptGameCliMsg):
     """Base class for TicTacToe game messages"""
+
     def __init__(self):
         """None"""
         pass
@@ -2218,8 +2345,10 @@ class ptTTTMsg(ptGameCliMsg):
         """Returns this message as the base class of message for the game it is associated with (ttt, heek, marker, etc)"""
         pass
 
+
 class ptTTTGameOverMsg(ptTTTMsg):
     """TicTacToe message received when the game is over"""
+
     def __init__(self):
         """None"""
         pass
@@ -2256,8 +2385,10 @@ class ptTTTGameOverMsg(ptTTTMsg):
         """Returns the winner's ID"""
         pass
 
+
 class ptTTTGameStartedMsg(ptTTTMsg):
     """TicTacToe message received when the game is started"""
+
     def __init__(self):
         """None"""
         pass
@@ -2290,8 +2421,10 @@ class ptTTTGameStartedMsg(ptTTTMsg):
         """Returns true if you are the first player (and therefore it's your turn)"""
         pass
 
+
 class ptTTTMoveMadeMsg(ptTTTMsg):
     """TicTacToe message received when someone makes a move"""
+
     def __init__(self):
         """None"""
         pass
@@ -2332,8 +2465,10 @@ class ptTTTMoveMadeMsg(ptTTTMsg):
         """Returns this message as the base class of message for the game it is associated with (ttt, heek, marker, etc)"""
         pass
 
+
 class ptVarSyncMsg(ptGameCliMsg):
     """Base class for VarSync game messages"""
+
     def __init__(self):
         """None"""
         pass
@@ -2361,9 +2496,11 @@ class ptVarSyncMsg(ptGameCliMsg):
     def upcastToGameMsg(self):
         """Returns this message as the base class of message for the game it is associated with (ttt, heek, marker, etc)"""
         pass
+
 
 class ptVarSyncAllVarsSentMsg(ptVarSyncMsg):
     """VarSync message received after the last var is sent to you when you join the game, or request a list of vars"""
+
     def __init__(self):
         """None"""
         pass
@@ -2392,17 +2529,19 @@ class ptVarSyncAllVarsSentMsg(ptVarSyncMsg):
         """Returns this message as the base class of message for the game it is associated with (ttt, heek, marker, etc)"""
         pass
 
+
 class ptVarSyncGame(ptGameCli):
     """Game client for the VarSync game"""
+
     def __init__(self):
         """None"""
         pass
 
-    def createNumericVar(self,varName, value):
+    def createNumericVar(self, varName, value):
         """Attempts to create a new numeric variable and set it to the specified number (clipped to double)"""
         pass
 
-    def createStringVar(self,varName, value):
+    def createStringVar(self, varName, value):
         """Attempts to create a new string variable and set it to the specified string (clipped to 255 chars)"""
         pass
 
@@ -2414,7 +2553,7 @@ class ptVarSyncGame(ptGameCli):
         """Returns the game type ID for this game (as a guid string)"""
         pass
 
-    def invitePlayer(self,playerID):
+    def invitePlayer(self, playerID):
         """Invites the specified player to join the game"""
         pass
 
@@ -2434,15 +2573,15 @@ class ptVarSyncGame(ptGameCli):
         """Requests all the vars the server knows about"""
         pass
 
-    def setNumericVar(self,varID, value):
+    def setNumericVar(self, varID, value):
         """Attempts to set a numeric variable to the specified number (clipped to double)"""
         pass
 
-    def setStringVar(self,varID, value):
+    def setStringVar(self, varID, value):
         """Attempts to set a string variable to the specified string (clipped to 255 chars)"""
         pass
 
-    def uninvitePlayer(self,playerID):
+    def uninvitePlayer(self, playerID):
         """Revokes the invitation for the specified player"""
         pass
 
@@ -2470,8 +2609,10 @@ class ptVarSyncGame(ptGameCli):
         """Returns this game client as a ptVarSyncGame"""
         pass
 
+
 class ptVarSyncNumericVarChangedMsg(ptVarSyncMsg):
     """VarSync message received when a numeric variable's value changes"""
+
     def __init__(self):
         """None"""
         pass
@@ -2508,8 +2649,10 @@ class ptVarSyncNumericVarChangedMsg(ptVarSyncMsg):
         """Returns the variable's new value"""
         pass
 
+
 class ptVarSyncNumericVarCreatedMsg(ptVarSyncMsg):
     """VarSync message received when a numeric variable is created and assigned an id"""
+
     def __init__(self):
         """None"""
         pass
@@ -2550,8 +2693,10 @@ class ptVarSyncNumericVarCreatedMsg(ptVarSyncMsg):
         """Returns the variable's new value"""
         pass
 
+
 class ptVarSyncStringVarChangedMsg(ptVarSyncMsg):
     """VarSync message received when a string variable's value changes"""
+
     def __init__(self):
         """None"""
         pass
@@ -2588,8 +2733,10 @@ class ptVarSyncStringVarChangedMsg(ptVarSyncMsg):
         """Returns the variable's new value"""
         pass
 
+
 class ptVarSyncStringVarCreatedMsg(ptVarSyncMsg):
     """VarSync message received when a string variable is created and assigned an id"""
+
     def __init__(self):
         """None"""
         pass
@@ -2629,4 +2776,3 @@ class ptVarSyncStringVarCreatedMsg(ptVarSyncMsg):
     def value(self):
         """Returns the variable's new value"""
         pass
-

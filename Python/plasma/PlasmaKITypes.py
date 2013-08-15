@@ -46,68 +46,68 @@ interfacing with the KI subsytem
 """
 
 # OnKIMsg and PtSendKIMessage command types
-kEnterChatMode=1        # start chat mode on KI, 'value' doesn't matter
-kSetChatFadeDelay=2     # set the chat fade time, 'value' is the delay in seconds
-kSetTextChatAdminMode=3 # set self to be admin mode, 'value' is 1 to go into Admin mode, 0 remove
-kDisableKIandBB=4       # disable the KI and the blackbar, 'value' doesn't matter
-kEnableKIandBB=5        # enable the KI and the blackbar, 'value' doesn't matter
-kYesNoDialog=6          # request that the KI put up a yes/no dialog for someone else
-kAddPlayerDevice=7      # add player interactive device to list of devices, 'value' is device name
-kRemovePlayerDevice=8   # remove player interactive device from list, 'value' is device name
-kUpgradeKILevel=9       # upgrade new level of KI (if already at that level, nevermind), 'value' is the new level
-kDowngradeKILevel=10    # remove (drop) the KI level (if not at that level, nevermind), 'value' is the level to remove
-kRateIt=11              # request for the KI to ask the user to Rate something
-kSetPrivateChatChannel=12 # sets the private chat channel to number, for private rooms
-kUnsetPrivateChatChannel=13 # undoes the the private chat channel.
-kStartBookAlert=14      # start the book alert
-kMiniBigKIToggle=15		# shortcut to toggling the miniKI/bigKI
-kKIPutAway=16			# shortcut to hiding all of the KI
-kChatAreaPageUp=17		# shortcut to paging up the chat area
-kChatAreaPageDown=18	# shortcut to paging down the chat area
-kChatAreaGoToBegin=19	# shortcut to going to the beginning of the chat area
-kChatAreaGoToEnd=20		# shortcut to going to the end of the chat area
-kKITakePicture=21		# shortcut to taking a picture in the KI
-kKICreateJournalNote=22	# shortcut to creating a journal note in the KI
-kKIToggleFade=23        # shortcut to toggle fade mode in the miniKI (only if miniKI only)
-kKIToggleFadeEnable=24  # shortcut to toggling the enable flag for fading chat
-kKIChatStatusMsg=25     # display a status message (net propagated) in the chat window
-kKILocalChatStatusMsg=26 # display a status message (local only) in the chat window
-kKIUpSizeFont=27        # up size the font in the KI (chatarea)
-kKIDownSizeFont=28      # down size the font in the KI (chatarea)
-kKIOpenYeehsaBook=29    # open the Yeehsa book, if not already open
-kKIOpenKI=30            # open the KI a little at a time
-kKIShowOptionsMenu=31   # show the options menu dialog
-kKICreateMarker=32      # create a marker
-kKICreateMarkerFolder=33 # create a marker folder(node) game in the current Age's journal folder
-kKILocalChatErrorMsg=34  # display an error message (local only) in the chat window
-kKIPhasedAllOn=35       # turn on all the phased KI functionality
-kKIPhasedAllOff=36      # turn off all the phased KI functionality
-kKIOKDialog=37          # display an OK dialog box (localized)
-kDisableYeeshaBook=38   # don't allow linking with the Yeesha book (gameplay)
-kEnableYeeshaBook=39    # re-allow linking with the Yeesha book
-kQuitDialog=40          # put up Quit dialog
-kTempDisableKIandBB=41  # temp disable KI and blackbar (done by av system)
-kTempEnableKIandBB=42   # temp re-enable the KI and blackbar (done by av system)
-kDisableEntireYeeshaBook=43     # disable the entire Yeeshabook, not for gameplay, but prevent linking
-kEnableEntireYeeshaBook=44     # enable the entire Yeeshabook, not for gameplay
-kKIOKDialogNoQuit=45               # display OK dialog in the KI without quiting afterwards
-kGZUpdated=46                       # the GZ game was updated
-kGZInRange=47                       # a GZ marker is in range
-kGZOutRange=48                      # GZ markers are out of range
-kUpgradeKIMarkerLevel=49        # upgrade the KI marker level
-kKIShowMiniKI=50            # force the miniKI up
-kGZFlashUpdate=51            # flash update to the GZ display on the miniKI (without saving)
-kStartJournalAlert = 52 # start the journal alert
-kAddJournalBook = 53    # add the journal book to the BB
-kRemoveJournalBook = 54 # remove the journal book from the BB
-kKIOpenJournalBook = 55 # show the journal book
-kMGStartCGZGame = 56    # Start CGZ Marker Game
-kMGStopCGZGame = 57     # Stop CGZ Marker Game
-kKICreateMarkerNode = 58 #Creates the marker game vault Node
-kStartKIAlert = 59      # start the KI alert
-kUpdatePelletScore = 60 # Updates the pellet score
-kFriendInviteSent = 61  # Result of friend invite received
-kRegisterImager = 62    # Imagers send to register themselves with the KI
+kEnterChatMode = 1              # start chat mode on KI, 'value' doesn't matter
+kSetChatFadeDelay = 2           # set the chat fade time, 'value' is the delay in seconds
+kSetTextChatAdminMode = 3       # set self to be admin mode, 'value' is 1 to go into Admin mode, 0 remove
+kDisableKIandBB = 4             # disable the KI and the blackbar, 'value' doesn't matter
+kEnableKIandBB = 5              # enable the KI and the blackbar, 'value' doesn't matter
+kYesNoDialog = 6                # request that the KI put up a yes/no dialog for someone else
+kAddPlayerDevice = 7            # add player interactive device to list of devices, 'value' is device name
+kRemovePlayerDevice = 8         # remove player interactive device from list, 'value' is device name
+kUpgradeKILevel = 9             # upgrade new level of KI (if already at that level, nevermind), 'value' is the new level
+kDowngradeKILevel = 10          # remove (drop) the KI level (if not at that level, nevermind), 'value' is the level to remove
+kRateIt = 11                    # request for the KI to ask the user to Rate something
+kSetPrivateChatChannel = 12     # sets the private chat channel to number, for private rooms
+kUnsetPrivateChatChannel = 13   # undoes the the private chat channel.
+kStartBookAlert = 14            # start the book alert
+kMiniBigKIToggle = 15           # shortcut to toggling the miniKI/bigKI
+kKIPutAway = 16                 # shortcut to hiding all of the KI
+kChatAreaPageUp = 17            # shortcut to paging up the chat area
+kChatAreaPageDown = 18          # shortcut to paging down the chat area
+kChatAreaGoToBegin = 19         # shortcut to going to the beginning of the chat area
+kChatAreaGoToEnd = 20           # shortcut to going to the end of the chat area
+kKITakePicture = 21             # shortcut to taking a picture in the KI
+kKICreateJournalNote = 22       # shortcut to creating a journal note in the KI
+kKIToggleFade = 23              # shortcut to toggle fade mode in the miniKI (only if miniKI only)
+kKIToggleFadeEnable = 24        # shortcut to toggling the enable flag for fading chat
+kKIChatStatusMsg = 25           # display a status message (net propagated) in the chat window
+kKILocalChatStatusMsg = 26      # display a status message (local only) in the chat window
+kKIUpSizeFont = 27              # up size the font in the KI (chatarea)
+kKIDownSizeFont = 28            # down size the font in the KI (chatarea)
+kKIOpenYeehsaBook = 29          # open the Yeehsa book, if not already open
+kKIOpenKI = 30                  # open the KI a little at a time
+kKIShowOptionsMenu = 31         # show the options menu dialog
+kKICreateMarker = 32            # create a marker
+kKICreateMarkerFolder = 33      # create a marker folder(node) game in the current Age's journal folder
+kKILocalChatErrorMsg = 34       # display an error message (local only) in the chat window
+kKIPhasedAllOn = 35             # turn on all the phased KI functionality
+kKIPhasedAllOff = 36            # turn off all the phased KI functionality
+kKIOKDialog = 37                # display an OK dialog box (localized)
+kDisableYeeshaBook = 38         # don't allow linking with the Yeesha book (gameplay)
+kEnableYeeshaBook = 39          # re-allow linking with the Yeesha book
+kQuitDialog = 40                # put up Quit dialog
+kTempDisableKIandBB = 41        # temp disable KI and blackbar (done by av system)
+kTempEnableKIandBB = 42         # temp re-enable the KI and blackbar (done by av system)
+kDisableEntireYeeshaBook = 43   # disable the entire Yeeshabook, not for gameplay, but prevent linking
+kEnableEntireYeeshaBook = 44    # enable the entire Yeeshabook, not for gameplay
+kKIOKDialogNoQuit = 45          # display OK dialog in the KI without quiting afterwards
+kGZUpdated = 46                 # the GZ game was updated
+kGZInRange = 47                 # a GZ marker is in range
+kGZOutRange = 48                # GZ markers are out of range
+kUpgradeKIMarkerLevel = 49      # upgrade the KI marker level
+kKIShowMiniKI = 50              # force the miniKI up
+kGZFlashUpdate = 51             # flash update to the GZ display on the miniKI (without saving)
+kStartJournalAlert = 52         # start the journal alert
+kAddJournalBook = 53            # add the journal book to the BB
+kRemoveJournalBook = 54         # remove the journal book from the BB
+kKIOpenJournalBook = 55         # show the journal book
+kMGStartCGZGame = 56            # Start CGZ Marker Game
+kMGStopCGZGame = 57             # Stop CGZ Marker Game
+kKICreateMarkerNode = 58        # Creates the marker game vault Node
+kStartKIAlert = 59              # start the KI alert
+kUpdatePelletScore = 60         # Updates the pellet score
+kFriendInviteSent = 61          # Result of friend invite received
+kRegisterImager = 62            # Imagers send to register themselves with the KI
 
 # kUpgradeKILevel and kDowngradeKILevel levels
 #kNanoKI = 0 Unused KI level.
@@ -133,7 +133,7 @@ kCGZMarkerInactive = "0"
 kCGZMarkerAvailable = "1"
 kCGZMarkerCaptured = "2"
 kCGZMarkerUploaded = "3"
-gCGZAllStates = [ kCGZMarkerInactive, kCGZMarkerAvailable, kCGZMarkerCaptured, kCGZMarkerUploaded  ]
+gCGZAllStates = [kCGZMarkerInactive, kCGZMarkerAvailable, kCGZMarkerCaptured, kCGZMarkerUploaded]
 kCGZFirstGame = 0
 kCGZFinalGame = 3
 kCGZToransGame = 0
@@ -164,13 +164,14 @@ def PtDetermineKILevel():
     import string
     vault = Plasma.ptVault()
     entry = vault.findChronicleEntry(kChronicleKILevel)
-    if type(entry) != type(None):
+    if entry is not None:
         level = string.atoi(entry.chronicleGetValue())
         # make sure it is a valid level
         if level >= kLowestKILevel and level <= kHighestKILevel:
             return level
     # if couldn't be determine... just assume lowest form
     return kMicroKI
+
 
 def PtDetermineCensorLevel():
     "Get the KILevel"
@@ -179,11 +180,12 @@ def PtDetermineCensorLevel():
     import string
     vault = Plasma.ptVault()
     entry = vault.findChronicleEntry(kChronicleCensorLevel)
-    if type(entry) != type(None):
+    if entry is not None:
         level = string.atoi(entry.chronicleGetValue())
         return level
     # if couldn't be determine... just assume lowest form
     return 0
+
 
 def PtDetermineKIMarkerLevel():
     "Get the KIMarkerLevel"
@@ -192,11 +194,12 @@ def PtDetermineKIMarkerLevel():
     import string
     vault = Plasma.ptVault()
     entry = vault.findChronicleEntry(kChronicleKIMarkerLevel)
-    if type(entry) != type(None):
+    if entry is not None:
         level = string.atoi(entry.chronicleGetValue())
         return level
     # if couldn't be determine... just assume lowest form
     return kKIMarkerNotUpgraded
+
 
 def PtGetCGZGameState(whichGame):
     "Get the CGZ Game level"
@@ -206,35 +209,36 @@ def PtGetCGZGameState(whichGame):
     if whichGame >= kCGZFirstGame and whichGame <= kCGZFinalGame:
         vault = Plasma.ptVault()
         entry = vault.findChronicleEntry(kChronicleCalGZMarkersAquired)
-        if type(entry) != type(None):
+        if entry is not None:
             allStates = entry.chronicleGetValue()
-            PlasmaTypes.PtDebugPrint("PlasmaKITypes:PtGetCGZGameLevel current chronicle is %s"%(allStates),level=PlasmaTypes.kDebugDumpLevel)
+            PlasmaTypes.PtDebugPrint("PlasmaKITypes:PtGetCGZGameLevel current chronicle is %s" % (allStates), level=PlasmaTypes.kDebugDumpLevel)
             state = kCGZMarkerInactive  # assume inactive
             try:
                 state = allStates[whichGame]
             except LookupError:
-                PlasmaTypes.PtDebugPrint("PlasmaKITypes:PtGetCGZGameLevel - CGZ marker game not there? chron=%s"%(allStates),level=PlasmaTypes.kErrorLevel)
+                PlasmaTypes.PtDebugPrint("PlasmaKITypes:PtGetCGZGameLevel - CGZ marker game not there? chron=%s" % (allStates), level=PlasmaTypes.kErrorLevel)
                 pass
             return state
         else:
-            PlasmaTypes.PtDebugPrint("PlasmaKITypes:PtGetCGZGameLevel no chronicle yet",level=PlasmaTypes.kDebugDumpLevel)
+            PlasmaTypes.PtDebugPrint("PlasmaKITypes:PtGetCGZGameLevel no chronicle yet", level=PlasmaTypes.kDebugDumpLevel)
     else:
-        PlasmaTypes.PtDebugPrint("PlasmaKITypes:PtGetCGZGameLevel - invalid CGZ game of %d"%(whichGame),level=PlasmaTypes.kErrorLevel)
+        PlasmaTypes.PtDebugPrint("PlasmaKITypes:PtGetCGZGameLevel - invalid CGZ game of %d" % (whichGame), level=PlasmaTypes.kErrorLevel)
         pass
     # if couldn't be determine... just assume lowest form
     return kCGZMarkerInactive
 
-def PtSetCGZGameState(whichGame,state):
+
+def PtSetCGZGameState(whichGame, state):
     "Get the CGZ Game level"
     # assume that they have none...
     import Plasma
     import PlasmaTypes
     if whichGame >= kCGZFirstGame and whichGame <= kCGZFinalGame:
-        if type(state) == type("") and state in gCGZAllStates:
-            PlasmaTypes.PtDebugPrint("PlasmaKITypes:PtSetCGZGameLevel - setting game %d to %s"%(whichGame,state),level=PlasmaTypes.kDebugDumpLevel)
+        if type(state) is str and state in gCGZAllStates:
+            PlasmaTypes.PtDebugPrint("PlasmaKITypes:PtSetCGZGameLevel - setting game %d to %s" % (whichGame, state), level=PlasmaTypes.kDebugDumpLevel)
             vault = Plasma.ptVault()
             entry = vault.findChronicleEntry(kChronicleCalGZMarkersAquired)
-            if type(entry) != type(None):
+            if entry is not None:
                 allStates = entry.chronicleGetValue()
                 newStates = ""
                 for idx in range(kCGZFinalGame+1):
@@ -257,13 +261,14 @@ def PtSetCGZGameState(whichGame,state):
                         newStates += state
                     else:
                         newStates += kCGZMarkerInactive
-                vault.addChronicleEntry(kChronicleCalGZMarkersAquired,kChronicleCalGZMarkersAquiredType,newStates)
+                vault.addChronicleEntry(kChronicleCalGZMarkersAquired, kChronicleCalGZMarkersAquiredType, newStates)
         else:
-            PlasmaTypes.PtDebugPrint("PlasmaKITypes:PtSetCGZGameLevel - invalid CGZ game state of:",state,level=PlasmaTypes.kErrorLevel)
+            PlasmaTypes.PtDebugPrint("PlasmaKITypes:PtSetCGZGameLevel - invalid CGZ game state of:", state, level=PlasmaTypes.kErrorLevel)
             pass
     else:
-        PlasmaTypes.PtDebugPrint("PlasmaKITypes:PtSetCGZGameLevel - invalid CGZ game of %d"%(whichGame),level=PlasmaTypes.kErrorLevel)
+        PlasmaTypes.PtDebugPrint("PlasmaKITypes:PtSetCGZGameLevel - invalid CGZ game of %d" % (whichGame), level=PlasmaTypes.kErrorLevel)
         pass
+
 
 def PtWhichCGZPlaying():
     "Has the player completed the CGZ stuff"
@@ -272,7 +277,7 @@ def PtWhichCGZPlaying():
     state = kCGZMarkerInactive
     vault = Plasma.ptVault()
     entry = vault.findChronicleEntry(kChronicleCalGZMarkersAquired)
-    if type(entry) != type(None):
+    if entry is not None:
         allStates = entry.chronicleGetValue()
         if len(allStates) > kCGZFinalGame:
             state = kCGZMarkerUploaded
@@ -283,7 +288,8 @@ def PtWhichCGZPlaying():
                     break
                 if allStates[i] != kCGZMarkerUploaded:
                     state = kCGZMarkerInactive
-    return (whichGame,state)
+    return (whichGame, state)
+
 
 def PtIsCGZDone():
     "Has the player completed the CGZ stuff"
@@ -291,7 +297,7 @@ def PtIsCGZDone():
     isDone = 0
     vault = Plasma.ptVault()
     entry = vault.findChronicleEntry(kChronicleCalGZMarkersAquired)
-    if type(entry) != type(None):
+    if entry is not None:
         allStates = entry.chronicleGetValue()
         if len(allStates) > kCGZFinalGame:
             # assume that we are going to find them all
@@ -301,6 +307,7 @@ def PtIsCGZDone():
                     isDone = 0
                     break
     return isDone
+
 
 def PtDetermineGZ():
     "Get the current GZ states"
@@ -315,14 +322,14 @@ def PtDetermineGZ():
     KIMarkerLevel = PtDetermineKIMarkerLevel()
     if KIMarkerLevel > kKIMarkerNotUpgraded:
         # see if they are playing a CGZ game
-        (whichGame,state) = PtWhichCGZPlaying()
+        (whichGame, state) = PtWhichCGZPlaying()
         if KIMarkerLevel < kKIMarkerNormalLevel or (KIMarkerLevel == kKIMarkerNormalLevel and whichGame != -1):
             vault = Plasma.ptVault()
             # is there a chronicle for the GZ games?
             entry = vault.findChronicleEntry(kChronicleGZGames)
-            if type(entry) != type(None):
+            if entry is not None:
                 gameString = entry.chronicleGetValue()
-                PlasmaTypes.PtDebugPrint("PtDetermineGZ: - game string is %s" % (gameString),level=PlasmaTypes.kDebugDumpLevel)
+                PlasmaTypes.PtDebugPrint("PtDetermineGZ: - game string is %s" % (gameString), level=PlasmaTypes.kDebugDumpLevel)
                 args = gameString.split()
                 if len(args) == 3:
                     try:
@@ -334,7 +341,7 @@ def PtDetermineGZ():
                         MarkerGottenNumber = string.atoi(outof[0])
                         MarkerToGetNumber = string.atoi(outof[1])
                     except ValueError:
-                        PlasmaTypes.PtDebugPrint("xKI:GZ - error trying to read GZGames Chronicle",level=PlasmaTypes.kErrorLevel)
+                        PlasmaTypes.PtDebugPrint("xKI:GZ - error trying to read GZGames Chronicle", level=PlasmaTypes.kErrorLevel)
                         # we don't know which one it errored on, so just reset them all
                         GZPlaying = 0
                         MarkerToGetColor = 'off'
@@ -342,20 +349,21 @@ def PtDetermineGZ():
                         MarkerToGetNumber = 0
                         MarkerGottenNumber = 0
                 else:
-                    PlasmaTypes.PtDebugPrint("xKI:GZ - error GZGames string formation error",level=PlasmaTypes.kErrorLevel)
+                    PlasmaTypes.PtDebugPrint("xKI:GZ - error GZGames string formation error", level=PlasmaTypes.kErrorLevel)
                     pass
         else:
             # can't be playing a GZGame!
             # ...might be a MarkerTag game... let the KI determine that.
             pass
-    PlasmaTypes.PtDebugPrint("PtDetermineGZ: - returning game=%d colors=%s:%s markers=%d:%d" % (GZPlaying, MarkerGottenColor, MarkerToGetColor ,MarkerGottenNumber, MarkerToGetNumber),level=PlasmaTypes.kDebugDumpLevel)
-    return (GZPlaying,MarkerGottenColor,MarkerToGetColor,MarkerGottenNumber,MarkerToGetNumber)
+    PlasmaTypes.PtDebugPrint("PtDetermineGZ: - returning game=%d colors=%s:%s markers=%d:%d" % (GZPlaying, MarkerGottenColor, MarkerToGetColor, MarkerGottenNumber, MarkerToGetNumber), level=PlasmaTypes.kDebugDumpLevel)
+    return (GZPlaying, MarkerGottenColor, MarkerToGetColor, MarkerGottenNumber, MarkerToGetNumber)
+
 
 def PtCaptureGZMarker(GZMarkerInRange):
     import Plasma
     import PlasmaTypes
     # get current GZ Game state
-    (GZPlaying,MarkerGottenColor,MarkerToGetColor,MarkerGottenNumber,MarkerToGetNumber) = PtDetermineGZ()
+    (GZPlaying, MarkerGottenColor, MarkerToGetColor, MarkerGottenNumber, MarkerToGetNumber) = PtDetermineGZ()
     # make sure there is room for the capture marker
     if GZPlaying and MarkerToGetNumber > MarkerGottenNumber:
         # set the marker status to 'gotten'
@@ -363,12 +371,12 @@ def PtCaptureGZMarker(GZMarkerInRange):
         vault = Plasma.ptVault()
         # is there a chronicle for the GZ games?
         entry = vault.findChronicleEntry(kChronicleGZMarkersAquired)
-        if type(entry) != type(None):
+        if entry is not None:
             markers = entry.chronicleGetValue()
             markerIdx = GZMarkerInRange - 1
             if markerIdx >= 0 and markerIdx < len(markers):
                 # Set the marker to "captured"
-                PlasmaTypes.PtDebugPrint("PtCaptureGZMarker: starting with '%s' changing %d to '%s'" % (markers,GZMarkerInRange,kGZMarkerCaptured),level=PlasmaTypes.kDebugDumpLevel)
+                PlasmaTypes.PtDebugPrint("PtCaptureGZMarker: starting with '%s' changing %d to '%s'" % (markers, GZMarkerInRange, kGZMarkerCaptured), level=PlasmaTypes.kDebugDumpLevel)
                 if len(markers)-(markerIdx+1) != 0:
                     markers = markers[:markerIdx] + kGZMarkerCaptured + markers[-(len(markers)-(markerIdx+1)):]
                 else:
@@ -388,22 +396,23 @@ def PtCaptureGZMarker(GZMarkerInRange):
                     totalGotten = MarkerToGetNumber
                 MarkerGottenNumber = totalGotten
                 # save update to chronicle
-                PtUpdateGZGamesChonicles(GZPlaying,MarkerGottenColor,MarkerToGetColor,MarkerGottenNumber,MarkerToGetNumber)
+                PtUpdateGZGamesChonicles(GZPlaying, MarkerGottenColor, MarkerToGetColor, MarkerGottenNumber, MarkerToGetNumber)
             else:
-                PlasmaTypes.PtDebugPrint("PtCaptureGZMarker: invalid marker serial number of %d" % (gGZMarkerInRange),level=PlasmaTypes.kErrorLevel )
+                PlasmaTypes.PtDebugPrint("PtCaptureGZMarker: invalid marker serial number of %d" % (gGZMarkerInRange), level=PlasmaTypes.kErrorLevel)
                 pass
         else:
-            PlasmaTypes.PtDebugPrint("PtCaptureGZMarker: no chronicle entry found",level=PlasmaTypes.kErrorLevel )
+            PlasmaTypes.PtDebugPrint("PtCaptureGZMarker: no chronicle entry found", level=PlasmaTypes.kErrorLevel)
             pass
     else:
-        PlasmaTypes.PtDebugPrint("PtCaptureGZMarker: no game or this game is complete",level=PlasmaTypes.kErrorLevel )
+        PlasmaTypes.PtDebugPrint("PtCaptureGZMarker: no game or this game is complete", level=PlasmaTypes.kErrorLevel)
         pass
+
 
 def PtVerifyGZMarker():
     import Plasma
     import PlasmaTypes
     # get current GZ Game state
-    (GZPlaying,MarkerGottenColor,MarkerToGetColor,MarkerGottenNumber,MarkerToGetNumber) = PtDetermineGZ()
+    (GZPlaying, MarkerGottenColor, MarkerToGetColor, MarkerGottenNumber, MarkerToGetNumber) = PtDetermineGZ()
     # make sure there is room for the capture marker
     if GZPlaying:
         # set the marker status to 'gotten'
@@ -411,7 +420,7 @@ def PtVerifyGZMarker():
         vault = Plasma.ptVault()
         # is there a chronicle for the GZ games?
         entry = vault.findChronicleEntry(kChronicleGZMarkersAquired)
-        if type(entry) != type(None):
+        if entry is not None:
             markers = entry.chronicleGetValue()
             # get what was really gotten
             totalGotten = markers.count(kGZMarkerCaptured)
@@ -424,14 +433,15 @@ def PtVerifyGZMarker():
             if totalGotten > MarkerToGetNumber:
                 totalGotten = MarkerToGetNumber
             if totalGotten != MarkerGottenNumber:
-                PlasmaTypes.PtDebugPrint("PtVerifyGZMarker: Error! Gotten different than real. They say=%d We say=%d"%(MarkerGottenNumber,totalGotten),level=PlasmaTypes.kErrorLevel )
+                PlasmaTypes.PtDebugPrint("PtVerifyGZMarker: Error! Gotten different than real. They say=%d We say=%d" % (MarkerGottenNumber, totalGotten), level=PlasmaTypes.kErrorLevel)
                 MarkerGottenNumber = totalGotten
                 # save update to chronicle
-                PtUpdateGZGamesChonicles(GZPlaying,MarkerGottenColor,MarkerToGetColor,MarkerGottenNumber,MarkerToGetNumber)
-                Plasma.PtSendKIMessage(kGZUpdated,0)
-    return (GZPlaying,MarkerGottenColor,MarkerToGetColor,MarkerGottenNumber,MarkerToGetNumber)
+                PtUpdateGZGamesChonicles(GZPlaying, MarkerGottenColor, MarkerToGetColor, MarkerGottenNumber, MarkerToGetNumber)
+                Plasma.PtSendKIMessage(kGZUpdated, 0)
+    return (GZPlaying, MarkerGottenColor, MarkerToGetColor, MarkerGottenNumber, MarkerToGetNumber)
 
-def PtUpdateGZGamesChonicles(GZPlaying,MarkerGottenColor,MarkerToGetColor,MarkerGottenNumber,MarkerToGetNumber):
+
+def PtUpdateGZGamesChonicles(GZPlaying, MarkerGottenColor, MarkerToGetColor, MarkerGottenNumber, MarkerToGetNumber):
     "Update the GZ chronicle variable"
     import Plasma
     import PlasmaTypes
@@ -439,28 +449,28 @@ def PtUpdateGZGamesChonicles(GZPlaying,MarkerGottenColor,MarkerToGetColor,Marker
     # is there a chronicle for the GZ games?
     entry = vault.findChronicleEntry(kChronicleGZGames)
     try:
-        upstring = "%d %s:%s %d:%d" % (GZPlaying,MarkerGottenColor,MarkerToGetColor,MarkerGottenNumber,MarkerToGetNumber)
-        if type(entry) != type(None):
+        upstring = "%d %s:%s %d:%d" % (GZPlaying, MarkerGottenColor, MarkerToGetColor, MarkerGottenNumber, MarkerToGetNumber)
+        if entry is not None:
             entry.chronicleSetValue(upstring)
             entry.save()
         else:
             # if there is none, then just add another entry
-            vault.addChronicleEntry(kChronicleGZGames,kChronicleGZGamesType,upstring)
+            vault.addChronicleEntry(kChronicleGZGames, kChronicleGZGamesType, upstring)
     except TypeError:
-        if type(GZPlaying) != type(0):
-            PlasmaTypes.PtDebugPrint("PtUpdateGZGamesChronicle: GZPlaying wrong type (should be integer)",level=PlasmaTypes.kErrorLevel )
+        if type(GZPlaying) is not int:
+            PlasmaTypes.PtDebugPrint("PtUpdateGZGamesChronicle: GZPlaying wrong type (should be integer)", level=PlasmaTypes.kErrorLevel)
             pass
-        if type(MarkerToGetColor) != type(""):
-            PlasmaTypes.PtDebugPrint("PtUpdateGZGamesChronicle: GZPlaying wrong type (should be string)",level=PlasmaTypes.kErrorLevel )
+        if type(MarkerToGetColor) is not str:
+            PlasmaTypes.PtDebugPrint("PtUpdateGZGamesChronicle: GZPlaying wrong type (should be string)", level=PlasmaTypes.kErrorLevel)
             pass
-        if type(MarkerGottenColor) != type(""):
-            PlasmaTypes.PtDebugPrint("PtUpdateGZGamesChronicle: GZPlaying wrong type (should be string)",level=PlasmaTypes.kErrorLevel )
+        if type(MarkerGottenColor) is not str:
+            PlasmaTypes.PtDebugPrint("PtUpdateGZGamesChronicle: GZPlaying wrong type (should be string)", level=PlasmaTypes.kErrorLevel)
             pass
-        if type(MarkerToGetNumber) != type(0):
-            PlasmaTypes.PtDebugPrint("PtUpdateGZGamesChronicle: GZPlaying wrong type (should be integer)",level=PlasmaTypes.kErrorLevel )
+        if type(MarkerToGetNumber) is not int:
+            PlasmaTypes.PtDebugPrint("PtUpdateGZGamesChronicle: GZPlaying wrong type (should be integer)", level=PlasmaTypes.kErrorLevel)
             pass
-        if type(MarkerGottenNumber) != type(0):
-            PlasmaTypes.PtDebugPrint("PtUpdateGZGamesChronicle: GZPlaying wrong type (should be integer)",level=PlasmaTypes.kErrorLevel )
+        if type(MarkerGottenNumber) is not int:
+            PlasmaTypes.PtDebugPrint("PtUpdateGZGamesChronicle: GZPlaying wrong type (should be integer)", level=PlasmaTypes.kErrorLevel)
             pass
         pass
 
@@ -468,7 +478,7 @@ def PtUpdateGZGamesChonicles(GZPlaying,MarkerGottenColor,MarkerToGetColor,Marker
 # OnRTChat flags (see pfKIMsg.h)
 kRTChatPrivate = 0x01
 kRTChatAdmin = 0x02
-kRTChatPrivateAdmin= kRTChatPrivate | kRTChatAdmin
+kRTChatPrivateAdmin = kRTChatPrivate | kRTChatAdmin
 kRTChatGlobal = 0x04
 kRTChatInterAge = 0x08
 kRTChatStatusMsg = 0x10
@@ -480,7 +490,7 @@ kRTChatChannelMask = 65280
 kRTChatNoChannel = 255
 
 # OnCCRMsg flags
-kCCRBeginCommunication=1
-kCCRChat=2
-kCCREndCommunication=3
-kCCRReturnChatMsg=4
+kCCRBeginCommunication = 1
+kCCRChat = 2
+kCCREndCommunication = 3
+kCCRReturnChatMsg = 4

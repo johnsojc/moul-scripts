@@ -40,11 +40,14 @@ You can contact Cyan Worlds, Inc. by email legal@cyan.com
       Mead, WA   99021
 
  *==LICENSE==* """
+
+
 class Enum:
     """Enum base class"""
     def __init__(self):
         """None"""
         pass
+
 
 class EnumValue:
     """A basic enumeration value"""
@@ -52,11 +55,13 @@ class EnumValue:
         """None"""
         pass
 
+
 class PtAIMsgType:
     """(none)"""
     kUnknown = 0
     kBrainCreated = 1
     kArrivedAtGoal = 2
+
 
 class PtAccountUpdateType:
     """(none)"""
@@ -65,6 +70,7 @@ class PtAccountUpdateType:
     kUpgradePlayer = 3
     kActivePlayer = 4
     kChangePassword = 5
+
 
 class PtBehaviorTypes:
     """(none)"""
@@ -89,6 +95,7 @@ class PtBehaviorTypes:
     kBehaviorTypeMovingTurnRight = 32768
     kBehaviorTypeLinkOut = 131072
 
+
 class PtBookEventTypes:
     """(none)"""
     kNotifyImageLink = 0
@@ -99,6 +106,7 @@ class PtBookEventTypes:
     kNotifyCheckUnchecked = 5
     kNotifyClose = 6
 
+
 class PtBrainModes:
     """(none)"""
     kGeneric = 0
@@ -108,11 +116,13 @@ class PtBrainModes:
     kAFK = 4
     kNonGeneric = 5
 
+
 class PtButtonNotifyTypes:
     """(none)"""
     kNotifyOnUp = 0
     kNotifyOnDown = 1
     kNotifyOnUpAndDown = 2
+
 
 class PtCCRPetitionType:
     """(none)"""
@@ -123,6 +133,7 @@ class PtCCRPetitionType:
     kHarass = 4
     kStuck = 5
     kTechnical = 6
+
 
 class PtEventType:
     """(none)"""
@@ -141,6 +152,7 @@ class PtEventType:
     kOfferLinkingBook = 14
     kBook = 15
 
+
 class PtGUIMultiLineDirection:
     """(none)"""
     kLineStart = 1
@@ -156,17 +168,20 @@ class PtGUIMultiLineDirection:
     kPageUp = 11
     kPageDown = 12
 
+
 class PtGameScoreTypes:
     """(none)"""
     kFixed = 0
     kAccumulative = 1
     kAccumAllowNegative = 2
 
+
 class PtJustify:
     """(none)"""
     kLeftJustify = 0
     kCenter = 1
     kRightJustify = 2
+
 
 class PtLOSObjectType:
     """(none)"""
@@ -175,11 +190,13 @@ class PtLOSObjectType:
     kCustom = 2
     kShootable = 3
 
+
 class PtLOSReportType:
     """(none)"""
     kReportHit = 0
     kReportMiss = 1
     kReportHitOrMiss = 2
+
 
 class PtLanguage:
     """(none)"""
@@ -191,13 +208,16 @@ class PtLanguage:
     kJapanese = 5
     kNumLanguages = 6
 
+
 class PtMarkerMsgType:
     """(none)"""
     kMarkerCaptured = 0
 
+
 class PtMovieEventReason:
     """(none)"""
     kMovieDone = 0
+
 
 class PtMultiStageEventType:
     """(none)"""
@@ -205,6 +225,7 @@ class PtMultiStageEventType:
     kBeginingOfLoop = 2
     kAdvanceNextStage = 3
     kRegressPrevStage = 4
+
 
 class PtNotificationType:
     """(none)"""
@@ -214,6 +235,7 @@ class PtNotificationType:
     kResponderFF = 3
     kResponderChangeState = 4
 
+
 class PtNotifyDataType:
     """(none)"""
     kFloat = 1
@@ -221,12 +243,14 @@ class PtNotifyDataType:
     kInt = 3
     kNull = 4
 
+
 class PtSDLReadWriteOptions:
     """(none)"""
     kTimeStampOnRead = 16
     kDirtyOnly = 1
     kSkipNotificationInfo = 2
     kBroadcast = 4
+
 
 class PtSDLVarType:
     """(none)"""
@@ -248,10 +272,12 @@ class PtSDLVarType:
     kQuaternion = 54
     kNone = -1
 
+
 class PtScoreRankGroups:
     """(none)"""
     kIndividual = 0
     kNeighborhood = 1
+
 
 class PtScoreTimePeriods:
     """(none)"""
@@ -259,6 +285,7 @@ class PtScoreTimePeriods:
     kYear = 1
     kMonth = 2
     kDay = 3
+
 
 class PtStatusLogFlags:
     """(none)"""
@@ -272,4 +299,3 @@ class PtStatusLogFlags:
     kTimeInSeconds = 256
     kAlignToTop = 16
     kTimeAsDouble = 512
-

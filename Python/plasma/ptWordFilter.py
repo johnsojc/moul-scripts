@@ -53,20 +53,27 @@ xRatedPG13 = 2
 xRatedR = 3
 xRatedX = 4
 
+
 class LanguageFilter:
+
     def __init__(self):
         pass
-    def test(self,sentence):
+
+    def test(self, sentence):
         "returns censored sentence"
         return xRatedG
-    def censor(self,sentence,censorLevel):
+
+    def censor(self, sentence, censorLevel):
         "returns censored sentence"
         return sentence
 
+
 class ExactMatchListFilter(LanguageFilter):
-    def __init__(self,wordlist):
+
+    def __init__(self, wordlist):
         self.wordlist = wordlist
-    def test(self,sentence):
+
+    def test(self, sentence):
         "return the rating of sentence in question"
         rated = xRatedG     # assume rated lowest level
         startidx = 0
@@ -79,7 +86,7 @@ class ExactMatchListFilter(LanguageFilter):
                     except LookupError:
                         # couldn't find word
                         rating = None
-                    if rating != None and rating.rating > rated:
+                    if rating is not None and rating.rating > rated:
                         # substitute into string
                         rated = rating.rating
                 startidx = endidx + 1
@@ -90,12 +97,12 @@ class ExactMatchListFilter(LanguageFilter):
             except LookupError:
                 # couldn't find word
                 rating = None
-            if rating != None and rating.rating > rated:
+            if rating is not None and rating.rating > rated:
                 # substitute into string
                 rated = rating.rating
         return rated
-        
-    def censor(self,sentence,censorLevel):
+
+    def censor(self, sentence, censorLevel):
         "censors a sentence to a rating"
         # break into words, but perserve original punctuation
         censored = ""
@@ -109,7 +116,7 @@ class ExactMatchListFilter(LanguageFilter):
                     except LookupError:
                         # couldn't find word
                         rating = None
-                    if rating != None and rating.rating > censorLevel:
+                    if rating is not None and rating.rating > censorLevel:
                         # substitute into string
                         censored += rating.substitute + sentence[endidx]
                     else:
@@ -125,33 +132,39 @@ class ExactMatchListFilter(LanguageFilter):
             except LookupError:
                 # couldn't find word
                 rating = None
-            if rating != None and rating.rating > censorLevel:
+            if rating is not None and rating.rating > censorLevel:
                 # substitute into string
                 censored += rating.substitute
             else:
                 censored += sentence[startidx:]
         return censored
 
+
 class REFilter(LanguageFilter):
-    def __init__(self,regexp,rating):
-        self.compiledRE = re.compile(regexp, re.IGNORECASE | re.MULTILINE )
-        if not isinstance(rating,Rating):
+
+    def __init__(self, regexp, rating):
+        self.compiledRE = re.compile(regexp, re.IGNORECASE | re.MULTILINE)
+        if not isinstance(rating, Rating):
             PtDebugPrint("ptWordFilter: rating for %s not of type Rating" % (regexp))
         self.rating = rating
-    def test(self,sentence):
+
+    def test(self, sentence):
         "return the rating of sentence in question"
-        if self.compiledRE.search(sentence) != None:
+        if self.compiledRE.search(sentence) is not None:
             return self.rating.rating
         return xRatedG
-    def censor(self,sentence,censorLevel):
+
+    def censor(self, sentence, censorLevel):
         "censors a sentence to a rating"
         if self.rating.rating > censorLevel:
-            if self.compiledRE.search(sentence) != None:
-                return self.compiledRE.sub(self.rating.substitute,sentence)
+            if self.compiledRE.search(sentence) is not None:
+                return self.compiledRE.sub(self.rating.substitute, sentence)
         return sentence
+
 
 class Rating:
     "substitute can be string for exact substitute or number of splat replacement"
-    def __init__(self,rating,subtitute="*****"):
+
+    def __init__(self, rating, subtitute="*****"):
         self.rating = rating
         self.substitute = subtitute

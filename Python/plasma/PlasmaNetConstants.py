@@ -40,6 +40,8 @@ You can contact Cyan Worlds, Inc. by email legal@cyan.com
       Mead, WA   99021
 
  *==LICENSE==* """
+
+
 class PtLinkingRules:
     """(none)"""
     kBasicLink = 0
@@ -48,4 +50,3 @@ class PtLinkingRules:
     kOwnedBook = 3
     kVisitBook = 4
     kChildAgeBook = 5
-
