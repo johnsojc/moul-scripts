@@ -53,12 +53,11 @@ from Plasma import *
 from PlasmaTypes import *
 
 # define the attributes that will be entered in max
-varstring = ptAttribString(1,"Name")
+varstring = ptAttribString(1, "Name")
 actPower = ptAttribNamedActivator(3, "Actvtr: Power Source")
-actSwitch  = ptAttribActivator(4,"Actvtr: Click Me")
-respOn = ptAttribResponder(5,"Rspndr: Powered")
-respOff = ptAttribResponder(6,"Rspndr: No Pwr")
-
+actSwitch = ptAttribActivator(4, "Actvtr: Click Me")
+respOn = ptAttribResponder(5, "Rspndr: Powered")
+respOff = ptAttribResponder(6, "Rspndr: No Pwr")
 
 
 class xPoweredLightSwitch(ptResponder):
@@ -67,60 +66,57 @@ class xPoweredLightSwitch(ptResponder):
         # run parent class init
         ptResponder.__init__(self)
         self.id = 5203
-        
+
         version = 2
         self.version = version
-        print "__init__xPoweredLightSwitch v.", version
+        PtDebugPrint("__init__xPoweredLightSwitch v.%d" % (version))
 
     def OnServerInitComplete(self):
-        if self.SDL == None:
-            print "xPoweredLightSwitch.OnServerInitComplete():\tERROR---missing SDL (%s)" % varstring.value
+        if self.SDL is None:
+            PtDebugPrint("xPoweredLightSwitch.OnServerInitComplete():\tERROR---missing SDL (%s)" % (varstring.value))
             return
-        self.SDL.setDefault("source",(0,))
-        self.SDL.setDefault("switch",(0,))
+        self.SDL.setDefault("source", (0,))
+        self.SDL.setDefault("switch", (0,))
 
-    def OnNotify(self,state,id,events):
+    def OnNotify(self, state, id, events):
         if state:
 
-            if id==actPower.id:
+            if id == actPower.id:
                 for event in events:
                         if event[0] == 4:
-                            if event[3] == 1: #source has become activated
+                            if event[3] == 1:  # source has become activated
                                 self.SDL["source"] = (1,)
-                            elif event[3] == 0: #source has become deactivated
+                            elif event[3] == 0:  # source has become deactivated
                                 self.SDL["source"] = (0,)
-                            else: #unexpected value
-                                print "xPoweredLightSwitch.OnNotify:\t'%s' ERROR---got bogus msg - source = %d" % (varstring.value,self.SDL["source"][0])
-                 
-                        print "xPoweredLightSwitch.OnNotify:\t'%s' got msg - source = %d" % (varstring.value,self.SDL["source"][0])
-                    
-                        if self.SDL["source"][0]==1 and self.SDL["switch"][0]==1: # if switch was already on and power now turns ON
-                            respOn.run(self.key,events=events)
-                        if self.SDL["source"][0]==0 and self.SDL["switch"][0]==1: # if switch was already on and power now turns OFF
-                            respOff.run(self.key,events=events)
+                            else:  # unexpected value
+                                PtDebugPrint("xPoweredLightSwitch.OnNotify:\t'%s' ERROR---got bogus msg - source = %d" % (varstring.value, self.SDL["source"][0]))
 
+                        PtDebugPrint("xPoweredLightSwitch.OnNotify:\t'%s' got msg - source = %d" % (varstring.value, self.SDL["source"][0]))
 
-            if id==actSwitch.id:
-                if self.SDL["switch"][0] == 1: #switch has become activated
+                        if self.SDL["source"][0] == 1 and self.SDL["switch"][0] == 1:  # if switch was already on and power now turns ON
+                            respOn.run(self.key, events=events)
+                        if self.SDL["source"][0] == 0 and self.SDL["switch"][0] == 1:  # if switch was already on and power now turns OFF
+                            respOff.run(self.key, events=events)
+
+            if id == actSwitch.id:
+                if self.SDL["switch"][0] == 1:  # switch has become activated
                     self.SDL["switch"] = (0,)
-                elif self.SDL["switch"][0] == 0: # switch has become deactivated
+                elif self.SDL["switch"][0] == 0:  # switch has become deactivated
                     self. SDL["switch"] = (1,)
-                else: #unexpected value
-                    print "xPoweredLightSwitch.OnNotify:\t'%s' ERROR---got bogus msg - switch = %d" % (varstring.value,self.SDL["switch"][0])
+                else:  # unexpected value
+                    PtDebugPrint("xPoweredLightSwitch.OnNotify:\t'%s' ERROR---got bogus msg - switch = %d" % (varstring.value, self.SDL["switch"][0]))
 
-                print "xPoweredLightSwitch.OnNotify:\t'%s' got msg - switch = %d" % (varstring.value,self.SDL["switch"][0])
+                PtDebugPrint("xPoweredLightSwitch.OnNotify:\t'%s' got msg - switch = %d" % (varstring.value, self.SDL["switch"][0]))
 
-                if self.SDL["switch"][0]==1 and self.SDL["source"][0]==1: # if source was already on and switch now turns ON
-                    respOn.run(self.key,events=events)
-                if self.SDL["switch"][0]==0 and self.SDL["source"][0]==1: # if source was already on and switch now turns OFF
-                    respOff.run(self.key,events=events)
-                    
-            
-        if id==respOn.id:
-            print "xPoweredLightSwitch.OnNotify:\tsending msg '%s' clicked, pulled or otherwise activated." % (varstring.value)
+                if self.SDL["switch"][0] == 1 and self.SDL["source"][0] == 1:  # if source was already on and switch now turns ON
+                    respOn.run(self.key, events=events)
+                if self.SDL["switch"][0] == 0 and self.SDL["source"][0] == 1:  # if source was already on and switch now turns OFF
+                    respOff.run(self.key, events=events)
+
+        if id == respOn.id:
+            PtDebugPrint("xPoweredLightSwitch.OnNotify:\tsending msg '%s' clicked, pulled or otherwise activated." % (varstring.value))
             note = ptNotify(self.key)
             note.setActivate(1.0)
-            note.addVarNumber(varstring.value,1.0)
+            note.addVarNumber(varstring.value, 1.0)
             note.send()
             return
-

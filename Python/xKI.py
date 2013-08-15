@@ -41,4 +41,5 @@ You can contact Cyan Worlds, Inc. by email legal@cyan.com
 
  *==LICENSE==* """
 # Note: This is a workaround for limitations in Plasma's bindings.
+
 from ki import *

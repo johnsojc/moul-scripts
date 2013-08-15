@@ -70,15 +70,15 @@ NumFiles = 0
 IsPlaying = 0
 TriggeringAvatar = None
 
-#====================================
 
+#====================================
 class xMusicBox(ptModifier):
 
     def __init__(self):
         ptModifier.__init__(self)
         self.id = 5329
         self.version = 3
-        PtDebugPrint("xMusicBox: init  version = %d" % self.version)
+        PtDebugPrint("xMusicBox: init  version = %d" % (self.version))
 
     def OnServerInitComplete(self):
         global SoundObjIndex
@@ -107,7 +107,7 @@ class xMusicBox(ptModifier):
             newFolder = ptVaultFolderNode(0)
             newFolder.folderSetName("AgeData")
             ageInfoNode.addNode(newFolder)
-            
+
             newNode = ptVaultChronicleNode(0)
             newNode.chronicleSetName("MusicBoxSongs")
             newNode.chronicleSetValue(strInitialSong.value)
@@ -122,7 +122,7 @@ class xMusicBox(ptModifier):
         SoundObjIndex = soSoundObj.value.getSoundIndex(strSoundObj.value)
         PtDebugPrint("xMusicBox.OnServerInitComplete: using sound object index:" + str(SoundObjIndex))
 
-        if type(sdlCurrentSongVar.value) == type("") and len(sdlCurrentSongVar.value) > 0:
+        if type(sdlCurrentSongVar.value) is str and len(sdlCurrentSongVar.value) > 0:
             ageSDL = PtGetAgeSDL()
             filename = ageSDL[sdlCurrentSongVar.value][0]
 
@@ -137,18 +137,18 @@ class xMusicBox(ptModifier):
                 soSoundObj.value.setSoundFilename(SoundObjIndex, CurrentFile[0], CurrentFile[1])
                 respStart.run(self.key)
 
-    def OnNotify(self,state,id,events):
+    def OnNotify(self, state, id, events):
         global IsPlaying
         global CurrentFile
         global SoundObjIndex
         global TriggeringAvatar
-        
+
         if not state:
             return
 
         if id == actTrigger.id:
             TriggeringAvatar = PtFindAvatar(events)
-            respOneShot.run(self.key, events = events)
+            respOneShot.run(self.key, events=events)
 
         elif id == respOneShot.id:
             self.NextSong()
@@ -166,13 +166,13 @@ class xMusicBox(ptModifier):
             localClient = PtGetLocalClientID()
 
             islocalavatar = (playerid == localClient)
-            sdlvarisvalid = (type(sdlCurrentSongVar.value) == type("") and len(sdlCurrentSongVar.value) > 0)
+            sdlvarisvalid = (type(sdlCurrentSongVar.value) is str and len(sdlCurrentSongVar.value) > 0)
 
             if islocalavatar and sdlvarisvalid:
                 print "Setting cur song var to: ", currentSong
                 ageSDL = PtGetAgeSDL()
                 ageSDL[sdlCurrentSongVar.value] = currentSong
-                
+
     def NextSong(self):
         global CurrentFile
 
@@ -204,7 +204,7 @@ class xMusicBox(ptModifier):
 
     def GetMusicBoxSongList(self):
         songList = []
-        
+
         ageVault = ptAgeVault()
         ageInfoNode = ageVault.getAgeInfo()
 

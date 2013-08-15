@@ -52,16 +52,14 @@ from PlasmaTypes import *
 
 import webbrowser
 
-#act = ptAttribActivator(2,"Activator")
-#string  = ptAttribString(1,"Name of Age to Clear")
-
 # These are the ID values specified in the max file
 # (taken from the xDialogStartUp.py file).
-k13VisitID         = 700
-k13PayID           = 701
-k13LinkID          = 702
+k13VisitID = 700
+k13PayID = 701
+k13LinkID = 702
 
 WebLaunchCmd = None
+
 
 class xVisitorPayDialog(ptResponder):
 
@@ -69,10 +67,10 @@ class xVisitorPayDialog(ptResponder):
         # run parent class init
         ptResponder.__init__(self)
         self.id = 5345
-        
+
         version = 1
         self.version = version
-        print "__init__ xVisitorPayDialog v. ", version
+        PtDebugPrint("__init__ xVisitorPayDialog v.%d" % (version))
 
     def OnServerInitComplete(self):
         global WebLaunchCmd
@@ -80,49 +78,31 @@ class xVisitorPayDialog(ptResponder):
         WebLaunchCmd = webbrowser.open_new
 
     def OnFirstUpdate(self):
-        #Added for Free vs Play Content
-        #
-        # Note:
-        #   This was added for externally instanciated dialog box calls
-        #   for dialog 05.  This should not affect any functionality 
-        #   To the "startup" age.  Eventually this or a similar dialog
-        #   should be moved to a seperate file.
-        
-        #print "xVisitorPayDialog-->OnFirstUpdate() -- self.key = ", self.key
-        #print "xVisitorPayDialog-->OnFirstUpdate() -- Started in age ",  PtGetAgeName()
-
-        #Necessary to give intercept GUI Notifies to this file!
+        # Necessary to give intercept GUI Notifies to this file!
         if PtGetAgeName() != "StartUp":
             PtLoadDialog("GUIDialog13", self.key)
 
-    def OnNotify(self,state,id,events):
-        #if id==(-1): ## callback from delete yes/no dialog (hopefully) ##
-        #    if state:
-        #        PtConsole("App.Quit")
+    def OnNotify(self, state, id, events):
         pass
 
-    
     def OnGUINotify(self, id, control, event):
         global WebLaunchCmd
-        #print "-->xVisitorPayDialog: GUI Notify id=%d, event=%d control=" % (id,event),control
 
-        if not control:  #Exit if not fired from a control!
+        if not control:  # Exit if not fired from a control!
             return
-        
-        #Get the ID from the control
-        tagID = control.getTagID()  
-        
+
+        # Get the ID from the control
+        tagID = control.getTagID()
+
         if event == kAction or event == kValueChanged:
-            if  tagID == k13VisitID: ## Continue ##
+            if tagID == k13VisitID:  # Continue #
                 PtHideDialog("GUIDialog13")
 
-            elif  tagID == k13PayID: ## Quit And Register ##
+            elif tagID == k13PayID:  # Quit And Register #
                 WebLaunchCmd("https://account.gametap.com/storefront/myst/login/login.do")
 
-            elif  tagID == k13LinkID: ## Link ##
+            elif tagID == k13LinkID:  # Link #
                 WebLaunchCmd("https://account.gametap.com/storefront/myst/login/login.do")
 
             else:
                 PtDebugPrint("DEBUG: xVisitorPayDialog-->OnGUINotify -- Unknown Control Encountered")
-        
-       

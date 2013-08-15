@@ -67,17 +67,17 @@ import xIniDisplay
 import xIniNumSounds
 
 # define the attributes that will be entered in max
-OptionsMenuDlg          = ptAttribGUIDialog(1,"The Options Menu dialog")
-NavigationDlg           = ptAttribGUIDialog(4, "The Navigation dialog")
-KeyMapDlg               = ptAttribGUIDialog(5, "The Key Map dialog")
-GraphicsSettingsDlg     = ptAttribGUIDialog(6, "Graphics Settings dialog")
-CalibrateDlg            = ptAttribGUIDialog(7, "The Calibration dialog")
-AudioSettingsDlg        = ptAttribGUIDialog(8, "The Audio Settings dialog")
-TrailerDlg              = ptAttribGUIDialog(9, "The Trailer dialog")
-AdvGameSettingDlg       = ptAttribGUIDialog(10, "The Adv Game Settings dialog")
-ResetWarnDlg            = ptAttribGUIDialog(11, "The Reset Warning dialog")
-ReleaseNotesDlg         = ptAttribGUIDialog(12, "Release Notes dialog")
-respDisableItems        = ptAttribResponder(13, "resp: Disable Items", ["enableRes", "disableRes", "enableWindow", "disableWindow", "enableEAX", "disableEAX", "enableGamma", "disableGamma"])
+OptionsMenuDlg = ptAttribGUIDialog(1, "The Options Menu dialog")
+NavigationDlg = ptAttribGUIDialog(4, "The Navigation dialog")
+KeyMapDlg = ptAttribGUIDialog(5, "The Key Map dialog")
+GraphicsSettingsDlg = ptAttribGUIDialog(6, "Graphics Settings dialog")
+CalibrateDlg = ptAttribGUIDialog(7, "The Calibration dialog")
+AudioSettingsDlg = ptAttribGUIDialog(8, "The Audio Settings dialog")
+TrailerDlg = ptAttribGUIDialog(9, "The Trailer dialog")
+AdvGameSettingDlg = ptAttribGUIDialog(10, "The Adv Game Settings dialog")
+ResetWarnDlg = ptAttribGUIDialog(11, "The Reset Warning dialog")
+ReleaseNotesDlg = ptAttribGUIDialog(12, "Release Notes dialog")
+respDisableItems = ptAttribResponder(13, "resp: Disable Items", ["enableRes", "disableRes", "enableWindow", "disableWindow", "enableEAX", "disableEAX", "enableGamma", "disableGamma"])
 
 
 # globals
@@ -227,74 +227,90 @@ kKMNextPreviousText = 830
 
 #
 # dictionary of:
-#    edit tagID to ( keyMap, singlePlayerFlag, multiPlayerFlag )
+#    edit tagID to (keyMap, singlePlayerFlag, multiPlayerFlag )
 #
 #  where keyMap is a number if event binding
 #                  a string if console command
 #                  None if not mapped (mostly on second key on console)
 #
-gKM1ControlCodesRow1 = {
-                        kKMEditLine1Row1 : (PlasmaControlKeys.kKeyMoveForward,1,1) ,\
-                        kKMEditLine2Row1 : (PlasmaControlKeys.kKeyMoveBackward,1,1) ,\
-                        kKMEditLine3Row1 : (PlasmaControlKeys.kKeyRotateLeft,1,1) ,\
-                        kKMEditLine4Row1 : (PlasmaControlKeys.kKeyRotateRight,1,1) ,\
-                        kKMEditLine5Row1 : (PlasmaControlKeys.kKeyJump,1,1) ,\
-                        kKMEditLine6Row1 : (PlasmaControlKeys.kKeyStrafeLeft,1,1) ,\
-                        kKMEditLine7Row1 : (PlasmaControlKeys.kKeyStrafeRight,1,1) ,\
-                        kKMEditLine8Row1 : (PlasmaControlKeys.kKeyExitMode,1,1) ,\
-                        kKMEditLine9Row1 : (PlasmaControlKeys.kKeySetFirstPersonMode,1,1) ,\
-                        kKMEditLine10Row1 : ("Game.KIOpenYeeshaBook",1,1),\
-                        kKMEditLine11Row1 : ("Game.KIHelp",1,1) ,\
-                        kKMEditLine12Row1 : ("Game.KIOpenKI",0,1) ,\
-                        kKMEditLine13Row1 : ("Game.KITakePicture",0,1),\
-                        kKMEditLine14Row1 : ("Game.KICreateJournal",0,1),\
-                        kKMEditLine15Row1 : (PlasmaControlKeys.kKeyPushToTalk,0,1) ,\
-                        kKMEditLine16Row1 : ("Game.EnterChatMode",0,1) ,\
-                        kKMEditLine17Row1 : ("Game.KICreateMarkerFolder",0,1) ,\
-                        kKMEditLine18Row1 : ("Game.KICreateMarker",0,1) ,\
-                    }
-gKM1ControlCodesRow2 = {
-                        kKMEditLine1Row2 : (PlasmaControlKeys.kKeyMoveForward,1,1) ,\
-                        kKMEditLine2Row2 : (PlasmaControlKeys.kKeyMoveBackward,1,1) ,\
-                        kKMEditLine3Row2 : (PlasmaControlKeys.kKeyRotateLeft,1,1) ,\
-                        kKMEditLine4Row2 : (PlasmaControlKeys.kKeyRotateRight,1,1) ,\
-                        kKMEditLine5Row2 : (PlasmaControlKeys.kKeyJump,1,1) ,\
-                        kKMEditLine6Row2 : (PlasmaControlKeys.kKeyStrafeLeft,1,1) ,\
-                        kKMEditLine7Row2 : (PlasmaControlKeys.kKeyStrafeRight,1,1) ,\
-                        kKMEditLine8Row2 : (PlasmaControlKeys.kKeyExitMode,1,1) ,\
-                        kKMEditLine9Row2 : (PlasmaControlKeys.kKeySetFirstPersonMode,1,1) ,\
-                        kKMEditLine10Row2 : (None,0,0),\
-                        kKMEditLine11Row2 : (None,0,0) ,\
-                        kKMEditLine12Row2 : (None,0,0),\
-                        kKMEditLine13Row2 : (None,0,0) ,\
-                        kKMEditLine14Row2 : (None,0,0) ,\
-                        kKMEditLine15Row2 : (PlasmaControlKeys.kKeyPushToTalk,0,1) ,\
-                        kKMEditLine16Row2 : (None,0,0) ,\
-                        kKMEditLine17Row2 : (None,0,0) ,\
-                        kKMEditLine18Row2 : (None,0,0) ,\
-                    }
-
-defaultControlCodeBinds = { PlasmaControlKeys.kKeyMoveForward : ( "UpArrow","(unmapped)" ) ,\
-                            PlasmaControlKeys.kKeyMoveBackward : ( "DownArrow","(unmapped)" ),\
-                            PlasmaControlKeys.kKeyRotateLeft : ( "LeftArrow","(unmapped)" ) ,\
-                            PlasmaControlKeys.kKeyRotateRight : ( "RightArrow","(unmapped)" ) ,\
-                            PlasmaControlKeys.kKeyJump : ( "SpaceBar","(unmapped)" ),\
-                            PlasmaControlKeys.kKeyStrafeLeft : ( "Comma","(unmapped)" ) ,\
-                            PlasmaControlKeys.kKeyStrafeRight : ( "Period","(unmapped)" ) ,\
-                            PlasmaControlKeys.kKeyExitMode : ( "Backspace","Esc" ) ,\
-                            PlasmaControlKeys.kKeySetFirstPersonMode : ( "F1","F_C" ) ,\
-                            "Game.KIOpenYeeshaBook" : ("F3","(unmapped)"),\
-                            "Game.KIHelp" : ("F4","(unmapped)"),\
-                            "Game.KIOpenKI" : ("F2","(unmapped)"),\
-                            "Game.KITakePicture" : ("F5","(unmapped)"),\
-                            "Game.KICreateJournal" : ("F6","(unmapped)"),\
-                            PlasmaControlKeys.kKeyPushToTalk : ( "Tab","(unmapped)" ) ,\
-                            "Game.EnterChatMode" : ("(unmapped)","(unmapped)"),\
-                            "Game.KICreateMarkerFolder" : ("F8","(unmapped)"),\
-                            "Game.KICreateMarker" : ("F7","(unmapped)"),\
+gKM1ControlCodesRow1 = {kKMEditLine1Row1:  (PlasmaControlKeys.kKeyMoveForward, 1, 1),
+                        kKMEditLine2Row1:  (PlasmaControlKeys.kKeyMoveBackward, 1, 1),
+                        kKMEditLine3Row1:  (PlasmaControlKeys.kKeyRotateLeft, 1, 1),
+                        kKMEditLine4Row1:  (PlasmaControlKeys.kKeyRotateRight, 1, 1),
+                        kKMEditLine5Row1:  (PlasmaControlKeys.kKeyJump, 1, 1),
+                        kKMEditLine6Row1:  (PlasmaControlKeys.kKeyStrafeLeft, 1, 1),
+                        kKMEditLine7Row1:  (PlasmaControlKeys.kKeyStrafeRight, 1, 1),
+                        kKMEditLine8Row1:  (PlasmaControlKeys.kKeyExitMode, 1, 1),
+                        kKMEditLine9Row1:  (PlasmaControlKeys.kKeySetFirstPersonMode, 1, 1),
+                        kKMEditLine10Row1: ("Game.KIOpenYeeshaBook", 1, 1),
+                        kKMEditLine11Row1: ("Game.KIHelp", 1, 1),
+                        kKMEditLine12Row1: ("Game.KIOpenKI", 0, 1),
+                        kKMEditLine13Row1: ("Game.KITakePicture", 0, 1),
+                        kKMEditLine14Row1: ("Game.KICreateJournal", 0, 1),
+                        kKMEditLine15Row1: (PlasmaControlKeys.kKeyPushToTalk, 0, 1),
+                        kKMEditLine16Row1: ("Game.EnterChatMode", 0, 1),
+                        kKMEditLine17Row1: ("Game.KICreateMarkerFolder", 0, 1),
+                        kKMEditLine18Row1: ("Game.KICreateMarker", 0, 1),
                         }
 
-defaultControlCodeBindsOrdered = [  PlasmaControlKeys.kKeyMoveForward, PlasmaControlKeys.kKeyMoveBackward, PlasmaControlKeys.kKeyRotateLeft, PlasmaControlKeys.kKeyRotateRight, PlasmaControlKeys.kKeyJump, PlasmaControlKeys.kKeyStrafeLeft, PlasmaControlKeys.kKeyStrafeRight, PlasmaControlKeys.kKeyExitMode, PlasmaControlKeys.kKeySetFirstPersonMode, "Game.KIOpenYeeshaBook", "Game.KIHelp", "Game.KIOpenKI", "Game.KITakePicture", "Game.KICreateJournal", PlasmaControlKeys.kKeyPushToTalk, "Game.EnterChatMode", "Game.KICreateMarkerFolder", "Game.KICreateMarker"]
+gKM1ControlCodesRow2 = {kKMEditLine1Row2:  (PlasmaControlKeys.kKeyMoveForward, 1, 1),
+                        kKMEditLine2Row2:  (PlasmaControlKeys.kKeyMoveBackward, 1, 1),
+                        kKMEditLine3Row2:  (PlasmaControlKeys.kKeyRotateLeft, 1, 1),
+                        kKMEditLine4Row2:  (PlasmaControlKeys.kKeyRotateRight, 1, 1),
+                        kKMEditLine5Row2:  (PlasmaControlKeys.kKeyJump, 1, 1),
+                        kKMEditLine6Row2:  (PlasmaControlKeys.kKeyStrafeLeft, 1, 1),
+                        kKMEditLine7Row2:  (PlasmaControlKeys.kKeyStrafeRight, 1, 1),
+                        kKMEditLine8Row2:  (PlasmaControlKeys.kKeyExitMode, 1, 1),
+                        kKMEditLine9Row2:  (PlasmaControlKeys.kKeySetFirstPersonMode, 1, 1),
+                        kKMEditLine10Row2: (None, 0, 0),
+                        kKMEditLine11Row2: (None, 0, 0),
+                        kKMEditLine12Row2: (None, 0, 0),
+                        kKMEditLine13Row2: (None, 0, 0),
+                        kKMEditLine14Row2: (None, 0, 0),
+                        kKMEditLine15Row2: (PlasmaControlKeys.kKeyPushToTalk, 0, 1),
+                        kKMEditLine16Row2: (None, 0, 0),
+                        kKMEditLine17Row2: (None, 0, 0),
+                        kKMEditLine18Row2: (None, 0, 0),
+                        }
+
+defaultControlCodeBinds = {PlasmaControlKeys.kKeyMoveForward:        ("UpArrow", "(unmapped)"),
+                           PlasmaControlKeys.kKeyMoveBackward:       ("DownArrow", "(unmapped)"),
+                           PlasmaControlKeys.kKeyRotateLeft:         ("LeftArrow", "(unmapped)"),
+                           PlasmaControlKeys.kKeyRotateRight:        ("RightArrow", "(unmapped)"),
+                           PlasmaControlKeys.kKeyJump:               ("SpaceBar", "(unmapped)"),
+                           PlasmaControlKeys.kKeyStrafeLeft:         ("Comma", "(unmapped)"),
+                           PlasmaControlKeys.kKeyStrafeRight:        ("Period", "(unmapped)"),
+                           PlasmaControlKeys.kKeyExitMode:           ("Backspace", "Esc"),
+                           PlasmaControlKeys.kKeySetFirstPersonMode: ("F1", "F_C"),
+                           "Game.KIOpenYeeshaBook":                  ("F3", "(unmapped)"),
+                           "Game.KIHelp":                            ("F4", "(unmapped)"),
+                           "Game.KIOpenKI":                          ("F2", "(unmapped)"),
+                           "Game.KITakePicture":                     ("F5", "(unmapped)"),
+                           "Game.KICreateJournal":                   ("F6", "(unmapped)"),
+                           PlasmaControlKeys.kKeyPushToTalk:         ("Tab", "(unmapped)"),
+                           "Game.EnterChatMode":                     ("(unmapped)", "(unmapped)"),
+                           "Game.KICreateMarkerFolder":              ("F8", "(unmapped)"),
+                           "Game.KICreateMarker":                    ("F7", "(unmapped)"),
+                           }
+
+defaultControlCodeBindsOrdered = [PlasmaControlKeys.kKeyMoveForward,
+                                  PlasmaControlKeys.kKeyMoveBackward,
+                                  PlasmaControlKeys.kKeyRotateLeft,
+                                  PlasmaControlKeys.kKeyRotateRight,
+                                  PlasmaControlKeys.kKeyJump,
+                                  PlasmaControlKeys.kKeyStrafeLeft,
+                                  PlasmaControlKeys.kKeyStrafeRight,
+                                  PlasmaControlKeys.kKeyExitMode,
+                                  PlasmaControlKeys.kKeySetFirstPersonMode,
+                                  "Game.KIOpenYeeshaBook",
+                                  "Game.KIHelp",
+                                  "Game.KIOpenKI",
+                                  "Game.KITakePicture",
+                                  "Game.KICreateJournal",
+                                  PlasmaControlKeys.kKeyPushToTalk,
+                                  "Game.EnterChatMode",
+                                  "Game.KICreateMarkerFolder",
+                                  "Game.KICreateMarker"]
 
 kVideoQuality = ["Low", "Medium", "High", "Ultra"]
 kVideoTextureQuality = ["Low", "Medium", "High"]
@@ -323,12 +339,10 @@ kAudioModeCBID03 = 754
 kAudioModeTextID = 755
 kAudioModeEAXTextID = 757
 
-kGSEnableVoiceChat=340
+kGSEnableVoiceChat = 340
 
 ####==> GUI dialog sounds will just match the SoundFX levels
-##kGSGUIVolSlider=305
-####==> GUI dialog sounds will just match the SoundFX levels
-kGSMicLevelSlider=400
+kGSMicLevelSlider = 400
 
 kGSDisplayGammaSlider = 450
 kGSDisplayShadowDistSlider = 452
@@ -382,9 +396,9 @@ kAGSClickToTurn = 708
 # ====================================
 # Yes/No dialog globals
 #----Controls
-kYesNoTextID=12
-kYesButtonID=10
-kNoButtonID=11
+kYesNoTextID = 12
+kYesButtonID = 10
+kNoButtonID = 11
 kYesButtonTextID = 60
 kNoButtonTextID = 61
 
@@ -420,31 +434,32 @@ gClickToTurn = "0"
 gAudioHack = 0
 gCurrentReleaseNotes = ""
 
+
 class xOptionsMenu(ptModifier):
     "The Options dialog modifier"
     def __init__(self):
         ptModifier.__init__(self)
         self.id = 195
         self.version = MaxVersionNumber
-        PtDebugPrint("__xOptionsMenu: Max version %d - minor version %d" % (MaxVersionNumber,MinorVersionNumber))
-        
+        PtDebugPrint("__xOptionsMenu: Max version %d - minor version %d" % (MaxVersionNumber, MinorVersionNumber))
+
         self.restartWarn = false
         self.goingToCalibration = 0
 
     def OnFirstUpdate(self):
         global WebLaunchCmd
         "First update, load our dialogs"
-        PtLoadDialog("OptionsMenuGUI",self.key)
-        PtLoadDialog("KeyMapDialog",self.key)
-        PtLoadDialog("GameSettingsDialog",self.key)
-        PtLoadDialog("CalibrationGUI",self.key)
-        PtLoadDialog("TrailerPreviewGUI",self.key)
-        PtLoadDialog("AdvancedGameSettingsDialog",self.key)
-        PtLoadDialog("NavigationSettingsDialog",self.key)
-        PtLoadDialog("GraphicsSettingsDialog",self.key)
-        PtLoadDialog("AudioSettingsDialog",self.key)
-        PtLoadDialog("OptionsMenuRestart",self.key)
-        PtLoadDialog("ReleaseNotesDialog",self.key)
+        PtLoadDialog("OptionsMenuGUI", self.key)
+        PtLoadDialog("KeyMapDialog", self.key)
+        PtLoadDialog("GameSettingsDialog", self.key)
+        PtLoadDialog("CalibrationGUI", self.key)
+        PtLoadDialog("TrailerPreviewGUI", self.key)
+        PtLoadDialog("AdvancedGameSettingsDialog", self.key)
+        PtLoadDialog("NavigationSettingsDialog", self.key)
+        PtLoadDialog("GraphicsSettingsDialog", self.key)
+        PtLoadDialog("AudioSettingsDialog", self.key)
+        PtLoadDialog("OptionsMenuRestart", self.key)
+        PtLoadDialog("ReleaseNotesDialog", self.key)
 
     def __del__(self):
         "the destructor - unload any dialogs we loaded"
@@ -459,7 +474,7 @@ class xOptionsMenu(ptModifier):
         PtUnloadDialog("OptionsMenuRestart")
         PtUnloadDialog("ReleaseNotesDialog")
 
-    def BeginAgeUnLoad(self,avatar):
+    def BeginAgeUnLoad(self, avatar):
         "When the current age is being unloaded, ie. we've linked out - hide all modal dialogs!"
         global gJournalBook
         global gPreviewStarted
@@ -470,7 +485,7 @@ class xOptionsMenu(ptModifier):
         if CalibrateDlg.dialog.isEnabled():
             CalibrateDlg.dialog.hide()
         if gPreviewStarted:
-            PtFadeOut(kOptionFadeOutSeconds,1)
+            PtFadeOut(kOptionFadeOutSeconds, 1)
             PtAtTimeCallback(self.key, kOptionFadeOutSeconds, kTrailerFadeOutID)
         if AdvGameSettingDlg.dialog.isEnabled():
             AdvGameSettingDlg.dialog.hide()
@@ -481,34 +496,34 @@ class xOptionsMenu(ptModifier):
         if gJournalBook:
             gJournalBook.hide()
 
-    def OnPageLoad(self,what,room):
+    def OnPageLoad(self, what, room):
         global gFirstReltoVisit
 
         if (room == "Personal_psnlMYSTII" or room == "Personal_District_psnlMYSTII") and gFirstReltoVisit:
             gFirstReltoVisit = false
 
             vault = ptVault()
-            if type(vault) != type(None):
+            if vault:
                 entry = vault.findChronicleEntry("KeyMap")
-                if type(entry) == type(None):
+                if entry is None:
                     # not found... create defaults
                     self.ISetDefaultKeyMappings()
 
             self.LoadAdvSettings()
             self.LoadKeyMap()
             GammaVal = self.getChronicleVar("gamma")
-            if GammaVal == None:
+            if GammaVal is None:
                 PtSetGamma2(0)
             else:
-                PtAtTimeCallback (self.key, 5, 999)
+                PtAtTimeCallback(self.key, 5, 999)
 
-    def OnNotify(self,state,id,events):
+    def OnNotify(self, state, id, events):
         global gFirstReltoVisit
         "Notify - should only be needed for credits book"
-        PtDebugPrint("xOptionsMenu: Notify  state=%f, id=%d" % (state,id),level=kDebugDumpLevel)
+        PtDebugPrint("xOptionsMenu: Notify  state=%f, id=%d" % (state, id), level=kDebugDumpLevel)
 
         if id == -1:
-            print "Options Menu got notify, resetting First Visit status"
+            PtDebugPrint("Options Menu got notify, resetting First Visit status")
             gFirstReltoVisit = true
             return
 
@@ -516,37 +531,36 @@ class xOptionsMenu(ptModifier):
         for event in events:
             # is it from the Credits book?
             if event[0] == PtEventType.kBook:
-                PtDebugPrint("xOptionsMenu: BookNotify  event=%d, id=%d" % (event[1],event[2]),level=kDebugDumpLevel)
+                PtDebugPrint("xOptionsMenu: BookNotify  event=%d, id=%d" % (event[1], event[2]), level=kDebugDumpLevel)
                 if event[1] == PtBookEventTypes.kNotifyImageLink:
-                    PtDebugPrint("xOptionsMenu:Book: hit linking panel",level=kDebugDumpLevel)
+                    PtDebugPrint("xOptionsMenu:Book: hit linking panel", level=kDebugDumpLevel)
                     pass
                 elif event[1] == PtBookEventTypes.kNotifyShow:
-                    PtDebugPrint("xOptionsMenu:Book: Notify Show",level=kDebugDumpLevel)
+                    PtDebugPrint("xOptionsMenu:Book: Notify Show", level=kDebugDumpLevel)
                     pass
                 elif event[1] == PtBookEventTypes.kNotifyHide:
-                    PtDebugPrint("xOptionsMenu:Book: NotifyHide",level=kDebugDumpLevel)
+                    PtDebugPrint("xOptionsMenu:Book: NotifyHide", level=kDebugDumpLevel)
                     pass
                 elif event[1] == PtBookEventTypes.kNotifyNextPage:
-                    PtDebugPrint("xOptionsMenu:Book: NotifyNextPage",level=kDebugDumpLevel)
+                    PtDebugPrint("xOptionsMenu:Book: NotifyNextPage", level=kDebugDumpLevel)
                     pass
                 elif event[1] == PtBookEventTypes.kNotifyPreviousPage:
-                    PtDebugPrint("xOptionsMenu:Book: NotifyPreviousPage",level=kDebugDumpLevel)
+                    PtDebugPrint("xOptionsMenu:Book: NotifyPreviousPage", level=kDebugDumpLevel)
                     pass
                 elif event[1] == PtBookEventTypes.kNotifyCheckUnchecked:
-                    PtDebugPrint("xOptionsMenu:Book: NotifyCheckUncheck",level=kDebugDumpLevel)
+                    PtDebugPrint("xOptionsMenu:Book: NotifyCheckUncheck", level=kDebugDumpLevel)
                     pass
                 # nothing more to do, when there is a book event
                 return
 
-
-    def OnGUINotify(self,id,control,event):
+    def OnGUINotify(self, id, control, event):
         "Events from all the dialogs in the Option Age..."
         global WebLaunchCmd
         global CCRHelpDialogType
         global gJournalBook
         global gPreviewStarted
         global prevAudioDeviceName
-        PtDebugPrint("xOptionsMenu::OnGUINotify id=%d, event=%d control=" % (id,event),control,level=kDebugDumpLevel)
+        PtDebugPrint("xOptionsMenu::OnGUINotify id=%d, event=%d control=" % (id, event), control, level=kDebugDumpLevel)
 ###############################################
 ##
 ##  OptionsMenu dialog processing
@@ -564,23 +578,23 @@ class xOptionsMenu(ptModifier):
                 if omID == kOptionsNavigationBtn:
                     OptionsMenuDlg.dialog.hide()
                     NavigationDlg.dialog.show()
-                    print "The Navigation dialog should show now..."
+                    PtDebugPrint("The Navigation dialog should show now...")
                 elif omID == kOptionsGraphicSettingsBtn:
                     OptionsMenuDlg.dialog.hide()
                     GraphicsSettingsDlg.dialog.show()
-                    print "The graphics dialog should show now..."
+                    PtDebugPrint("The graphics dialog should show now...")
                 elif omID == kOptionsAudioSettingsBtn:
                     self.InitAudioControlsGUI()
                     OptionsMenuDlg.dialog.hide()
                     AudioSettingsDlg.dialog.show()
-                    print "The audio dialog should show now..."
+                    PtDebugPrint("The audio dialog should show now...")
                 elif omID == kOptionsKeyMapBtn:
                     OptionsMenuDlg.dialog.hide()
                     KeyMapDlg.dialog.show()
                 elif omID == kOptionsTrailerBtn:
                     gPreviewStarted = 1
                     OptionsMenuDlg.dialog.hide()
-                    PtFadeOut(kOptionFadeOutSeconds,1)
+                    PtFadeOut(kOptionFadeOutSeconds, 1)
                     PtAtTimeCallback(self.key, kOptionFadeOutSeconds, kOptionFadeOutID)
                 elif omID == kOptionsReleaseNotes:
                     OptionsMenuDlg.dialog.hide()
@@ -590,13 +604,13 @@ class xOptionsMenu(ptModifier):
                     startOpened = 0
                     params = xJournalBookDefs.xJournalBooks["UruCredits"]
                     if len(params) == 4:
-                        width,height,locPath,gui = params
+                        width, height, locPath, gui = params
                     else:
-                        width,height,locPath = params
+                        width, height, locPath = params
                         gui = "BkBook"
                     journalContents = PtGetLocalizedString(locPath)
-                    gJournalBook = ptBook(journalContents,self.key)
-                    gJournalBook.setSize(width,height)
+                    gJournalBook = ptBook(journalContents, self.key)
+                    gJournalBook.setSize(width, height)
                     # make sure there is a cover to show
                     if not startOpened:
                         if not self.IsThereACover(journalContents):
@@ -605,17 +619,16 @@ class xOptionsMenu(ptModifier):
                     gJournalBook.show(startOpened)
                 elif omID == kOptionsCalibrationBtn:
                     # make sure that we get the events (AvaCusta may have stole them)
-                    PtLoadDialog("CalibrationGUI",self.key)
+                    PtLoadDialog("CalibrationGUI", self.key)
                     OptionsMenuDlg.dialog.hide()
                     CalibrateDlg.dialog.show()
                 elif omID == kOptionsQuitBtn:
                     OptionsMenuDlg.dialog.hide()
-                    PtSendKIMessage(kQuitDialog,0)
+                    PtSendKIMessage(kQuitDialog, 0)
                 elif omID == kOptionsOkBtn:
                     OptionsMenuDlg.dialog.hide()
             elif event == kExitMode:
                 OptionsMenuDlg.dialog.hide()
-
 
 ###############################################
 ##
@@ -635,7 +648,7 @@ class xOptionsMenu(ptModifier):
                     gCurrentReleaseNotes = f.read()
                     f.close()
                 except:
-                    print "[TXT processing] Error while reading ReleaseNotes.txt"
+                    PtDebugPrint("[TXT processing] Error while reading ReleaseNotes.txt")
             elif event == kShowHide:
                 if control.isEnabled():
                     # buttons localized
@@ -647,7 +660,7 @@ class xOptionsMenu(ptModifier):
                     textField = ptGUIControlMultiLineEdit(ReleaseNotesDlg.dialog.getControlFromTag(kReleaseTextArea))
                     textField.clearBuffer()
                     textField.insertString(gCurrentReleaseNotes)
-                    print textField.getString()
+                    PtDebugPrint(textField.getString())
                     textField.setScrollPosition(1)
                     textField.setScrollPosition(0)
             elif event == kAction or event == kValueChanged:
@@ -656,10 +669,9 @@ class xOptionsMenu(ptModifier):
                     ReleaseNotesDlg.dialog.hide()
                 elif rnID == kRNGoBackBtn:
                     ReleaseNotesDlg.dialog.hide()
-                    OptionsMenuDlg.dialog.show()                    
+                    OptionsMenuDlg.dialog.show()
             elif event == kExitMode:
                 ReleaseNotesDlg.dialog.hide()
-
 
 ###############################################
 ##
@@ -699,11 +711,8 @@ class xOptionsMenu(ptModifier):
                     textField.setStringW(PtGetLocalizedString("OptionsMenu.Main.Defaults"))
                     textField = ptGUIControlTextBox(KeyMapDlg.dialog.getControlFromTag(kOptionsGoBackText))
                     textField.setStringW(PtGetLocalizedString("OptionsMenu.Main.GoBack"))
-                    self.IShowMappedKeys(control,gKM1ControlCodesRow1,gKM1ControlCodesRow2)
-                    # read the ini file in
-                    # xIniInput.ReadIni()
+                    self.IShowMappedKeys(control, gKM1ControlCodesRow1, gKM1ControlCodesRow2)
                 else:
-                    # xIniInput.WriteIni()
                     pass
             elif event == kAction or event == kValueChanged:
                 kmID = control.getTagID()
@@ -713,23 +722,23 @@ class xOptionsMenu(ptModifier):
                     NewKeyMapString = ""
                     # get the new keys and bind
                     km = ptKeyMap()
-                    cCode,spFlag,mpFlag = gKM1ControlCodesRow1[kmID]
-                    if type(cCode) == type(""):
-                        key1 = km.convertVKeyToChar(control.getLastKeyCaptured(),control.getLastModifiersCaptured())
-                        km.bindKeyToConsoleCommand(key1,cCode)
+                    cCode, spFlag, mpFlag = gKM1ControlCodesRow1[kmID]
+                    if type(cCode) is str:
+                        key1 = km.convertVKeyToChar(control.getLastKeyCaptured(), control.getLastModifiersCaptured())
+                        km.bindKeyToConsoleCommand(key1, cCode)
                         KeyMapString = self.getChronicleVar("KeyMap")
                         KeyMapArray = KeyMapString.split()
                         KeyMapArray[(kmID-300)] = key1
                         for key in KeyMapArray:
                             NewKeyMapString += key + " "
                         self.setNewChronicleVar("KeyMap", NewKeyMapString.rstrip())
-                    elif type(cCode) != type(None):
+                    elif cCode is not None:
                         otherID = kmID + 100
                         otherField = ptGUIControlEditBox(KeyMapDlg.dialog.getControlFromTag(otherID))
-                        key1 = km.convertVKeyToChar(control.getLastKeyCaptured(),control.getLastModifiersCaptured())
-                        key2 = km.convertVKeyToChar(otherField.getLastKeyCaptured(),otherField.getLastModifiersCaptured())
+                        key1 = km.convertVKeyToChar(control.getLastKeyCaptured(), control.getLastModifiersCaptured())
+                        key2 = km.convertVKeyToChar(otherField.getLastKeyCaptured(), otherField.getLastModifiersCaptured())
                         controlStr = km.convertControlCodeToString(cCode)
-                        km.bindKey(key1,key2,controlStr)
+                        km.bindKey(key1, key2, controlStr)
                         KeyMapString = self.getChronicleVar("KeyMap")
                         KeyMapArray = KeyMapString.split()
                         KeyMapArray[(kmID-300)] = key1 + "$" + key2 + " "
@@ -741,18 +750,17 @@ class xOptionsMenu(ptModifier):
                     # force writing the keymap
                     km.writeKeyMap()
                     # re-show the keymap because they may have been stupid and map the same key to multiple actions
-                    self.IShowMappedKeys(KeyMapDlg.dialog,gKM1ControlCodesRow1,gKM1ControlCodesRow2)
+                    self.IShowMappedKeys(KeyMapDlg.dialog, gKM1ControlCodesRow1, gKM1ControlCodesRow2)
                     # need to re-set the ini file, in case something got unmapped
-                    #self.IMatchIniToGame()
                 elif kmID in gKM1ControlCodesRow2.keys():
                     NewKeyMapString = ""
                     # get the new keys and bind
                     km = ptKeyMap()
-                    cCode,spFlag,mpFlag = gKM1ControlCodesRow2[kmID]
-                    if type(cCode) == type(""):
+                    cCode, spFlag, mpFlag = gKM1ControlCodesRow2[kmID]
+                    if type(cCode) is str:
                         # console command  - this shouldn't really happen!
-                        key1 = km.convertVKeyToChar(control.getLastKeyCaptured(),control.getLastModifiersCaptured())
-                        km.bindKeyToConsoleCommand(key1,cCode)
+                        key1 = km.convertVKeyToChar(control.getLastKeyCaptured(), control.getLastModifiersCaptured())
+                        km.bindKeyToConsoleCommand(key1, cCode)
                         # console keys not in input.ini... yet
                         KeyMapString = self.getChronicleVar("KeyMap")
                         KeyMapArray = KeyMapString.split()
@@ -760,35 +768,32 @@ class xOptionsMenu(ptModifier):
                         for key in KeyMapArray:
                             NewKeyMapString += key + " "
                         self.setNewChronicleVar("KeyMap", NewKeyMapString.rstrip())
-                        #xIniInput.SetConsoleKey('"'+cCode+'"',key1+',')
-                    elif type(cCode) != type(None):
+                    elif cCode is not None:
                         otherID = kmID - 100
                         otherField = ptGUIControlEditBox(KeyMapDlg.dialog.getControlFromTag(otherID))
-                        key2 = km.convertVKeyToChar(control.getLastKeyCaptured(),control.getLastModifiersCaptured())
-                        key1 = km.convertVKeyToChar(otherField.getLastKeyCaptured(),otherField.getLastModifiersCaptured())
+                        key2 = km.convertVKeyToChar(control.getLastKeyCaptured(), control.getLastModifiersCaptured())
+                        key1 = km.convertVKeyToChar(otherField.getLastKeyCaptured(), otherField.getLastModifiersCaptured())
                         controlStr = km.convertControlCodeToString(cCode)
-                        km.bindKey(key1,key2,controlStr)
+                        km.bindKey(key1, key2, controlStr)
                         KeyMapString = self.getChronicleVar("KeyMap")
                         KeyMapArray = KeyMapString.split()
                         KeyMapArray[(otherID-300)] = key1 + "$" + key2 + " "
                         for key in KeyMapArray:
                             NewKeyMapString += key + " "
                         self.setNewChronicleVar("KeyMap", NewKeyMapString.rstrip())
-                        #xIniInput.SetControlKey('"'+controlStr+'"',key1+',',key2+',')
                     # lose the focus when done
                     KeyMapDlg.dialog.noFocus()
                     # force writing the keymap
                     km.writeKeyMap()
                     # re-show the keymap because they may have been stupid and map the same key to multiple actions
-                    self.IShowMappedKeys(KeyMapDlg.dialog,gKM1ControlCodesRow1,gKM1ControlCodesRow2)
+                    self.IShowMappedKeys(KeyMapDlg.dialog, gKM1ControlCodesRow1, gKM1ControlCodesRow2)
                     # need to re-set the ini file, in case something got unmapped
-                    #self.IMatchIniToGame()
                 elif kmID == kKMDefaultsBtn:
                     self.ISetDefaultKeyMappings()
-                    self.IShowMappedKeys(KeyMapDlg.dialog,gKM1ControlCodesRow1,gKM1ControlCodesRow2)
+                    self.IShowMappedKeys(KeyMapDlg.dialog, gKM1ControlCodesRow1, gKM1ControlCodesRow2)
                 elif kmID == kKMGoBackBtn:
                     KeyMapDlg.dialog.hide()
-                    AdvGameSettingDlg.dialog.show()                    
+                    AdvGameSettingDlg.dialog.show()
             elif event == kExitMode:
                 KeyMapDlg.dialog.hide()
 
@@ -807,7 +812,7 @@ class xOptionsMenu(ptModifier):
             global gClickToTurn
 
             if event == kDialogLoaded:
-                print "Yes, the Advanced Settings dialog loaded."
+                PtDebugPrint("Yes, the Advanced Settings dialog loaded.")
             elif event == kShowHide:
                 if control.isEnabled():
                     self.IRefreshAdvSettings()
@@ -838,7 +843,7 @@ class xOptionsMenu(ptModifier):
 
             elif event == kAction or event == kValueChanged:
                 gsID = control.getTagID()
-                print "gsID = " + str(gsID)
+                PtDebugPrint("gsID = %s" % (str(gsID)))
 
                 if gsID == kOptionsKeyMapBtn:
                     self.setNewChronicleVar("AdvSettings", (gMouseSensitivity + " " + gSmoothCam + " " + gMouseInvert + " " + gWalkAndPan + " " + gStayInFirstPerson + " " + gClickToTurn))
@@ -963,11 +968,11 @@ class xOptionsMenu(ptModifier):
                     if gLiveMovie:
                         gLiveMovie.pause()
                     gPreviewStarted = 0
-                    PtFadeOut(kTrailerFadeOutSeconds,1)
+                    PtFadeOut(kTrailerFadeOutSeconds, 1)
                     PtAtTimeCallback(self.key, kTrailerFadeOutSeconds, kTrailerFadeOutID)
             elif event == kExitMode:
                 gPreviewStarted = 0
-                PtFadeOut(kTrailerFadeOutSeconds,1)
+                PtFadeOut(kTrailerFadeOutSeconds, 1)
                 PtAtTimeCallback(self.key, kTrailerFadeOutSeconds, kTrailerFadeOutID)
 
 ###############################################
@@ -977,28 +982,28 @@ class xOptionsMenu(ptModifier):
 ###############################################
         elif id == ResetWarnDlg.id:
             if event == kDialogLoaded:
-                print "Yes, the ResetWarn Dialog loaded."
+                PtDebugPrint("Yes, the ResetWarn Dialog loaded.")
                 pass
             elif event == kShowHide:
-                print "event = kShowHide = ", kShowHide
-                pass                
+                PtDebugPrint("event = kShowHide = ", kShowHide)
+                pass
             elif event == kAction or event == kValueChanged:
                 # test to see which control had the event
                 warnID = control.getTagID()
-                print "warnID = ",warnID
+                PtDebugPrint("warnID = ", warnID)
                 if warnID == kResetWarningYes:
-                    print "I need to shut down Plasma now."
+                    PtDebugPrint("I need to shut down Plasma now.")
                     self.WriteVideoControls()
                     PtConsole("App.Quit")
                 elif warnID == kResetWarningNo:
-                    print "close the dialog now."
+                    PtDebugPrint("close the dialog now.")
                     ResetWarnDlg.dialog.hide()
                     if self.goingToCalibration:
-                        PtLoadDialog("CalibrationGUI",self.key)
+                        PtLoadDialog("CalibrationGUI", self.key)
                         CalibrateDlg.dialog.show()
                         self.goingToCalibration = 0
                     else:
-                        GraphicsSettingsDlg.dialog.show()                
+                        GraphicsSettingsDlg.dialog.show()
 
 ###############################################
 ##
@@ -1006,10 +1011,8 @@ class xOptionsMenu(ptModifier):
 ##
 ###############################################
         elif id == NavigationDlg.id:
-            #~ print "navigation event = ", event
-            #~ print "kShowHide = ",kShowHide, " kAction = ",kAction, " kValueChanged = ", kValueChanged
             if event == kDialogLoaded:
-                print "Yes, the Navigation dialog loaded."
+                PtDebugPrint("Yes, the Navigation dialog loaded.")
                 pass
 
             elif event == kShowHide:
@@ -1027,34 +1030,34 @@ class xOptionsMenu(ptModifier):
 
             elif event == kAction or event == kValueChanged:
                 NavigationID = control.getTagID()
-                print "NavigationID = ", NavigationID                
+                PtDebugPrint("NavigationID = ", NavigationID)
                 if NavigationID == kKMOkBtn:
                     NavigationDlg.dialog.hide()
                 elif NavigationID == kKMGoBackBtn:
                     NavigationDlg.dialog.hide()
                     OptionsMenuDlg.dialog.show()
                 elif NavigationID == kKMNextPreviousBtn:
-                    NavigationDlg.dialog.hide()  
+                    NavigationDlg.dialog.hide()
                     AdvGameSettingDlg.dialog.show()
                 elif NavigationID == kNormNoviceRGID:
                     if control.getValue():
-                        print "CTT on"
+                        PtDebugPrint("CTT on")
                         PtSetClickToTurn(1)
                         gClickToTurn = "1"
                         AdvSettingsString = self.getChronicleVar("AdvSettings")
 
-                        if AdvSettingsString == None:
+                        if AdvSettingsString is None:
                             # create settings
                             self.setNewChronicleVar("AdvSettings", "150 0 0 0 0 1")
                         else:
                             self.setNewChronicleVar("AdvSettings", (AdvSettingsString[0:-1] + "1"))
                     else:
-                        print "CTT off"
+                        PtDebugPrint("CTT off")
                         PtSetClickToTurn(0)
                         gClickToTurn = "0"
                         AdvSettingsString = self.getChronicleVar("AdvSettings")
 
-                        if AdvSettingsString == None:
+                        if AdvSettingsString is None:
                             # create settings
                             self.setNewChronicleVar("AdvSettings", "150 0 0 0 0 0")
                         else:
@@ -1072,23 +1075,23 @@ class xOptionsMenu(ptModifier):
 
                     # buttons localized
                     # Temporary HACK - These controls lack TagIDs in the 902 PRPs, so we're going to call them up by index instead.
-                    textField = ptGUIControlTextBox(GraphicsSettingsDlg.dialog.getControlFromIndex(3)) # (kOptionsGoBackText) GSGoBackBtnText_5
+                    textField = ptGUIControlTextBox(GraphicsSettingsDlg.dialog.getControlFromIndex(3))  # (kOptionsGoBackText) GSGoBackBtnText_5
                     textField.setStringW(PtGetLocalizedString("OptionsMenu.Main.GoBack"))
-                    textField = ptGUIControlTextBox(GraphicsSettingsDlg.dialog.getControlFromIndex(4)) # (kOptionsOkText) GSOkBtnText_6
+                    textField = ptGUIControlTextBox(GraphicsSettingsDlg.dialog.getControlFromIndex(4))  # (kOptionsOkText) GSOkBtnText_6
                     textField.setStringW(PtGetLocalizedString("OptionsMenu.Main.Resume"))
-                    textField = ptGUIControlTextBox(GraphicsSettingsDlg.dialog.getControlFromIndex(6)) # (kOptionsDefaultsText) GSDefaultsBtnText_2
+                    textField = ptGUIControlTextBox(GraphicsSettingsDlg.dialog.getControlFromIndex(6))  # (kOptionsDefaultsText) GSDefaultsBtnText_2
                     textField.setStringW(PtGetLocalizedString("OptionsMenu.Main.Defaults"))
 
                     self.restartWarn = 0
-                    
+
             elif (event == kAction or event == kValueChanged):
                 if control:
                     tagID = control.getTagID()
                 else:
                     tagID = 0
-                    
+
                 if tagID in [kKMOkBtn, kKMGoBackBtn, kOptionsCalibrationBtn]:
-                    print "self.restartWarn =", self.restartWarn
+                    PtDebugPrint("self.restartWarn =", self.restartWarn)
                     if self.restartWarn:
                         GraphicsSettingsDlg.dialog.hide()
                         ResetWarnDlg.dialog.show()
@@ -1096,7 +1099,7 @@ class xOptionsMenu(ptModifier):
                             self.restartWarn = 0
                     else:
                         self.WriteVideoControls(1)
-                
+
                 if tagID == kKMOkBtn:
                     GraphicsSettingsDlg.dialog.hide()
 
@@ -1110,7 +1113,7 @@ class xOptionsMenu(ptModifier):
                         self.restartWarn = 0
                     else:
                         # make sure that we get the events (ACA may have stole them)
-                        PtLoadDialog("CalibrationGUI",self.key)
+                        PtLoadDialog("CalibrationGUI", self.key)
                         GraphicsSettingsDlg.dialog.hide()
                         CalibrateDlg.dialog.show()
 
@@ -1156,13 +1159,13 @@ class xOptionsMenu(ptModifier):
                         respDisableItems.run(self.key, state="disableGamma")
                         ptGUIControlKnob(GraphicsSettingsDlg.dialog.getControlFromTag(kGSDisplayGammaSlider)).disable()
                         ptGUIControlTextBox(GraphicsSettingsDlg.dialog.getControlFromTag(kGSDispGamaText)).setForeColor(ptColor(0.839, 0.785, 0.695, 1))
-                    
+
                     vidResList = self.GetVideoResList()
                     vidRes = ptGUIControlTextBox(GraphicsSettingsDlg.dialog.getControlFromTag(kVideoResTextTag))
                     if not self.GetVidResField() in vidResList:
                         vidRes.setString("800x600 [4:3]")
                         videoField.setValue(0.0)
-                    
+
                     numRes = len(vidResList)
                     if numRes == 1:
                         videoField.setValue(0)
@@ -1190,11 +1193,11 @@ class xOptionsMenu(ptModifier):
 ##  AudioSettings dialog processing
 ##
 ###############################################
-                    
+
         elif id == AudioSettingsDlg.id:
             if event == kDialogLoaded:
-                print "Yes, the Audio dialog loaded."
-                
+                PtDebugPrint("Yes, the Audio dialog loaded.")
+
             elif event == kShowHide:
                 # reset the edit text lines
                 if control.isEnabled():
@@ -1229,10 +1232,10 @@ class xOptionsMenu(ptModifier):
                         audio = ptAudioControl()
                         audioField = ptGUIControlKnob(AudioSettingsDlg.dialog.getControlFromTag(kAudioModeID))
                         audModeNum = audio.getNumAudioDevices() - 1
-                        curSelection = round(audioField.getValue() * audModeNum) 
+                        curSelection = round(audioField.getValue() * audModeNum)
                         intCurSelection = int(curSelection)
 
-                        #Enable EAX Support
+                        # Enable EAX Support
                         EAXcheckbox = ptGUIControlCheckBox(AudioSettingsDlg.dialog.getControlFromTag(kAudioModeCBID03))
                         audio.useEAXAcceleration(EAXcheckbox.isChecked())
 
@@ -1254,33 +1257,33 @@ class xOptionsMenu(ptModifier):
 
                 if tagID == kAudioSoundEffectsVolumeSliderTag:
                     audio = ptAudioControl()
-                    audio.setSoundFXVolume( control.getValue() )
-                    audio.setGUIVolume( control.getValue() )
+                    audio.setSoundFXVolume(control.getValue())
+                    audio.setGUIVolume(control.getValue())
 
                 elif tagID == kAudioNPCVoiceSlider:
                     audio = ptAudioControl()
-                    audio.setNPCVoiceVolume( control.getValue() )
+                    audio.setNPCVoiceVolume(control.getValue())
 
                 elif tagID == kGSMicLevelSlider:
                     audio = ptAudioControl()
-                    audio.setMicLevel( control.getValue() )
+                    audio.setMicLevel(control.getValue())
 
                 elif tagID == kGSEnableVoiceChat:
                     audio = ptAudioControl()
-                    audio.enableVoiceRecording( control.isChecked() )
-                    audio.enableVoiceChat( control.isChecked() )
+                    audio.enableVoiceRecording(control.isChecked())
+                    audio.enableVoiceChat(control.isChecked())
 
                 elif tagID == kAudioMusicVolumeSliderTag:
                     audio = ptAudioControl()
-                    audio.setMusicVolume( control.getValue() )
+                    audio.setMusicVolume(control.getValue())
 
                 elif tagID == kAudioAmbienceVolumeSliderTag:
                     audio = ptAudioControl()
-                    audio.setAmbienceVolume( control.getValue() )
+                    audio.setAmbienceVolume(control.getValue())
 
                 elif tagID == kAudioNumberOfSoundsSliderTag:
                     audio = ptAudioControl()
-                    audio.setPriorityCutoff( int(control.getValue()) )
+                    audio.setPriorityCutoff(int(control.getValue()))
                     control.setValue(int(control.getValue()))
 
                 elif tagID == kAudioMuteCheckBoxTag:
@@ -1293,7 +1296,6 @@ class xOptionsMenu(ptModifier):
                 elif tagID == kAudioModeID:
                     self.restartAudio = 1
                     audio = ptAudioControl()
-                    #~ print "Number of Audio Devices: %d" % (audio.getNumAudioDevices())
                     audModeNum = audio.getNumAudioDevices() - 1
                     curSelection = round(control.getValue() * audModeNum)
                     intCurSelection = int(curSelection)
@@ -1306,20 +1308,20 @@ class xOptionsMenu(ptModifier):
                     if curText != audio.getAudioDeviceName(intCurSelection):
                         audioModeCtrlTextBox.setString(audioDeviceName)
 
-                    if audioDeviceName != prevAudioDeviceName:  #Only update the EAX checkbox when the mouse has been let up...
-                        print "Audio Device Name changed!"
+                    if audioDeviceName != prevAudioDeviceName:  # Only update the EAX checkbox when the mouse has been let up...
+                        PtDebugPrint("Audio Device Name changed!")
                         prevAudioDeviceName = audioDeviceName
                         EAXcheckbox = ptGUIControlCheckBox(AudioSettingsDlg.dialog.getControlFromTag(kAudioModeCBID03))
                         if not audio.supportsEAX(audioDeviceName):
-                            print "Disabling EAX checkbox"
-                            #Disable EAX checkbox
+                            PtDebugPrint("Disabling EAX checkbox")
+                            # Disable EAX checkbox
                             EAXcheckbox.disable()
                             respDisableItems.run(self.key, state="disableEAX")
                             EAXcheckbox.setChecked(false)
                             ptGUIControlTextBox(AudioSettingsDlg.dialog.getControlFromTag(kAudioModeEAXTextID)).setForeColor(ptColor(0.839, 0.785, 0.695, 1))
                         else:
-                            print "Enabling EAX checkbox"
-                            #We don't need to automatically check the EAX box, but do enable the control
+                            PtDebugPrint("Enabling EAX checkbox")
+                            # We don't need to automatically check the EAX box, but do enable the control
                             EAXcheckbox.enable()
                             respDisableItems.run(self.key, state="enableEAX")
                             EAXcheckbox.setChecked(audio.isUsingEAXAcceleration())
@@ -1329,7 +1331,7 @@ class xOptionsMenu(ptModifier):
                     self.restartAudio = 1
                     pass
 
-    def OnTimer(self,id):
+    def OnTimer(self, id):
         global gLiveMovie
         global gWasMuted
         global gPreviewStarted
@@ -1344,11 +1346,11 @@ class xOptionsMenu(ptModifier):
                 # just continue processing
             except:
                 # no movie... just go back to where they were
-                PtDebugPrint("xLiveTrailer - no intro movie!!!",level=kDebugDumpLevel)
-                PtFadeOut(kTrailerFadeOutSeconds,1)
-                PtFadeIn(kOptionFadeInSeconds,0)
+                PtDebugPrint("xLiveTrailer - no intro movie!!!", level=kDebugDumpLevel)
+                PtFadeOut(kTrailerFadeOutSeconds, 1)
+                PtFadeIn(kOptionFadeInSeconds, 0)
                 return
-            PtDebugPrint("xLiveTrailer - start showing movie",level=kDebugDumpLevel)
+            PtDebugPrint("xLiveTrailer - start showing movie", level=kDebugDumpLevel)
             OptionsMenuDlg.dialog.hide()
             PtShowDialog("IntroBahroBgGUI")
             TrailerDlg.dialog.show()
@@ -1363,25 +1365,24 @@ class xOptionsMenu(ptModifier):
             else:
                 gWasMuted = 0
                 audio.muteAll()
-            PtFadeIn(kTrailerInSeconds,0)
+            PtFadeIn(kTrailerInSeconds, 0)
             PtAtTimeCallback(self.key, kTrailerInSeconds, kTrailerFadeInID)
             if PtIsDemoMode():
-                gLiveMovie = ptMoviePlayer(kDemoMovieName,self.key)
+                gLiveMovie = ptMoviePlayer(kDemoMovieName, self.key)
             else:
-                gLiveMovie = ptMoviePlayer(kLiveMovieName,self.key)
+                gLiveMovie = ptMoviePlayer(kLiveMovieName, self.key)
             gLiveMovie.playPaused()
         elif id == kTrailerFadeInID:
-            PtDebugPrint("xLiveTrailer - roll the movie",level=kDebugDumpLevel)
-            if type(gLiveMovie) != type(None):
+            PtDebugPrint("xLiveTrailer - roll the movie", level=kDebugDumpLevel)
+            if gLiveMovie is not None:
                 gLiveMovie.resume()
-            #gLiveMovie.play()
         elif id == kTrailerFadeOutID:
-            PtDebugPrint("xLiveTrailer - done",level=kDebugDumpLevel)
+            PtDebugPrint("xLiveTrailer - done", level=kDebugDumpLevel)
             gPreviewStarted = 0
             TrailerDlg.dialog.hide()
             PtHideDialog("IntroBahroBgGUI")
             if gLiveMovie:
-                PtDebugPrint("xLiveTrailer - but stop the movie first",level=kDebugDumpLevel)
+                PtDebugPrint("xLiveTrailer - but stop the movie first", level=kDebugDumpLevel)
                 gLiveMovie.stop()
                 gLiveMovie = None
             # start rendering the scene again
@@ -1392,15 +1393,15 @@ class xOptionsMenu(ptModifier):
                 audio = ptAudioControl()
                 audio.unmuteAll()
             OptionsMenuDlg.dialog.show()
-            PtFadeIn(kOptionFadeInSeconds,0)
+            PtFadeIn(kOptionFadeInSeconds, 0)
         elif id == 999:
             GammaVal = self.getChronicleVar("gamma")
             PtSetGamma2(float(GammaVal))
 
-    def OnMovieEvent(self,movieName,reason):
-        PtDebugPrint("xLiveTrailer: got movie done event on %s, reason=%d" % (movieName,reason),level=kDebugDumpLevel)
+    def OnMovieEvent(self, movieName, reason):
+        PtDebugPrint("xLiveTrailer: got movie done event on %s, reason=%d" % (movieName, reason), level=kDebugDumpLevel)
         if gLiveMovie:
-            PtFadeOut(kTrailerFadeOutSeconds,1)
+            PtFadeOut(kTrailerFadeOutSeconds, 1)
             PtAtTimeCallback(self.key, kTrailerFadeOutSeconds, kTrailerFadeOutID)
 
     def ResetVideoToDefault(self):
@@ -1430,7 +1431,7 @@ class xOptionsMenu(ptModifier):
         videoField = ptGUIControlCheckBox(GraphicsSettingsDlg.dialog.getControlFromTag(kVideoVerticalSyncCheckTag))
         videoField.setChecked(defaults[9])
 
-        vidRes =  str(defaults[0]) + "x" + str(defaults[1])
+        vidRes = str(defaults[0]) + "x" + str(defaults[1])
         videoField = ptGUIControlKnob(GraphicsSettingsDlg.dialog.getControlFromTag(kVideoResSliderTag))
 
         vidResList = self.GetVideoResList()
@@ -1441,13 +1442,13 @@ class xOptionsMenu(ptModifier):
 
         if not vidRes in vidResList:
             vidRes = vidResList[numRes-1]
-        
+
         for res in range(numRes):
             if vidRes == vidResList[res]:
                 if numRes > 1:
-                    videoField.setValue( float(res) / (numRes - 1))
+                    videoField.setValue(float(res) / (numRes - 1))
                 else:
-                    videoField.setValue( 0 )
+                    videoField.setValue(0)
         self.SetVidResField(vidRes)
 
     def InitVideoControlsGUI(self):
@@ -1478,13 +1479,13 @@ class xOptionsMenu(ptModifier):
             windowed.setChecked(dowindow)
 
         videoField = ptGUIControlKnob(GraphicsSettingsDlg.dialog.getControlFromTag(kVideoFilteringSliderTag))
-        videoField.setValue( kVideoAnisoFiltering[str(opts[xIniDisplay.kGraphicsAnisotropicLevel])] )
+        videoField.setValue(kVideoAnisoFiltering[str(opts[xIniDisplay.kGraphicsAnisotropicLevel])])
 
         videoField = ptGUIControlKnob(GraphicsSettingsDlg.dialog.getControlFromTag(kVideoAntiAliasingSliderTag))
-        videoField.setValue( kVideoAntiAliasing[str(opts[xIniDisplay.kGraphicsAntiAliasLevel])] )
+        videoField.setValue(kVideoAntiAliasing[str(opts[xIniDisplay.kGraphicsAntiAliasLevel])])
 
         videoField = ptGUIControlKnob(GraphicsSettingsDlg.dialog.getControlFromTag(kVideoShadowQualitySliderTag))
-        videoField.setValue( float(opts[xIniDisplay.kGraphicsShadowQuality]) )
+        videoField.setValue(float(opts[xIniDisplay.kGraphicsShadowQuality]))
 
         videoField = ptGUIControlCheckBox(GraphicsSettingsDlg.dialog.getControlFromTag(kVideoVerticalSyncCheckTag))
         if opts[xIniDisplay.kGraphicsVerticalSync] == "true":
@@ -1507,9 +1508,9 @@ class xOptionsMenu(ptModifier):
         for res in range(numRes):
             if vidRes == vidResList[res]:
                 if numRes > 1:
-                    videoField.setValue( float(res) / (numRes - 1))
+                    videoField.setValue(float(res) / (numRes - 1))
                 else:
-                    videoField.setValue( 0 )
+                    videoField.setValue(0)
                     videoField.disable()
                     respDisableItems.run(self.key, state="disableRes")
                     videoResField.setForeColor(ptColor(0.839, 0.785, 0.695, 1))
@@ -1526,34 +1527,34 @@ class xOptionsMenu(ptModifier):
             respDisableItems.run(self.key, state="enableGamma")
             gammaField.enable()
             ptGUIControlTextBox(GraphicsSettingsDlg.dialog.getControlFromTag(kGSDispGamaText)).setForeColor(ptColor(1, 1, 1, 1))
-            if GammaVal == None:
-                gammaField.setValue( 0 )
+            if GammaVal is None:
+                gammaField.setValue(0)
             else:
-                gammaField.setValue( float(GammaVal) )
+                gammaField.setValue(float(GammaVal))
 
     def _AspectRatio(self, w, h):
         """Returns the appropriate aspect ratio for the given resolution"""
         ratios = ((5, 4), (4, 3), (3, 2), (16, 10), (5, 3), (16, 9), (16, 9.375),)
-        w = float(w) # comes in as string, want float (not int) for division
+        w = float(w)  # comes in as string, want float (not int) for division
         h = float(h)
         for r in ratios:
             # resolution is within 1 pixel wiggle room in any direction from the exact aspect ratio (needed to recognize 1280x854 as 3:2)
             if (w+1)/(h-1) >= float(r[0])/float(r[1]) >= (w-1)/(h+1):
                 return " [%i:%i]" % (r[0], r[1])
         return ""
-    
+
     def GetVidResField(self):
         videoResField = ptGUIControlTextBox(GraphicsSettingsDlg.dialog.getControlFromTag(kVideoResTextTag))
         value = videoResField.getString().split(' ')
         return value[0]
-    
+
     def SetVidResField(self, value):
         videoResField = ptGUIControlTextBox(GraphicsSettingsDlg.dialog.getControlFromTag(kVideoResTextTag))
         w, h = value.split("x")
         label = value + self._AspectRatio(w, h)
         videoResField.setString(label)
 
-    def WriteVideoControls(self, setMode = 0):
+    def WriteVideoControls(self, setMode=0):
         videoField = ptGUIControlTextBox(GraphicsSettingsDlg.dialog.getControlFromTag(kVideoResTextTag))
         width, height = videoField.getString().split("x")
         try:
@@ -1587,7 +1588,7 @@ class xOptionsMenu(ptModifier):
         for key in kVideoAntiAliasing.keys():
             if kVideoAntiAliasing[key] == aaVal:
                 antialias = int(key)
-        
+
         videoField = ptGUIControlKnob(GraphicsSettingsDlg.dialog.getControlFromTag(kVideoFilteringSliderTag))
         afVal = int(videoField.getValue())
         aniso = 0
@@ -1613,7 +1614,7 @@ class xOptionsMenu(ptModifier):
 
         if setMode:
             PtSetGraphicsOptions(width, height, colordepth, windowed == "true", antialias, aniso, vsync)
-            print "SETTING GAMMA"
+            PtDebugPrint("SETTING GAMMA")
             PtSetGamma2(gamma)
             PtSetShadowVisDistance(shadow_quality)
 
@@ -1638,56 +1639,53 @@ class xOptionsMenu(ptModifier):
     def WriteAudioControls(self):
         audio = ptAudioControl()
 
-        xIniAudio.SetSoundPriority( audio.getPriorityCutoff() )
-        xIniAudio.SetSoundFXVolume( audio.getSoundFXVolume() )
-        xIniAudio.SetGUIVolume( audio.getSoundFXVolume() )
-        xIniAudio.SetMusicVolume( audio.getMusicVolume() )
-        xIniAudio.SetAmbienceVolume( audio.getAmbienceVolume() )
-        xIniAudio.SetNPCVoiceVolume( audio.getNPCVoiceVolume() )
-        xIniAudio.SetMute( audio.isMuted() )
+        xIniAudio.SetSoundPriority(audio.getPriorityCutoff())
+        xIniAudio.SetSoundFXVolume(audio.getSoundFXVolume())
+        xIniAudio.SetGUIVolume(audio.getSoundFXVolume())
+        xIniAudio.SetMusicVolume(audio.getMusicVolume())
+        xIniAudio.SetAmbienceVolume(audio.getAmbienceVolume())
+        xIniAudio.SetNPCVoiceVolume(audio.getNPCVoiceVolume())
+        xIniAudio.SetMute(audio.isMuted())
 
         EAXcheckbox = ptGUIControlCheckBox(AudioSettingsDlg.dialog.getControlFromTag(kAudioModeCBID03))
 
-        xIniAudio.SetAudioMode( true, audio.getDeviceName(), EAXcheckbox.isChecked() )
-        #xIniAudio.SetAudioMode( audio.isEnabled(), audio.getDeviceName(), EAXcheckbox.isChecked() )
-        #xIniAudio.SetAudioMode( audio.isEnabled(), audio.getDeviceName(), audio.isUsingEAXAcceleration() )
-        #xIniAudio.SetMicLevel( audio.getMicLevel() )
-        xIniAudio.SetVoiceRecording( audio.isVoiceRecordingEnabled() )
-        
+        xIniAudio.SetAudioMode(true, audio.getDeviceName(), EAXcheckbox.isChecked())
+        xIniAudio.SetVoiceRecording(audio.isVoiceRecordingEnabled())
+
         xIniAudio.WriteIni()
 
     def InitAudioControlsGUI(self):
         global prevAudioDeviceName
-        
+
         xIniAudio.ReadIni()
         audio = ptAudioControl()
 
         audioField = ptGUIControlKnob(AudioSettingsDlg.dialog.getControlFromTag(kAudioNumberOfSoundsSliderTag))
-        audioField.setValue( audio.getPriorityCutoff() )
-    
+        audioField.setValue(audio.getPriorityCutoff())
+
         audioField = ptGUIControlKnob(AudioSettingsDlg.dialog.getControlFromTag(kAudioSoundEffectsVolumeSliderTag))
-        audioField.setValue( audio.getSoundFXVolume() )
+        audioField.setValue(audio.getSoundFXVolume())
 
         audioField = ptGUIControlKnob(AudioSettingsDlg.dialog.getControlFromTag(kAudioMusicVolumeSliderTag))
-        audioField.setValue( audio.getMusicVolume() )
+        audioField.setValue(audio.getMusicVolume())
 
         audioField = ptGUIControlKnob(AudioSettingsDlg.dialog.getControlFromTag(kAudioAmbienceVolumeSliderTag))
-        audioField.setValue( audio.getAmbienceVolume() )
+        audioField.setValue(audio.getAmbienceVolume())
 
         audioField = ptGUIControlKnob(AudioSettingsDlg.dialog.getControlFromTag(kAudioNPCVoiceSlider))
-        audioField.setValue( audio.getNPCVoiceVolume() )
+        audioField.setValue(audio.getNPCVoiceVolume())
 
         audioField = ptGUIControlKnob(AudioSettingsDlg.dialog.getControlFromTag(kGSMicLevelSlider))
-        audioField.setValue( audio.getMicLevel() )
+        audioField.setValue(audio.getMicLevel())
 
         audioField = ptGUIControlCheckBox(AudioSettingsDlg.dialog.getControlFromTag(kGSEnableVoiceChat))
-        audioField.setChecked( audio.isVoiceRecordingEnabled() )
+        audioField.setChecked(audio.isVoiceRecordingEnabled())
 
         audioField = ptGUIControlCheckBox(AudioSettingsDlg.dialog.getControlFromTag(kAudioMuteCheckBoxTag))
-        audioField.setChecked( audio.isMuted() )
+        audioField.setChecked(audio.isMuted())
 
         EAXcheckbox = ptGUIControlCheckBox(AudioSettingsDlg.dialog.getControlFromTag(kAudioModeCBID03))
-        EAXcheckbox.setChecked( audio.isUsingEAXAcceleration() )
+        EAXcheckbox.setChecked(audio.isUsingEAXAcceleration())
         EAXcheckbox.enable()
         respDisableItems.run(self.key, state="enableEAX")
 
@@ -1716,65 +1714,49 @@ class xOptionsMenu(ptModifier):
             audioModeCtrlTextBox = ptGUIControlTextBox(AudioSettingsDlg.dialog.getControlFromTag(kAudioModeTextID))
             audioModeCtrlTextBox.setString("None")
             audioModeCtrlTextBox.setForeColor(ptColor(0.839, 0.785, 0.695, 1))
-                
+
     def setNewChronicleVar(self, chronicleVar, value):
         kModuleName = "Personal"
         kChronicleVarType = 0
         vault = ptVault()
-        if type(vault) != type(None):
+        if vault:
             entry = vault.findChronicleEntry(chronicleVar)
-            if type(entry) == type(None):
+            if entry is None:
                 # not found... add current level chronicle
-                vault.addChronicleEntry(chronicleVar,kChronicleVarType,str(value))
-                print "%s:\tentered new chronicle counter %s" % (kModuleName,chronicleVar)
+                vault.addChronicleEntry(chronicleVar, kChronicleVarType, str(value))
+                PtDebugPrint("%s:\tentered new chronicle counter %s" % (kModuleName, chronicleVar))
             else:
                 entry.chronicleSetValue(str(value))
                 entry.save()
-                print "%s:\tyour current value for %s is %s" % (kModuleName,chronicleVar,entry.chronicleGetValue())
+                PtDebugPrint("%s:\tyour current value for %s is %s" % (kModuleName, chronicleVar, entry.chronicleGetValue()))
         else:
-            PtDebugPrint("%s:\tERROR trying to access vault -- can't update %s variable in chronicle." % (kModuleName,chronicleVar))
+            PtDebugPrint("%s:\tERROR trying to access vault -- can't update %s variable in chronicle." % (kModuleName, chronicleVar))
 
     def getChronicleVar(self, chronicleVar):
         kModuleName = "Personal"
         kChronicleVarType = 0
         vault = ptVault()
-        if type(vault) != type(None):
+        if vault:
             entry = vault.findChronicleEntry(chronicleVar)
-            print "getChronicleVar.chronicleVar: " + chronicleVar
-            #print "getChronicleVar.Entry: " , entry
-            if type(entry) == type(None):
-                # not found... add current level chronicle
-                #vault.addChronicleEntry(chronicleVar,kChronicleVarType,"%d" %(0))
-                #PtDebugPrint("%s:\tentered new chronicle counter %s" % (kModuleName,chronicleVar))
+            PtDebugPrint("getChronicleVar.chronicleVar: " + (chronicleVar))
+            if entry is None:
                 return None
             else:
                 value = entry.chronicleGetValue()
-                print "getChronicleVar(): " + chronicleVar + " = " + value
+                PtDebugPrint("getChronicleVar(): " + chronicleVar + " = " + value)
                 return value
         else:
-            PtDebugPrint("%s:\tERROR trying to access vault -- can't retrieve %s variable in chronicle." % (kModuleName,kChronicleVarName))
-        
+            PtDebugPrint("%s:\tERROR trying to access vault -- can't retrieve %s variable in chronicle." % (kModuleName, kChronicleVarName))
+
     def IRefreshHelpSettings(self):
         clickToTurn = ptGUIControlRadioGroup(NavigationDlg.dialog.getControlFromTag(kNormNoviceRGID))
         clickToTurn.setValue(PtIsClickToTurn())
 
-
     def IRefreshAdvSettings(self):
         "refresh the volume settings to the current settings"
-        # shadows
-        
-        # We'll have to do this later, since it's no longer part of the AdvDisplaySettings Dialog
-        #~ shadowDistKnob = ptGUIControlValue(AdvGameSettingDlg.dialog.getControlFromTag(kGSDisplayShadowDistSlider))
-        #~ setting = PtGetShadowVisDistance()
-        #~ shadowDistKnob.setValue(setting*10.0)
-        
-        #Will have to wire this into Audio panel later
-        #~ soundPriKnob = ptGUIControlValue(AdvGameSettingDlg.dialog.getControlFromTag(kGSSoundPrioritySlider))
-        #~ audio = ptAudioControl()
-        #~ soundPriKnob.setValue(audio.getPriorityCutoff()*(11.0/10.0))
-        
+
         mouseSensKnob = ptGUIControlValue(AdvGameSettingDlg.dialog.getControlFromTag(kGSMouseTurnSensSlider))
-        print "IRefreshAdvSettings: PtGetMouseTurnSensitivity() = %d" % (PtGetMouseTurnSensitivity())
+        PtDebugPrint("IRefreshAdvSettings: PtGetMouseTurnSensitivity() = %d" % (PtGetMouseTurnSensitivity()))
         sensitive = PtGetMouseTurnSensitivity() - 50.0
         if sensitive <= 0.0:
             mouseSensKnob.setValue(0.0)
@@ -1789,7 +1771,7 @@ class xOptionsMenu(ptModifier):
                     mouseSensKnob.setValue(5.0)
                 else:
                     mouseSensKnob.setValue(sensitive/20.0)
-                            
+
         pukeCamCheckbox = ptGUIControlCheckBox(AdvGameSettingDlg.dialog.getControlFromTag(kGSPukeCamCheckbox))
         cam = ptCamera()
         pukeCamCheckbox.setChecked(cam.isSmootherCam())
@@ -1801,7 +1783,6 @@ class xOptionsMenu(ptModifier):
         stayInFirstCheckbox.setChecked(cam.isStayInFirstPerson())
         clickToTurnCheckbox = ptGUIControlCheckBox(AdvGameSettingDlg.dialog.getControlFromTag(kGSClickToTurn))
         clickToTurnCheckbox.setChecked(PtIsClickToTurn())
-
 
     def LoadAdvSettings(self):
         global gMouseSensitivity
@@ -1815,10 +1796,10 @@ class xOptionsMenu(ptModifier):
         AdvSettingsString = self.getChronicleVar("AdvSettings")
         AdvSettingsArray = []
 
-        if AdvSettingsString == None:
+        if AdvSettingsString is None:
             # create settings
             self.setNewChronicleVar("AdvSettings", "150 0 0 0 0 0")
-            AdvSettingsArray = ["150","0","0","0","0","0"]
+            AdvSettingsArray = ["150", "0", "0", "0", "0", "0"]
         else:
             AdvSettingsArray = AdvSettingsString.split()
 
@@ -1859,59 +1840,60 @@ class xOptionsMenu(ptModifier):
         counter = 0
         # set the key binds back to the saved
         for control_code in defaultControlCodeBindsOrdered:
-            if type(control_code) == type(""):
+            if type(control_code) is str:
                 key1 = KeyMapArray[counter]
-                print "Binding " + key1 + " to " + control_code
-                km.bindKeyToConsoleCommand(key1,control_code)
+                PtDebugPrint("Binding " + key1 + " to " + control_code)
+                km.bindKeyToConsoleCommand(key1, control_code)
             else:
                 controlStr = km.convertControlCodeToString(control_code)
                 SubArray = KeyMapArray[counter].split("$")
                 key1 = SubArray[0]
                 key2 = SubArray[1]
-                print "Binding " + key1 + " & " + key2 + " to " + controlStr
-                km.bindKey(key1,key2,controlStr)
+                PtDebugPrint("Binding " + key1 + " & " + key2 + " to " + controlStr)
+                km.bindKey(key1, key2, controlStr)
             counter += 1
 
-    def IsThereACover(self,bookHtml):
+    def IsThereACover(self, bookHtml):
         # search the bookhtml string looking for a cover
         idx = bookHtml.find('<cover')
         if idx >= 0:
             return 1
         return 0
 
-    def IShowMappedKeys(self,dlg,mapRow1,mapRow2):
+    def IShowMappedKeys(self, dlg, mapRow1, mapRow2):
         km = ptKeyMap()
         for cID in mapRow1.keys():
             field = ptGUIControlEditBox(dlg.getControlFromTag(cID))
             field.setSpecialCaptureKeyMode(1)
             # set the mapping
-            controlCode,spFlag,mpFlag = mapRow1[cID]
-            if type(controlCode) != type(None) and ( ( spFlag and PtIsSinglePlayerMode() ) or ( mpFlag and not PtIsSinglePlayerMode() ) ):
+            controlCode, spFlag, mpFlag = mapRow1[cID]
+            if controlCode is not None and ((spFlag and PtIsSinglePlayerMode()) or (mpFlag and not PtIsSinglePlayerMode())):
                 # is the control code a console command?
-                if type(controlCode) == type(""):
-                    field.setLastKeyCapture(km.getBindingKeyConsole(controlCode),km.getBindingFlagsConsole(controlCode))
+                if type(controlCode) is str:
+                    field.setLastKeyCapture(km.getBindingKeyConsole(controlCode), km.getBindingFlagsConsole(controlCode))
                 # else must be a event binding
                 else:
-                    field.setLastKeyCapture(km.getBindingKey1(controlCode),km.getBindingFlags1(controlCode))
+                    field.setLastKeyCapture(km.getBindingKey1(controlCode), km.getBindingFlags1(controlCode))
             else:
                 # disable this field
                 field.hide()
                 # if the first key is disabled, then the entire line should be! which is 100 less then the first field tag ID
                 ftext = ptGUIControlTextBox(dlg.getControlFromTag(cID-100))
                 ftext.hide()
+
         for cID in mapRow2.keys():
             field = ptGUIControlEditBox(dlg.getControlFromTag(cID))
             field.setSpecialCaptureKeyMode(1)
             # set the mapping
-            controlCode,spFlag,mpFlag = mapRow2[cID]
-            if type(controlCode) != type(None) and ( ( spFlag and PtIsSinglePlayerMode() ) or ( mpFlag and not PtIsSinglePlayerMode() ) ):
+            controlCode, spFlag, mpFlag = mapRow2[cID]
+            if controlCode is not None and ((spFlag and PtIsSinglePlayerMode()) or (mpFlag and not PtIsSinglePlayerMode())):
                 # is the control code a console command?
-                if type(controlCode) == type(""):
+                if type(controlCode) is str:
                     # this shouldn't really happen!
-                    field.setLastKeyCapture(km.getBindingKeyConsole(controlCode),km.getBindingFlagsConsole(controlCode))
+                    field.setLastKeyCapture(km.getBindingKeyConsole(controlCode), km.getBindingFlagsConsole(controlCode))
                 # else must be a event binding
                 else:
-                    field.setLastKeyCapture(km.getBindingKey2(controlCode),km.getBindingFlags2(controlCode))
+                    field.setLastKeyCapture(km.getBindingKey2(controlCode), km.getBindingFlags2(controlCode))
             else:
                 # disable this field
                 field.hide()
@@ -1921,17 +1903,18 @@ class xOptionsMenu(ptModifier):
         KeyMapString = ""
         # set the key binds back to the defaults
         for control_code in defaultControlCodeBindsOrdered:
-            if type(control_code) == type(""):
+            if type(control_code) is str:
                 key1 = defaultControlCodeBinds[control_code][0]
-                km.bindKeyToConsoleCommand(key1,control_code)
+                km.bindKeyToConsoleCommand(key1, control_code)
                 KeyMapString += key1 + " "
             else:
                 controlStr = km.convertControlCodeToString(control_code)
                 key1, key2 = defaultControlCodeBinds[control_code]
-                km.bindKey(key1,key2,controlStr)
+                km.bindKey(key1, key2, controlStr)
                 KeyMapString += key1 + "$" + key2 + " "
 
         self.setNewChronicleVar("KeyMap", KeyMapString.rstrip())
+
 
 def res_comp(elem1, elem2):
     elem1w = int(elem1[:elem1.find("x")])

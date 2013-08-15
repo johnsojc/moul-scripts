@@ -52,16 +52,16 @@ from Plasma import *
 from PlasmaTypes import *
 
 strFileName = ptAttribString(1, "File name")
-intQuality = ptAttribInt(2,"JPEG Quality", default=75)
+intQuality = ptAttribInt(2, "JPEG Quality", default=75)
+
 
 class xSaveScreenCapture(ptModifier):
     def __init__(self):
         ptModifier.__init__(self)
         self.id = 5319
         self.version = 1
-        print "__init__xSaveScreenCapture v.", self.version
+        PtDebugPrint("__init__xSaveScreenCapture v.%d" % (self.version))
 
-    def OnScreenCaptureDone(self,image):
-        if type(strFileName.value) == type("") and strFileName.value != "":
+    def OnScreenCaptureDone(self, image):
+        if type(strFileName.value) is str and strFileName.value != "":
             image.saveAsJPEG(strFileName.value, intQuality.value)
-    

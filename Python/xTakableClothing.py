@@ -57,21 +57,21 @@ import xACAItems
 import xRandom
 import string
 
-stringVarName = ptAttribString(1,"Show/hide age SDL var name")
-boolShowOnTrue = ptAttribBoolean(2,"Show on true",1)
-actClickable = ptAttribActivator(3,"Clothing clickable")
-stringFClothingName = ptAttribString(4,"Female clothing name")
-stringMClothingName = ptAttribString(5,"Male clothing name")
-boolHasHairColor = ptAttribBoolean(6,"Has hair color",0)
-stringChanceSDLName = ptAttribString(7,"Chance SDL var name")
-intTint1Red = ptAttribInt(8,"Tint 1 Red",255,(0,255))
-intTint1Green = ptAttribInt(9,"Tint 1 Green",255,(0,255))
-intTint1Blue = ptAttribInt(10,"Tint 1 Blue",255,(0,255))
-intTint2Red = ptAttribInt(11,"Tint 2 Red",255,(0,255))
-intTint2Green = ptAttribInt(12,"Tint 2 Green",255,(0,255))
-intTint2Blue = ptAttribInt(13,"Tint 2 Blue",255,(0,255))
+stringVarName = ptAttribString(1, "Show/hide age SDL var name")
+boolShowOnTrue = ptAttribBoolean(2, "Show on true", 1)
+actClickable = ptAttribActivator(3, "Clothing clickable")
+stringFClothingName = ptAttribString(4, "Female clothing name")
+stringMClothingName = ptAttribString(5, "Male clothing name")
+boolHasHairColor = ptAttribBoolean(6, "Has hair color", 0)
+stringChanceSDLName = ptAttribString(7, "Chance SDL var name")
+intTint1Red = ptAttribInt(8, "Tint 1 Red", 255, (0, 255))
+intTint1Green = ptAttribInt(9, "Tint 1 Green", 255, (0, 255))
+intTint1Blue = ptAttribInt(10, "Tint 1 Blue", 255, (0, 255))
+intTint2Red = ptAttribInt(11, "Tint 2 Red", 255, (0, 255))
+intTint2Green = ptAttribInt(12, "Tint 2 Green", 255, (0, 255))
+intTint2Blue = ptAttribInt(13, "Tint 2 Blue", 255, (0, 255))
 boolStayVisible = ptAttribBoolean(14, "Stay visible after click", 0)
-boolFirstUpdate = ptAttribBoolean(15,"Eval On First Update?",0)
+boolFirstUpdate = ptAttribBoolean(15, "Eval On First Update?", 0)
 AgeStartedIn = None
 
 hairColor = ptColor().white()
@@ -87,10 +87,21 @@ baseMClothing = ""
 allFClothing = []
 allMClothing = []
 
-clothingTypeList = [kHairClothingItem,kFaceClothingItem,kShirtClothingItem,kRightHandClothingItem,kPantsClothingItem,kRightFootClothingItem]
+clothingTypeList = [kHairClothingItem,
+                    kFaceClothingItem,
+                    kShirtClothingItem,
+                    kRightHandClothingItem,
+                    kPantsClothingItem,
+                    kRightFootClothingItem]
 
-removedSets = [] # the sets we've already removed, so we don't do it multiple times
-guildSDLValues = {'MTorso_GuildBlue':1,'FTorso_GuildBlue':1,'MTorso_GuildGreen':2,'FTorso_GuildGreen':2,'MTorso_GuildRed':3,'FTorso_GuildRed':3,'MTorso_GuildYellow':4,'FTorso_GuildYellow':4,'MTorso_GuildWhite':5,'FTorso_GuildWhite':5}
+removedSets = []  # the sets we've already removed, so we don't do it multiple times
+
+guildSDLValues = {'MTorso_GuildBlue': 1, 'FTorso_GuildBlue': 1,
+                  'MTorso_GuildGreen': 2, 'FTorso_GuildGreen': 2,
+                  'MTorso_GuildRed': 3, 'FTorso_GuildRed': 3,
+                  'MTorso_GuildYellow': 4, 'FTorso_GuildYellow': 4,
+                  'MTorso_GuildWhite': 5, 'FTorso_GuildWhite': 5}
+
 
 class xTakableClothing(ptModifier):
 
@@ -108,13 +119,13 @@ class xTakableClothing(ptModifier):
         AgeStartedIn = PtGetAgeName()
         self.useChance = true
         self.shown = false
-        if not (type(stringVarName.value) == type("") and stringVarName.value != ""):
+        if not (type(stringVarName.value) is str and stringVarName.value != ""):
             PtDebugPrint("ERROR: xTakableClothing.OnFirstUpdate():\tERROR: missing SDL var name on %s" % self.sceneobject.getName())
-        if not (type(stringFClothingName.value) == type("") and stringFClothingName.value != ""):
+        if not (type(stringFClothingName.value) is str and stringFClothingName.value != ""):
             PtDebugPrint("ERROR: xTakableClothing.OnFirstUpdate():\tERROR: missing female clothing name on %s" % self.sceneobject.getName())
-        if not (type(stringMClothingName.value) == type("") and stringMClothingName.value != ""):
+        if not (type(stringMClothingName.value) is str and stringMClothingName.value != ""):
             PtDebugPrint("ERROR: xTakableClothing.OnFirstUpdate():\tERROR: missing male clothing name on %s" % self.sceneobject.getName())
-        if not (type(stringChanceSDLName.value) == type("") and stringChanceSDLName.value != ""):
+        if not (type(stringChanceSDLName.value) is str and stringChanceSDLName.value != ""):
             PtDebugPrint("DEBUG: xTakableClothing.OnFirstUpdate(): Chance SDL var name is empty, so we will not use chance rolls for showing %s" % self.sceneobject.getName())
             self.useChance = false
         allFClothing = stringFClothingName.value.split(";")
@@ -136,11 +147,11 @@ class xTakableClothing(ptModifier):
     def Initialize(self):
         if AgeStartedIn == PtGetAgeName():
             ageSDL = PtGetAgeSDL()
-            if type(stringVarName.value) == type("") and stringVarName.value != "":
+            if type(stringVarName.value) is str and stringVarName.value != "":
                 try:
-                    ageSDL.setNotify(self.key,stringVarName.value,0.0)
+                    ageSDL.setNotify(self.key, stringVarName.value, 0.0)
                     if not (ageSDL[stringVarName.value][0] ^ boolShowOnTrue.value):
-                        PtAtTimeCallback(self.key, 1, kEnableClothingTimer) # we will handle the clickables in a second, since handling them now doesn't work
+                        PtAtTimeCallback(self.key, 1, kEnableClothingTimer)  # we will handle the clickables in a second, since handling them now doesn't work
                         self.shown = true
                     else:
                         PtAtTimeCallback(self.key, 1, kDisableClothingTimer)
@@ -152,21 +163,21 @@ class xTakableClothing(ptModifier):
                 PtDebugPrint("ERROR: xTakableClothing.OnServerInitComplete():\tERROR: missing SDL var name on %s so we're disabling" % self.sceneobject.getName())
                 PtAtTimeCallback(self.key, 1, kDisableClothingTimer)
                 pass
-            
-            if self.useChance and not self.shown: # only attempt to show if it's currently hidden
+
+            if self.useChance and not self.shown:  # only attempt to show if it's currently hidden
                 try:
                     self.chanceAppearing = int(ageSDL[stringChanceSDLName.value][0])
-                    PtDebugPrint("DEBUG: xTakableClothing.OnServerInitComplete(): Chance of %s appearing is %d percent" % (self.sceneobject.getName(),self.chanceAppearing))
-                    PtAtTimeCallback(self.key, 1.5, kRollDiceTimer) # make sure this fires after our initial hide/show code runs
+                    PtDebugPrint("DEBUG: xTakableClothing.OnServerInitComplete(): Chance of %s appearing is %d percent" % (self.sceneobject.getName(), self.chanceAppearing))
+                    PtAtTimeCallback(self.key, 1.5, kRollDiceTimer)  # make sure this fires after our initial hide/show code runs
                 except:
-                    PtDebugPrint("ERROR: xTakableClothing.OnServerInitComplete():\tERROR missing SDL var %s so we will not use chance rolls on %s" % (stringChanceSDLName.value,self.sceneobject.getName()))
+                    PtDebugPrint("ERROR: xTakableClothing.OnServerInitComplete():\tERROR missing SDL var %s so we will not use chance rolls on %s" % (stringChanceSDLName.value, self.sceneobject.getName()))
                     self.useChance = false
                     self.chanceAppearing = 0
             else:
                 self.chanceAppearing = 0
         if boolHasHairColor.value:
             PtAtTimeCallback(self.key, 1, kGetHairColorTimer)
-    
+
     def OnTimer(self, id):
         global hairColor
         # are we trying to enable or disable the item?
@@ -180,13 +191,13 @@ class xTakableClothing(ptModifier):
         # we need to roll dice to show the object
         elif id == kRollDiceTimer:
             rint = xRandom.randint(1, 100)
-            PtDebugPrint("DEBUG: xTakableClothing.OnTimer(): Rolled a %d against a DC of %d on %s, success on <=" % (rint,self.chanceAppearing,self.sceneobject.getName()))
+            PtDebugPrint("DEBUG: xTakableClothing.OnTimer(): Rolled a %d against a DC of %d on %s, success on <=" % (rint, self.chanceAppearing, self.sceneobject.getName()))
             if rint <= self.chanceAppearing:
-                ageSDL = PtGetAgeSDL() # show the object
+                ageSDL = PtGetAgeSDL()  # show the object
                 ageSDL[stringVarName.value] = (boolShowOnTrue.value, )
                 self.IEnableClothing()
 
-    def OnSDLNotify(self,VARname,SDLname,playerID,tag):
+    def OnSDLNotify(self, VARname, SDLname, playerID, tag):
         if VARname != stringVarName.value:
             return
         # make sure that we are in the age we think we're in
@@ -202,7 +213,7 @@ class xTakableClothing(ptModifier):
             PtDebugPrint("ERROR: xTakableClothing.OnSDLNotify():\tERROR reading age SDL on %s so we're disabling" % self.sceneobject.getName())
             self.IDisableClothing()
             pass
-    
+
     def IItemInCloset(self):
         avatar = PtGetLocalAvatar()
         clothingList = avatar.avatar.getWardrobeClothingList()
@@ -215,7 +226,7 @@ class xTakableClothing(ptModifier):
             if clothingName == item[0]:
                 return 1
         return 0
-    
+
     def IGetHairColor(self):
         avatar = PtGetLocalAvatar()
         worn = avatar.avatar.getAvatarClothingList()
@@ -224,14 +235,14 @@ class xTakableClothing(ptModifier):
             name = item[0]
             type = item[1]
             if type == kHairClothingItem:
-                PtDebugPrint("DEBUG: xTakableClothing.IGetHairColor():  Found current hair item: "+name)
-                color = avatar.avatar.getTintClothingItem(name,1)
+                PtDebugPrint("DEBUG: xTakableClothing.IGetHairColor():  Found current hair item: " + name)
+                color = avatar.avatar.getTintClothingItem(name, 1)
                 PtDebugPrint("DEBUG: xTakableClothing.IGetHairColor():  Hair color (r,g,b) = (%d,%d,%d)" % (color.getRed(), color.getGreen(), color.getBlue()))
                 return color
         PtDebugPrint("ERROR: xTakableClothing.IGetHairColor():  Couldn't find the currently worn hair item, defaulting to white")
         return ptColor().white()
-    
-    def IGetTint(self,oneOrTwo):
+
+    def IGetTint(self, oneOrTwo):
         if oneOrTwo == 1:
             red = intTint1Red.value
             green = intTint1Green.value
@@ -244,10 +255,10 @@ class xTakableClothing(ptModifier):
         red = float(red)/float(255)
         green = float(green)/float(255.0)
         blue = float(blue)/float(255.0)
-        PtDebugPrint("Tint "+str(oneOrTwo)+" is ("+str(red)+","+str(green)+","+str(blue)+")")
-        return ptColor(red,green,blue,1)
-    
-    def IGetItem(self,name):
+        PtDebugPrint("Tint "+str(oneOrTwo) + " is ("+str(red) + "," + str(green) + "," + str(blue) + ")")
+        return ptColor(red, green, blue, 1)
+
+    def IGetItem(self, name):
         avatar = PtGetLocalAvatar()
         # we will return the item corresponding to the name passed in
         for clothingType in clothingTypeList:
@@ -262,8 +273,8 @@ class xTakableClothing(ptModifier):
             if tempAcc.name == name:
                 return tempAcc
         return None
-    
-    def IConflictsWithSet(self,name):
+
+    def IConflictsWithSet(self, name):
         # we will return the name of the set that the item conflicts with if a set is worn
         # if it doesn't conflict with any set, we return ""
         clothingItem = self.IGetItem(name)
@@ -275,24 +286,24 @@ class xTakableClothing(ptModifier):
                 if tempItem.type == clothingItem.type:
                     # this is the worn item we need to check
                     if tempItem.isClothingSet:
-                        return tempItem.clothingSet # return the set we conflict with
+                        return tempItem.clothingSet  # return the set we conflict with
         return ""
-    
-    def IRemoveOtherGuildShirt (self):
+
+    def IRemoveOtherGuildShirt(self):
         playerCNode = ptVault().getAvatarClosetFolder()
-        print "xTakableClothing: getAvatarClosetFolder Type = " + str(playerCNode.getType())
-        print "xTakableClothing: getAvatarClosetFolder Child Node Count = " + str(playerCNode.getChildNodeCount())
+        PtDebugPrint("xTakableClothing: getAvatarClosetFolder Type = " + str(playerCNode.getType()))
+        PtDebugPrint("xTakableClothing: getAvatarClosetFolder Child Node Count = " + str(playerCNode.getChildNodeCount()))
         if playerCNode.getChildNodeCount() > 0:
             playerCNodeList = playerCNode.getChildNodeRefList()
             for folderChild in playerCNodeList:
-                PtDebugPrint("xTakableClothing: looking at child node " + str(folderChild),level=kDebugDumpLevel)
+                PtDebugPrint("xTakableClothing: looking at child node " + str(folderChild), level=kDebugDumpLevel)
                 childNode = folderChild.getChild()
-                if childNode != type(None):
-                    print "xTakableClothing: Child Node Node ID"
+                if childNode is not None:
+                    PtDebugPrint("xTakableClothing: Child Node Node ID")
                     SDLNode = childNode.upcastToSDLNode()
-                    if type(SDLNode) != type(None):
+                    if SDLNode is not None:
                         rec = SDLNode.getStateDataRecord()
-                        print "xTakableClothing: getStateDataRecord().getName(): " + str(rec.getName())
+                        PtDebugPrint("xTakableClothing: getStateDataRecord().getName(): " + str(rec.getName()))
                         SDLVarList = rec.getVarList()
                         for var in SDLVarList:
                             varnode = rec.findVar(var)
@@ -300,24 +311,24 @@ class xTakableClothing(ptModifier):
                                 if varnode.getType() == 4:
                                     varKey = varnode.getKey()
                                     varName = varKey.getName()
-                                    print "xTakableClothing: VarNode.getName(): ", varName
-                                    if varName.find('Torso_GuildBlue') != -1 or varName.find('Torso_GuildGreen') != -1 or varName.find('Torso_GuildRed') != -1 or varName.find('Torso_GuildYellow') != -1 or varName.find('Torso_GuildWhite') !=  -1:
-                                        print "xTakableClothing: Found Other Guild Shirt. Deleting Old Guild Shirt."
+                                    PtDebugPrint("xTakableClothing: VarNode.getName(): ", varName)
+                                    if varName.find('Torso_GuildBlue') != -1 or varName.find('Torso_GuildGreen') != -1 or varName.find('Torso_GuildRed') != -1 or varName.find('Torso_GuildYellow') != -1 or varName.find('Torso_GuildWhite') != -1:
+                                        PtDebugPrint("xTakableClothing: Found Other Guild Shirt. Deleting Old Guild Shirt.")
                                         if playerCNode.removeNode(childNode):
-                                            print "xTakableClothing: Delete was a success."
+                                            PtDebugPrint("xTakableClothing: Delete was a success.")
                                         else:
-                                            print "xTakableClothing: Delete failed."
+                                            PtDebugPrint("xTakableClothing: Delete failed.")
                                         return
 
-    def IRemoveWornSet(self,setName):
+    def IRemoveWornSet(self, setName):
         global removedSets
         if setName == "":
             return
         if setName in removedSets:
-            PtDebugPrint("xTakableClothing: Set "+setName+" already removed, skipping")
+            PtDebugPrint("xTakableClothing: Set " + setName+" already removed, skipping")
             return
-        PtDebugPrint("xTakableClothing: Removing worn set "+setName)
-        removedSets.append(setName) # add this set to our list of removed sets
+        PtDebugPrint("xTakableClothing: Removing worn set " + setName)
+        removedSets.append(setName)  # add this set to our list of removed sets
         avatar = PtGetLocalAvatar()
         worn = avatar.avatar.getAvatarClothingList()
         # replace all set pieces with the default ones
@@ -326,15 +337,15 @@ class xTakableClothing(ptModifier):
             tempItem = ClothingItem(item)
             if tempItem.isClothingSet and tempItem.clothingSet == setName:
                 if not (tempItem.accessoryType == -1):
-                    avatar.avatar.removeClothingItem(tempItem.name) # remove any set accessories
+                    avatar.avatar.removeClothingItem(tempItem.name)  # remove any set accessories
                 else:
                     typesToReplace.append(tempItem.type)
-        
+
         if len(typesToReplace) > 0:
             for clothingType in typesToReplace:
-                PtWearDefaultClothingType(avatar.getKey(),clothingType)
-    
-    def OnNotify(self,state,id,events):
+                PtWearDefaultClothingType(avatar.getKey(), clothingType)
+
+    def OnNotify(self, state, id, events):
         # in no other cases do we want to take action on state = 0 events
         if not state:
             return
@@ -343,7 +354,7 @@ class xTakableClothing(ptModifier):
             PtDebugPrint("DEBUG: xTakableClothing.OnNotify(): Message didn't come from our player, ignoring")
             return
 
-        if id==actClickable.id:
+        if id == actClickable.id:
             avatar = PtGetLocalAvatar()
             currentgender = avatar.avatar.getAvatarClothingGroup()
             if currentgender == kFemaleClothingGroup:
@@ -362,42 +373,42 @@ class xTakableClothing(ptModifier):
                     ageSDL = PtGetAgeSDL()
                     ageSDL[stringVarName.value] = (not (boolShowOnTrue.value), )
                 self.IRemoveWornSet(self.IConflictsWithSet(base))
-                if base.find('Torso_GuildBlue') != -1 or base.find('Torso_GuildGreen') != -1 or base.find('Torso_GuildRed') != -1 or base.find('Torso_GuildYellow') != -1 or base.find('Torso_GuildWhite') !=  -1:
+                if base.find('Torso_GuildBlue') != -1 or base.find('Torso_GuildGreen') != -1 or base.find('Torso_GuildRed') != -1 or base.find('Torso_GuildYellow') != -1 or base.find('Torso_GuildWhite') != -1:
                     self.IRemoveOtherGuildShirt()
                     psnlSDL = xPsnlVaultSDL()
                     psnlSDL["guildAlliance"] = (guildSDLValues[base],)
-                    print "xTakableClothing: Guild set to:", guildSDLValues[base]
-                avatar.avatar.addWardrobeClothingItem(base,ptColor().white(),ptColor().white())
+                    PtDebugPrint("xTakableClothing: Guild set to:", guildSDLValues[base])
+                avatar.avatar.addWardrobeClothingItem(base, ptColor().white(), ptColor().white())
                 acclist = avatar.avatar.getClosetClothingList(kAccessoryClothingItem)
                 accnamelist = []
                 for accessory in acclist:
                     if accessory[0][4:14] == "AccGlasses" or accessory[0][1:] == "Reward_Goggles":
-                    	accnamelist.append(accessory[0])
+                        accnamelist.append(accessory[0])
                 worn = avatar.avatar.getAvatarClothingList()
                 wornnamelist = []
                 for wornitem in worn:
-                	wornnamelist.append(wornitem[0])
+                    wornnamelist.append(wornitem[0])
                 for name in clothingNames:
                     self.IRemoveWornSet(self.IConflictsWithSet(name))
                     if name in accnamelist:
                         for aitem in accnamelist:
                             if aitem in wornnamelist and aitem != name:
                                 avatar.avatar.removeClothingItem(aitem)
-                    PtDebugPrint("DEBUG: xTakableClothing.OnNotify():  Wearing "+name)
+                    PtDebugPrint("DEBUG: xTakableClothing.OnNotify():  Wearing " + name)
                     avatar.avatar.netForce(1)
-                    avatar.avatar.wearClothingItem(name,0)
-                    avatar.avatar.tintClothingItem(name,color1,0)
-                    avatar.avatar.tintClothingItemLayer(name,color2,2,1)
+                    avatar.avatar.wearClothingItem(name, 0)
+                    avatar.avatar.tintClothingItem(name, color1, 0)
+                    avatar.avatar.tintClothingItemLayer(name, color2, 2, 1)
                     matchingItem = avatar.avatar.getMatchingClothingItem(name)
-                    if type(matchingItem) == type([]):
-                        avatar.avatar.wearClothingItem(matchingItem[0],0)
-                        avatar.avatar.tintClothingItem(matchingItem[0],color1,0)
+                    if type(matchingItem) is list:
+                        avatar.avatar.wearClothingItem(matchingItem[0], 0)
+                        avatar.avatar.tintClothingItem(matchingItem[0], color1, 0)
 
                         #START-->Hard Hat color fix
                         if (matchingItem[0] == 'MReward_HardHat') or (matchingItem[0] == 'FRewardHardHat'):
-                            avatar.avatar.tintClothingItem(matchingItem[0],ptColor().orange(), 2, 1)
-                        else:                                      
-                            avatar.avatar.tintClothingItemLayer(matchingItem[0],color2,2,1)
+                            avatar.avatar.tintClothingItem(matchingItem[0], ptColor().orange(), 2, 1)
+                        else:
+                            avatar.avatar.tintClothingItemLayer(matchingItem[0], color2, 2, 1)
                         #END-->Hard Hat color fix
                     avatar.avatar.saveClothing()
             else:
@@ -408,7 +419,7 @@ class xTakableClothing(ptModifier):
             # no need to disable a clickable if it's a guild shirt, and it'd be a pain to reenable later...
             if not "Guild" in stringFClothingName.value:
                 PtDebugPrint("DEBUG: xTakableClothing.IEnableClothing():  Disabling clickable on %s because we already have it..." % self.sceneobject.getName())
-                actClickable.disable() # don't let them take it again if they already have it
+                actClickable.disable()  # don't let them take it again if they already have it
         else:
             PtDebugPrint("DEBUG: xTakableClothing.IEnableClothing():  Enabling clickable on %s..." % self.sceneobject.getName())
             actClickable.enable()
@@ -417,8 +428,9 @@ class xTakableClothing(ptModifier):
         PtDebugPrint("DEBUG: xTakableClothing.IDisableClothing():  Disabling clickable on %s..." % self.sceneobject.getName())
         actClickable.disable()
 
+
 class ClothingItem:
-    def __init__(self,clothing):
+    def __init__(self, clothing):
         global clothingSets
         self.name = ""
         self.type = 0
@@ -426,10 +438,10 @@ class ClothingItem:
         self.groupwith = -1
         self.accessoryType = -1
         self.wornwith = []
-        self.donotwear=0
-        self.coloredAsHair=0
-        self.isClothingSet = 0 # are we part of a set of clothing? (clothing that is worn and unworn as a group)
-        self.clothingSet = "" # the set of clothing we belong to
+        self.donotwear = 0
+        self.coloredAsHair = 0
+        self.isClothingSet = 0  # are we part of a set of clothing? (clothing that is worn and unworn as a group)
+        self.clothingSet = ""  # the set of clothing we belong to
         try:
             self.name = clothing[0]
             self.type = clothing[1]
@@ -478,9 +490,9 @@ class ClothingItem:
                         for wearitem in wearlist:
                             self.wornwith.append(wearitem.strip())
                     elif ls == "donotwear":
-                        self.donotwear=1
+                        self.donotwear = 1
                     elif ls == "coloredashair":
-                        self.coloredAsHair=1
+                        self.coloredAsHair = 1
                     elif ls == "clothingset":
                         self.isClothingSet = 1
                         self.clothingSet = rs

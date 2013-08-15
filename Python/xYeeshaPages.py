@@ -56,11 +56,11 @@ from PlasmaNetConstants import *
 
 
 # define the attributes that will be entered in max
-actClickableBook = ptAttribActivator(1,"Act: Clickable Yeesha Page")
+actClickableBook = ptAttribActivator(1, "Act: Clickable Yeesha Page")
 PageNumber = ptAttribInt(2, "Yeesha Page Number")
 
 #Linking Books GUI tags
-DialogName="YeeshaPageGUI"
+DialogName = "YeeshaPageGUI"
 kPageButton = 100
 
 kReltoLinkID = 1
@@ -97,11 +97,12 @@ kYeeshaPage24 = 224
 kYeeshaPage25 = 225
 kYeeshaPageCancel = 299
 
-YeeshaPageIDList = [ kYeeshaPage01, kYeeshaPage02, kYeeshaPage03, kYeeshaPage04,\
-                    kYeeshaPage05, kYeeshaPage06, kYeeshaPage07, kYeeshaPage08,\
-                    kYeeshaPage09, kYeeshaPage10, kYeeshaPage12, kYeeshaPage13,\
-                    kYeeshaPage14, kYeeshaPage15, kYeeshaPage16, kYeeshaPage17,\
-                    kYeeshaPage18, kYeeshaPage19, kYeeshaPage20, kYeeshaPage21, kYeeshaPage22, kYeeshaPage23, kYeeshaPage24, kYeeshaPage25 ]
+YeeshaPageIDList = [kYeeshaPage01, kYeeshaPage02, kYeeshaPage03, kYeeshaPage04,
+                    kYeeshaPage05, kYeeshaPage06, kYeeshaPage07, kYeeshaPage08,
+                    kYeeshaPage09, kYeeshaPage10, kYeeshaPage12, kYeeshaPage13,
+                    kYeeshaPage14, kYeeshaPage15, kYeeshaPage16, kYeeshaPage17,
+                    kYeeshaPage18, kYeeshaPage19, kYeeshaPage20, kYeeshaPage21,
+                    kYeeshaPage22, kYeeshaPage23, kYeeshaPage24, kYeeshaPage25]
 
 
 class xYeeshaPages(ptModifier):
@@ -111,106 +112,96 @@ class xYeeshaPages(ptModifier):
         self.id = 5225
         version = 6
         self.version = version
-        print "__init__xYeeshaPages v.", version
-
+        PtDebugPrint("__init__xYeeshaPages v.%d" % (version))
 
     def OnFirstUpdate(self):
         PtLoadDialog(DialogName, self.key)
         pass
 
-
     def __del__(self):
         "destructor - get rid of any dialogs that we might have loaded"
         PtUnloadDialog(DialogName)
 
-         
     def OnServerInitComplete(self):
         ageName = PtGetAgeName()
         if ageName == "Cleft":
             ageSDL = PtGetAgeSDL()
-            ageSDL.setFlags("clftIsCleftDone",1,1)
+            ageSDL.setFlags("clftIsCleftDone", 1, 1)
             ageSDL.sendToClients("clftIsCleftDone")
 
-
-    def OnNotify(self,state,id,events):
+    def OnNotify(self, state, id, events):
         global LocalAvatar
 
         if state and id == actClickableBook.id and PtWasLocallyNotified(self.key):
-            PtLoadDialog(DialogName,self.key)
-            if ( PtIsDialogLoaded(DialogName) ):
+            PtLoadDialog(DialogName, self.key)
+            if (PtIsDialogLoaded(DialogName)):
                 self.IDrawLinkPanel()
-                PtShowDialog(DialogName)                        
-                    
+                PtShowDialog(DialogName)
 
-    def OnGUINotify(self,id,control,event):
+    def OnGUINotify(self, id, control, event):
 
         if event == kExitMode:
             PtHideDialog(DialogName)
             return
-        
+
         btnID = 0
-        if isinstance(control,ptGUIControlButton):
+        if isinstance(control, ptGUIControlButton):
             btnID = control.getTagID()
 
         if event == 2 and btnID in YeeshaPageIDList:
-            print "xYeeshaPages.OnGUINotify():\tPicked up page number: ", PageNumber.value
-#            PtUnloadDialog(DialogName)
+            PtDebugPrint("xYeeshaPages.OnGUINotify():\tPicked up page number: ", PageNumber.value)
             PtHideDialog(DialogName)
-            
+
             vault = ptVault()
-            if type(vault) != type(None): #is the Vault online?
-                
+            if vault:  # is the Vault online?
+
                 psnlSDL = vault.getPsnlAgeSDL()
                 if psnlSDL:
                     YeeshaPageVar = psnlSDL.findVar("YeeshaPage" + str(PageNumber.value))
-                    
-                    PtDebugPrint ("xYeeshaPages.py: The previous value of the SDL variable %s is %s" % ("YeeshaPage" + str(PageNumber.value), YeeshaPageVar.getInt()))
-    
-                    if YeeshaPageVar.getInt() != 0: 
-                        PtDebugPrint ("xYeeshaPages.py: You've already found Yeesha Page #%s. Move along. Move along." % (PageNumber.value))
-                        return
-                        
-                    else:
-                        PtDebugPrint ("xYeeshaPages.py: Yeesha Page #%s is new to you." % (PageNumber.value))
-                        
-                        PtDebugPrint ("xYeeshaPages.py: Trying to update the value of the SDL variable %s to 1" % ("YeeshaPage" + str(PageNumber.value)))
-                        YeeshaPageVar.setInt(4)
-                        vault.updatePsnlAgeSDL (psnlSDL)
 
-                        PtSendKIMessageInt(kStartBookAlert,0)
+                    PtDebugPrint("xYeeshaPages.py: The previous value of the SDL variable %s is %s" % ("YeeshaPage" + str(PageNumber.value), YeeshaPageVar.getInt()))
+
+                    if YeeshaPageVar.getInt() != 0:
+                        PtDebugPrint("xYeeshaPages.py: You've already found Yeesha Page #%s. Move along. Move along." % (PageNumber.value))
+                        return
+
+                    else:
+                        PtDebugPrint("xYeeshaPages.py: Yeesha Page #%s is new to you." % (PageNumber.value))
+
+                        PtDebugPrint("xYeeshaPages.py: Trying to update the value of the SDL variable %s to 1" % ("YeeshaPage" + str(PageNumber.value)))
+                        YeeshaPageVar.setInt(4)
+                        vault.updatePsnlAgeSDL(psnlSDL)
+
+                        PtSendKIMessageInt(kStartBookAlert, 0)
 
                         if (PageNumber.value) == 25:
-                            #Cleft is done, set SDL to start link back to Relto
+                            # Cleft is done, set SDL to start link back to Relto
                             actClickableBook.disableActivator()
-                            PtSendKIMessage(kDisableKIandBB,0)
+                            PtSendKIMessage(kDisableKIandBB, 0)
                             ageSDL = PtGetAgeSDL()
                             ageSDL["clftIsCleftDone"] = (1,)
                             vault = ptVault()
-                            vault.addChronicleEntry("CleftSolved",1,"yes")
-                            PtDebugPrint("Chronicle updated with variable 'CleftSolved'.",level=kDebugDumpLevel)
-                            #PtAtTimeCallback(self.key,kWaitFadeoutSecs,kStartFadeoutID)
+                            vault.addChronicleEntry("CleftSolved", 1, "yes")
+                            PtDebugPrint("Chronicle updated with variable 'CleftSolved'.", level=kDebugDumpLevel)
 
                 else:
-                    PtDebugPrint("xYeeshaPages: Error trying to access the Chronicle psnlSDL. psnlSDL = %s" % ( psnlSDL))
-                    
+                    PtDebugPrint("xYeeshaPages: Error trying to access the Chronicle psnlSDL. psnlSDL = %s" % (psnlSDL))
+
             else:
-                PtDebugPrint("xYeeshaPages: Error trying to access the Vault. Can't access YeeshaPageChanges chronicle." )
+                PtDebugPrint("xYeeshaPages: Error trying to access the Vault. Can't access YeeshaPageChanges chronicle.")
 
         elif event == 2 and btnID == kYeeshaPageCancel:
             PtHideDialog(DialogName)
-    
-
 
     def IDrawLinkPanel(self):
         global DialogName
         mydialog = PtGetDialogFromString(DialogName)
 
         #first hide them all
-#        print "PageNumber = ", PageNumber.value
         ptGUIControlButton(mydialog.getControlFromTag(kYeeshaPage01)).hide()
         ptGUIControlButton(mydialog.getControlFromTag(kYeeshaPage02)).hide()
-        ptGUIControlButton(mydialog.getControlFromTag(kYeeshaPage03)).hide() 
-        ptGUIControlButton(mydialog.getControlFromTag(kYeeshaPage04)).hide() 
+        ptGUIControlButton(mydialog.getControlFromTag(kYeeshaPage03)).hide()
+        ptGUIControlButton(mydialog.getControlFromTag(kYeeshaPage04)).hide()
         ptGUIControlButton(mydialog.getControlFromTag(kYeeshaPage05)).hide()
         ptGUIControlButton(mydialog.getControlFromTag(kYeeshaPage06)).hide()
         ptGUIControlButton(mydialog.getControlFromTag(kYeeshaPage07)).hide()
@@ -282,28 +273,6 @@ class xYeeshaPages(ptModifier):
         elif (PageNumber.value) == 25:
             ptGUIControlButton(mydialog.getControlFromTag(kYeeshaPage25)).show()
 
-
         else:
-            print "xYeeshaPages.IDrawLinkPanel():\tERROR: couldn't find page named ",PageNumber.value
+            PtDebugPrint("xYeeshaPages.IDrawLinkPanel():\tERROR: couldn't find page named ", PageNumber.value)
         return
-
-#
-#    def OnTimer(self,id):
-#        if id == kStartFadeoutID:
-#            PtFadeOut(kFadeOutSecs,1)
-#            print "\txYeeshaPages.OnTimer(): Linking the player from Cleft to Relto.  FadeOut over", kFadeOutSecs," seconds."
-#            PtAtTimeCallback(self.key,kReltoLinkSecs,kReltoLinkID)
-#        elif id == kReltoLinkID:  
-#            #link back to Relto now
-#            linkmgr = ptNetLinkingMgr()
-#            ageLink = ptAgeLinkStruct()
-#            ageInfo = ageLink.getAgeInfo()
-#            temp = ptAgeInfoStruct()
-#            temp.copyFrom(ageInfo)
-#            ageInfo = temp
-#            ageInfo.setAgeFilename("Personal")
-#            ageLink.setAgeInfo(ageInfo)
-#            ageLink.setLinkingRules(PtLinkingRules.kOwnedBook)
-#            linkmgr.linkToAge(ageLink)
-
-

@@ -53,20 +53,22 @@ _MAX_ITERATIONS = 100
 _series_length = 0
 _lastvalue = None
 
-def seed(var = 0):
-    if type(var) == type(1):
+
+def seed(var=0):
+    if type(var) is int:
         random.seed(var)
     else:
         random.seed()
+
 
 def randint(start, stop):
     global _lastvalue
     global _series_length
     global _MAX_SERIES
-    
+
     newInt = random.randint(start, stop)
 
-    if type(_lastvalue) != type(None) and newInt == _lastvalue:
+    if _lastvalue is not None and newInt == _lastvalue:
         if _series_length >= _MAX_SERIES:
             iter = 0
             while newInt == _lastvalue and iter < _MAX_ITERATIONS:
@@ -84,14 +86,16 @@ def randint(start, stop):
 
     return _lastvalue
 
-def setmaxseries(var = 2):
+
+def setmaxseries(var=2):
     global _MAX_SERIES
-    
-    if type(var) == type(1):
+
+    if type(var) is int:
         _MAX_SERIES = var
 
+
 def shuffle(theList):
-    if type(theList) == type([]):
+    if type(theList) is list:
         n = len(theList)
         nmo = n - 1
         numIter = int(n * math.log(n))
@@ -106,9 +110,10 @@ def shuffle(theList):
 
             theList[idx1], theList[idx2] = theList[idx2], theList[idx1]
 
+
 class xRandom:
-    def __init__(self, seed = 0, maxseries = 2):
-        if type(maxseries) == type(1):
+    def __init__(self, seed=0, maxseries=2):
+        if type(maxseries) is int:
             self._MAX_SERIES = maxseries
         else:
             self._MAX_SERIES = 2
@@ -118,13 +123,13 @@ class xRandom:
         self._currentSequence = []
         self._range = None
 
-    def seed(self, var = 0):
+    def seed(self, var=0):
         random.seed(var)
 
     def randint(self, start, stop):
         newInt = random.randint(start, stop)
 
-        if type(_lastvalue) != type(None) and newInt == self._lastvalue:
+        if _lastvalue is not None and newInt == self._lastvalue:
             if self._series_length >= self._MAX_SERIES:
                 while newInt == _lastvalue:
                     newInt = random.randint(start, stop)
@@ -138,22 +143,22 @@ class xRandom:
 
         return _lastvalue
 
-    def setmaxseries(self, var = 2):
-        if type(var) == type(1):
+    def setmaxseries(self, var=2):
+        if type(var) is int:
             self._MAX_SERIES = var
 
     def setrange(self, rmin, rmax):
-        self._range = ( min(rmin, rmax), max(rmin, rmax) )
+        self._range = (min(rmin, rmax), max(rmin, rmax))
 
     def getUniqueInt(self):
         numTries = 0
-        if type(self._range) == type( (0,) ):
+        if type(self._range) is tuple:
             newInt = random.randint(self._range[0], self._range[1])
             numTries += 1
 
             if (self._range[1] - self._range[0] + 1) <= len(self._currentSequence):
                 self._currentSequence = [newInt]
-                print "numTries:", numTries
+                PtDebugPrint("numTries: %d" % (numTries))
                 return newInt
             else:
                 while newInt in self._currentSequence:
@@ -161,9 +166,8 @@ class xRandom:
                     numTries += 1
 
                 self._currentSequence.append(newInt)
-                print "numTries:", numTries
+                PtDebugPrint("numTries: %d" % (numTries))
                 return newInt
         else:
-            print "numTries:", numTries
+            PtDebugPrint("numTries: %d" % (numTries))
             return None
-            

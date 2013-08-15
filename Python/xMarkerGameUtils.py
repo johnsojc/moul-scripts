@@ -52,24 +52,24 @@ from PlasmaTypes import *
 from PlasmaGameConstants import *
 from PlasmaGame import *
 
+
 #---------------------------------------#
 #                                       #
 #          Utility Functions            #
 #                                       #
 #---------------------------------------#
-
 def GetGameClient(gameID):
     "Returns the game client for a specified gameID"
     gameClient = PtGetGameCli(gameID)
-    if type(gameClient) != type(None) and PtIsMarkerGame(gameClient.gameTypeID()):
+    if gameClient is not None and PtIsMarkerGame(gameClient.gameTypeID()):
         return gameClient.upcastToMarkerGame()
     PtDebugPrint("xMarkerGameManager.GetGameClient():\tERROR: Cannot find marker game!")
     return None
 
 
-def GameTypeToString(gameType):  
+def GameTypeToString(gameType):
     "Converts enumerated values from PlasmaGameConstants.PtMarkerGameTypes and converts them to human readable strings"
-    if gameType == PtMarkerGameTypes.kMarkerGameQuest: 
+    if gameType == PtMarkerGameTypes.kMarkerGameQuest:
         gameString = "Quest"
     elif gameType == PtMarkerGameTypes.kMarkerGameCapture:
         gameString = "Capture"
@@ -80,7 +80,6 @@ def GameTypeToString(gameType):
     return gameString
 
 
-
 #---------------------------------------#
 #                                       #
 #            Data Structures            #
@@ -89,22 +88,22 @@ def GameTypeToString(gameType):
 class MarkerData:
     "A class interface for housing marker data"
     def __init__(self):
-        #Setup Default vars
+        # Setup Default vars
         self.default = {}
-        self.default['id']       = -1   # markerID
-        self.default['age']      = None # the age filename the marker is within
-        self.default['x']        = -1   # x coord
-        self.default['y']        = -1   # y coord
-        self.default['z']        = -1   # z coord
-        self.default['name']     = None # description of the marker (i.e. when you get it)
+        self.default['id'] = -1         # markerID
+        self.default['age'] = None      # the age filename the marker is within
+        self.default['x'] = -1          # x coord
+        self.default['y'] = -1          # y coord
+        self.default['z'] = -1          # z coord
+        self.default['name'] = None     # description of the marker (i.e. when you get it)
         self.default['captured'] = 0    # flag If this marker was captured
-        
+
         self.initDefaultValues()
 
     def initDefaultValues(self):
         "Sets all variables to their default states"
         self.data = {}
-        #Must do a deep copy here; otherwise, we'll overwrite the defaults!
+        # Must do a deep copy here; otherwise, we'll overwrite the defaults!
         for x in self.default.keys():
             self.data[x] = self.default[x]
 
@@ -120,76 +119,70 @@ class MarkerData:
             return "not captured"
 
 
-
-
-
 class MarkerGameData:
     "A class interface for housing marker game data"
     def __init__(self):
         self.setup()
 
     def setup(self):
-        #Setup Default vars
+        # Setup Default vars
         self.default = {}
-        self.default['svrGameTypeID']      = -1     #The marker game type
-        self.default['svrGameTemplateID']  = ""     #The identifier for the game (GUID)
-        self.default['CGZGameNum']         = -1     #CGZ game identifier (stored by game number)
-        
-        self.default['svrGameClientID']    = -1     #This is the handle for the getting the game server
-        
-        self.default['numMarkers']         =  0     #The number of markers in the game
-        self.default['numCapturedMarkers'] =  0     #The number of captured markers
-        self.default['isPlayerJoined']     =  0     #Whether or not the player joined the game (don't start the game until this is true!)
+        self.default['svrGameTypeID'] = -1         # The marker game type
+        self.default['svrGameTemplateID'] = ""     # The identifier for the game (GUID)
+        self.default['CGZGameNum'] = -1            # CGZ game identifier (stored by game number)
 
-        self.default['svrGameName']        = ""     #The Name of user-created marker games
-        self.default['svrGameStarted']     =  0     #If the user-created marker game has been started
+        self.default['svrGameClientID'] = -1       # This is the handle for the getting the game server
 
-        self.default['markers']             = []    #Houses all markers for the game
-        self.default['timeLimit']           = -1    #Time limit on the game....
+        self.default['numMarkers'] = 0             # The number of markers in the game
+        self.default['numCapturedMarkers'] = 0     # The number of captured markers
+        self.default['isPlayerJoined'] = 0         # Whether or not the player joined the game (don't start the game until this is true!)
 
-        #Init the game data structure
+        self.default['svrGameName'] = ""           # The Name of user-created marker games
+        self.default['svrGameStarted'] = 0         # If the user-created marker game has been started
+
+        self.default['markers'] = []               # Houses all markers for the game
+        self.default['timeLimit'] = -1             # Time limit on the game....
+
+        # Init the game data structure
         self.initDefaultValues()
 
     def initDefaultValues(self):
         "Sets all variables to their default states"
         self.data = {}
-        #Must do a deep copy here; otherwise, we'll overwrite the defaults!
+        # Must do a deep copy here; otherwise, we'll overwrite the defaults!
         self.copy(self.default)
-
 
     def copy(self, src):
         try:
             for x in src.keys():
                 self.data[x] = src[x]
         except:
-            PtDebugPrint("ERROR: %s.copy():\tCould not copy from source" %self.__class__.__name__)
-
+            PtDebugPrint("ERROR: %s.copy():\tCould not copy from source" % (self.__class__.__name__))
 
     def printData(self):
-        print "--------------[Start of Marker Game Data]---------------------"
+        PtDebugPrint("--------------[Start of Marker Game Data]---------------------")
         for x in self.data.keys():
             if x == 'markers':
-                print "\tBEGIN Marker List:"
+                PtDebugPrint("\tBEGIN Marker List:")
                 markers = self.data[x]
                 for marker in markers:
-                    print "\t\t%s" % marker.__str__()
-                print "\tEND of Marker List"
+                    PtDebugPrint("\t\t%s" % (marker.__str__()))
+                PtDebugPrint("\tEND of Marker List")
             else:
-                print "\t\tdata[%s] = %s" %(x,self.data[x])
-        print "--------------[END of Marker Game Data]---------------------"
-
+                PtDebugPrint("\t\tdata[%s] = %s" % (x, self.data[x]))
+        PtDebugPrint("--------------[END of Marker Game Data]---------------------")
 
 
 class chronicleMarkerGameData(MarkerGameData):
     "A class interface for housing CGZ marker game data (has chronicle hooks)"
     kChronMarkerGameData = "MarkerGameData"
 
-    def __init__(self, existingData = None):
-        #Setup Default vars (this is done in the base class)
+    def __init__(self, existingData=None):
+        # Setup Default vars (this is done in the base class)
         self.setup()
 
-        #Init the game data structure
-        if existingData == None:
+        # Init the game data structure
+        if existingData is None:
             self.load()
         else:
             if type(existingData) == type(self):
@@ -199,57 +192,49 @@ class chronicleMarkerGameData(MarkerGameData):
 
         self.save()
 
-
     def load(self):
         "Initializes all variables from the chronicle, if it doesn't exist, defaults are used."
         vault = ptVault()
         entry = vault.findChronicleEntry(self.kChronMarkerGameData)
 
-        #Only retrieve if the chronicle entry exists; otherwise, we'll just save later.
-        if type(entry) == type(None) or type(entry.chronicleGetValue()) == type(None) or entry.chronicleGetValue() == "":
+        # Only retrieve if the chronicle entry exists; otherwise, we'll just save later.
+        if entry is None or entry.chronicleGetValue() is None or entry.chronicleGetValue() == "":
             return
 
-        #Here will do a little magic...
-        #To protect against versioning issues, we'll initialize whatever data the user has.
-        #All other data will remain at default values....
+        # Here will do a little magic...
+        # To protect against versioning issues, we'll initialize whatever data the user has.
+        # All other data will remain at default values....
         temp = eval(entry.chronicleGetValue())
         self.copy(temp)
 
-        #self.printData()
-
     def save(self):
         "Saves the data to the chronicle"
-        #We don't want to store the marker data as it will be way too big in most cases
-        #So we'll delete it here....
+        # We don't want to store the marker data as it will be way too big in most cases
+        # So we'll delete it here....
         saveData = self.data.copy()
         del saveData['markers']
-        del saveData['timeLimit']  #also delete this as we don't need it in the chronicle
+        del saveData['timeLimit']  # also delete this as we don't need it in the chronicle
 
         vault = ptVault()
         entry = vault.findChronicleEntry(self.kChronMarkerGameData)
 
-        if type(entry) == type(None):
+        if entry is None:
             vault.addChronicleEntry(self.kChronMarkerGameData, 1, str(saveData))
         else:
             entry.chronicleSetValue(str(saveData))
             entry.save()
 
-        #~self.printData()            
-
     def printData(self):
         vault = ptVault()
         entry = vault.findChronicleEntry(self.kChronMarkerGameData)
-    
-        if type(entry) == type(None) or type(entry.chronicleGetValue()) == type(None):
+
+        if entry is None or entry.chronicleGetValue() is None:
             PtDebugPrint("chronicleMarkerGameData.printData():\t****ERROR****  Chronicle Entry does not exist, aborting print command")
             return
 
         temp = eval(entry.chronicleGetValue())
 
-        print "--------------[Start of CZG Marker Data Chronicle Entry]---------------------"
+        PtDebugPrint("--------------[Start of CZG Marker Data Chronicle Entry]---------------------")
         for x in temp.keys():
-            print "\t\tdata[%s] = %s" %(x,temp[x])
-        print "--------------[END of CZG Marker Data Chronicle Entry]---------------------"
-
-
-
+            PtDebugPrint("\t\tdata[%s] = %s" % (x, temp[x]))
+        PtDebugPrint("--------------[END of CZG Marker Data Chronicle Entry]---------------------")

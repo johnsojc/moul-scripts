@@ -53,8 +53,9 @@ kBlankLine = 2
 kCommandValue = 3
 kIgnore = 4
 
+
 class iniEntry:
-    def __init__(self,line):
+    def __init__(self, line):
         # translate 'line' into data
         self.command = None
         self.values = []
@@ -105,7 +106,7 @@ class iniEntry:
         else:
             return "[unknown entry]\n"
 
-    def setValue(self,idx,value):
+    def setValue(self, idx, value):
         if len(self.values) > idx:
             self.values[idx] = value
         else:
@@ -114,29 +115,31 @@ class iniEntry:
                     self.values.append('')
             self.values.append(value)
 
-    def getValue(self,idx):
+    def getValue(self, idx):
         if len(self.values) > idx:
             return self.values[idx]
         return None
 
+
 class iniFile:
-    def __init__(self,filename):
+
+    def __init__(self, filename):
         self.entries = []
         if filename:
             try:
                 f = ptStream()
-                f.open(filename,"r")
+                f.open(filename, "r")
                 lines = f.readlines()
                 for l in lines:
                     self.entries.append(iniEntry(l))
                 f.close()
             except:
-                print "[INI processing] Error while reading %s" % (filename)
+                PtDebugPrint("[INI processing] Error while reading %s" % (filename))
 
     def __repr__(self):
         line = ""
         for entry in self.entries:
-            line += `entry`
+            line += repr(entry)
         return line
 
     def isEmpty(self):
@@ -144,53 +147,53 @@ class iniFile:
             return 1
         return 0
 
-    def addEntry(self,line):
+    def addEntry(self, line):
         self.entries.append(iniEntry(line))
 
-    def removeEntry(self,idx):
+    def removeEntry(self, idx):
         try:
             del self.entries[idx]
         except IndexError:
             pass
 
-    def findByCommand(self,cmd,idx=0):
+    def findByCommand(self, cmd, idx=0):
         idx = 0
         for entry in self.entries[idx:]:
             if entry.command == cmd:
-                return entry,idx
+                return entry, idx
             idx += 1
-        return None,-1
+        return None, -1
 
-    def findByFirstValue(self,value,idx=0):
+    def findByFirstValue(self, value, idx=0):
         idx = 0
         for entry in self.entries[idx:]:
             if len(entry.values) > 0 and entry.values[0] == value:
-                return entry,idx
+                return entry, idx
             idx += 1
-        return None,-1
+        return None, -1
 
-    def findByLastValue(self,value,idx=0):
+    def findByLastValue(self, value, idx=0):
         idx = 0
         for entry in self.entries[idx:]:
             vlist = entry.values[-1:]
             if len(vlist) > 0:
                 if entry.values[-1:][0] == value:
-                    return entry,idx
+                    return entry, idx
             idx += 1
-        return None,-1
+        return None, -1
 
-    def findByAnyValue(self,value,idx=0):
+    def findByAnyValue(self, value, idx=0):
         idx = 0
         for entry in self.entries[idx:]:
             for v in entry.values:
                 if v == value:
-                    return entry,idx
+                    return entry, idx
             idx += 1
-        return None,-1
+        return None, -1
 
-    def writeFile(self,filename):
+    def writeFile(self, filename):
         f = ptStream()
-        f.open(filename,"w")
+        f.open(filename, "w")
         lines = []
         for entry in self.entries:
             if entry.type == kBlankLine:

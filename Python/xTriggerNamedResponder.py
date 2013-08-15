@@ -44,7 +44,7 @@ You can contact Cyan Worlds, Inc. by email legal@cyan.com
 Module: xTriggerNamedResponder
 Age: global
 Date: October 2006
-Author: Tye Hooley 
+Author: Tye Hooley
 """
 
 from Plasma import *
@@ -54,7 +54,7 @@ from PlasmaTypes import *
 # ---------
 # max wiring
 # ---------
-act = ptAttribActivator(1,"Activator")
+act = ptAttribActivator(1, "Activator")
 resp = ptAttribNamedResponder(2, "Name of Responder")
 
 # ---------
@@ -67,12 +67,11 @@ class xTriggerNamedResponder(ptResponder):
         ptResponder.__init__(self)
         self.id = 5101
         self.version = 1
-        PtDebugPrint("__init__xTriggerNamedResponder v. %d" % self.version)
+        PtDebugPrint("__init__xTriggerNamedResponder v. %d" % (self.version))
 
-    def OnNotify(self,state,id,events):
+    def OnNotify(self, state, id, events):
         if state != true:
             return
 
         if id == act.id:
             resp.run(self.key, events=events)
-

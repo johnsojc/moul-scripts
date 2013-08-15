@@ -50,12 +50,12 @@ Provides support for Free players
 from Plasma import *
 
 kValidVisitorAges = ("GarrisonNoShare", "Personal", "Nexus", "Neighborhood", "Cleft")
-kVisitorNagDialog  = "GUIDialog13"
+kVisitorNagDialog = "GUIDialog13"
+
 
 def IsVisitorAllowedAge(ageName):
     "Returns if the age is available to visitors (i.e. free players)"
-    
-    #print( "IsVisitorAllowedAge-->Checking Age: %s" % ageName)
+
     if PtIsSubscriptionActive():
         return 1
     else:
@@ -63,4 +63,3 @@ def IsVisitorAllowedAge(ageName):
             return 1
         else:
             return 0
-    

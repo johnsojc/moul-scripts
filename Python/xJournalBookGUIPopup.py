@@ -45,7 +45,7 @@ Module: xLinkingBookGUIPopup
 Age: global
 Date: November, 2002
 Author: Doug McBride
-Shows the linking book GUI with the appropriate linking panel. 
+Shows the linking book GUI with the appropriate linking panel.
 
 # March 2003
 This script now also provides the GUI for books taken off of the Personal Age Bookshelf. There are a few
@@ -68,19 +68,20 @@ import xJournalBookDefs
 
 
 # define the attributes that will be entered in max
-actClickableBook    = ptAttribActivator(1,"Actvtr: Clickable small book")
-SeekBehavior        = ptAttribBehavior(2, "Smart seek before GUI (optional)")
-JournalName         = ptAttribString(3, "Name of Journal (deprecated)", "")  # Phasing this out; we don't want to use global Python for data.
-Dynamic             = ptAttribBoolean(4,"Read Data From Vault?",default=0)
-StartOpen           = ptAttribBoolean(10,"Start Opened?",default=0)
+actClickableBook = ptAttribActivator(1, "Actvtr: Clickable small book")
+SeekBehavior = ptAttribBehavior(2, "Smart seek before GUI (optional)")
+JournalName = ptAttribString(3, "Name of Journal (deprecated)", "")  # Phasing this out; we don't want to use global Python for data.
+Dynamic = ptAttribBoolean(4, "Read Data From Vault?", default=0)
+StartOpen = ptAttribBoolean(10, "Start Opened?", default=0)
 
-BookWidth           = ptAttribFloat(11,"Book Width Scaling",default=1.0)
-BookHeight          = ptAttribFloat(12,"Book Height Scaling",default=1.0)
-LocPath             = ptAttribString(13,"Localization Path for Journal Contents",default="Global.Journals.Empty")
-GUIType             = ptAttribString(14,"Book GUI Type",default="bkBook")
+BookWidth = ptAttribFloat(11, "Book Width Scaling", default=1.0)
+BookHeight = ptAttribFloat(12, "Book Height Scaling", default=1.0)
+LocPath = ptAttribString(13, "Localization Path for Journal Contents", default="Global.Journals.Empty")
+GUIType = ptAttribString(14, "Book GUI Type", default="bkBook")
 
 # globals
 LocalAvatar = None
+
 
 class xJournalBookGUIPopup(ptModifier):
     "The Journal Book GUI Popup python code"
@@ -103,21 +104,21 @@ class xJournalBookGUIPopup(ptModifier):
         if id == actClickableBook.id:
             if PtWasLocallyNotified(self.key) and state:
                 PtToggleAvatarClickability(false)
-                if type(SeekBehavior.value) != type(None): #remember, smart seek before GUI is optional. 
-                    PtDebugPrint("xJournalBookGUIPopup: Smart seek used",level=kDebugDumpLevel)
+                if SeekBehavior.value is not None:  # remember, smart seek before GUI is optional.
+                    PtDebugPrint("xJournalBookGUIPopup: Smart seek used", level=kDebugDumpLevel)
                     LocalAvatar = PtFindAvatar(events)
                     SeekBehavior.run(LocalAvatar)
                     return
                 self.IShowBook()
                 return
 
-        # is it the seek behavior because we clicked on a book ourself?    
+        # is it the seek behavior because we clicked on a book ourself?
         elif id == SeekBehavior.id:
             if PtWasLocallyNotified(self.key):
                 for event in events:
-                    if event[0] == kMultiStageEvent and event[2] == kEnterStage: # Smart seek completed. Exit multistage, and show GUI.
-                        SeekBehavior.gotoStage(LocalAvatar, -1) 
-                        PtDebugPrint("xJournalBookGUIPopup: attempting to draw link panel gui",level=kDebugDumpLevel)
+                    if event[0] == kMultiStageEvent and event[2] == kEnterStage:  # Smart seek completed. Exit multistage, and show GUI.
+                        SeekBehavior.gotoStage(LocalAvatar, -1)
+                        PtDebugPrint("xJournalBookGUIPopup: attempting to draw link panel gui", level=kDebugDumpLevel)
                         self.IShowBook()
 
         # else was it one of the unknown id types? like scene input interface or from a ptBook?
@@ -125,23 +126,23 @@ class xJournalBookGUIPopup(ptModifier):
             for event in events:
                 # is it from the OpenBook? (we only have one book to worry about)
                 if event[0] == PtEventType.kBook:
-                    PtDebugPrint("xJournalBookGUIPopup: BookNotify  event=%d, id=%d" % (event[1],event[2]),level=kDebugDumpLevel)
+                    PtDebugPrint("xJournalBookGUIPopup: BookNotify  event=%d, id=%d" % (event[1], event[2]), level=kDebugDumpLevel)
                     if event[1] == PtBookEventTypes.kNotifyShow:
-                        PtDebugPrint("xJournalBookGUIPopup:Book: NotifyShow",level=kDebugDumpLevel)
+                        PtDebugPrint("xJournalBookGUIPopup:Book: NotifyShow", level=kDebugDumpLevel)
                         # disable the KI
-                        PtSendKIMessage(kDisableKIandBB,0)
+                        PtSendKIMessage(kDisableKIandBB, 0)
                     if event[1] == PtBookEventTypes.kNotifyHide:
-                        PtDebugPrint("xJournalBookGUIPopup:Book: NotifyHide",level=kDebugDumpLevel)
+                        PtDebugPrint("xJournalBookGUIPopup:Book: NotifyHide", level=kDebugDumpLevel)
                         # re-enable KI
-                        PtSendKIMessage(kEnableKIandBB,0)
+                        PtSendKIMessage(kEnableKIandBB, 0)
                         # re-enable our avatar
                         PtToggleAvatarClickability(true)
                     elif event[1] == PtBookEventTypes.kNotifyNextPage:
-                        PtDebugPrint("xJournalBookGUIPopup:Book: NotifyNextPage",level=kDebugDumpLevel)
+                        PtDebugPrint("xJournalBookGUIPopup:Book: NotifyNextPage", level=kDebugDumpLevel)
                     elif event[1] == PtBookEventTypes.kNotifyPreviousPage:
-                        PtDebugPrint("xJournalBookGUIPopup:Book: NotifyPreviousPage",level=kDebugDumpLevel)
+                        PtDebugPrint("xJournalBookGUIPopup:Book: NotifyPreviousPage", level=kDebugDumpLevel)
                     elif event[1] == PtBookEventTypes.kNotifyCheckUnchecked:
-                        PtDebugPrint("xJournalBookGUIPopup:Book: NotifyCheckUncheck",level=kDebugDumpLevel)
+                        PtDebugPrint("xJournalBookGUIPopup:Book: NotifyCheckUncheck", level=kDebugDumpLevel)
                         pass
 
     def IShowBook(self):
@@ -154,14 +155,16 @@ class xJournalBookGUIPopup(ptModifier):
                 params = xJournalBookDefs.xJournalBooks[JournalName.value]
                 JournalIdent = JournalName.value
                 if len(params) == 4:
-                    BookWidth.value,BookHeight.value,LocPath.value,GUIType.value = params
+                    BookWidth.value, BookHeight.value, LocPath.value, GUIType.value = params
                 else:
-                    BookWidth.value,BookHeight.value,LocPath.value = params
+                    BookWidth.value, BookHeight.value, LocPath.value = params
             except LookupError:
                 PtDebugPrint("xJournalBookGUIPopup: could not find journal parameters for '%s'" % (JournalName.value), level=kErrorLevel)
                 return
         else:
             JournalIdent = LocPath.value
+
+        journalContents = "I'm an empty book"
 
         # compile journal text
         if Dynamic.value:
@@ -205,7 +208,6 @@ class xJournalBookGUIPopup(ptModifier):
             self.JournalBook.show(1)
         else:
             self.JournalBook.show(StartOpen.value)
-
 
     def IsThereACover(self, bookHtml):
         # search the bookhtml string looking for a cover

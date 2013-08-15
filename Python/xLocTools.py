@@ -46,7 +46,7 @@ from PlasmaVaultConstants import *
 xFolderIDToFolderName = {
     PtVaultStandardNodes.kUserDefinedNode:          PtGetLocalizedString("Global.FolderNames.UserDefined"),
     PtVaultStandardNodes.kInboxFolder:              PtGetLocalizedString("Global.FolderNames.Inbox"),
-    PtVaultStandardNodes.kBuddyListFolder:          PtGetLocalizedString("Global.FolderNames.BuddyList"), 
+    PtVaultStandardNodes.kBuddyListFolder:          PtGetLocalizedString("Global.FolderNames.BuddyList"),
     PtVaultStandardNodes.kIgnoreListFolder:         PtGetLocalizedString("Global.FolderNames.IgnoreList"),
     PtVaultStandardNodes.kPeopleIKnowAboutFolder:   PtGetLocalizedString("Global.FolderNames.PeopleIKnowAbout"),
     PtVaultStandardNodes.kChronicleFolder:          PtGetLocalizedString("Global.FolderNames.Chronicle"),
@@ -63,7 +63,8 @@ xFolderIDToFolderName = {
     PtVaultStandardNodes.kAgesIOwnFolder:           PtGetLocalizedString("Global.FolderNames.AgesIOwn"),
     PtVaultStandardNodes.kAgesICanVisitFolder:      PtGetLocalizedString("Global.FolderNames.AgesICanVisit"),
     PtVaultStandardNodes.kAvatarClosetFolder:       PtGetLocalizedString("Global.FolderNames.AvatarCloset"),
-}
+    }
+
 
 def FolderIDToFolderName(folderid):
     "Returns the standard folder name based on folder ID"
@@ -71,6 +72,7 @@ def FolderIDToFolderName(folderid):
         return xFolderIDToFolderName[folderid]
     except LookupError:
         return U"?UNKNOWN?"
+
 
 def MemberStatusString():
     "returns a string of what type of neighborhood member this person is"
@@ -99,21 +101,21 @@ xTranslatedAgeNames = {
     # Great Zero link-in points
     "Great Zero Observation": "Global.AgeNames.GreatZeroObservation",
     "Great Zero":           "Global.AgeNames.GreatZero",
-}
+    }
 
 
 def SafeEncode(text):
     try:
-        #convert 8bit ascii to 16bit unicode characters 
+        # convert 8bit ascii to 16bit unicode characters
         encodedText = unicode(text)
-    except:          #exception called if the incomming string is already in unicode!
-        encodedText=text
+    except:  # exception called if the incomming string is already in unicode!
+        encodedText = text
     return encodedText
+
 
 def LocalizeAgeName(displayName):
     "Returns a localized version of the age display name you give it"
     localizedName = displayName
-#    localizedName = localizedName + unichr(200)   #Tye: Remove me!!!!
 
     if localizedName == "D'ni-Rudenna":
         # if the poles are not in a certain state, we can't call this age its normal name
@@ -124,7 +126,7 @@ def LocalizeAgeName(displayName):
             else:
                 localizedName = U"???"
         except:
-            localizedName = U"???" # default to unknown if we can't access the SDL for some reason
+            localizedName = U"???"  # default to unknown if we can't access the SDL for some reason
     elif localizedName == "Ae'gura":
         localizedName = U"D'ni-Ae'gura"
     elif localizedName == "GreatZero":
@@ -147,7 +149,7 @@ def LocalizeAgeName(displayName):
         apostropheLoc = localizedName.rfind("'")
         if apostropheLoc == -1:
             return SafeEncode(localizedName)
-        if apostropheLoc + 3 >= len(localizedName):            
+        if apostropheLoc + 3 >= len(localizedName):
             return SafeEncode(localizedName)
         if not (localizedName[apostropheLoc+1] == 's' and localizedName[apostropheLoc+2] == ' '):
             return SafeEncode(localizedName)

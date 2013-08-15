@@ -53,11 +53,10 @@ from Plasma import *
 from PlasmaTypes import *
 
 # define the attributes that will be entered in max
-varstring = ptAttribString(1,"Name")
+varstring = ptAttribString(1, "Name")
 actPower = ptAttribNamedActivator(2, "Actvtr: Power Source")
-respOn = ptAttribResponder(3,"Rspndr: Powered")
-respOff = ptAttribResponder(4,"Rspndr: No Pwr")
-
+respOn = ptAttribResponder(3, "Rspndr: Powered")
+respOff = ptAttribResponder(4, "Rspndr: No Pwr")
 
 
 class xPassiveIndicatorLight(ptResponder):
@@ -66,35 +65,32 @@ class xPassiveIndicatorLight(ptResponder):
         # run parent class init
         ptResponder.__init__(self)
         self.id = 5202
-        
+
         version = 2
         self.version = version
-        print "__init__xPassiveIndicatorLight v.", version
+        PtDebugPrint("__init__xPassiveIndicatorLight v.%d" % (version))
 
     def OnServerInitComoplete(self):
-        if self.SDL == None:
-            print "xPassiveIndicatorLight.OnServerInitComplete():\tERROR---missing SDL (%s)" % varstring.value
+        if self.SDL is None:
+            PtDebugPrint("xPassiveIndicatorLight.OnServerInitComplete():\tERROR---missing SDL (%s)" % (varstring.value))
             return
-        self.SDL.setDefault("enabled",(0,))
+        self.SDL.setDefault("enabled", (0,))
 
-    def OnNotify(self,state,id,events):
+    def OnNotify(self, state, id, events):
         if state:
 
-            if id==actPower.id:
+            if id == actPower.id:
                 for event in events:
                     if event[0] == 4:
-                        if event[3] == 1: # power on
+                        if event[3] == 1:  # power on
                             self.SDL["enabled"] = (1,)
-                            respOn.run(self.key,events=events)
+                            respOn.run(self.key, events=events)
 
-                        elif event[3] == 0: #power off
+                        elif event[3] == 0:  # power off
                             self.SDL["enabled"] = (0,)
-                            respOff.run(self.key,events=events)
+                            respOff.run(self.key, events=events)
 
-                        else: #unexpected value 
-                            print "xPassiveIndicatorLight.OnNotify:\t'%s' ERROR---got bogus msg - power = %d" % (varstring.value,self.SDL["enabled"][0])
+                        else:  # unexpected value
+                            PtDebugPrint("xPassiveIndicatorLight.OnNotify:\t'%s' ERROR---got bogus msg - power = %d" % (varstring.value, self.SDL["enabled"][0]))
                             return
-                        print "xPassiveIndicatorLight.OnNotify:\t'%s' got msg - power = %d" % (varstring.value,self.SDL["enabled"][0])
-
-
-
+                        PtDebugPrint("xPassiveIndicatorLight.OnNotify:\t'%s' got msg - power = %d" % (varstring.value, self.SDL["enabled"][0]))

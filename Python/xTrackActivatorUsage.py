@@ -54,6 +54,7 @@ from PlasmaTypes import *
 actTrack = ptAttribActivator(1, "Activator to track")
 strChronVar = ptAttribString(2, "Chronicle var")
 
+
 class xTrackActivatorUsage(ptModifier):
 
     def __init__(self):
@@ -63,31 +64,31 @@ class xTrackActivatorUsage(ptModifier):
         self.currentValue = 0
         self.startingValue = 0
 
-        PtDebugPrint("DEBUG: xTrackActivatorUsage.__init__: version = %d" % self.version)
+        PtDebugPrint("DEBUG: xTrackActivatorUsage.__init__: version = %d" % (self.version))
 
     def __del__(self):
         if self.currentValue > self.startingValue:
             vault = ptVault()
             entry = vault.findChronicleEntry(strChronVar.value)
 
-            if type(entry) != type(None):
-                entry.chronicleSetValue( str(self.currentValue) )
+            if entry is not None:
+                entry.chronicleSetValue(str(self.currentValue))
                 entry.save()
             else:
-                vault.addChronicleEntry(strChronVar.value, 0, str(self.currentValue) )
+                vault.addChronicleEntry(strChronVar.value, 0, str(self.currentValue))
 
     def OnServerInitComplete(self):
         self.currentValue = 0
-        
+
         if len(strChronVar.value) > 0:
             vault = ptVault()
             entry = vault.findChronicleEntry(strChronVar.value)
 
-            if type(entry) != type(None):
+            if entry is not None:
                 self.currentValue = int(entry.chronicleGetValue())
 
         self.startingValue = self.currentValue
 
-    def OnNotify(self,state,id,events):
+    def OnNotify(self, state, id, events):
         if id == actTrack.id and state and PtWasLocallyNotified(self.key):
             self.currentValue += 1

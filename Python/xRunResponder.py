@@ -45,18 +45,17 @@ Module: xRunResponder
 Age: global
 Date: May 30, 2002
 Author: Pete Gage
-All this thing does is runs the selected responder if it receives a message from the typed-in 
+All this thing does is runs the selected responder if it receives a message from the typed-in
 named activator (from another file).
 """
 
 from Plasma import *
 from PlasmaTypes import *
 
-
-
 # define the attributes that will be entered in max
-message = ptAttribNamedActivator(1, "Activator Sending Message",netForce=1)
-resp = ptAttribResponder(3,"Responder")
+message = ptAttribNamedActivator(1, "Activator Sending Message", netForce=1)
+resp = ptAttribResponder(3, "Responder")
+
 
 class xRunResponder(ptResponder):
 
@@ -64,13 +63,13 @@ class xRunResponder(ptResponder):
         # run parent class init
         ptResponder.__init__(self)
         self.id = 5117
-         
+
         version = 1
         self.version = version
-        print "__init__xRunResponder v.", version
-       
-    def OnNotify(self,state,id,events):
+        PtDebugPrint("__init__xRunResponder v.%d" % (version))
 
-        if state and id==message.id:
+    def OnNotify(self, state, id, events):
+
+        if state and id == message.id:
             resp.run(self.key)
-            print "I just ran a responder. I'm cool."
+            PtDebugPrint("I just ran a responder. I'm cool.")

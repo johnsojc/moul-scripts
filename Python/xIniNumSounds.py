@@ -64,6 +64,7 @@ def WriteIni():
     if gIniFile:
         gIniFile.writeFile(gFilename)
 
+
 def ReadIni():
     global gIniFile
     gIniFile = xIniHelper.iniFile(gFilename)
@@ -72,17 +73,20 @@ def ReadIni():
         gIniFile.addEntry("# This is an auto-generated file.")
         gIniFile.addEntry("\n")
 
+
 def SetSoundPriority(priority):
     if gIniFile:
-        entry,idx = gIniFile.findByCommand(kSoundPri)
+        entry, idx = gIniFile.findByCommand(kSoundPri)
         pristr = "%d" % priority
         if entry:
-            entry.setValue(0,pristr)
+            entry.setValue(0, pristr)
         else:
-            gIniFile.addEntry("%s %d" % (kSoundPri,priority))
+            gIniFile.addEntry("%s %d" % (kSoundPri, priority))
+
+
 def GetSoundPriority():
     if gIniFile:
-        entry,idx = gIniFile.findByCommand(kSoundPri)
+        entry, idx = gIniFile.findByCommand(kSoundPri)
         if entry:
             value = entry.getValue(0)
             if value:
