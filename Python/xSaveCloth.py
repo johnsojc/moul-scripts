@@ -91,7 +91,7 @@ class xSaveCloth(ptModifier):
         spTitle = spawnPoint.getTitle()
         spName = spawnPoint.getName()
 
-        PtDebugPrint("spawned into %s, this save cloth handles %s", (spname, soSpawnpoint.value.getName()))
+        PtDebugPrint("spawned into %s, this save cloth handles %s", (spName, soSpawnpoint.value.getName()))
         if spTitle.endswith("SavePoint") and spName == soSpawnpoint.value.getName():
             PtDebugPrint("restoring camera stack for save point %s, %s" % (spTitle, spName))
 
