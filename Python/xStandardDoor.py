@@ -105,7 +105,7 @@ class xStandardDoor(ptResponder):
 
         version = 6
         self.version = version
-        PtDebugPrint("__init__xStandardDoor v.%d", (version))
+        PtDebugPrint("__init__xStandardDoor v.%d" % (version))
         self.DoorStack = []
 
     def OnFirstUpdate(self):
