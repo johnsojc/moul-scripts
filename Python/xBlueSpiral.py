@@ -274,8 +274,8 @@ class xBlueSpiral(ptResponder):
             else:
                 PtDebugPrint("xBlueSpiral.OnGameCliMsg(): Got a Game message I don't understand: %s" % (str(msgType)))
 
-            else:
-                PtDebugPrint("xBlueSpiral.OnGameCliMsg(): Got a message I don't understand: %s" % (str(msg.getType())))
+        else:
+            PtDebugPrint("xBlueSpiral.OnGameCliMsg(): Got a message I don't understand: %s" % (str(msg.getType())))
 
     ###########################
     def OnNotify(self, state, id, events):
