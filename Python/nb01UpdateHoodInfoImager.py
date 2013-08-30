@@ -112,7 +112,7 @@ class nb01UpdateHoodInfoImager(ptResponder):
             # if we have the text note then update it, otherwise create it
             if playerlist:
                 currenttime = time.gmtime(PtGetDniTime())
-                currenttimestr = time.strftime("%m/%d/%Y %I:%M %p}", currenttime)
+                currenttimestr = time.strftime("%m/%d/%Y %I:%M %p", currenttime)
                 thetext = playerlist.getText()
                 if (thetext.count("\n") + 1) > 15:
                     thetext = thetext[:thetext.rfind("\n")]
