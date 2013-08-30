@@ -188,7 +188,7 @@ class nb01RPSGame(ptResponder):
 
     def IGetHeekGameCli(self):
         if not self.joinedToGame:
-            PtDebugPrint("nb01RPSGame.IGetHeekGame():  Requesting game client before we have become an observer... returning None")
+            PtDebugPrint("nb01RPSGame.IGetHeekGameCli():  Requesting game client before we have become an observer... returning None")
             return None
 
         gameCli = PtGetGameCli(self.gameId)
