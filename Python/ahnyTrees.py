@@ -69,8 +69,9 @@ class ahnyTrees(ptModifier):
         ptModifier.__init__(self)
         self.id = 5948
         version = 1
-        self.version = version
-        PtDebugPrint("__init__ahnyTrees v%d " % (version))
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: ahnyTrees v{}".format(self.version))
 
     ###########################
     def OnFirstUpdate(self):
@@ -81,7 +82,7 @@ class ahnyTrees(ptModifier):
             ageSDL = PtGetAgeSDL()
             ageSDL[SDLTrees.value][0]
         except:
-            PtDebugPrint("ahnyTrees.OnServerInitComplete(): ERROR --- Cannot find the Ahnonay Age SDL")
+            PtDebugPrint("ahnyTrees.OnFirstUpdate():  ERROR: Cannot find the Ahnonay Age SDL")
             ageSDL[SDLTrees.value] = (1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)
 
         ageSDL.setFlags(SDLTrees.value, 1, 1)
@@ -107,7 +108,7 @@ class ahnyTrees(ptModifier):
     def OnNotify(self, state, id, events):
         global respTreeAnimsList
         global objTreeList
-        PtDebugPrint("ahnyTrees.OnNotify: state=%s id=%d events=%s" % (state, id, events))
+        PtDebugPrint("ahnyTrees.OnNotify():  state={} id={} events={}".format(state, id, events))
 
         if id == rgnTrees.id:
             for event in events:
@@ -123,4 +124,4 @@ class ahnyTrees(ptModifier):
                                 respTreeAnims.run(self.key, objectName=respTreeAnimsList[index], netForce=1)
                                 treeSDL[index] = 0
                                 ageSDL[SDLTrees.value] = tuple(treeSDL)
-                                PtDebugPrint("ahnyTrees.OnNotify: Tree knocked down")
+                                PtDebugPrint("ahnyTrees.OnNotify():  Tree knocked down")

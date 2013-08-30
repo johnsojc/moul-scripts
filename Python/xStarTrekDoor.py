@@ -71,8 +71,9 @@ class xStarTrekDoor(ptModifier):
         self.id = 5115
 
         version = 2
-        self.version = version
-        PtDebugPrint("__init__xStarTrekDoor v.%d" % (version))
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: xStarTrekDoor v{}".format(self.version))
 
     def OnFirstUpdate(self):
         pass
@@ -82,7 +83,7 @@ class xStarTrekDoor(ptModifier):
         global doorCued
         global doorMoving
         global doorState
-        print doorMoving
+        PtDebugPrint("xStarTrekDoor.OnNotify():  doorMoving={}".format(doorMoving))
         if state and id == Activate.id:  # region is activated.
 
             for event in events:
@@ -94,13 +95,13 @@ class xStarTrekDoor(ptModifier):
 
             if not doorMoving:
                 self.doorAction()
-                PtDebugPrint("door played")
+                PtDebugPrint("xStarTrekDoor.OnNotify():  door played")
             else:  # got a command, but door is busy so cue it
                 doorCued = 1
-                PtDebugPrint("door cued")
+                PtDebugPrint("xStarTrekDoor.OnNotify():  door cued")
         elif state and id == respDoor.id:
             # Callback from door finishing movement
-            PtDebugPrint("callbackfromdoor")
+            PtDebugPrint("xStarTrekDoor.OnNotify():  callbackfromdoor")
             doorMoving = 0
             if doorCued:
                 doorCued = 0
@@ -113,4 +114,4 @@ class xStarTrekDoor(ptModifier):
             doorMoving = 1
             doorHistory = doorState
             respDoor.run(self.key, state=doorState)
-            PtDebugPrint("Door Begin %s" % (doorState))
+            PtDebugPrint("xStarTrekDoor.doorAction():  Door Begin {}".format(doorState))

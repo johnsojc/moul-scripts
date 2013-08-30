@@ -48,6 +48,7 @@ import string
 import xIniHelper
 from PlasmaConstants import *
 from Plasma import *
+from PlasmaTypes import *
 
 gIniFile = None
 gFilename = U"audio.ini"
@@ -81,11 +82,11 @@ def ConstructFilenameAndPath():
             localNameAndPath = U"init/" + gFilename
             if PtFileExists(localNameAndPath):
                 gFilenameAndPath = localNameAndPath
-                PtDebugPrint(U"xIniAudio::ConstructFilenameAndPath(): Using internal \"%s\" file" % (gFilenameAndPath))
+                PtDebugPrint(U"xIniAudio::ConstructFilenameAndPath():  Using internal \"{}\" file".format(gFilenameAndPath))
                 return
         # otherwise, use the standard init path
         gFilenameAndPath = PtGetInitPath() + U"/" + gFilename
-        PtDebugPrint(U"xIniAudio::ConstructFilenameAndPath(): Using user-level \"%s\" file" % (gFilenameAndPath))
+        PtDebugPrint(U"xIniAudio::ConstructFilenameAndPath():  Using user-level \"{}\" file".format(gFilenameAndPath))
 
 
 def WriteIni():
@@ -108,11 +109,11 @@ def ReadIni():
 def SetSoundFXVolume(volume):
     if gIniFile:
         entry, idx = gIniFile.findByFirstValue(kSoundFX)
-        volstr = "%g" % volume
+        volstr = "{:g}".format(volume)
         if entry:
             entry.setValue(1, volstr)
         else:
-            gIniFile.addEntry("%s %s %g" % (kVolCmd, kSoundFX, volume))
+            gIniFile.addEntry("{} {} {:g}".format(kVolCmd, kSoundFX, volume))
 
 
 def GetSoundFXVolume(volume):
@@ -128,11 +129,11 @@ def GetSoundFXVolume(volume):
 def SetMusicVolume(volume):
     if gIniFile:
         entry, idx = gIniFile.findByFirstValue(kMusic)
-        volstr = "%g" % volume
+        volstr = "{:g}".format(volume)
         if entry:
             entry.setValue(1, volstr)
         else:
-            gIniFile.addEntry("%s %s %g" % (kVolCmd, kMusic, volume))
+            gIniFile.addEntry("{} {} {:g}".format(kVolCmd, kMusic, volume))
 
 
 def GetMusicVolume(volume):
@@ -148,11 +149,11 @@ def GetMusicVolume(volume):
 def SetVoiceVolume(volume):
     if gIniFile:
         entry, idx = gIniFile.findByFirstValue(kVoice)
-        volstr = "%g" % volume
+        volstr = "{:g}".format(volume)
         if entry:
             entry.setValue(1, volstr)
         else:
-            gIniFile.addEntry("%s %s %g" % (kVolCmd, kVoice, volume))
+            gIniFile.addEntry("{} {} {:g}".format(kVolCmd, kVoice, volume))
 
 
 def GetVoiceVolume(volume):
@@ -168,11 +169,11 @@ def GetVoiceVolume(volume):
 def SetAmbienceVolume(volume):
     if gIniFile:
         entry, idx = gIniFile.findByFirstValue(kAmbience)
-        volstr = "%g" % volume
+        volstr = "{:g}".format(volume)
         if entry:
             entry.setValue(1, volstr)
         else:
-            gIniFile.addEntry("%s %s %g" % (kVolCmd, kAmbience, volume))
+            gIniFile.addEntry("{} {} {:g}".format(kVolCmd, kAmbience, volume))
 
 
 def GetAmbienceVolume(volume):
@@ -188,11 +189,11 @@ def GetAmbienceVolume(volume):
 def SetGUIVolume(volume):
     if gIniFile:
         entry, idx = gIniFile.findByFirstValue(kGUI)
-        volstr = "%g" % volume
+        volstr = "{:g}".format(volume)
         if entry:
             entry.setValue(1, volstr)
         else:
-            gIniFile.addEntry("%s %s %g" % (kVolCmd, kGUI, volume))
+            gIniFile.addEntry("{} {} {:g}".format(kVolCmd, kGUI, volume))
 
 
 def GetGUIVolume(volume):
@@ -208,11 +209,11 @@ def GetGUIVolume(volume):
 def SetNPCVoiceVolume(volume):
     if gIniFile:
         entry, idx = gIniFile.findByFirstValue(kNPCVoice)
-        volstr = "%g" % volume
+        volstr = "{:g}".format(volume)
         if entry:
             entry.setValue(1, volstr)
         else:
-            gIniFile.addEntry("%s %s %g" % (kVolCmd, kNPCVoice, volume))
+            gIniFile.addEntry("{} {} {:g}".format(kVolCmd, kNPCVoice, volume))
 
 
 def GetNPCVoiceVolume(volume):
@@ -228,11 +229,11 @@ def GetNPCVoiceVolume(volume):
 def SetMicLevel(level):
     if gIniFile:
         entry, idx = gIniFile.findByCommand(kMicLevel)
-        volstr = "%g" % level
+        volstr = "{:g}".format(level)
         if entry:
             entry.setValue(0, volstr)
         else:
-            gIniFile.addEntry("%s %g" % (kMicLevel, level))
+            gIniFile.addEntry("{} {:g}".format(kMicLevel, level))
 
 
 def GetMicLevel(level):
@@ -248,11 +249,11 @@ def GetMicLevel(level):
 def SetVoiceRecording(level):
     if gIniFile:
         entry, idx = gIniFile.findByCommand(kVoiceRec)
-        volstr = "%g" % level
+        volstr = "{:g}".format(level)
         if entry:
             entry.setValue(0, volstr)
         else:
-            gIniFile.addEntry("%s %g" % (kVoiceRec, level))
+            gIniFile.addEntry("{} {:g}".format(kVoiceRec, level))
 
 
 def GetVoiceRecording(level):
@@ -268,11 +269,11 @@ def GetVoiceRecording(level):
 def SetSoundPriority(priority):
     if gIniFile:
         entry, idx = gIniFile.findByCommand(kSoundPri)
-        pristr = "%d" % priority
+        pristr = "{}".format(priority)
         if entry:
             entry.setValue(0, pristr)
         else:
-            gIniFile.addEntry("%s %d" % (kSoundPri, priority))
+            gIniFile.addEntry("{} {}".format(kSoundPri, priority))
 
 
 def GetSoundPriority():
@@ -288,11 +289,11 @@ def GetSoundPriority():
 def SetMute(mute):
     if gIniFile:
         entry, idx = gIniFile.findByCommand(kMute)
-        mutestr = "%d" % mute
+        mutestr = "{}".format(mute)
         if entry:
             entry.setValue(0, mutestr)
         else:
-            gIniFile.addEntry("%s %d" % (kMute, mute))
+            gIniFile.addEntry("{} {}".format(kMute, mute))
 
 
 def GetMute():
@@ -347,11 +348,11 @@ def SetAudioMode(init, device, eax):
         else:
             gIniFile.addEntry("Audio.Initialize " + val)
 
-        PtDebugPrint(device)
+        PtDebugPrint("device = {}".format(device))
         if entryDev:
-            entryDev.setValue(0, "\"" + device + "\"")
+            entryDev.setValue(0, "\"{}\"".format(device))
         else:
-            gIniFile.addEntry("Audio.SetDeviceName \"" + device + "\"")
+            gIniFile.addEntry("Audio.SetDeviceName \"{}\"".format(device))
 
         if eax:
             val = kBeTrue
@@ -361,4 +362,4 @@ def SetAudioMode(init, device, eax):
         if entryEAX:
             entryEAX.setValue(0, val)
         else:
-            gIniFile.addEntry("Audio.UseEAX " + val)
+            gIniFile.addEntry("Audio.UseEAX {}".format(val))

@@ -113,8 +113,8 @@ class tldnVaporScope(ptModifier):
         self.id = 5190
         maxVersion = 5
         minorVersion = 6
-        self.version = maxVersion
-        PtDebugPrint("tldnVaporScope::init v%d.%d" % (maxVersion, minorVersion))
+        self.version = "{}.{}".format(maxVersion, minorVersion)
+        PtDebugPrint("__init__: tldnVaporScope v{}".format(self.version))
 
     def OnFirstUpdate(self):
         self.SDL.setDefault("boolOperated", (0, ))
@@ -134,14 +134,14 @@ class tldnVaporScope(ptModifier):
         boolOperated = self.SDL["boolOperated"][0]
         if boolOperated:
             if solo:
-                PtDebugPrint("tldnVaporScope.Load():\tboolOperated=%d but no one else here...correcting %d" % (boolOperated), level=kDebugDumpLevel)
+                PtDebugPrint("tldnVaporScope.Load():  boolOperated={} but no one else here...correcting".format(boolOperated), level=kDebugDumpLevel)
                 boolOperated = 0
                 self.SDL["boolOperated"] = (0,)
                 self.SDL["OperatorID"] = (-1,)
                 Activate.enable()
             else:
                 Activate.disable()
-                PtDebugPrint("tldnVaporScope.Load():\tboolOperated=%d, disabling telescope clickable %d" % (boolOperated), level=kDebugDumpLevel)
+                PtDebugPrint("tldnVaporScope.Load():  boolOperated={}, disabling telescope clickable".format(boolOperated), level=kDebugDumpLevel)
 
     def OnServerInitComplete(self):
         global boolScopeAtTop
@@ -160,7 +160,7 @@ class tldnVaporScope(ptModifier):
             Activate.enable()
             self.SDL["OperatorID"] = (-1,)
             self.SDL["boolOperated"] = (0,)
-            PtDebugPrint("tldnVaporScope.AvatarPage(): telescope operator paged out, reenabled telescope.", level=kDebugDumpLevel)
+            PtDebugPrint("tldnVaporScope.AvatarPage():  telescope operator paged out, reenabled telescope.", level=kDebugDumpLevel)
         else:
             return
 
@@ -175,18 +175,18 @@ class tldnVaporScope(ptModifier):
         global boolScopeOperator
         global boolScopeAtTop
         global boolScopeAtBottom
-        PtDebugPrint("tldnVaporScope:OnNotify  state=%f id=%d events=" % (state, id), events, level=kDebugDumpLevel)
+        PtDebugPrint("tldnVaporScope.OnNotify():  state={:f} id={} events={}".format(state, id, events), level=kDebugDumpLevel)
 
         #####################################
         # Stop Scope at vertical boundaries #
         #####################################
         if state and id == actStopAtTop.id:
-            PtDebugPrint("tldnVaporScope: got event - at top", level=kDebugDumpLevel)
+            PtDebugPrint("tldnVaporScope.OnNotify():  got event - at top", level=kDebugDumpLevel)
             boolScopeAtTop = 1
             self.SDL["scopeAtTop"] = (1,)
             return
         if state and id == actStopAtBottom.id:
-            PtDebugPrint("tldnVaporScope: got event - near bottom", level=kDebugDumpLevel)
+            PtDebugPrint("tldnVaporScope.OnNotify():  got event - near bottom", level=kDebugDumpLevel)
             boolScopeAtBottom = 1
             self.SDL["scopeAtBottom"] = (1,)
             return
@@ -224,7 +224,7 @@ class tldnVaporScope(ptModifier):
                     gInitialFOV = kMaxFOV
                 zsliderValue = (gInitialFOV-kMaxFOV)/kDegreesPerSlider
                 zoomSlider.setValue(zsliderValue)
-                PtDebugPrint("tldnVaporScope:ShowDialog:  current FOVh at %f - setting slider to %f" % (gInitialFOV, zsliderValue))
+                PtDebugPrint("tldnVaporScope.OnGUINotify():  current FOVh at {:f} - setting slider to {:f}".format(gInitialFOV, zsliderValue))
         elif event == kValueChanged:
             if control is not None:
                 knobID = control.getTagID()
@@ -232,34 +232,34 @@ class tldnVaporScope(ptModifier):
                     newFOV = (control.getValue() * kDegreesPerSlider) + kMaxFOV
                     curCam = ptCamera()
                     curCam.setFOV(newFOV, 0.5)
-                    PtDebugPrint("tldnVaporScope:ValueChange:  slider=%f and setting FOV to %f" % (control.getValue(), newFOV))
+                    PtDebugPrint("tldnVaporScope.OnGUINotify():  ValueChanged: slider={:f} and setting FOV to {:f}".format(control.getValue(), newFOV))
         elif event == kAction:
             if control is not None:
                 btnID = control.getTagID()
                 if btnID == kLeftScopeBtn:
                     if isinstance(control, ptGUIControlButton) and control.isButtonDown():
-                        PtDebugPrint("tldnVaporScope:GUINotify Left button down", level=kDebugDumpLevel)
+                        PtDebugPrint("tldnVaporScope.OnGUINotify():  Left button down", level=kDebugDumpLevel)
                         animVaporTurret.value.backwards(0)
                         animVaporTurret.value.resume()
                     else:
-                        PtDebugPrint("tldnVaporScope:GUINotify Left button up", level=kDebugDumpLevel)
+                        PtDebugPrint("tldnVaporScope.OnGUINotify():  Left button up", level=kDebugDumpLevel)
                         animVaporTurret.value.stop()
                 elif btnID == kRightScopeBtn:
                     if isinstance(control, ptGUIControlButton) and control.isButtonDown():
-                        PtDebugPrint("tldnVaporScope:GUINotify Right button down", level=kDebugDumpLevel)
+                        PtDebugPrint("tldnVaporScope.OnGUINotify():  Right button down", level=kDebugDumpLevel)
                         animVaporTurret.value.backwards(1)
                         animVaporTurret.value.resume()
                     else:
-                        PtDebugPrint("tldnVaporScope:GUINotify Right button up", level=kDebugDumpLevel)
+                        PtDebugPrint("tldnVaporScope.OnGUINotify():  Right button up", level=kDebugDumpLevel)
                         animVaporTurret.value.stop()
                 elif btnID == kUpScopeBtn:
                     if isinstance(control, ptGUIControlButton) and control.isButtonDown():
                         if not boolScopeAtTop:
-                            PtDebugPrint("tldnVaporScope:GUINotify Up button down", level=kDebugDumpLevel)
+                            PtDebugPrint("tldnVaporScope.OnGUINotify():  Up button down", level=kDebugDumpLevel)
                             animVaporPitch.value.backwards(0)
                             animVaporPitch.value.resume()
                     else:
-                        PtDebugPrint("tldnVaporScope:GUINotify Up button up", level=kDebugDumpLevel)
+                        PtDebugPrint("tldnVaporScope.OnGUINotify():  Up button up", level=kDebugDumpLevel)
                         animVaporPitch.value.stop()
                     if boolScopeAtBottom:
                         boolScopeAtBottom = 0
@@ -267,18 +267,18 @@ class tldnVaporScope(ptModifier):
                 elif btnID == kDownScopeBtn:
                     if isinstance(control, ptGUIControlButton) and control.isButtonDown():
                         if not boolScopeAtBottom:
-                            PtDebugPrint("tldnVaporScope:GUINotify Down button down", level=kDebugDumpLevel)
+                            PtDebugPrint("tldnVaporScope.OnGUINotify():  Down button down", level=kDebugDumpLevel)
                             animVaporPitch.value.backwards(1)
                             animVaporPitch.value.resume()
                     else:
-                        PtDebugPrint("tldnVaporScope:GUINotify Down button up", level=kDebugDumpLevel)
+                        PtDebugPrint("tldnVaporScope.OnGUINotify():  Down button up", level=kDebugDumpLevel)
                         animVaporPitch.value.stop()
                     if boolScopeAtTop:
                         boolScopeAtTop = 0
                         self.SDL["scopeAtTop"] = (0,)
                 elif btnID == kFireScopeBtn:
                     if not gThrottleShooting:
-                        PtDebugPrint("tldnVaporScope:GUINotify Shoot vapor", level=kDebugDumpLevel)
+                        PtDebugPrint("tldnVaporScope.OnGUINotify():  Shoot vapor", level=kDebugDumpLevel)
                         respShootGun.run(self.key)
                         # need to see if we hit anything and run their responder
                         PtRequestLOSScreen(self.key, 42, 0.5, 0.5, 10000, PtLOSObjectType.kShootable, PtLOSReportType.kReportHitOrMiss)
@@ -291,12 +291,12 @@ class tldnVaporScope(ptModifier):
                                         fireBtn = ptGUIControlButton(scopeDlg.getControlFromTag(kFireScopeBtn))
                                         fireBtn.disable()
                                     except KeyError:
-                                        PtDebugPrint("tldnVaporScope:GUINotify can't find the fire button", level=kDebugDumpLevel)
+                                        PtDebugPrint("tldnVaporScope.OnGUINotify():  can't find the fire button", level=kDebugDumpLevel)
                         except KeyError:
-                            PtDebugPrint("tldnVaporScope:GUINotify can't find VaporScope dialog", level=kDebugDumpLevel)
+                            PtDebugPrint("tldnVaporScope.OnGUINotify():  can't find VaporScope dialog", level=kDebugDumpLevel)
                         PtAtTimeCallback(self.key, kTimerThrottleTime, kTimerThrottleFiring)  # wait for player to finish exit one-shot, then reenable clickable
                     else:
-                        PtDebugPrint("tldnVaporScope:GUINotify Throttling", level=kDebugDumpLevel)
+                        PtDebugPrint("tldnVaporScope.OnGUINotify():  Throttling", level=kDebugDumpLevel)
                 elif btnID == kExitButton:
                     self.IQuitTelescope()
 
@@ -307,40 +307,40 @@ class tldnVaporScope(ptModifier):
             self.IQuitTelescope()
 
     def OnLOSNotify(self, ID, noHitFlag, sceneobject, hitPoint, distance):
-        PtDebugPrint("tldnVaporScope:LOSNotify:  ID=%d  noHitFlag=%d at a distance of %g" % (ID, noHitFlag, distance), level=kDebugDumpLevel)
+        PtDebugPrint("tldnVaporScope.OnLOSNotify():  ID={}  noHitFlag={} at a distance of {:g}".format(ID, noHitFlag, distance), level=kDebugDumpLevel)
         PtShootBulletFromScreen(self.key, 0.5, 0.5, 1.0, 10000)
         if sceneobject:
-            PtDebugPrint("tldnVaporScope:LOSNotify: ===>hit object %s at point(%g,%g,%g)" % (sceneobject.getName(), hitPoint.getX(), hitPoint.getY(), hitPoint.getZ()), level=kDebugDumpLevel)
+            PtDebugPrint("tldnVaporScope.OnLOSNotify():  ===>hit object {} at point({:g},{:g},{:g})".format(sceneobject.getName(), hitPoint.getX(), hitPoint.getY(), hitPoint.getZ()), level=kDebugDumpLevel)
             # first look for a python file guy (before responders)
             pmlist = sceneobject.getPythonMods()
             if len(pmlist) > 0:
-                PtDebugPrint("tldnVaporScope:LOSNotify:  ...python mod list:", level=kDebugDumpLevel)
+                PtDebugPrint("tldnVaporScope.OnLOSNotify():  ...python mod list:", level=kDebugDumpLevel)
                 for pm in pmlist:
-                    PtDebugPrint("       %s" % (pm.getName()), level=kDebugDumpLevel)
+                    PtDebugPrint("\t{}".format(pm.getName()), level=kDebugDumpLevel)
                     if string.lower(pm.getName()).startswith("vaporminerhitme"):
-                        PtDebugPrint("tldnVaporScope:LOS: VaporMiner HIT!", level=kDebugDumpLevel)
+                        PtDebugPrint("tldnVaporScope.OnLOSNotify():  VaporMiner HIT!", level=kDebugDumpLevel)
                         notify = ptNotify(self.key)
                         notify.clearReceivers()
                         notify.addReceiver(pm)
                         notify.setActivate(1.0)
                         notify.send()
             else:
-                PtDebugPrint("tldnVaporScope:LOSNotify: ...no python mods found", level=kDebugDumpLevel)
+                PtDebugPrint("tldnVaporScope.OnLOSNotify():  ...no python mods found", level=kDebugDumpLevel)
             # next look for responders attached
             resplist = sceneobject.getResponders()
             if len(resplist) > 0:
-                PtDebugPrint("tldnVaporScope:LOSNotify:  ...responder list:", level=kDebugDumpLevel)
+                PtDebugPrint("tldnVaporScope.OnLOSNotify():  ...responder list:", level=kDebugDumpLevel)
                 for resp in resplist:
-                    PtDebugPrint("       %s" % (resp.getName()), level=kDebugDumpLevel)
+                    PtDebugPrint("\t{}".format(resp.getName()), level=kDebugDumpLevel)
                     if string.lower(resp.getName()).startswith("vaporminerhitme"):
-                        PtDebugPrint("tldnVaporScope:LOS: VaporMiner HIT!", level=kDebugDumpLevel)
+                        PtDebugPrint("tldnVaporScope.OnLOSNotify():  VaporMiner HIT!", level=kDebugDumpLevel)
                         atResp = ptAttribResponder(42)
                         atResp.__setvalue__(resp)
                         atResp.run(self.key)
             else:
-                PtDebugPrint("tldnVaporScope:LOSNotify: ...no responders found", level=kDebugDumpLevel)
+                PtDebugPrint("tldnVaporScope.OnLOSNotify():  ...no responders found", level=kDebugDumpLevel)
         else:
-            PtDebugPrint("tldnVaporScope:LOSNotify: No sceneobject found...", level=kDebugDumpLevel)
+            PtDebugPrint("tldnVaporScope.OnLOSNotify():  No sceneobject found...", level=kDebugDumpLevel)
 
     def IStartTelescope(self):
         "Start the action of looking at the telescope"
@@ -353,7 +353,7 @@ class tldnVaporScope(ptModifier):
         self.SDL["boolOperated"] = (1,)
         avID = PtGetClientIDFromAvatarKey(LocalAvatar.getKey())
         self.SDL["OperatorID"] = (avID,)
-        PtDebugPrint("tldnVaporScope.OnNotify:\twrote SDL - scope operator id = %d" % (avID), level=kDebugDumpLevel)
+        PtDebugPrint("tldnVaporScope.IStartTelescope():  wrote SDL - scope operator id = {}".format(avID), level=kDebugDumpLevel)
         # start the behavior
         Behavior.run(LocalAvatar)
 
@@ -396,14 +396,14 @@ class tldnVaporScope(ptModifier):
         #Re-enable first person camera
         virtCam.enableFirstPersonOverride()
         PtAtTimeCallback(self.key, kTimerDisengageTime, kTimerDisengage)  # wait for player to finish exit one-shot, then reenable clickable
-        PtDebugPrint("tldnVaporScope.IQuitTelescope:\tdelaying clickable reenable")
+        PtDebugPrint("tldnVaporScope.IStartTelescope():  delaying clickable reenable")
 
     def OnTimer(self, id):
         global gThrottleShooting
         if id == kTimerDisengage:
             Activate.enable()
             PtSendKIMessage(kEnableKIandBB, 0)
-            PtDebugPrint("tldnVaporScope.OnTimer:\tclickable reenabled", level=kDebugDumpLevel)
+            PtDebugPrint("tldnVaporScope.OnTimer():  clickable reenabled", level=kDebugDumpLevel)
         elif id == kTimerThrottleFiring:
             # we can not let firing happen... again
             gThrottleShooting = 0
@@ -415,6 +415,6 @@ class tldnVaporScope(ptModifier):
                             fireBtn = ptGUIControlButton(scopeDlg.getControlFromTag(kFireScopeBtn))
                             fireBtn.enable()
                         except KeyError:
-                            PtDebugPrint("tldnVaporScope:Timer can't find the fire button", level=kDebugDumpLevel)
+                            PtDebugPrint("tldnVaporScope.OnTimer():  can't find the fire button", level=kDebugDumpLevel)
             except KeyError:
-                PtDebugPrint("tldnVaporScope:Timer can't find VaporScope dialog", level=kDebugDumpLevel)
+                PtDebugPrint("tldnVaporScope.OnTimer():  can't find VaporScope dialog", level=kDebugDumpLevel)

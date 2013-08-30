@@ -115,9 +115,11 @@ class grsnDownElevator(ptResponder):
     def __init__(self):
         ptResponder.__init__(self)
         self.id = 51001
-        self.version = 9
+        version = 9
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
         PtLoadDialog(xVisitorUtils.kVisitorNagDialog)
-        PtDebugPrint("Initialized: grsnDownElevator")
+        PtDebugPrint("__init__: grsnDownElevator v{}".format(self.version))
 
     def __del__(self):
         PtUnloadDialog(xVisitorUtils.kVisitorNagDialog)
@@ -134,21 +136,21 @@ class grsnDownElevator(ptResponder):
         if downOn:
             dnElevatorLights.run(self.key, state='TurnOn', avatar=PtGetLocalAvatar())
             downElevTrigger.enable()
-            PtDebugPrint("grsnDownElevator: down elevator on at load")
+            PtDebugPrint("grsnDownElevator.OnServerInitComplete():  down elevator on at load")
         else:
             dnElevatorLights.run(self.key, state='TurnOff', avatar=PtGetLocalAvatar())
             downElevTrigger.disable()
-            PtDebugPrint("grsnDownElevator: down elevator off at load")
+            PtDebugPrint("grsnDownElevator.OnServerInitComplete():  down elevator off at load")
 
         upOn = ageSDL[upElevSDL.value][0]
         if (upOn):
             upElevatorLights.run(self.key, state='TurnOn', avatar=PtGetLocalAvatar())
             upElevatorBottomTrigger.enable()
-            PtDebugPrint("grsnDownElevator: up elevator on at load")
+            PtDebugPrint("grsnDownElevator.OnServerInitComplete():  up elevator on at load")
         else:
             upElevatorLights.run(self.key, state='TurnOff', avatar=PtGetLocalAvatar())
             upElevatorBottomTrigger.disable()
-            PtDebugPrint("grsnDownElevator: up elevator off at load")
+            PtDebugPrint("grsnDownElevator.OnServerInitComplete():  up elevator off at load")
 
     def OnSDLNotify(self, VARname, SDLname, playerID, tag):
         ageSDL = PtGetAgeSDL()
@@ -158,22 +160,22 @@ class grsnDownElevator(ptResponder):
             if downOn:
                 dnElevatorLights.run(self.key, state='TurnOn', avatar=PtGetLocalAvatar())
                 downElevTrigger.enable()
-                PtDebugPrint("grsnDownElevator: turn on down elevator")
+                PtDebugPrint("grsnDownElevator.OnSDLNotify():  turn on down elevator")
             else:
                 dnElevatorLights.run(self.key, state='TurnOff', avatar=PtGetLocalAvatar())
                 downElevTrigger.disable()
-                PtDebugPrint("grsnDownElevator: turn off down elevator")
+                PtDebugPrint("grsnDownElevator.OnSDLNotify():  turn off down elevator")
 
         elif VARname == upElevSDL.value:
             upOn = ageSDL[upElevSDL.value][0]
             if upOn:
                 upElevatorLights.run(self.key, state='TurnOn', avatar=PtGetLocalAvatar())
                 upElevatorBottomTrigger.enable()
-                PtDebugPrint("grsnDownElevator: turn on up elevator")
+                PtDebugPrint("grsnDownElevator.OnSDLNotify():  turn on up elevator")
             else:
                 upElevatorLights.run(self.key, state='TurnOff', avatar=PtGetLocalAvatar())
                 upElevatorBottomTrigger.disable()
-                PtDebugPrint("grsnDownElevator: turn off up elevator")
+                PtDebugPrint("grsnDownElevator.OnSDLNotify():  turn off up elevator")
 
     def OnTimer(self, id):
         global kOpenUpElevatorTop
@@ -200,18 +202,18 @@ class grsnDownElevator(ptResponder):
     def OnNotify(self, state, id, events):
         global avatarInElevator
 
-        PtDebugPrint("grsnDownElevator.OnNotify: state=%s id=%d events=%s %s" % (state, id, str(events[0][1]), str(events[0][2])))
+        PtDebugPrint("grsnDownElevator.OnNotify():  state={} id={} events={} {}".format(state, id, events[0][1], events[0][2]))
 
         if id == downBehavior.id:
             for event in events:
                 if event[0] == kMultiStageEvent and event[1] == 0 and event[2] == kEnterStage and avatarInElevator == PtGetLocalAvatar() and PtWasLocallyNotified(self.key):
-                    PtDebugPrint("grsnDownElevator: enter stage play")
+                    PtDebugPrint("grsnDownElevator.OnNotify():  enter stage play")
                     PtAtTimeCallback(self.key, 1, kOpenDownElevatorTop)
                     dnElevTopSoundDummyAnim.animation.play()
                     return
 
                 elif event[0] == kMultiStageEvent and event[1] == 0 and event[2] == kAdvanceNextStage and avatarInElevator == PtGetLocalAvatar() and PtWasLocallyNotified(self.key):
-                    PtDebugPrint("grsnDownElevator: warping to down point")
+                    PtDebugPrint("grsnDownElevator.OnNotify():  warping to down point")
                     respDnElevFloorAnim.run(self.key)
                     dnElevBotSoundDummyAnim.animation.play()
                     startDownCamera.value.pushCutsceneCamera(1, avatarInElevator.getKey())
@@ -221,13 +223,13 @@ class grsnDownElevator(ptResponder):
                     return
 
                 elif event[0] == kMultiStageEvent and event[1] == 0 and event[2] == kAdvanceNextStage:
-                    PtDebugPrint("grsnDownElevator: other player warp")
+                    PtDebugPrint("grsnDownElevator.OnNotify():  other player warp")
                     avatarInElevator.avatar.exitSubWorld()
                     avatarInElevator.physics.warpObj(downElevWarpPoint.value.getKey())
                     return
 
                 elif event[0] == kMultiStageEvent and event[1] == 1 and event[2] == kAdvanceNextStage and avatarInElevator == PtGetLocalAvatar() and PtWasLocallyNotified(self.key):
-                    PtDebugPrint("grsnDownElevator: finished coming out of elevator")
+                    PtDebugPrint("grsnDownElevator.OnNotify():  finished coming out of elevator")
                     startDownCamera.value.pushCamera(avatarInElevator.getKey())
                     startDownCamera.value.popCutsceneCamera(avatarInElevator.getKey())
                     cam = ptCamera()
@@ -237,21 +239,21 @@ class grsnDownElevator(ptResponder):
                     return
 
                 elif event[0] == kMultiStageEvent and event[1] == 1 and event[2] == kAdvanceNextStage:
-                    PtDebugPrint("grsnDownElevator: enable trigger")
+                    PtDebugPrint("grsnDownElevator.OnNotify():  enable trigger")
                     downElevTrigger.enable()
                     return
 
         elif id == upBehavior.id:
             for event in events:
                 if event[0] == kMultiStageEvent and event[1] == 0 and event[2] == kEnterStage and avatarInElevator == PtGetLocalAvatar() and PtWasLocallyNotified(self.key):
-                    PtDebugPrint("grsnDownElevator: enter stage play")
+                    PtDebugPrint("grsnDownElevator.OnNotify():  enter stage play")
                     respUpElevFloorAnim.run(self.key)
                     PtAtTimeCallback(self.key, 1, kOpenUpElevatorBottom)
                     upElevBotSoundDummyAnim.animation.play()
                     return
 
                 elif event[0] == kMultiStageEvent and event[1] == 0 and event[2] == kAdvanceNextStage and avatarInElevator == PtGetLocalAvatar() and PtWasLocallyNotified(self.key):
-                    PtDebugPrint("grsnDownElevator: warping to up point")
+                    PtDebugPrint("grsnDownElevator.OnNotify():  warping to up point")
                     upElevTopSoundDummyAnim.animation.play()
                     avatarInElevator.avatar.enterSubWorld(subworld.value)
                     avatarInElevator.physics.warpObj(upElevWarpPoint.value.getKey())
@@ -261,13 +263,13 @@ class grsnDownElevator(ptResponder):
                     return
 
                 elif event[0] == kMultiStageEvent and event[1] == 0 and event[2] == kAdvanceNextStage:
-                    PtDebugPrint("grsnDownElevator: other player warp")
+                    PtDebugPrint("grsnDownElevator.OnNotify():  other player warp")
                     avatarInElevator.avatar.enterSubWorld(subworld.value)
                     avatarInElevator.physics.warpObj(upElevWarpPoint.value.getKey())
                     return
 
                 elif event[0] == kMultiStageEvent and event[1] == 1 and event[2] == kAdvanceNextStage and avatarInElevator == PtGetLocalAvatar() and PtWasLocallyNotified(self.key):
-                    PtDebugPrint("grsnDownElevator: finished coming out of elevator")
+                    PtDebugPrint("grsnDownElevator.OnNotify():  finished coming out of elevator")
                     cam = ptCamera()
                     cam.enableFirstPersonOverride()
                     WellTopDefaultCam.value.pushCamera(avatarInElevator.getKey())
@@ -277,13 +279,13 @@ class grsnDownElevator(ptResponder):
                     return
 
                 elif event[0] == kMultiStageEvent and event[1] == 1 and event[2] == kAdvanceNextStage:
-                    PtDebugPrint("grsnDownElevator: enable trigger")
+                    PtDebugPrint("grsnDownElevator.OnNotify():  enable trigger")
                     upElevatorBottomTrigger.enable()
                     return
 
         if state:
             if not PtIsSubscriptionActive():
-                PtDebugPrint("grsnDownElevator: Elevators are disabled for visitors")
+                PtDebugPrint("grsnDownElevator.OnNotify():  Elevators are disabled for visitors")
                 PtShowDialog(xVisitorUtils.kVisitorNagDialog)
                 return
 
@@ -296,13 +298,13 @@ class grsnDownElevator(ptResponder):
                     cam.undoFirstPerson()
                     PtSendKIMessage(kDisableEntireYeeshaBook, 0)
                 finishDownCamera.value.pushCutsceneCamera(0, avatarInElevator.getKey())
-                PtDebugPrint("grsnDownElevator: triggered down elevator")
+                PtDebugPrint("grsnDownElevator.OnNotify():  triggered down elevator")
                 downBehavior.run(avatarInElevator)
 
             elif id == upElevatorBottomTrigger.id:
                 upElevatorBottomTrigger.disable()
                 avatarInElevator = PtFindAvatar(events)
-                PtDebugPrint("grsnDownElevator: triggered up elevator")
+                PtDebugPrint("grsnDownElevator.OnNotify():  triggered up elevator")
                 cam = ptCamera()
                 if (avatarInElevator == PtGetLocalAvatar()):
                     cam.disableFirstPersonOverride()

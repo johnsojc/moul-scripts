@@ -66,13 +66,14 @@ class xAgeSDLIntStartStopResp(ptResponder):
         ptModifier.__init__(self)
         self.id = 5301
         version = 1
-        self.version = version
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
         self.enabledStateList = []
-        PtDebugPrint("__init__xAgeSDLIntStartStopResp v.%d" % (version))
+        PtDebugPrint("__init__: xAgeSDLIntStartStopResp v{}".format(self.version))
 
     def OnFirstUpdate(self):
         if not (type(stringSDLVarName.value) is str and stringSDLVarName.value != ""):
-            PtDebugPrint("ERROR: xAgeSDLIntStartStopResp.OnFirstUpdate():\tERROR: missing SDL var name in max file")
+            PtDebugPrint("xAgeSDLIntStartStopResp.OnFirstUpdate():  ERROR: missing SDL var name in max file")
             pass
 
     def OnServerInitComplete(self):
@@ -82,23 +83,23 @@ class xAgeSDLIntStartStopResp(ptResponder):
             for i in range(len(self.enabledStateList)):
                 self.enabledStateList[i] = int(self.enabledStateList[i].strip())
         except:
-            PtDebugPrint("ERROR: xAgeSDLIntStartStopResp.OnServerInitComplete():\tERROR: couldn't process start state list")
+            PtDebugPrint("xAgeSDLIntStartStopResp.OnServerInitComplete():  ERROR: couldn't process start state list")
             pass
 
-        PtDebugPrint("DEBUG: xAgeSDLIntStartStopResp.OnServerInitComplete:\tProcessing")
+        PtDebugPrint("xAgeSDLIntStartStopResp.OnServerInitComplete:  DEBUG: Processing")
         ageSDL.setNotify(self.key, stringSDLVarName.value, 0.0)
         try:
             SDLvalue = ageSDL[stringSDLVarName.value][0]
         except:
-            PtDebugPrint("ERROR: xAgeSDLIntShowHide.OnServerInitComplete():\tERROR: age sdl read failed, SDLvalue = %d by default. stringVarName = %s" % (intDefault.value, stringSDLVarName.value))
+            PtDebugPrint("xAgeSDLIntStartStopResp.OnServerInitComplete():  ERROR: age sdl read failed, SDLvalue = {} by default. stringVarName = {}".format(intDefault.value, stringSDLVarName.value))
             SDLvalue = intDefault.value
 
         if SDLvalue in self.enabledStateList:
-            PtDebugPrint("DEBUG: xAgeSDLIntStartStopResp.OnServerInitComplete:\tRunning start responder")
+            PtDebugPrint("xAgeSDLIntStartStopResp.OnServerInitComplete():  DEBUG: Running start responder")
             fastforward = boolStartFF.value | boolFFOnInit.value
             respStart.run(self.key, avatar=None, fastforward=fastforward)
         else:
-            PtDebugPrint("DEBUG: xAgeSDLIntStartStopResp.OnServerInitComplete:\tRunning stop responder")
+            PtDebugPrint("xAgeSDLIntStartStopResp.OnServerInitComplete():  DEBUG: Running stop responder")
             fastforward = boolStopFF.value | boolFFOnInit.value
             respStop.run(self.key, avatar=None, fastforward=fastforward)
 
@@ -109,11 +110,11 @@ class xAgeSDLIntStartStopResp(ptResponder):
         ageSDL = PtGetAgeSDL()
         SDLvalue = ageSDL[stringSDLVarName.value][0]
 
-        PtDebugPrint("DEBUG: xAgeSDLIntStartStopResp.OnSDLNotify received: %s = %d" % (VARname, SDLvalue))
+        PtDebugPrint("xAgeSDLIntStartStopResp.OnSDLNotify():  DEBUG: received: {} = {}".format(VARname, SDLvalue))
 
         if SDLvalue in self.enabledStateList:
-            PtDebugPrint("DEBUG: xAgeSDLIntStartStopResp.OnSDLNotify: running start responder")
+            PtDebugPrint("xAgeSDLIntStartStopResp.OnSDLNotify():  DEBUG: running start responder")
             respStart.run(self.key, avatar=None, fastforward=boolStartFF.value)
         else:
-            PtDebugPrint("DEBUG: xAgeSDLIntStartStopResp.OnSDLNotify: running stop responder")
+            PtDebugPrint("xAgeSDLIntStartStopResp.OnSDLNotify():  DEBUG: running stop responder")
             respStop.run(self.key, avatar=None, fastforward=boolStopFF.value)

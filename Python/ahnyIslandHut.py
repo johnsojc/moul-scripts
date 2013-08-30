@@ -88,7 +88,10 @@ class ahnyIslandHut(ptResponder):
     def __init__(self):
         ptResponder.__init__(self)
         self.id = 5580
-        self.version = 1
+        version = 1
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: ahnyIslandHut v{}".format(self.version))
 
     def OnFirstUpdate(self):
         global boolCurrent
@@ -97,7 +100,7 @@ class ahnyIslandHut(ptResponder):
         try:
             ageSDL = PtGetAgeSDL()
         except:
-            PtDebugPrint("ahnySphere1MaintBtn.OnServerInitComplete():\tERROR---Cannot find the Ahnonay Age SDL")
+            PtDebugPrint("ahnyIslandHut.OnFirstUpdate():  ERROR: Cannot find the Ahnonay Age SDL")
             ageSDL[SDLWaterCurrent.value] = (0,)
             ageSDL[SDLHutDoor.value] = (0,)
 
@@ -115,14 +118,14 @@ class ahnyIslandHut(ptResponder):
 
         if boolCurrent:
             RespCurrentChange.run(self.key, state='on', fastforward=1)
-            PtDebugPrint("OnInit, will now enable current")
+            PtDebugPrint("ahnyIslandHut.OnFirstUpdate():  will now enable current")
             WaterCurrent1.current.enable()
             WaterCurrent2.current.enable()
             WaterCurrent3.current.enable()
             WaterCurrent4.current.enable()
         else:
             RespCurrentChange.run(self.key, state='off', fastforward=1)
-            PtDebugPrint("OnInit, will now disable current")
+            PtDebugPrint("ahnyIslandHut.OnFirstUpdate():  will now disable current")
             WaterCurrent1.current.disable()
             WaterCurrent2.current.disable()
             WaterCurrent3.current.disable()
@@ -174,13 +177,13 @@ class ahnyIslandHut(ptResponder):
 
         elif id == RespCurrentChange.id:
             if boolCurrent:
-                PtDebugPrint("will now enable current")
+                PtDebugPrint("ahnyIslandHut.OnNotify():  will now enable current")
                 WaterCurrent1.current.enable()
                 WaterCurrent2.current.enable()
                 WaterCurrent3.current.enable()
                 WaterCurrent4.current.enable()
             else:
-                PtDebugPrint("will now disable current")
+                PtDebugPrint("ahnyIslandHut.OnNotify():  will now disable current")
                 WaterCurrent1.current.disable()
                 WaterCurrent2.current.disable()
                 WaterCurrent3.current.disable()

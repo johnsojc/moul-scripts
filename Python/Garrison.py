@@ -60,14 +60,17 @@ class Garrison(ptResponder):
     def __init__(self):
         ptResponder.__init__(self)
         self.id = 5024
-        self.version = 2
+        version = 2
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: Garrison v{}".format(self.version))
 
     def OnFirstUpdate(self):
         global IsPublic
 
         thisComponent = self.key.getName()
         if thisComponent != "VeryVerySpecialPythonFileMod":
-            PtDebugPrint("Garrison.OnFirstUpdate(): this isn't the right script instance, ignoring rest of script")
+            PtDebugPrint("Garrison.OnFirstUpdate():  this isn't the right script instance, ignoring rest of script")
             return
 
         parentname = None
@@ -83,14 +86,14 @@ class Garrison(ptResponder):
 
         if parentname == "Neighborhood":
             IsPublic = 1
-            PtDebugPrint("Garrison.OnFirstUpdate(): this Garrison is the public instance, as its parent = %s" % (parentname))
+            PtDebugPrint("Garrison.OnFirstUpdate():  this Garrison is the public instance, as its parent = {}".format(parentname))
         else:
-            PtDebugPrint("Garrison.OnFirstUpdate(): this Garrison is the regular aka Yeesha version, as its parent = %s" % (parentname))
+            PtDebugPrint("Garrison.OnFirstUpdate():  this Garrison is the regular aka Yeesha version, as its parent = {}".format(parentname))
 
     def OnServerInitComplete(self):
         thisComponent = self.key.getName()
         if thisComponent != "VeryVerySpecialPythonFileMod":
-            PtDebugPrint("Garrison.OnFirstUpdate(): this isn't the right script instance, ignoring rest of script")
+            PtDebugPrint("Garrison.OnServerInitComplete():  this isn't the right script instance, ignoring rest of script")
             return
 
         global boolWellBlocker

@@ -440,8 +440,8 @@ class xOptionsMenu(ptModifier):
     def __init__(self):
         ptModifier.__init__(self)
         self.id = 195
-        self.version = MaxVersionNumber
-        PtDebugPrint("__xOptionsMenu: Max version %d - minor version %d" % (MaxVersionNumber, MinorVersionNumber))
+        self.version = "{}.{}".format(MaxVersionNumber, MinorVersionNumber)
+        PtDebugPrint("__init__: xOptionsMenu v{}".format(self.version))
 
         self.restartWarn = false
         self.goingToCalibration = 0
@@ -520,10 +520,10 @@ class xOptionsMenu(ptModifier):
     def OnNotify(self, state, id, events):
         global gFirstReltoVisit
         "Notify - should only be needed for credits book"
-        PtDebugPrint("xOptionsMenu: Notify  state=%f, id=%d" % (state, id), level=kDebugDumpLevel)
+        PtDebugPrint("xOptionsMenu.OnNotify():  Notify  state={}, id={}".format(state, id), level=kDebugDumpLevel)
 
         if id == -1:
-            PtDebugPrint("Options Menu got notify, resetting First Visit status")
+            PtDebugPrint("xOptionsMenu.OnNotify():  Options Menu got notify, resetting First Visit status")
             gFirstReltoVisit = true
             return
 
@@ -531,24 +531,24 @@ class xOptionsMenu(ptModifier):
         for event in events:
             # is it from the Credits book?
             if event[0] == PtEventType.kBook:
-                PtDebugPrint("xOptionsMenu: BookNotify  event=%d, id=%d" % (event[1], event[2]), level=kDebugDumpLevel)
+                PtDebugPrint("xOptionsMenu.OnNotify():  BookNotify  event={}, id={}".format(event[1], event[2]), level=kDebugDumpLevel)
                 if event[1] == PtBookEventTypes.kNotifyImageLink:
-                    PtDebugPrint("xOptionsMenu:Book: hit linking panel", level=kDebugDumpLevel)
+                    PtDebugPrint("xOptionsMenu:Book:  hit linking panel", level=kDebugDumpLevel)
                     pass
                 elif event[1] == PtBookEventTypes.kNotifyShow:
-                    PtDebugPrint("xOptionsMenu:Book: Notify Show", level=kDebugDumpLevel)
+                    PtDebugPrint("xOptionsMenu.OnNotify():  Book: Notify Show", level=kDebugDumpLevel)
                     pass
                 elif event[1] == PtBookEventTypes.kNotifyHide:
-                    PtDebugPrint("xOptionsMenu:Book: NotifyHide", level=kDebugDumpLevel)
+                    PtDebugPrint("xOptionsMenu.OnNotify():  Book: NotifyHide", level=kDebugDumpLevel)
                     pass
                 elif event[1] == PtBookEventTypes.kNotifyNextPage:
-                    PtDebugPrint("xOptionsMenu:Book: NotifyNextPage", level=kDebugDumpLevel)
+                    PtDebugPrint("xOptionsMenu.OnNotify():  NotifyNextPage", level=kDebugDumpLevel)
                     pass
                 elif event[1] == PtBookEventTypes.kNotifyPreviousPage:
-                    PtDebugPrint("xOptionsMenu:Book: NotifyPreviousPage", level=kDebugDumpLevel)
+                    PtDebugPrint("xOptionsMenu.OnNotify():  NotifyPreviousPage", level=kDebugDumpLevel)
                     pass
                 elif event[1] == PtBookEventTypes.kNotifyCheckUnchecked:
-                    PtDebugPrint("xOptionsMenu:Book: NotifyCheckUncheck", level=kDebugDumpLevel)
+                    PtDebugPrint("xOptionsMenu.OnNotify():  NotifyCheckUncheck", level=kDebugDumpLevel)
                     pass
                 # nothing more to do, when there is a book event
                 return
@@ -560,7 +560,7 @@ class xOptionsMenu(ptModifier):
         global gJournalBook
         global gPreviewStarted
         global prevAudioDeviceName
-        PtDebugPrint("xOptionsMenu::OnGUINotify id=%d, event=%d control=" % (id, event), control, level=kDebugDumpLevel)
+        PtDebugPrint("xOptionsMenu.OnGUINotify():  id={}, event={} control={}".format(id, event, control), level=kDebugDumpLevel)
 ###############################################
 ##
 ##  OptionsMenu dialog processing
@@ -578,16 +578,16 @@ class xOptionsMenu(ptModifier):
                 if omID == kOptionsNavigationBtn:
                     OptionsMenuDlg.dialog.hide()
                     NavigationDlg.dialog.show()
-                    PtDebugPrint("The Navigation dialog should show now...")
+                    PtDebugPrint("xOptionsMenu.OnGUINotify():  The Navigation dialog should show now...")
                 elif omID == kOptionsGraphicSettingsBtn:
                     OptionsMenuDlg.dialog.hide()
                     GraphicsSettingsDlg.dialog.show()
-                    PtDebugPrint("The graphics dialog should show now...")
+                    PtDebugPrint("xOptionsMenu.OnGUINotify():  The graphics dialog should show now...")
                 elif omID == kOptionsAudioSettingsBtn:
                     self.InitAudioControlsGUI()
                     OptionsMenuDlg.dialog.hide()
                     AudioSettingsDlg.dialog.show()
-                    PtDebugPrint("The audio dialog should show now...")
+                    PtDebugPrint("xOptionsMenu.OnGUINotify():  The audio dialog should show now...")
                 elif omID == kOptionsKeyMapBtn:
                     OptionsMenuDlg.dialog.hide()
                     KeyMapDlg.dialog.show()
@@ -648,7 +648,7 @@ class xOptionsMenu(ptModifier):
                     gCurrentReleaseNotes = f.read()
                     f.close()
                 except:
-                    PtDebugPrint("[TXT processing] Error while reading ReleaseNotes.txt")
+                    PtDebugPrint("xOptionsMenu.OnGUINotify():  [TXT processing] Error while reading ReleaseNotes.txt")
             elif event == kShowHide:
                 if control.isEnabled():
                     # buttons localized
@@ -660,7 +660,7 @@ class xOptionsMenu(ptModifier):
                     textField = ptGUIControlMultiLineEdit(ReleaseNotesDlg.dialog.getControlFromTag(kReleaseTextArea))
                     textField.clearBuffer()
                     textField.insertString(gCurrentReleaseNotes)
-                    PtDebugPrint(textField.getString())
+                    PtDebugPrint("xOptionsMenu.OnGUINotify():  ".format(textField.getString()))
                     textField.setScrollPosition(1)
                     textField.setScrollPosition(0)
             elif event == kAction or event == kValueChanged:
@@ -812,7 +812,7 @@ class xOptionsMenu(ptModifier):
             global gClickToTurn
 
             if event == kDialogLoaded:
-                PtDebugPrint("Yes, the Advanced Settings dialog loaded.")
+                PtDebugPrint("xOptionsMenu.OnGUINotify():  Yes, the Advanced Settings dialog loaded.")
             elif event == kShowHide:
                 if control.isEnabled():
                     self.IRefreshAdvSettings()
@@ -843,7 +843,7 @@ class xOptionsMenu(ptModifier):
 
             elif event == kAction or event == kValueChanged:
                 gsID = control.getTagID()
-                PtDebugPrint("gsID = %s" % (str(gsID)))
+                PtDebugPrint("xOptionsMenu.OnGUINotify():  gsID = {}".format(gsID))
 
                 if gsID == kOptionsKeyMapBtn:
                     self.setNewChronicleVar("AdvSettings", (gMouseSensitivity + " " + gSmoothCam + " " + gMouseInvert + " " + gWalkAndPan + " " + gStayInFirstPerson + " " + gClickToTurn))
@@ -982,21 +982,21 @@ class xOptionsMenu(ptModifier):
 ###############################################
         elif id == ResetWarnDlg.id:
             if event == kDialogLoaded:
-                PtDebugPrint("Yes, the ResetWarn Dialog loaded.")
+                PtDebugPrint("xOptionsMenu.OnGUINotify():  Yes, the ResetWarn Dialog loaded.")
                 pass
             elif event == kShowHide:
-                PtDebugPrint("event = kShowHide = ", kShowHide)
+                PtDebugPrint("xOptionsMenu.OnGUINotify():  event = kShowHide = {}".format(kShowHide))
                 pass
             elif event == kAction or event == kValueChanged:
                 # test to see which control had the event
                 warnID = control.getTagID()
-                PtDebugPrint("warnID = ", warnID)
+                PtDebugPrint("xOptionsMenu.OnGUINotify():  warnID = {}".format(warnID))
                 if warnID == kResetWarningYes:
-                    PtDebugPrint("I need to shut down Plasma now.")
+                    PtDebugPrint("xOptionsMenu.OnGUINotify():  I need to shut down Plasma now.")
                     self.WriteVideoControls()
                     PtConsole("App.Quit")
                 elif warnID == kResetWarningNo:
-                    PtDebugPrint("close the dialog now.")
+                    PtDebugPrint("xOptionsMenu.OnGUINotify():  close the dialog now.")
                     ResetWarnDlg.dialog.hide()
                     if self.goingToCalibration:
                         PtLoadDialog("CalibrationGUI", self.key)
@@ -1012,7 +1012,7 @@ class xOptionsMenu(ptModifier):
 ###############################################
         elif id == NavigationDlg.id:
             if event == kDialogLoaded:
-                PtDebugPrint("Yes, the Navigation dialog loaded.")
+                PtDebugPrint("xOptionsMenu.OnGUINotify():  Yes, the Navigation dialog loaded.")
                 pass
 
             elif event == kShowHide:
@@ -1030,7 +1030,7 @@ class xOptionsMenu(ptModifier):
 
             elif event == kAction or event == kValueChanged:
                 NavigationID = control.getTagID()
-                PtDebugPrint("NavigationID = ", NavigationID)
+                PtDebugPrint("xOptionsMenu.OnGUINotify():  NavigationID = {}".format(NavigationID))
                 if NavigationID == kKMOkBtn:
                     NavigationDlg.dialog.hide()
                 elif NavigationID == kKMGoBackBtn:
@@ -1041,7 +1041,7 @@ class xOptionsMenu(ptModifier):
                     AdvGameSettingDlg.dialog.show()
                 elif NavigationID == kNormNoviceRGID:
                     if control.getValue():
-                        PtDebugPrint("CTT on")
+                        PtDebugPrint("xOptionsMenu.OnGUINotify():  CTT on")
                         PtSetClickToTurn(1)
                         gClickToTurn = "1"
                         AdvSettingsString = self.getChronicleVar("AdvSettings")
@@ -1052,7 +1052,7 @@ class xOptionsMenu(ptModifier):
                         else:
                             self.setNewChronicleVar("AdvSettings", (AdvSettingsString[0:-1] + "1"))
                     else:
-                        PtDebugPrint("CTT off")
+                        PtDebugPrint("xOptionsMenu.OnGUINotify():  CTT off")
                         PtSetClickToTurn(0)
                         gClickToTurn = "0"
                         AdvSettingsString = self.getChronicleVar("AdvSettings")
@@ -1091,7 +1091,7 @@ class xOptionsMenu(ptModifier):
                     tagID = 0
 
                 if tagID in [kKMOkBtn, kKMGoBackBtn, kOptionsCalibrationBtn]:
-                    PtDebugPrint("self.restartWarn =", self.restartWarn)
+                    PtDebugPrint("xOptionsMenu.OnGUINotify():  self.restartWarn = {}".format(self.restartWarn))
                     if self.restartWarn:
                         GraphicsSettingsDlg.dialog.hide()
                         ResetWarnDlg.dialog.show()
@@ -1196,7 +1196,7 @@ class xOptionsMenu(ptModifier):
 
         elif id == AudioSettingsDlg.id:
             if event == kDialogLoaded:
-                PtDebugPrint("Yes, the Audio dialog loaded.")
+                PtDebugPrint("xOptionsMenu.OnGUINotify():  Yes, the Audio dialog loaded.")
 
             elif event == kShowHide:
                 # reset the edit text lines
@@ -1309,18 +1309,18 @@ class xOptionsMenu(ptModifier):
                         audioModeCtrlTextBox.setString(audioDeviceName)
 
                     if audioDeviceName != prevAudioDeviceName:  # Only update the EAX checkbox when the mouse has been let up...
-                        PtDebugPrint("Audio Device Name changed!")
+                        PtDebugPrint("xOptionsMenu.OnGUINotify():  Audio Device Name changed!")
                         prevAudioDeviceName = audioDeviceName
                         EAXcheckbox = ptGUIControlCheckBox(AudioSettingsDlg.dialog.getControlFromTag(kAudioModeCBID03))
                         if not audio.supportsEAX(audioDeviceName):
-                            PtDebugPrint("Disabling EAX checkbox")
+                            PtDebugPrint("xOptionsMenu.OnGUINotify():  Disabling EAX checkbox")
                             # Disable EAX checkbox
                             EAXcheckbox.disable()
                             respDisableItems.run(self.key, state="disableEAX")
                             EAXcheckbox.setChecked(false)
                             ptGUIControlTextBox(AudioSettingsDlg.dialog.getControlFromTag(kAudioModeEAXTextID)).setForeColor(ptColor(0.839, 0.785, 0.695, 1))
                         else:
-                            PtDebugPrint("Enabling EAX checkbox")
+                            PtDebugPrint("xOptionsMenu.OnGUINotify():  Enabling EAX checkbox")
                             # We don't need to automatically check the EAX box, but do enable the control
                             EAXcheckbox.enable()
                             respDisableItems.run(self.key, state="enableEAX")
@@ -1346,11 +1346,11 @@ class xOptionsMenu(ptModifier):
                 # just continue processing
             except:
                 # no movie... just go back to where they were
-                PtDebugPrint("xLiveTrailer - no intro movie!!!", level=kDebugDumpLevel)
+                PtDebugPrint("xOptionsMenu.OnGUITimer():  xLiveTrailer - no intro movie!!!", level=kDebugDumpLevel)
                 PtFadeOut(kTrailerFadeOutSeconds, 1)
                 PtFadeIn(kOptionFadeInSeconds, 0)
                 return
-            PtDebugPrint("xLiveTrailer - start showing movie", level=kDebugDumpLevel)
+            PtDebugPrint("xOptionsMenu.OnGUITimer():  xLiveTrailer - start showing movie", level=kDebugDumpLevel)
             OptionsMenuDlg.dialog.hide()
             PtShowDialog("IntroBahroBgGUI")
             TrailerDlg.dialog.show()
@@ -1373,16 +1373,16 @@ class xOptionsMenu(ptModifier):
                 gLiveMovie = ptMoviePlayer(kLiveMovieName, self.key)
             gLiveMovie.playPaused()
         elif id == kTrailerFadeInID:
-            PtDebugPrint("xLiveTrailer - roll the movie", level=kDebugDumpLevel)
+            PtDebugPrint("xOptionsMenu.OnGUITimer():  xLiveTrailer - roll the movie", level=kDebugDumpLevel)
             if gLiveMovie is not None:
                 gLiveMovie.resume()
         elif id == kTrailerFadeOutID:
-            PtDebugPrint("xLiveTrailer - done", level=kDebugDumpLevel)
+            PtDebugPrint("xOptionsMenu.OnGUITimer():  xLiveTrailer - done", level=kDebugDumpLevel)
             gPreviewStarted = 0
             TrailerDlg.dialog.hide()
             PtHideDialog("IntroBahroBgGUI")
             if gLiveMovie:
-                PtDebugPrint("xLiveTrailer - but stop the movie first", level=kDebugDumpLevel)
+                PtDebugPrint("xOptionsMenu.OnGUITimer():  xLiveTrailer - but stop the movie first", level=kDebugDumpLevel)
                 gLiveMovie.stop()
                 gLiveMovie = None
             # start rendering the scene again
@@ -1399,7 +1399,7 @@ class xOptionsMenu(ptModifier):
             PtSetGamma2(float(GammaVal))
 
     def OnMovieEvent(self, movieName, reason):
-        PtDebugPrint("xLiveTrailer: got movie done event on %s, reason=%d" % (movieName, reason), level=kDebugDumpLevel)
+        PtDebugPrint("xOptionsMenu.OnMovieEvent():  xLiveTrailer: got movie done event on {}, reason={}".format(movieName, reason), level=kDebugDumpLevel)
         if gLiveMovie:
             PtFadeOut(kTrailerFadeOutSeconds, 1)
             PtAtTimeCallback(self.key, kTrailerFadeOutSeconds, kTrailerFadeOutID)
@@ -1540,7 +1540,7 @@ class xOptionsMenu(ptModifier):
         for r in ratios:
             # resolution is within 1 pixel wiggle room in any direction from the exact aspect ratio (needed to recognize 1280x854 as 3:2)
             if (w+1)/(h-1) >= float(r[0])/float(r[1]) >= (w-1)/(h+1):
-                return " [%i:%i]" % (r[0], r[1])
+                return " [{}:{}]".format(r[0], r[1])
         return ""
 
     def GetVidResField(self):
@@ -1614,7 +1614,7 @@ class xOptionsMenu(ptModifier):
 
         if setMode:
             PtSetGraphicsOptions(width, height, colordepth, windowed == "true", antialias, aniso, vsync)
-            PtDebugPrint("SETTING GAMMA")
+            PtDebugPrint("xOptionsMenu.WriteVideoControls():  SETTING GAMMA")
             PtSetGamma2(gamma)
             PtSetShadowVisDistance(shadow_quality)
 
@@ -1632,7 +1632,7 @@ class xOptionsMenu(ptModifier):
                 continue
             if windowed and (i[0] >= PtGetDesktopWidth() and i[1] >= PtGetDesktopHeight()):
                 continue
-            vidResList.append("%ix%i" % (i[0], i[1]))
+            vidResList.append("{}x{}".format(i[0], i[1]))
         vidResList.sort(res_comp)
         return vidResList
 
@@ -1724,13 +1724,13 @@ class xOptionsMenu(ptModifier):
             if entry is None:
                 # not found... add current level chronicle
                 vault.addChronicleEntry(chronicleVar, kChronicleVarType, str(value))
-                PtDebugPrint("%s:\tentered new chronicle counter %s" % (kModuleName, chronicleVar))
+                PtDebugPrint("xOptionsMenu.setNewChronicleVar():  {}:  entered new chronicle counter {}".format(kModuleName, chronicleVar))
             else:
                 entry.chronicleSetValue(str(value))
                 entry.save()
-                PtDebugPrint("%s:\tyour current value for %s is %s" % (kModuleName, chronicleVar, entry.chronicleGetValue()))
+                PtDebugPrint("xOptionsMenu.setNewChronicleVar():  {}:  your current value for {} is {}".format(kModuleName, chronicleVar, entry.chronicleGetValue()))
         else:
-            PtDebugPrint("%s:\tERROR trying to access vault -- can't update %s variable in chronicle." % (kModuleName, chronicleVar))
+            PtDebugPrint("xOptionsMenu.setNewChronicleVar():  {}:  ERROR trying to access vault -- can't update {} variable in chronicle.".format(kModuleName, chronicleVar))
 
     def getChronicleVar(self, chronicleVar):
         kModuleName = "Personal"
@@ -1738,15 +1738,15 @@ class xOptionsMenu(ptModifier):
         vault = ptVault()
         if vault:
             entry = vault.findChronicleEntry(chronicleVar)
-            PtDebugPrint("getChronicleVar.chronicleVar: " + (chronicleVar))
+            PtDebugPrint("xOptionsMenu.getChronicleVar():  {}".format(chronicleVar))
             if entry is None:
                 return None
             else:
                 value = entry.chronicleGetValue()
-                PtDebugPrint("getChronicleVar(): " + chronicleVar + " = " + value)
+                PtDebugPrint("xOptionsMenu.getChronicleVar():  {}-{}".format(chronicleVar, value))
                 return value
         else:
-            PtDebugPrint("%s:\tERROR trying to access vault -- can't retrieve %s variable in chronicle." % (kModuleName, kChronicleVarName))
+            PtDebugPrint("xOptionsMenu.getChronicleVar():  {}:  ERROR trying to access vault -- can't retrieve {} variable in chronicle.".format(kModuleName, kChronicleVarName))
 
     def IRefreshHelpSettings(self):
         clickToTurn = ptGUIControlRadioGroup(NavigationDlg.dialog.getControlFromTag(kNormNoviceRGID))
@@ -1756,7 +1756,7 @@ class xOptionsMenu(ptModifier):
         "refresh the volume settings to the current settings"
 
         mouseSensKnob = ptGUIControlValue(AdvGameSettingDlg.dialog.getControlFromTag(kGSMouseTurnSensSlider))
-        PtDebugPrint("IRefreshAdvSettings: PtGetMouseTurnSensitivity() = %d" % (PtGetMouseTurnSensitivity()))
+        PtDebugPrint("xOptionsMenu.IRefreshAdvSettings():  PtGetMouseTurnSensitivity() = {}".format(PtGetMouseTurnSensitivity()))
         sensitive = PtGetMouseTurnSensitivity() - 50.0
         if sensitive <= 0.0:
             mouseSensKnob.setValue(0.0)
@@ -1842,14 +1842,14 @@ class xOptionsMenu(ptModifier):
         for control_code in defaultControlCodeBindsOrdered:
             if type(control_code) is str:
                 key1 = KeyMapArray[counter]
-                PtDebugPrint("Binding " + key1 + " to " + control_code)
+                PtDebugPrint("xOptionsMenu.LoadKeyMap():  Binding {} to {}".format(key1, control_code))
                 km.bindKeyToConsoleCommand(key1, control_code)
             else:
                 controlStr = km.convertControlCodeToString(control_code)
                 SubArray = KeyMapArray[counter].split("$")
                 key1 = SubArray[0]
                 key2 = SubArray[1]
-                PtDebugPrint("Binding " + key1 + " & " + key2 + " to " + controlStr)
+                PtDebugPrint("xOptionsMenu.LoadKeyMap():  Binding {} & {} to {}".format(key1, key2, controlStr))
                 km.bindKey(key1, key2, controlStr)
             counter += 1
 

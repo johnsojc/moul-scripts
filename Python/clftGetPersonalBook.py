@@ -85,8 +85,10 @@ class clftGetPersonalBook(ptResponder):
     def __init__(self):
         ptResponder.__init__(self)
         self.id = 5219
-        self.version = 10
-        PtDebugPrint("__init__clftGetPersonalBook v%d.%d" % (self.version, 2), level=kWarningLevel)
+        version = 10
+        minor = 2
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: clftGetPersonalBook v{}".format(self.version), level=kWarningLevel)
 
     def OnFirstUpdate(self):
         pass
@@ -112,17 +114,17 @@ class clftGetPersonalBook(ptResponder):
             for event in events:
                 # is it from the YeeshaBook? (we only have one book to worry about)
                 if event[0] == PtEventType.kBook:
-                    PtDebugPrint("clftGetPersonalBook: BookNotify  event=%d, id=%d" % (event[1], event[2]), level=kDebugDumpLevel)
+                    PtDebugPrint("clftGetPersonalBook.OnNotify():  BookNotify event={}, id={}".format(event[1], event[2]), level=kDebugDumpLevel)
                     if event[1] == PtBookEventTypes.kNotifyImageLink:
                         if event[2] == xLinkingBookDefs.kYeeshaBookLinkID:
-                            PtDebugPrint("clftGetPersonalBook:Book: hit linking panel", level=kDebugDumpLevel)
+                            PtDebugPrint("clftGetPersonalBook.OnNotify():  Book: hit linking panel", level=kDebugDumpLevel)
                             gAreWeLinkingOut = 1
                             YeeshaBook.hide()
                             self.ILinktoPersonalAge()
                     elif event[1] == PtBookEventTypes.kNotifyShow:
                         pass
                     elif event[1] == PtBookEventTypes.kNotifyHide:
-                        PtDebugPrint("clftGetPersonalBook:Book: NotifyHide", level=kDebugDumpLevel)
+                        PtDebugPrint("clftGetPersonalBook.OnNotify():  Book: NotifyHide", level=kDebugDumpLevel)
                         # don't really care if they close the book, but re-enable the clickable for them
                         if not gAreWeLinkingOut:
                             actClickableBook.enable()
@@ -172,7 +174,7 @@ class clftGetPersonalBook(ptResponder):
                         elif currentgender == 0:
                             BookAnimMale.animation.play()
                         else:
-                            PtDebugPrint("clftGetPersonalBook: unreadable gender or special character.", level=kErrorLevel)
+                            PtDebugPrint("clftGetPersonalBook.OnNotify():  unreadable gender or special character.", level=kErrorLevel)
                             BookAnimMale.animation.play()
 
     def ILinktoPersonalAge(self):
@@ -187,7 +189,7 @@ class clftGetPersonalBook(ptResponder):
         if not PtIsDemoMode():
             vault = ptVault()
             vault.addChronicleEntry("CleftSolved", 1, "yes")
-            PtDebugPrint("Chronicle updated with variable 'CleftSolved'.", level=kDebugDumpLevel)
+            PtDebugPrint("clftGetPersonalBook.SolveCleft():  Chronicle updated with variable 'CleftSolved'.", level=kDebugDumpLevel)
 
     def OnTimer(self, id):
         global gDemoMovie
@@ -206,10 +208,10 @@ class clftGetPersonalBook(ptResponder):
                 # its there! show the background, which will start the movie
                 # just continue processing
             except:
-                PtDebugPrint("xLiveTrailer - no intro movie!!!", level=kDebugDumpLevel)
-                PtDebugPrint("Quitting demo now...")
+                PtDebugPrint("clftGetPersonalBook.OnTimer():  xLiveTrailer - no intro movie!!!", level=kDebugDumpLevel)
+                PtDebugPrint("clftGetPersonalBook.OnTimer():  Quitting demo now...")
                 PtConsole("App.Quit")
-            PtDebugPrint("xLiveTrailer - start showing movie", level=kDebugDumpLevel)
+            PtDebugPrint("clftGetPersonalBook.OnTimer():  xLiveTrailer - start showing movie", level=kDebugDumpLevel)
             PtShowDialog("IntroBahroBgGUI")
             # stop rendering the scene while showing the movie
             PtDisableRenderScene()
@@ -228,14 +230,14 @@ class clftGetPersonalBook(ptResponder):
                 gDemoMovie = ptMoviePlayer(kDemoMovieName, self.key)
             gDemoMovie.playPaused()
         elif id == kTrailerFadeInID:
-            PtDebugPrint("xLiveTrailer - roll the movie", level=kDebugDumpLevel)
+            PtDebugPrint("clftGetPersonalBook.OnTimer():  xLiveTrailer - roll the movie", level=kDebugDumpLevel)
             if gDemoMovie:
                 gDemoMovie.resume()
         elif id == kTrailerDoneID:
-            PtDebugPrint("Quitting demo now...")
+            PtDebugPrint("clftGetPersonalBook.OnTimer():  Quitting demo now...")
             PtConsole("App.Quit")
 
     def OnMovieEvent(self, movieName, reason):
-        PtDebugPrint("xLiveTrailer: got movie done event on %s, reason=%d" % (movieName, reason), level=kDebugDumpLevel)
+        PtDebugPrint("clftGetPersonalBook.OnMovieEvent():  xLiveTrailer: got movie done event on {}, reason={}".format(movieName, reason), level=kDebugDumpLevel)
         if gDemoMovie:
             PtConsole("App.Quit")

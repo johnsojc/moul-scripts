@@ -90,15 +90,16 @@ class minkDayClicks(ptResponder):
         ptResponder.__init__(self)
         self.id = 5259
         version = 1
-        self.version = version
-        PtDebugPrint("__init__minkDayClicks v.%d.0" % (version))
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: minkDayClicks v{}".format(self.version))
 
     ###########################
     def OnFirstUpdate(self):
         ageSDL = PtGetAgeSDL()
 
         if not len(PtGetPlayerList()) and ageSDL["minkIsDayTime"][0]:
-            PtDebugPrint("minkDayClicks.OnFirstUpdate(): Resetting Show and Touch vars.")
+            PtDebugPrint("minkDayClicks.OnFirstUpdate():  Resetting Show and Touch vars.")
             ageSDL["minkSymbolShow01"] = (0,)
             ageSDL["minkSymbolShow02"] = (0,)
             ageSDL["minkSymbolShow03"] = (0,)
@@ -113,10 +114,10 @@ class minkDayClicks(ptResponder):
 
     ###########################
     def OnNotify(self, state, id, events):
-        PtDebugPrint("minkDayClicks.OnNotify(): state=%s id=%d events=" % (state, id), events)
+        PtDebugPrint("minkDayClicks.OnNotify():  state={} id={} events={}".format(state, id, events))
 
         if id in ClickToResponder.keys() and state and PtFindAvatar(events) == PtGetLocalAvatar():
-            PtDebugPrint("minkDayClicks.OnNotify(): Clicked on %d, running %d" % (id, ClickToResponder[id].id))
+            PtDebugPrint("minkDayClicks.OnNotify():  Clicked on {}, running {}".format(id, ClickToResponder[id].id))
             LocalAvatar = PtFindAvatar(events)
             clkCave01.disable()
             clkCave02.disable()
@@ -127,12 +128,12 @@ class minkDayClicks(ptResponder):
             ClickToResponder[id].run(self.key, avatar=LocalAvatar)
 
         elif id in ResponderId:
-            PtDebugPrint("minkDayClicks.OnNotify(): Responder Finished, Updating SDL")
+            PtDebugPrint("minkDayClicks.OnNotify():  Responder Finished, Updating SDL")
             ageSDL = PtGetAgeSDL()
             ageSDL["minkIsDayTime"] = (not ageSDL["minkIsDayTime"][0],)
 
             if id != behRespCage.id:
                 num = ResponderId.index(id) + 1
-                PtDebugPrint("minkDayClicks.OnNotify(): Should show %d" % (num))
-                code = "ageSDL[\"minkSymbolShow0%d\"] = (1,)" % (num)
+                PtDebugPrint("minkDayClicks.OnNotify():  Should show {}".format(num))
+                code = "ageSDL[\"minkSymbolShow0{}\"] = (1,)".format(num)
                 exec code

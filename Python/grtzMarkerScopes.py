@@ -70,8 +70,9 @@ class grtzMarkerScopes(ptResponder):
     def __init__(self):
         ptResponder.__init__(self)
         self.id = 212
-        self.version = MaxVersionNumber
-        PtDebugPrint("grtzMarkerScope: Max version %d - minor version %d" % (MaxVersionNumber, MinorVersionNumber), level=kDebugDumpLevel)
+
+        self.version = "{}.{}".format(MaxVersionNumber, MinorVersionNumber)
+        PtDebugPrint("__init__: grtzMarkerScope v{}".format(self.version), level=kDebugDumpLevel)
         self.pendingClose = 0
 
     def OnFirstUpdate(self):
@@ -90,14 +91,14 @@ class grtzMarkerScopes(ptResponder):
         boolOperated = self.SDL["boolOperated"][0]
         if boolOperated:
             if solo:
-                PtDebugPrint("grtzMarkerScope.Load():\tboolOperated=%d but no one else here...correcting" % (boolOperated), level=kDebugDumpLevel)
+                PtDebugPrint("grtzMarkerScope.Load():  boolOperated={} but no one else here...correcting".format(boolOperated), level=kDebugDumpLevel)
                 boolOperated = 0
                 self.SDL["boolOperated"] = (0,)
                 self.SDL["OperatorID"] = (-1,)
                 aTrigger.enable()
             else:
                 aTrigger.disable()
-                PtDebugPrint("grtzMarkerScope.Load():\tboolOperated=%d, disabling telescope clickable" % (boolOperated), level=kDebugDumpLevel)
+                PtDebugPrint("grtzMarkerScope.Load():  boolOperated={}, disabling telescope clickable".format(boolOperated), level=kDebugDumpLevel)
 
     def AvatarPage(self, avObj, pageIn, lastOut):
         "reset scope accessibility if scope user quits or crashes"
@@ -111,7 +112,7 @@ class grtzMarkerScopes(ptResponder):
             aTrigger.enable()
             self.SDL["OperatorID"] = (-1,)
             self.SDL["boolOperated"] = (0,)
-            PtDebugPrint("grtzMarkerScope.AvatarPage(): telescope operator paged out, reenabled telescope.", level=kDebugDumpLevel)
+            PtDebugPrint("grtzMarkerScope.AvatarPage():  telescope operator paged out, reenabled telescope.", level=kDebugDumpLevel)
         else:
             return
 
@@ -123,7 +124,7 @@ class grtzMarkerScopes(ptResponder):
         "Activated... start telescope"
         global LocalAvatar
         global boolScopeOperator
-        PtDebugPrint("grtzMarkerScope:OnNotify  state=%f id=%d events=" % (state, id), events, level=kDebugDumpLevel)
+        PtDebugPrint("grtzMarkerScope:OnNotify():  state={:f} id={} events={}".format(state, id, events), level=kDebugDumpLevel)
 
         if id == (-1):
             if self.pendingClose == 1:
@@ -143,7 +144,7 @@ class grtzMarkerScopes(ptResponder):
 
     def OnGUINotify(self, id, control, event):
         "Notifications from the vignette"
-        PtDebugPrint("grtzMarkerScope.GUI Notify id=%d, event=%d control=" % (id, event), control, level=kDebugDumpLevel)
+        PtDebugPrint("grtzMarkerScope:OnGUINotify():  id={}, event={} control={}".format(id, event, control), level=kDebugDumpLevel)
         if event == kDialogLoaded:
             # if the dialog was just loaded then show it
             control.show()
@@ -162,7 +163,7 @@ class grtzMarkerScopes(ptResponder):
         self.SDL["boolOperated"] = (1,)
         avID = PtGetClientIDFromAvatarKey(LocalAvatar.getKey())
         self.SDL["OperatorID"] = (avID,)
-        PtDebugPrint("grtzMarkerScope.OnNotify:\twrote SDL - scope operator id = ", avID, level=kDebugDumpLevel)
+        PtDebugPrint("grtzMarkerScope.IStartTelescope():  wrote SDL - scope operator id = {}".format(avID), level=kDebugDumpLevel)
         # start the behavior
         aBehavior.run(LocalAvatar)
 
@@ -199,7 +200,7 @@ class grtzMarkerScopes(ptResponder):
         boolScopeOperator = 0
         self.SDL["boolOperated"] = (0,)
         self.SDL["OperatorID"] = (-1,)
-        PtDebugPrint("grtzMarkerScope.IQuitMarkerScope:\tdelaying clickable reenable", level=kDebugDumpLevel)
+        PtDebugPrint("grtzMarkerScope.IQuitTelescope():  delaying clickable reenable", level=kDebugDumpLevel)
 
     def OnTimer(self, id):
         global LocalAvatar
@@ -209,5 +210,5 @@ class grtzMarkerScopes(ptResponder):
             PtAtTimeCallback(self.key, 3, 2)  # wait for player to finish exit one-shot, then reenable clickable
         if id == 2:
             aTrigger.enable()
-            PtDebugPrint("grtzMarkerScope.OnTimer:\tclickable reenabled", level=kDebugDumpLevel)
+            PtDebugPrint("grtzMarkerScope.OnTimer():  clickable reenabled", level=kDebugDumpLevel)
             PtSendKIMessage(kEnableKIandBB, 0)

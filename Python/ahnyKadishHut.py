@@ -73,7 +73,10 @@ class ahnyKadishHut(ptResponder):
     def __init__(self):
         ptResponder.__init__(self)
         self.id = 5610
-        self.version = 4
+        version = 4
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: ahnyKadishHut v{}".format(self.version))
 
     def OnFirstUpdate(self):
         global boolWindows
@@ -81,7 +84,7 @@ class ahnyKadishHut(ptResponder):
         try:
             ageSDL = PtGetAgeSDL()
         except:
-            PtDebugPrint("ahnyKadishHut.OnServerInitComplete():\tERROR---Cannot find AhnySphere04 age SDL")
+            PtDebugPrint("ahnyKadishHut.OnFirstUpdate():  ERROR---Cannot find AhnySphere04 age SDL")
             ageSDL[SDLWindows.value] = (0,)
 
         ageSDL.setFlags(SDLWindows.value, 1, 1)
@@ -91,10 +94,10 @@ class ahnyKadishHut(ptResponder):
         boolWindows = ageSDL[SDLWindows.value][0]
 
         if boolWindows:
-            PtDebugPrint("ahnyKadishHut.OnServerInitComplete(): Windows are open")
+            PtDebugPrint("ahnyKadishHut.OnFirstUpdate():  Windows are open")
             RespWindows.run(self.key, state="open", fastforward=1)
         else:
-            PtDebugPrint("ahnyKadishHut.OnServerInitComplete(): Windows are closed")
+            PtDebugPrint("ahnyKadishHut.OnFirstUpdate():  Windows are closed")
             RespWindows.run(self.key, state="close", fastforward=1)
 
     def OnSDLNotify(self, VARname, SDLname, playerID, tag):
@@ -104,10 +107,10 @@ class ahnyKadishHut(ptResponder):
             ageSDL = PtGetAgeSDL()
             boolWindows = ageSDL[SDLWindows.value][0]
             if boolWindows:
-                PtDebugPrint("ahnyKadishHut.OnSDLNotify(): Windows will now open")
+                PtDebugPrint("ahnyKadishHut.OnSDLNotify():  Windows will now open")
                 RespWindows.run(self.key, state="open")
             else:
-                PtDebugPrint("ahnyKadishHut.OnSDLNotify(): Windows will now close")
+                PtDebugPrint("ahnyKadishHut.OnSDLNotify():  Windows will now close")
                 RespWindows.run(self.key, state="close")
 
     def OnNotify(self, state, id, events):

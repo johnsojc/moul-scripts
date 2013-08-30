@@ -77,7 +77,10 @@ class clftIntroMusic(ptResponder):
         global musicState
         ptResponder.__init__(self)
         self.id = 5249
-        self.version = 1
+        version = 1
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: clftIntroMusic v{}".format(self.version))
 
     def OnNotify(self, state, id, events):
         global musicState
@@ -89,17 +92,17 @@ class clftIntroMusic(ptResponder):
         startMusicActIDs = (actStartMusic01.id, actStartMusic02.id, actStartMusic03.id)
         if id in startMusicActIDs:
             if musicState == kOff:
-                PtDebugPrint("clftIntroMusic: ---Starting Music---")
+                PtDebugPrint("clftIntroMusic.OnNotify():  ---Starting Music---")
                 musicState = kInitialPlay
                 respStartMusic.run(self.key)
             return
 
         elif id == actStopMusic.id:
             if musicState == kInitialPlay:
-                PtDebugPrint("clftIntroMusic: ###Stopping Music###")
+                PtDebugPrint("clftIntroMusic.OnNotify():  ###Stopping Music###")
                 respStopInitialMusic.run(self.key)
             elif musicState == kRandomPlay:
-                PtDebugPrint("clftIntroMusic: ###Stopping Music###")
+                PtDebugPrint("clftIntroMusic.OnNotify():  ###Stopping Music###")
                 respStopRandomMusic.run(self.key)
             musicState = kOff
             return
@@ -107,7 +110,7 @@ class clftIntroMusic(ptResponder):
         #-----Responders-----
         elif id == respStartMusic.id:
             if musicState == kInitialPlay:
-                PtDebugPrint("clftIntroMusic: ___Randomly Starting Music___")
+                PtDebugPrint("clftIntroMusic.OnNotify():  ___Randomly Starting Music___")
                 musicState = kRandomPlay
                 respStartRandomMusic.run(self.key)
             return

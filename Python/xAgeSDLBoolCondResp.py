@@ -64,28 +64,30 @@ class xAgeSDLBoolCondResp(ptResponder):
     def __init__(self):
         ptResponder.__init__(self)
         self.id = 1000
-        self.version = 1
+        version = 1
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
 
-        PtDebugPrint("DEBUG: xAgeSDLBoolCondResp.__init__: version = %d" % (self.version))
+        PtDebugPrint("__init__: xAgeSDLBoolCondResp v{}".format(self.version))
         self.invalidVarName = 0
         self.initFinished = 0
 
     def OnFirstUpdate(self):
         if type(strSDLVar.value) is not str or strSDLVar.value == "":
-            PtDebugPrint("ERROR: xAgeSDLBoolCondResp.OnFirstUpdate():\tCannot bind to SDL variable, invalid string")
+            PtDebugPrint("xAgeSDLBoolCondResp.OnFirstUpdate():  ERROR: Cannot bind to SDL variable, invalid string")
             self.invalidVarName = 1
         else:
             self.invalidVarName = 0
 
     def OnServerInitComplete(self):
         if self.invalidVarName:
-            PtDebugPrint("ERROR: xAgeSDLBoolCondResp.OnServerInitComplete():\tCannot bind to SDL variable, invalid string")
+            PtDebugPrint("xAgeSDLBoolCondResp.OnServerInitComplete():  ERROR: Cannot bind to SDL variable, invalid string")
             return
 
         ageSDL = PtGetAgeSDL()
         if ageSDL[strSDLVar.value][0] == boolOnTrue.value:
             respResponder.run(self.key, fastforward=boolInitFF.value)
-            PtDebugPrint("DEBUG: xAgeSDLBoolCondResp.OnServerInitComplete():\tRunning responder on %s, fastforward=%d" % (self.sceneobject.getName(), boolInitFF.value))
+            PtDebugPrint("xAgeSDLBoolCondResp.OnServerInitComplete():  DEBUG: Running responder on {}, fastforward={}".format(self.sceneobject.getName(), boolInitFF.value))
 
         self.initFinished = 1
 
@@ -94,12 +96,12 @@ class xAgeSDLBoolCondResp(ptResponder):
             return
 
         if self.invalidVarName:
-            PtDebugPrint("DEBUG: xAgeSDLBoolCondResp.OnNotify():\tRunning responder on %s, fastforward=%d" % (self.sceneobject.getName(), boolInitFF.value))
+            PtDebugPrint("xAgeSDLBoolCondResp.OnNotify():  DEBUG: Running responder on {}, fastforward={}".format(self.sceneobject.getName(), boolInitFF.value))
             return
 
         ageSDL = PtGetAgeSDL()
         curVal = ageSDL[strSDLVar.value][0]
 
         if id == actTrigger.id and curVal == boolOnTrue.value:
-            PtDebugPrint("DEBUG: xAgeSDLBoolCondResp.OnNotify():\tRunning repsonder on %s" % (self.sceneobject.getName()))
+            PtDebugPrint("xAgeSDLBoolCondResp.OnNotify():  DEBUG: Running repsonder on {}".format(self.sceneobject.getName()))
             respResponder.run(self.key)

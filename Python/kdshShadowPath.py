@@ -113,8 +113,9 @@ class kdshShadowPath(ptResponder):
         self.id = 5211
 
         version = 10
-        self.version = version
-        PtDebugPrint("__init__kdshShadowPath v.%d.2" % (version))
+        minor = 2
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: kdshShadowPath v{}".format(self.version))
 
     def OnServerInitComplete(self):
         global localAvatar
@@ -144,20 +145,20 @@ class kdshShadowPath(ptResponder):
         ageSDL.setFlags("ShadowPathLight05", 1, 1)
         ageSDL.setFlags("ShadowPathSolved", 1, 1)
 
-        PtDebugPrint("kdshShadowPath: When I got here:")
+        PtDebugPrint("kdshShadowPath.OnServerInitComplete():  When I got here:")
         # initialize pillar whatnots based on SDL state
 
         for light in [1, 2, 3, 4, 5]:
 
             lightstate = ageSDL["ShadowPathLight0" + str(light)][0]
-            PtDebugPrint("\t ShadowPathLight0%s = %s " % (light, lightstate))
+            PtDebugPrint("\tShadowPathLight0{} = {} ".format(light, lightstate))
 
             if lightstate == 1:
 
                 code = "respSwitch0" + str(light) + ".run(self.key, fastforward=1)"
                 exec code
 
-                PtDebugPrint("\t\tTurning on light #%d" % (light))
+                PtDebugPrint("\tTurning on light #{}".format(light))
 
         solved = ageSDL["ShadowPathSolved"][0]
         if solved:
@@ -167,7 +168,7 @@ class kdshShadowPath(ptResponder):
     def Load(self):
         count = 1
         while count < 5:
-            PtDebugPrint("kdshShadowPath.Load(): ageSDL[ShadowPathLight0%d]=%d" % (count, ageSDL["ShadowPathLight0" + str(count)][0]))
+            PtDebugPrint("kdshShadowPath.Load():  ageSDL[ShadowPathLight0{}]={}".format(count, ageSDL["ShadowPathLight0" + str(count)][0]))
             count = count + 1
 
     def OnNotify(self, state, id, events):
@@ -179,23 +180,23 @@ class kdshShadowPath(ptResponder):
         global gameStarted
         ageSDL = PtGetAgeSDL()
 
-        PtDebugPrint("kdshShadowPath:OnNotify  state=%f id=%d events=%s" % (state, id, events))
+        PtDebugPrint("kdshShadowPath:OnNotify():  state={:f} id={} events={}".format(state, id, events))
 
         if id == FloorZone.id:
             if events[0][1] == 1:
-                PtDebugPrint("kdshShadowPath.OnNotify: More than one person on the floor!")
+                PtDebugPrint("kdshShadowPath:OnNotify():  More than one person on the floor!")
                 regZoneStart.disable()
                 gameStarted = 0
             elif events[0][1] == 0:
-                PtDebugPrint("kdshShadowPath.OnNotify: Only one person on the floor!")
+                PtDebugPrint("kdshShadowPath:OnNotify():  Only one person on the floor!")
                 regZoneStart.enable()
 
         elif id == regZoneReset.id:
             if events[0][1] == 1:
-                PtDebugPrint("kdshShadowPath.OnNotify: Someone in the stairwell, reset disabled.")
+                PtDebugPrint("kdshShadowPath:OnNotify():  Someone in the stairwell, reset disabled.")
                 actResetBtn.disable()
             elif events[0][1] == 0:
-                PtDebugPrint("kdshShadowPath.OnNotify: No one's in the stairwell, reset enabled.")
+                PtDebugPrint("kdshShadowPath:OnNotify():  No one's in the stairwell, reset enabled.")
                 actResetBtn.enable()
 
         elif id in [1, 2, 3, 4, 5]:  # true if one of the five switches clicked
@@ -207,7 +208,7 @@ class kdshShadowPath(ptResponder):
                 lightClickedByAvatar = None
                 return
 
-            PtDebugPrint("Light %d clicked." % (id))
+            PtDebugPrint("kdshShadowPath:OnNotify():  Light {} clicked.".format(id))
             code = 'respBtnPush0' + str(id) + '.run(self.key,events=events)'
             exec code
 
@@ -218,7 +219,7 @@ class kdshShadowPath(ptResponder):
 
             lightClickedByAvatar = None  # Reset avatar reporting
 
-            PtDebugPrint("Light %d actually touched by avatar." % (id-25))
+            PtDebugPrint("kdshShadowPath:OnNotify():  Light {} actually touched by avatar.".format(id-25))
             oldstate = ageSDL["ShadowPathLight0" + str(id-25)][0]
             newstate = abs(oldstate-1)  # toggle value of switch state
             ageSDL["ShadowPathLight0" + str(id-25)] = (newstate, )  # write new state value to SDL
@@ -226,21 +227,21 @@ class kdshShadowPath(ptResponder):
 
         elif id in [regZone01.id, regZone02.id, regZone03.id, regZone04.id, regZone05.id, regZone06.id, regZone07.id, regZone08.id, regZone09.id]:
             if gameStarted:
-                PtDebugPrint("Triggered Bad Region!")
+                PtDebugPrint("kdshShadowPath:OnNotify():  Triggered Bad Region!")
                 gameStarted = 0
 
         elif id == regZoneStart.id:
-            PtDebugPrint("Triggered Start Region!")
+            PtDebugPrint("kdshShadowPath:OnNotify():  Triggered Start Region!")
             gameStarted = 1
 
         elif id == regZoneFinish.id:
             if gameStarted:
                 gameStarted = 0
-                PtDebugPrint("kdshShadowPath: Puzzle solved.")
+                PtDebugPrint("kdshShadowPath:OnNotify():  Puzzle solved.")
                 ageSDL["ShadowPathSolved"] = (1, )  # write new state value to SDL
 
         elif state and id == actResetBtn.id:
-            PtDebugPrint("kdshShadowPath Reset Button clicked.")
+            PtDebugPrint("kdshShadowPath:OnNotify():  Reset Button clicked.")
             resetBtnByAvatar = PtFindAvatar(events)
             respResetBtn.run(self.key, events=events)
 
@@ -249,7 +250,7 @@ class kdshShadowPath(ptResponder):
                 resetBtnByAvatar = None
                 return
 
-            PtDebugPrint("kdshShadowPath Reset Button Pushed. Puzzle resetting.")
+            PtDebugPrint("kdshShadowPath:OnNotify():  Reset Button Pushed. Puzzle resetting.")
             resetBtnByAvatar = None
 
             # turn off the lights
@@ -257,10 +258,10 @@ class kdshShadowPath(ptResponder):
                 lightstate = ageSDL["ShadowPathLight0" + str(light)][0]
                 if lightstate == 1:
                     code = 'ageSDL["ShadowPathLight0' + str(light) + '"] = (0,)'
-                    PtDebugPrint("resetcode = %s" % (code))
+                    PtDebugPrint("\tresetcode = {}".format(code))
                     exec code
 
-                    PtDebugPrint("\tTurning off light #%d" % (light))
+                    PtDebugPrint("\tTurning off light #{}".format(light))
 
             #...and close the floor
             ageSDL["ShadowPathSolved"] = (0,)
@@ -270,10 +271,10 @@ class kdshShadowPath(ptResponder):
 
         if VARname == "ShadowPathSolved":
             if ageSDL["ShadowPathSolved"][0] == 1:
-                PtDebugPrint("kdshShadowPath: Opening floor")
+                PtDebugPrint("kdshShadowPath:OnSDLNotify():  Opening floor")
                 RevealStairs.run(self.key)
             else:
-                PtDebugPrint("kdshShadowPath: Closing floor")
+                PtDebugPrint("kdshShadowPath:OnSDLNotify():  Closing floor")
                 ConcealStairs.run(self.key)
 
         elif VARname[:15] == "ShadowPathLight":
@@ -282,15 +283,15 @@ class kdshShadowPath(ptResponder):
             newstate = ageSDL["ShadowPathLight0" + str(light)][0]
 
             if newstate == 0:  # true if that switch is now off
-                PtDebugPrint("kdshShadowPath.OnSDLNotify: Light %d was on. Turning it off." % (light))
+                PtDebugPrint("kdshShadowPath:OnSDLNotify():  Light {} was on. Turning it off.".format(light))
                 code = "respSwitch0" + str(light) + ".run(self.key, state='off')"
 
                 exec code
 
             elif newstate == 1:  # true if that switch is now on
-                PtDebugPrint("kdshShadowPath.OnSDLNotify: Light %d was off. Turning it on." % (light))
+                PtDebugPrint("kdshShadowPath:OnSDLNotify():  Light {} was off. Turning it on.".format(light))
                 code = "respSwitch0" + str(light) + ".run(self.key, state='on')"
                 exec code
 
             else:
-                PtDebugPrint("Error. Not sure what the light thought it was.")
+                PtDebugPrint("kdshShadowPath:OnSDLNotify():  ERROR: Not sure what the light thought it was.")

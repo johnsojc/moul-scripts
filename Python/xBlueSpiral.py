@@ -110,7 +110,9 @@ class xBlueSpiral(ptResponder):
     def __init__(self):
         ptResponder.__init__(self)
         self.id = 8812
-        self.version = 2
+        version = 2
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
         self.isPlaying = 0
         self.clientId = 0
         self.joinedToGame = 0
@@ -120,7 +122,7 @@ class xBlueSpiral(ptResponder):
         self.isOwner = 0  # are we the game owner? (should we send owner-related messages like responders finishing?)
         self.tableId = 0  # for this one it's zero, cause there is only one table, other script will have a max attribute
         self.gameId = 0  # DIFFERENT from table id. This is the actual ID number of the game, table ID is simply a way to get a game without knowing its gameID
-        PtDebugPrint("xBlueSpiral: init  version = %d" % (self.version))
+        PtDebugPrint("__init__: xBlueSpiral v{}".format(self.version))
         random.seed()
 
     ###########################
@@ -141,7 +143,7 @@ class xBlueSpiral(ptResponder):
 
             if len(PtGetPlayerList()):
                 self.consecutive = ageSDL[SDLBSConsecutive.value][0]
-                PtDebugPrint("xBlueSpiral.OnServerInitComplete(): People in Age - self.consecutive = %d" % (self.consecutive))
+                PtDebugPrint("xBlueSpiral.OnServerInitComplete():  People in Age - self.consecutive = {}".format(self.consecutive))
                 if self.consecutive:
                     for i in range(self.consecutive):
                         respBSTicMarks.run(self.key, state=str(i+1), fastforward=1)
@@ -150,7 +152,7 @@ class xBlueSpiral(ptResponder):
                 ageSDL[SDLBSConsecutive.value] = (self.consecutive,)
                 # incase the door got left open
                 respBSDoorOps.run(self.key, state="close", fastforward=1)
-                PtDebugPrint("xBlueSpiral.OnServerInitComplete(): Empty Age - self.consecutive = %d" % (self.consecutive))
+                PtDebugPrint("xBlueSpiral.OnServerInitComplete():  Empty Age - self.consecutive = {}".format(self.consecutive))
 
             # set flags on age SDL vars we'll be changing
             ageSDL.setFlags(SDLBSKey.value, 1, 1)
@@ -164,7 +166,7 @@ class xBlueSpiral(ptResponder):
     def OnSDLNotify(self, VARname, SDLname, playerID, tag):
         if gAgeStartedIn == PtGetAgeName():
             ageSDL = PtGetAgeSDL()
-            PtDebugPrint("xBlueSpiral.OnSDLNotify(): VARname:%s, SDLname:%s, tag:%s, value:%s, playerID:%d" % (VARname, SDLname, tag, ageSDL[VARname][0], playerID))
+            PtDebugPrint("xBlueSpiral.OnSDLNotify():  VARname:{}, SDLname:{}, tag:{}, value:{}, playerID:{}".format(VARname, SDLname, tag, ageSDL[VARname][0], playerID))
 
             if VARname == SDLBSConsecutive.value:
                 self.consecutive = ageSDL[VARname][0]
@@ -180,7 +182,7 @@ class xBlueSpiral(ptResponder):
             if key == "" or key == " " or key is None:
                 raise error("xBlueSpiral.OnServerInitComplete(): Empty key")
             self.keyList = key.split(" ")
-            PtDebugPrint("xBlueSpiral.OnServerInitComplete(): ageSDL[xBlueSpiralKey] = %s" % (key))
+            PtDebugPrint("xBlueSpiral.GetDSLKey():  ageSDL[xBlueSpiralKey] = {}".format(key))
 
         except ValueError:
             key = ""
@@ -191,10 +193,10 @@ class xBlueSpiral(ptResponder):
             key = key.strip(" ")
             ageSDL[SDLBSKey.value] = (key,)
             self.keyList = key.split(" ")
-            PtDebugPrint("xBlueSpiral.OnServerInitComplete(): First time here, new key = %s." % (key))
+            PtDebugPrint("xBlueSpiral.GetDSLKey():  First time here, new key = {}.".format(key))
 
         except:
-            PtDebugPrint("Something wrong, try grabbing SDL later")
+            PtDebugPrint("xBlueSpiral.GetDSLKey():  Something wrong, try grabbing SDL later")
             self.keyList = None
             return 0
 
@@ -209,13 +211,13 @@ class xBlueSpiral(ptResponder):
             if joinMsg.playerID() == self.clientId:
                 self.gameId = msg.getGameCli().gameID()
                 self.joinedToGame = 1
-                PtDebugPrint("xBlueSpiral.OnGameCliMsg(): Got join reply from the Blue Spiral game, we are now an observer for game id %s" % (str(self.gameId)))
+                PtDebugPrint("xBlueSpiral.OnGameCliMsg():  Got join reply from the Blue Spiral game, we are now an observer for game id {}".format(self.gameId))
 
         elif msg.getType() == PtGameCliMsgTypes.kGameCliOwnerChangeMsg:
             ownerChangeMsg = msg.upcastToFinalGameCliMsg()
-            PtDebugPrint("xBlueSpiral.OnGameCliMsg(): Got owner change msg, ownerID = %s, clientId = %s" % (str(ownerChangeMsg.ownerID()), str(self.clientId)))
+            PtDebugPrint("xBlueSpiral.OnGameCliMsg():  Got owner change msg, ownerID = {}, clientId = {}".format(ownerChangeMsg.ownerID(), self.clientId))
             if ownerChangeMsg.ownerID() == self.clientId:
-                PtDebugPrint("xBlueSpiral.OnGameCliMsg(): We are now the game owner")
+                PtDebugPrint("xBlueSpiral.OnGameCliMsg():  We are now the game owner")
                 self.isOwner = 1
 
         elif msg.getType() == PtGameCliMsgTypes.kGameCliBlueSpiralMsg:
@@ -224,23 +226,23 @@ class xBlueSpiral(ptResponder):
             finalMsg = bsMsg.upcastToFinalBlueSpiralMsg()
             if msgType == PtBlueSpiralMsgTypes.kBlueSpiralClothOrder:
                 self.solutionList = finalMsg.order()
-                PtDebugPrint("xBlueSpiral.OnGameCliMsg(): Cloth Order Msg: %s" % (str(self.solutionList)))
+                PtDebugPrint("xBlueSpiral.OnGameCliMsg():  Cloth Order Msg: {}".format(self.solutionList))
 
             elif msgType == PtBlueSpiralMsgTypes.kBlueSpiralSuccessfulHit:
                 self.consecutive += 1
                 ageSDL = PtGetAgeSDL()
                 ageSDL[SDLBSConsecutive.value] = (self.consecutive,)
                 respBSTicMarks.run(self.key, state=str(self.consecutive))
-                PtDebugPrint("xBlueSpiral.OnGameCliMsg(): Consecutive Hits: %d" % (self.consecutive))
+                PtDebugPrint("xBlueSpiral.OnGameCliMsg():  Consecutive Hits: {}".format(self.consecutive))
 
             elif msgType == PtBlueSpiralMsgTypes.kBlueSpiralGameWon:
-                PtDebugPrint("xBlueSpiral.OnGameCliMsg(): Game Won")
+                PtDebugPrint("xBlueSpiral.OnGameCliMsg():  Game Won")
                 gDoorIsOpen = 0
                 respBSDoorOps.run(self.key, state="open")
                 respBSSymbolSpin.run(self.key, state="fwdstop")
 
             elif msgType == PtBlueSpiralMsgTypes.kBlueSpiralGameOver:
-                PtDebugPrint("xBlueSpiral.OnGameCliMsg(): Game Over")
+                PtDebugPrint("xBlueSpiral.OnGameCliMsg():  Game Over")
                 PtClearTimerCallbacks(self.key)
                 PtAtTimeCallback(self.key, 1, 4)
                 gPlayCounter = 0
@@ -248,7 +250,7 @@ class xBlueSpiral(ptResponder):
                 gIsForward = -1
                 if self.consecutive:
                     for i in range(self.consecutive):
-                        PtDebugPrint("xBlueSpiral.OnGameCliMsg(): Playing Tic Clear state %d" % (i + 1))
+                        PtDebugPrint("xBlueSpiral.OnGameCliMsg():  Playing Tic Clear state {}".format(i + 1))
                         code = "respTicClear0" + str(i+1) + ".run(self.key)"
                         exec code
                 if self.consecutive == 7:
@@ -260,7 +262,7 @@ class xBlueSpiral(ptResponder):
                 ageSDL[SDLBSConsecutive.value] = (self.consecutive,)
 
             elif msgType == PtBlueSpiralMsgTypes.kBlueSpiralGameStarted:
-                PtDebugPrint("xBlueSpiral.OnGameCliMsg(): Game Started")
+                PtDebugPrint("xBlueSpiral.OnGameCliMsg():  Game Started")
                 self.isPlaying = 1
                 if finalMsg.startSpin():
                     PtAtTimeCallback(self.key, 1, 3)
@@ -272,10 +274,10 @@ class xBlueSpiral(ptResponder):
                     PtAtTimeCallback(self.key, 2, 1)
 
             else:
-                PtDebugPrint("xBlueSpiral.OnGameCliMsg(): Got a Game message I don't understand: %s" % (str(msgType)))
+                PtDebugPrint("xBlueSpiral.OnGameCliMsg():  Got a Game message I don't understand: {}".format(msgType))
 
         else:
-            PtDebugPrint("xBlueSpiral.OnGameCliMsg(): Got a message I don't understand: %s" % (str(msg.getType())))
+            PtDebugPrint("xBlueSpiral.OnGameCliMsg():  Got a message I don't understand: {}".format(msg.getType()))
 
     ###########################
     def OnNotify(self, state, id, events):
@@ -284,17 +286,17 @@ class xBlueSpiral(ptResponder):
         global gClkArray
 
         if self.keyList is None:
-            PtDebugPrint("xBlueSpiral.OnNotify: I had SDL issues earlier")
+            PtDebugPrint("xBlueSpiral.OnNotify():  I had SDL issues earlier")
             if not self.GetSDLKey():
-                PtDebugPrint("xBlueSpiral.OnNotify: And I still do")
+                PtDebugPrint("xBlueSpiral.OnNotify():  And I still do")
                 return
-            PtDebugPrint("xBlueSpiral.OnNotify: But I got them worked out")
+            PtDebugPrint("xBlueSpiral.OnNotify():  But I got them worked out")
 
-        PtDebugPrint("xBlueSpiral.OnNotify: state=%s id=%d events=" % (state, id), events)
+        PtDebugPrint("xBlueSpiral.OnNotify():  state={} id={} events={}".format(state, id, events))
         ageSDL = PtGetAgeSDL()
 
         if id == evntBSBeginning.id and gIsForward == 0:
-            PtDebugPrint("xBlueSpiral.OnNotify: Spiral hit beginning")
+            PtDebugPrint("xBlueSpiral.OnNotify():  Spiral hit beginning")
             respBSSymbolSpin.run(self.key, state="bkdstop")
             gIsForward = -1
             return
@@ -308,30 +310,30 @@ class xBlueSpiral(ptResponder):
 
             if PtFindAvatar(events) == PtGetLocalAvatar() and PtWasLocallyNotified(self.key):
                 if self.isPlaying:
-                    PtDebugPrint("xBlueSpiral.OnNotify: Cloth0%d clicked during game with a value of %d" % (range1, int(self.keyList[range0])))
+                    PtDebugPrint("xBlueSpiral.OnNotify():  Cloth0{} clicked during game with a value of {}".format(range1, int(self.keyList[range0])))
                     bsCli = self.IGetBlueSpiralGameCli()
                     bsCli.hitCloth(int(self.keyList[range0]))
                 else:
-                    PtDebugPrint("xBlueSpiral.OnNotify: Cloth0%d clicked, playing glow for Door part %s" % (range1, self.keyList[range0]))
+                    PtDebugPrint("xBlueSpiral.OnNotify():  Cloth0{} clicked, playing glow for Door part {}".format(range1, self.keyList[range0]))
                     respBSDoor.run(self.key, state=self.keyList[range0])
             else:
-                PtDebugPrint("xBlueSpiral.OnNotify: Someone else clicked Cloth0%d with a value of %d" % (range1, int(self.keyList[range0])))
+                PtDebugPrint("xBlueSpiral.OnNotify():  Someone else clicked Cloth0{} with a value of {}".format(range1, int(self.keyList[range0])))
 
         else:
             if id == clkBSDoor.id and not state and PtFindAvatar(events) == PtGetLocalAvatar() and PtWasLocallyNotified(self.key):
-                PtDebugPrint("xBlueSpiral.OnNotify: Door clicked on")
+                PtDebugPrint("xBlueSpiral.OnNotify():  Door clicked on")
                 respBSClothDoor.run(self.key, avatar=PtFindAvatar(events))
 
             elif id == respBSDoorOps.id:
-                PtDebugPrint("xBlueSpiral.OnNotify: Door is fully open")
+                PtDebugPrint("xBlueSpiral.OnNotify():  Door is fully open")
                 gDoorIsOpen = 1
 
             elif id == respBSClothDoor.id and self.sceneobject.isLocallyOwned():
-                PtDebugPrint("xBlueSpiral.OnNotify: Door actually touched")
+                PtDebugPrint("xBlueSpiral.OnNotify():  Door actually touched")
                 bsCli = self.IGetBlueSpiralGameCli()
                 bsCli.startGame()
                 if self.isPlaying:
-                    PtDebugPrint("xBlueSpiral.OnNotify: but a game is already running...")
+                    PtDebugPrint("xBlueSpiral.OnNotify():  but a game is already running...")
                     PtClearTimerCallbacks(self.key)
                     PtAtTimeCallback(self.key, 0, 4)
 
@@ -355,7 +357,7 @@ class xBlueSpiral(ptResponder):
                 PtAtTimeCallback(self.key, 2, 1)
 
         elif id == 3:
-            PtDebugPrint("xBlueSpiral.OnTimer: id = %d - Playing Spiral Forward" % (id))
+            PtDebugPrint("xBlueSpiral.OnTimer():  id = {} - Playing Spiral Forward".format(id))
             respBSSymbolSpin.run(self.key, state="fwdstart")
             animBlueSpiral.animation.backwards(0)
             animBlueSpiral.animation.speed(1)
@@ -363,7 +365,7 @@ class xBlueSpiral(ptResponder):
             gIsForward = 1
 
         elif id == 4 and gIsForward == 1:
-            PtDebugPrint("xBlueSpiral.OnTimer: id = %d - Playing Spiral backwards" % (id))
+            PtDebugPrint("xBlueSpiral.OnTimer():  id = {} - Playing Spiral backwards".format(id))
             respBSSymbolSpin.run(self.key, state="bkdstart")
             animBlueSpiral.animation.backwards(1)
             animBlueSpiral.animation.speed(10.0)
@@ -372,29 +374,29 @@ class xBlueSpiral(ptResponder):
 
         elif id == 5:
             if gDoorIsOpen:
-                PtDebugPrint("xBlueSpiral.OnTimer: id = %d - Closing door" % (id))
+                PtDebugPrint("xBlueSpiral.OnTimer():  id = {} - Closing door".format(id))
                 gDoorIsOpen = 0
                 respBSDoorOps.run(self.key, state="close")
             else:
-                PtDebugPrint("xBlueSpiral.OnTimer: id = %d - Waiting for door to open before closing" % (id))
+                PtDebugPrint("xBlueSpiral.OnTimer():  id = {} - Waiting for door to open before closing".format(id))
                 PtAtTimeCallback(self.key, 1, 5)
 
     ###########################
     def IGetBlueSpiralGameCli(self):
         if not self.joinedToGame:
-            PtDebugPrint("xBlueSpiral.IGetBlueSpiralGameCli: Requesting game client before we have become an observer... returning None")
+            PtDebugPrint("xBlueSpiral.IGetBlueSpiralGameCli():  Requesting game client before we have become an observer... returning None")
             return None
 
         gameCli = PtGetGameCli(self.gameId)
         if gameCli is not None and PtIsBlueSpiralGame(gameCli.gameTypeID()):
-            PtDebugPrint("xBlueSpiral.IGetBlueSpiralGameCli: Returning BlueSpiralGameCli")
+            PtDebugPrint("xBlueSpiral.IGetBlueSpiralGameCli():  Returning BlueSpiralGameCli")
             return gameCli.upcastToBlueSpiralGame()
         return None
 
     ###########################
     def OnBackdoorMsg(self, target, param):
         if target == "bscloth" and self.sceneobject.isLocallyOwned():
-            PtDebugPrint("xBlueSpiral.OnBackdoorMsg: Cheater, cheater, pumpkin eater.")
+            PtDebugPrint("xBlueSpiral.OnBackdoorMsg():  Cheater, cheater, pumpkin eater.")
             bsCli = self.IGetBlueSpiralGameCli()
             if param == "all":
                 for i in range(7):

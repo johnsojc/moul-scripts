@@ -70,7 +70,10 @@ class giraAgeSDLBoolRespondLightpost(ptResponder):
     def __init__(self):
         ptResponder.__init__(self)
         self.id = 50344
-        self.version = 1
+        version = 1
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: giraAgeSDLBoolRespondLightpost v{}".format(self.version))
 
     def OnServerInitComplete(self):
         ageSDL = PtGetAgeSDL()
@@ -83,14 +86,14 @@ class giraAgeSDLBoolRespondLightpost(ptResponder):
         ageSDL.setNotify(self.key, stringVarSolved.value, 0.0)
         solved = ageSDL[stringVarSolved.value][0]
         if (solved):
-            PtDebugPrint("solved %s" % (stringVarSolved.value))
+            PtDebugPrint("giraAgeSDLBoolRespondLightpost.OnServerInitComplete():  solved {}".format(stringVarSolved.value))
         else:
             return
         if (ageSDL[stringVarName.value][0]):
-            PtDebugPrint("DEBUG: giraAgeSDLBoolRespondLightpost.OnServerInitComplete:\tRunning true responder on %s, fastforward=%d" % (self.sceneobject.getName(), boolFFOnInit.value))
+            PtDebugPrint("giraAgeSDLBoolRespondLightpost.OnServerInitComplete():  DEBUG: Running true responder on {}, fastforward={}".format(self.sceneobject.getName(), boolFFOnInit.value))
             respBoolTrue.run(self.key, fastforward=boolFFOnInit.value)
         else:
-            PtDebugPrint("DEBUG: giraAgeSDLBoolRespondLightpost.OnServerInitComplete:\tRunning false responder on %s, fastforward=%d" % (self.sceneobject.getName(), boolFFOnInit.value))
+            PtDebugPrint("giraAgeSDLBoolRespondLightpost.OnServerInitComplete():  DEBUG: Running false responder on {}, fastforward={}".format(self.sceneobject.getName(), boolFFOnInit.value))
             respBoolFalse.run(self.key, fastforward=boolFFOnInit.value)
 
     # in case someone other than me changes my var(s)
@@ -101,11 +104,11 @@ class giraAgeSDLBoolRespondLightpost(ptResponder):
             return
 
         ageSDL = PtGetAgeSDL()
-        PtDebugPrint("DEBUG: giraAgeSDLBoolRespondLightpost.OnSDLNotify():\t VARname:%s, SDLname:%s, tag:%s, value:%d" % (VARname, SDLname, tag, ageSDL[stringVarName.value][0]))
+        PtDebugPrint("giraAgeSDLBoolRespondLightpost.OnSDLNotify():  DEBUG: VARname:{}, SDLname:{}, tag:{}, value:{}".format(VARname, SDLname, tag, ageSDL[stringVarName.value][0]))
         solved = ageSDL[stringVarSolved.value][0]
         if not solved:
             return
-        PtDebugPrint("cave puzzle solved %s" % (stringVarSolved.value))
+        PtDebugPrint("giraAgeSDLBoolRespondLightpost.OnSDLNotify():  cave puzzle solved {}".format(stringVarSolved.value))
         # is state change from player or vault manager?
         if playerID:  # non-zero means it's a player
             objAvatar = ptSceneobject(PtGetAvatarKeyFromClientID(playerID), self.key)
@@ -113,14 +116,14 @@ class giraAgeSDLBoolRespondLightpost(ptResponder):
         else:  # invalid player aka Vault Manager
             objAvatar = None
             fastforward = boolVltMgrFastForward.value  # we need to skip any one-shots
-        PtDebugPrint("DEBUG: giraAgeSDLBoolRespondLightpost.OnSDLNotify():\tnotification from playerID: %d" % (playerID))
+        PtDebugPrint("giraAgeSDLBoolRespondLightpost.OnSDLNotify():  DEBUG: notification from playerID: {}".format(playerID))
 
         # run the appropriate responder!
         if ageSDL[stringVarName.value][0]:
-            PtDebugPrint("DEBUG: giraAgeSDLBoolRespondLightpost.OnSDLNotify:\tRunning true responder on %s, fastforward=%d" % (self.sceneobject.getName(), fastforward))
+            PtDebugPrint("giraAgeSDLBoolRespondLightpost.OnSDLNotify():  DEBUG: Running true responder on {}, fastforward={}".format(self.sceneobject.getName(), fastforward))
             respBoolTrue.run(self.key, avatar=objAvatar, fastforward=fastforward)
         else:
-            PtDebugPrint("DEBUG: giraAgeSDLBoolRespondLightpost.OnSDLNotify:\tRunning false responder on %s, fastforward=%d" % (self.sceneobject.getName(), fastforward))
+            PtDebugPrint("giraAgeSDLBoolRespondLightpost.OnSDLNotify():  DEBUG: Running false responder on {}, fastforward={}".format(self.sceneobject.getName(), fastforward))
             respBoolFalse.run(self.key, avatar=objAvatar, fastforward=fastforward)
             if stringVarName.value == "giraLightswitch03On":
                 import xSndLogTracks

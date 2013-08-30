@@ -64,12 +64,15 @@ class xAgeSDLIntShowHide(ptMultiModifier):
     def __init__(self):
         ptMultiModifier.__init__(self)
         self.id = 5304
-        self.version = 2
+        version = 2
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: xAgeSDLIntShowHide v{}".format(self.version))
         self.enabledStateList = []
 
     def OnFirstUpdate(self):
         if not (type(stringVarName.value) is str and stringVarName.value != ""):
-            PtDebugPrint("ERROR: xAgeSDLIntShowHide.OnFirstUpdate():\tERROR: missing SDL var name")
+            PtDebugPrint("xAgeSDLIntShowHide.OnFirstUpdate():  ERROR: missing SDL var name")
             pass
 
         if boolFirstUpdate.value:
@@ -89,40 +92,40 @@ class xAgeSDLIntShowHide(ptMultiModifier):
                 for i in range(len(self.enabledStateList)):
                     self.enabledStateList[i] = int(self.enabledStateList[i].strip())
             except:
-                PtDebugPrint("ERROR: xAgeSDLIntShowHide.OnServerInitComplete():\tERROR: couldn't process start state list")
+                PtDebugPrint("xAgeSDLIntShowHide.Initialize():  ERROR: couldn't process start state list")
                 pass
 
             ageSDL.setNotify(self.key, stringVarName.value, 0.0)
             try:
                 SDLvalue = ageSDL[stringVarName.value][0]
             except:
-                PtDebugPrint("ERROR: xAgeSDLIntShowHide.OnServerInitComplete():\tERROR: age sdl read failed, SDLvalue = %d by default. stringVarName = %s" % (intDefault.value, stringVarName.value))
+                PtDebugPrint("xAgeSDLIntShowHide.Initialize():  ERROR: age sdl read failed, SDLvalue = {} by default. stringVarName = {}".format(intDefault.value, stringVarName.value))
                 SDLvalue = intDefault.value
 
             try:
                 if SDLvalue in self.enabledStateList:
-                    PtDebugPrint("DEBUG: xAgeSDLIntShowHide.OnServerInitComplete: Attempting to enable drawing and collision on %s..." % (self.sceneobject.getName()))
+                    PtDebugPrint("xAgeSDLIntShowHide.Initialize():  DEBUG: Attempting to enable drawing and collision on {}...".format(self.sceneobject.getName()))
                     self.sceneobject.draw.enable()
                     self.sceneobject.physics.suppress(false)
                 else:
-                    PtDebugPrint("DEBUG: xAgeSDLIntShowHide.OnServerInitComplete: Attempting to disable drawing and collision on %s..." % (self.sceneobject.getName()))
+                    PtDebugPrint("xAgeSDLIntShowHide.Initialize():  DEBUG: Attempting to disable drawing and collision on {}...".format(self.sceneobject.getName()))
                     self.sceneobject.draw.disable()
                     self.sceneobject.physics.suppress(true)
             except:
-                PtDebugPrint("ERROR: xAgeSDLIntShowHide.OnServerInitComplete():\tERROR enabling/disabling object %s" % self.sceneobject.getName())
+                PtDebugPrint("xAgeSDLIntShowHide.Initialize():  ERROR: Error enabling/disabling object {}".format(self.sceneobject.getName()))
                 self.runDefault()
         else:
-            PtDebugPrint("ERROR: xAgeSDLIntShowHide.OnServerInitComplete():\tERROR: missing SDL var name")
+            PtDebugPrint("xAgeSDLIntShowHide.Initialize():  ERROR: missing SDL var name")
             self.runDefault()
 
     def runDefault(self):
-        PtDebugPrint("xAgeSDLIntShowHide: running internal default")
+        PtDebugPrint("xAgeSDLIntShowHide.runDefault():  running internal default")
         if intDefault.value in self.enabledStateList:
-            PtDebugPrint("DEBUG: xAgeSDLIntShowHide.OnServerInitComplete: Attempting to enable drawing and collision on %s..." % (self.sceneobject.getName()))
+            PtDebugPrint("xAgeSDLIntShowHide.runDefault():  DEBUG: Attempting to enable drawing and collision on {}...".format(self.sceneobject.getName()))
             self.sceneobject.draw.enable()
             self.sceneobject.physics.suppress(false)
         else:
-            PtDebugPrint("DEBUG: xAgeSDLIntShowHide.OnServerInitComplete: Attempting to disable drawing and collision on %s..." % (self.sceneobject.getName()))
+            PtDebugPrint("xAgeSDLIntShowHide.runDefault():  DEBUG: Attempting to disable drawing and collision on {}...".format(self.sceneobject.getName()))
             self.sceneobject.draw.disable()
             self.sceneobject.physics.suppress(true)
 
@@ -138,12 +141,12 @@ class xAgeSDLIntShowHide(ptMultiModifier):
             self.DisableObject()
 
     def EnableObject(self):
-        PtDebugPrint("DEBUG: xAgeSDLIntShowHide.EnableObject:  Attempting to enable drawing and collision on %s..." % (self.sceneobject.getName()))
+        PtDebugPrint("xAgeSDLIntShowHide.EnableObject():  DEBUG: Attempting to enable drawing and collision on {}...".format(self.sceneobject.getName()))
         self.sceneobject.draw.enable()
         self.sceneobject.physics.suppress(false)
 
     def DisableObject(self):
-        PtDebugPrint("DEBUG: xAgeSDLIntShowHide.DisableObject:  Attempting to disable drawing and collision on %s..." % (self.sceneobject.getName()))
+        PtDebugPrint("xAgeSDLIntShowHide.DisableObject():  DEBUG: Attempting to disable drawing and collision on {}...".format(self.sceneobject.getName()))
         self.sceneobject.draw.disable()
         self.sceneobject.physics.suppress(true)
 

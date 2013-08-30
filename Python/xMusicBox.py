@@ -77,8 +77,10 @@ class xMusicBox(ptModifier):
     def __init__(self):
         ptModifier.__init__(self)
         self.id = 5329
-        self.version = 3
-        PtDebugPrint("xMusicBox: init  version = %d" % (self.version))
+        version = 3
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: xMusicBox v{}".format(self.version))
 
     def OnServerInitComplete(self):
         global SoundObjIndex
@@ -120,7 +122,7 @@ class xMusicBox(ptModifier):
             ageDataFolder.addNode(newNode)
 
         SoundObjIndex = soSoundObj.value.getSoundIndex(strSoundObj.value)
-        PtDebugPrint("xMusicBox.OnServerInitComplete: using sound object index:" + str(SoundObjIndex))
+        PtDebugPrint("xMusicBox.OnServerInitComplete():  using sound object index:{}".format(SoundObjIndex))
 
         if type(sdlCurrentSongVar.value) is str and len(sdlCurrentSongVar.value) > 0:
             ageSDL = PtGetAgeSDL()
@@ -169,7 +171,7 @@ class xMusicBox(ptModifier):
             sdlvarisvalid = (type(sdlCurrentSongVar.value) is str and len(sdlCurrentSongVar.value) > 0)
 
             if islocalavatar and sdlvarisvalid:
-                print "Setting cur song var to: ", currentSong
+                PtDebugPrint("xMusicBox.OnNotify():  Setting cur song var to: {}".format(currentSong))
                 ageSDL = PtGetAgeSDL()
                 ageSDL[sdlCurrentSongVar.value] = currentSong
 
@@ -200,7 +202,7 @@ class xMusicBox(ptModifier):
 
             CurrentFile = (filename, iscompressed)
 
-        PtDebugPrint("xMusicBox.NextSong: Going to try to play: %s" % str(CurrentFile), level=kDebugDumpLevel)
+        PtDebugPrint("xMusicBox.NextSong(): Going to try to play: {}".format(CurrentFile), level=kDebugDumpLevel)
 
     def GetMusicBoxSongList(self):
         songList = []

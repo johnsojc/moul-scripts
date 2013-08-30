@@ -67,7 +67,10 @@ class grsnGetKI(ptModifier):
     def __init__(self):
         ptModifier.__init__(self)
         self.id = 50130
-        self.version = 1
+        version = 1
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: grsnGetKI v{}".format(self.version))
 
     def OnNotify(self, state, id, events):
         # is this our activator notifying us?

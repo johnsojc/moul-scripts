@@ -65,7 +65,10 @@ class grsnTrnCtrDoors(ptResponder):
     def __init__(self):
         ptResponder.__init__(self)
         self.id = 509823
-        self.version = 3
+        version = 3
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: grsnTrnCtrDoors v{}".format(self.version))
 
         self.grsnPrevDoorState = 0
         self.grsnDoorState = 0
@@ -83,31 +86,31 @@ class grsnTrnCtrDoors(ptResponder):
             self.SDL['grsnDoorState'] = (0,)
             self.grsnDoorState = self.SDL['grsnDoorState'][0]
 
-        PtDebugPrint("grsnTrnCtrDoors: self.SDL = %d" % (self.grsnDoorState))
-        PtDebugPrint("grsnTrnCtrDoors: Player List = %d" % (len(PtGetPlayerList())))
+        PtDebugPrint("grsnTrnCtrDoors.OnServerInitComplete():  self.SDL    = {}".format(self.grsnDoorState))
+        PtDebugPrint("grsnTrnCtrDoors.OnServerInitComplete():  Player List = {}".format(len(PtGetPlayerList())))
 
         if len(PtGetPlayerList()) > 0:
 
-            PtDebugPrint("grsnTrnCtrDoors: Somebody is already in the age. Attempting to sync states.")
+            PtDebugPrint("grsnTrnCtrDoors.OnServerInitComplete():  Somebody is already in the age. Attempting to sync states.")
 
             if self.grsnDoorState == doorSDLstates['open'] or self.grsnDoorState == doorSDLstates['opening']:
                 doorOpenResponder.run(self.key, fastforward=1)
-                PtDebugPrint("grsnTrnCtrDoors: Door is open.")
-                PtDebugPrint("grsnTrnCtrDoors: Door State = %d" % (self.grsnDoorState))
+                PtDebugPrint("grsnTrnCtrDoors.OnServerInitComplete():  Door is open.")
+                PtDebugPrint("grsnTrnCtrDoors.OnServerInitComplete():  Door State = {}".format(self.grsnDoorState))
 
             elif self.grsnDoorState == doorSDLstates['closing']:
                 doorCloseResponder.run(self.key, fastforward=1)
-                PtDebugPrint("grsnTrnCtrDoors: Door is closed.")
-                PtDebugPrint("grsnTrnCtrDoors: Door State = %d" % (self.grsnDoorState))
+                PtDebugPrint("grsnTrnCtrDoors.OnServerInitComplete():  Door is closed.")
+                PtDebugPrint("grsnTrnCtrDoors.OnServerInitComplete():  Door State = {}".format(self.grsnDoorState))
 
             else:
-                PtDebugPrint("grsnTrnCtrDoors: Exception. Door State = %d" % (self.grsnDoorState))
+                PtDebugPrint("grsnTrnCtrDoors.OnServerInitComplete():  Exception. Door State = {}".format(self.grsnDoorState))
 
         elif len(PtGetPlayerList()) < 1:
             # the door is really shut, someone left it open
             self.SDL['grsnDoorState'] = (doorSDLstates['closed'],)
             self.grsnDoorState = self.SDL['grsnDoorState'][0]
-            PtDebugPrint("grsnTrnCtrDoors: Nobody is here, setting door states to closed.")
+            PtDebugPrint("grsnTrnCtrDoors.OnServerInitComplete():  Nobody is here, setting door states to closed.")
 
         self.init = 1
 
@@ -119,99 +122,99 @@ class grsnTrnCtrDoors(ptResponder):
         ageSDL = PtGetAgeSDL()
         # Notify Section
         if id == (-1):
-            PtDebugPrint("grsnTrnCtrDoors: Recieved Notify... Contents Are %s" % (str(events[0][1])))
+            PtDebugPrint("grsnTrnCtrDoors.OnNotify():  Recieved Notify... Contents Are {}".format(events[0][1]))
             if events[0][1].find('rgnTriggerEnter') != -1 and self.sceneobject.isLocallyOwned():
                 if self.grsnDoorState == doorSDLstates['closed']:
                     self.UpdateDoorState(doorSDLstates['opening'])
-                    PtDebugPrint("grsnTrnCtrDoors: I triggered the region and I'm changing the sdl to opening.")
+                    PtDebugPrint("grsnTrnCtrDoors.OnNotify():  I triggered the region and I'm changing the sdl to opening.")
 
                 elif self.grsnDoorState == doorSDLstates['movingclosed'] or self.grsnDoorState == doorSDLstates['closing']:
                     self.UpdateDoorState(doorSDLstates['closetoopen'])
-                    PtDebugPrint("grsnTrnCtrDoors: I triggered the region and I'm changing the sdl to closetoopen.")
+                    PtDebugPrint("grsnTrnCtrDoors.OnNotify():  I triggered the region and I'm changing the sdl to closetoopen.")
 
                 elif self.grsnDoorState == doorSDLstates['opentoclose']:
                     self.UpdateDoorState(doorSDLstates['movingopen'])
-                    PtDebugPrint("grsnTrnCtrDoors: I triggered the region and I'm changing the sdl to movingopen.")
+                    PtDebugPrint("grsnTrnCtrDoors.OnNotify():  I triggered the region and I'm changing the sdl to movingopen.")
 
             elif events[0][1].find('rgnTriggerExit') != -1 and self.sceneobject.isLocallyOwned():
                 if self.grsnDoorState == doorSDLstates['open']:
                     self.UpdateDoorState(doorSDLstates['closing'])
-                    PtDebugPrint("grsnTrnCtrDoors: I triggered the region and I'm changing the sdl to closing.")
+                    PtDebugPrint("grsnTrnCtrDoors.OnNotify():  I triggered the region and I'm changing the sdl to closing.")
 
                 elif self.grsnDoorState == doorSDLstates['movingopen'] or self.grsnDoorState == doorSDLstates['opening']:
                     self.UpdateDoorState(doorSDLstates['opentoclose'])
-                    PtDebugPrint("grsnTrnCtrDoors: I triggered the region and I'm changing the sdl to opentoclose.")
+                    PtDebugPrint("grsnTrnCtrDoors.OnNotify():  I triggered the region and I'm changing the sdl to opentoclose.")
 
                 elif self.grsnDoorState == doorSDLstates['closetoopen']:
                     self.UpdateDoorState(doorSDLstates['movingclosed'])
-                    PtDebugPrint("grsnTrnCtrDoors: I triggered the region and I'm changing the sdl to movingclosed.")
+                    PtDebugPrint("grsnTrnCtrDoors.OnNotify():  I triggered the region and I'm changing the sdl to movingclosed.")
 
             elif events[0][1].find('Responder') != -1 and events[0][1].find('rgnTriggerEnter') == -1 and events[0][1].find('rgnTriggerExit') == -1:
                 self.grsnDoorStack.append(events[0][1])
-                PtDebugPrint("grsnTrnCtrDoors: New list is: %s" % (str(self.grsnDoorStack)))
+                PtDebugPrint("grsnTrnCtrDoors.OnNotify():  New list is: {}".format(self.grsnDoorStack))
 
                 if len(self.grsnDoorStack) == 1:
-                    PtDebugPrint("grsnTrnCtrDoors: List is only one command long, so I'm playing it")
+                    PtDebugPrint("grsnTrnCtrDoors.OnNotify():  List is only one command long, so I'm playing it")
                     code = self.grsnDoorStack[0]
-                    PtDebugPrint("grsnTrnCtrDoors: Playing command: %s" % (code))
+                    PtDebugPrint("grsnTrnCtrDoors.OnNotify():  Playing command: {}".format(code))
                     self.ExecCode(code)
 
             ############################################################################################################
             elif events[0][1].find('DoorState') != 1 and events[0][1].find('rgnTriggerEnter') == -1 and events[0][1].find('rgnTriggerExit') == -1 and events[0][1].find('Responder') == -1:
 
                 curState = int(events[0][1].lstrip('DoorState='))
-                PtDebugPrint("grsnTrnCtrDoors: Door State Updated to %d" % (curState))
-                PtDebugPrint("grsnTrnCtrDoors: Door State SDL Set to %d" % (self.SDL['grsnDoorState'][0]))
+                PtDebugPrint("grsnTrnCtrDoors.OnNotify():  Door State Updated to {}".format(curState))
+                PtDebugPrint("grsnTrnCtrDoors.OnNotify():  Door State SDL Set to {}".format(self.SDL['grsnDoorState'][0]))
 
                 if curState == doorSDLstates['closed']:
-                    PtDebugPrint("grsnTrnCtrDoors: Door is closed and nobody is in the region.")
+                    PtDebugPrint("grsnTrnCtrDoors.OnNotify():  Door is closed and nobody is in the region.")
                     self.grsnDoorState = doorSDLstates['closed']
-                    PtDebugPrint("grsnTrnCtrDoors: Door state is now %d" % (self.grsnDoorState))
+                    PtDebugPrint("grsnTrnCtrDoors.OnNotify():  Door state is now {}".format(self.grsnDoorState))
 
                 elif curState == doorSDLstates['opening']:
 
-                    PtDebugPrint("grsnTrnCtrDoors: Someone entered the region with a KI. Opening up the door.")
+                    PtDebugPrint("grsnTrnCtrDoors.OnNotify():  Someone entered the region with a KI. Opening up the door.")
 
                     self.grsnDoorState = doorSDLstates['opening']
-                    PtDebugPrint("grsnTrnCtrDoors: Door state is now %d" % (self.grsnDoorState))
+                    PtDebugPrint("grsnTrnCtrDoors.OnNotify():  Door state is now {}".format(self.grsnDoorState))
 
                     if self.sceneobject.isLocallyOwned():
                         self.SendNote("doorOpenResponder")
 
                 elif curState == doorSDLstates['open']:
                     self.grsnDoorState = doorSDLstates['open']
-                    PtDebugPrint("grsnTrnCtrDoors: Door is open and region is still occupied.")
-                    PtDebugPrint("grsnTrnCtrDoors: Door state is now %d" % (self.grsnDoorState))
+                    PtDebugPrint("grsnTrnCtrDoors.OnNotify():  Door is open and region is still occupied.")
+                    PtDebugPrint("grsnTrnCtrDoors: Door state is now {}".format(self.grsnDoorState))
 
                 elif curState == doorSDLstates['closing']:
 
-                    PtDebugPrint("grsnTrnCtrDoors: Door is now going to close.")
+                    PtDebugPrint("grsnTrnCtrDoors.OnNotify():  Door is now going to close.")
 
                     self.grsnDoorState = doorSDLstates['closing']
-                    PtDebugPrint("grsnTrnCtrDoors: Door state is now %d" % (self.grsnDoorState))
+                    PtDebugPrint("grsnTrnCtrDoors.OnNotify():  Door state is now {}".format(self.grsnDoorState))
 
                     if self.sceneobject.isLocallyOwned():
                         self.SendNote("doorCloseResponder")
 
                 elif curState == doorSDLstates['opentoclose']:
                     self.grsnDoorState = doorSDLstates['opentoclose']
-                    PtDebugPrint("grsnTrnCtrDoors: Everyone exited the region while the door was opening.")
-                    PtDebugPrint("grsnTrnCtrDoors: Door state is now %d" % (self.grsnDoorState))
+                    PtDebugPrint("grsnTrnCtrDoors.OnNotify():  Everyone exited the region while the door was opening.")
+                    PtDebugPrint("grsnTrnCtrDoors.OnNotify():  Door state is now {}".format(self.grsnDoorState))
 
                 elif curState == doorSDLstates['closetoopen']:
                     self.grsnDoorState = doorSDLstates['closetoopen']
-                    PtDebugPrint("grsnTrnCtrDoors: Someone with a good KI entered the region while the door was closing.")
-                    PtDebugPrint("grsnTrnCtrDoors: Door state is now %d" % (self.grsnDoorState))
+                    PtDebugPrint("grsnTrnCtrDoors.OnNotify():  Someone with a good KI entered the region while the door was closing.")
+                    PtDebugPrint("grsnTrnCtrDoors.OnNotify():  Door state is now {}".format(self.grsnDoorState))
 
                 elif curState == doorSDLstates['movingopen']:
                     self.grsnDoorState = doorSDLstates['movingopen']
-                    PtDebugPrint("grsnTrnCtrDoors: Going back to staying open.")
-                    PtDebugPrint("grsnTrnCtrDoors: Door state is now %d" % (self.grsnDoorState))
+                    PtDebugPrint("grsnTrnCtrDoors.OnNotify():  Going back to staying open.")
+                    PtDebugPrint("grsnTrnCtrDoors.OnNotify():  Door state is now {}".format(self.grsnDoorState))
 
                 elif curState == doorSDLstates['movingclosed']:
                     self.grsnDoorState = doorSDLstates['movingclosed']
-                    PtDebugPrint("grsnTrnCtrDoors: Going back to staying closed.")
-                    PtDebugPrint("grsnTrnCtrDoors: Door state is now %d" % (self.grsnDoorState))
+                    PtDebugPrint("grsnTrnCtrDoors.OnNotify():  Going back to staying closed.")
+                    PtDebugPrint("grsnTrnCtrDoors.OnNotify():  Door state is now {}".format(self.grsnDoorState))
 
         #####################################################################################
         elif id == triggerRgn.id:
@@ -230,10 +233,10 @@ class grsnTrnCtrDoors(ptResponder):
                             self.SendNote("rgnTriggerEnter")
                             return
 
-                        PtDebugPrint("grsnTrnCtrDoors: I triggered the region")
+                        PtDebugPrint("grsnTrnCtrDoors.OnNotify():  I triggered the region")
 
                         if PtGetLocalKILevel() < 2:
-                            PtDebugPrint("grsnTrnCtrDoors: KiLevel too low, cannot open door")
+                            PtDebugPrint("grsnTrnCtrDoors.OnNotify():  KiLevel too low, cannot open door")
                             return
                         else:
                             self.SendNote("rgnTriggerEnter")
@@ -247,7 +250,7 @@ class grsnTrnCtrDoors(ptResponder):
 
             self.UpdateRespStack()
 
-            PtDebugPrint("grsnTrnCtrDoors: Door is now open.")
+            PtDebugPrint("grsnTrnCtrDoors.OnNotify():  Door is now open.")
             if self.sceneobject.isLocallyOwned():
                 if self.grsnDoorState == doorSDLstates['opentoclose']:
                     self.UpdateDoorState(doorSDLstates['closing'])
@@ -259,7 +262,7 @@ class grsnTrnCtrDoors(ptResponder):
 
             self.UpdateRespStack()
 
-            PtDebugPrint("grsnTrnCtrDoors: Door is now closed.")
+            PtDebugPrint("grsnTrnCtrDoors.OnNotify():  Door is now closed.")
             if self.sceneobject.isLocallyOwned():
                 if self.grsnDoorState == doorSDLstates['closetoopen']:
                     self.UpdateDoorState(doorSDLstates['opening'])
@@ -268,7 +271,7 @@ class grsnTrnCtrDoors(ptResponder):
                     self.UpdateDoorState(doorSDLstates['closed'])
 
         else:
-            PtDebugPrint("grsnTrnCtrDoors: Events that came through:\t%s" % (events))
+            PtDebugPrint("grsnTrnCtrDoors.OnNotify():  Events that came through:  {}".format(events))
 
     ###############################################################
     def SendNote(self, ExtraInfo):
@@ -288,11 +291,11 @@ class grsnTrnCtrDoors(ptResponder):
     def UpdateRespStack(self):
         # Updates the Responder List
         old = self.grsnDoorStack.pop(0)
-        PtDebugPrint("grsnTrnCtrDoors: Getting rid of Resp: %s" % (old))
+        PtDebugPrint("grsnTrnCtrDoors.UpdateRespStack():  Getting rid of Resp: {}".format(old))
         if len(self.grsnDoorStack):
-            PtDebugPrint("grsnTrnCtrDoors: There's at lest one more Resp to play.")
+            PtDebugPrint("grsnTrnCtrDoors.UpdateRespStack():  There's at lest one more Resp to play.")
             code = self.grsnDoorStack[0]
-            PtDebugPrint("Playing command: %s" % (code))
+            PtDebugPrint("grsnTrnCtrDoors.UpdateRespStack():  Playing command: {}".format(code))
             self.ExecCode(code)
 
     def UpdateDoorState(self, StateNum):
@@ -305,5 +308,5 @@ class grsnTrnCtrDoors(ptResponder):
         elif code == "doorCloseResponder":
             doorCloseResponder.run(self.key, netPropagate=0)
         else:
-            PtDebugPrint("grsnTrnCtrDoors.ExecCode(): ERROR! Invalid code '%s'." % (code))
+            PtDebugPrint("grsnTrnCtrDoors.ExecCode():  ERROR! Invalid code '{}'.".format(code))
             self.grsnDoorStack.pop(0)

@@ -80,8 +80,9 @@ class xSitAugment(ptModifier):
         self.id = 5116
 
         version = 1
-        self.version = version
-        PtDebugPrint("__init__xSitAugment v.%d" % (version))
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: xSitAugment v{}".format(self.version))
 
     def OnFirstUpdate(self):
         pass
@@ -95,28 +96,28 @@ class xSitAugment(ptModifier):
 
             virtCam = ptCamera()
 
-            checktrig = "trig%i" % callback
+            checktrig = "trig{}".format(callback)
             if checktrig.value:  # checkbox is true, set camera
                 virtCam.save(Camera.sceneobject.getKey())
 
-            checkuntrig = "untrig%i" % callback
+            checkuntrig = "untrig{}".format(callback)
             if checkuntrig.value:  # checkbox is true, unset camera
                 virtCam.restore(Camera.sceneobject.getKey())
 
-            checkresp = "resp%i" % callback
+            checkresp = "resp{}".format(callback)
             if checkresp.value is not None:  # responder for this stage. Play it.
                 checkresp.run(self.key)
 
 ### below is scrap
     def OnGUINotify(self, id, control, event):
         "Notifications from the vignette"
-        PtDebugPrint("GUI Notify id=%d, event=%d control=" % (id, event), control)
+        PtDebugPrint("xSitAugment.OnGUINotify():  GUI Notify id={}, event={} control={}".format(id, event, control))
         if control.getTagID() == kExit:  # off
             self.IQuitDialog()
 
     def OnControlKeyEvent(self, controlKey, activeFlag):
         "Control key events... anything we're interested in?"
-        PtDebugPrint("Got controlKey event %d and its activeFlage is %d" % (controlKey, activeFlag))
+        PtDebugPrint("xSitAugment.OnControlKeyEvent():  Got controlKey event {} and its activeFlag is {}".format(controlKey, activeFlag))
         if controlKey == PlasmaControlKeys.kKeyExitMode:
             self.IQuitDialog()
 
@@ -127,7 +128,7 @@ class xSitAugment(ptModifier):
         PtLoadDialog(Vignette.value, self.key)
         if PtIsDialogLoaded(Vignette.value):
             PtShowDialog(Vignette.value)
-            PtDebugPrint("dialog: %s goes up" % (Vignette.value))
+            PtDebugPrint("xSitAugment.IStartDialog():  dialog: {} goes up".format(Vignette.value))
         # get control key events
         PtEnableControlKeyEvents(self.key)
 
@@ -137,9 +138,9 @@ class xSitAugment(ptModifier):
         # exit every thing
         if Vignette.value and Vignette.value != "":
             PtHideDialog(Vignette.value)
-            PtDebugPrint("Dialog: %s goes down" % (Vignette.value))
+            PtDebugPrint("xSitAugment.IQuitSitting():  Dialog: {} goes down".format(Vignette.value))
         else:
-            PtDebugPrint("WTH!!!")
+            PtDebugPrint("xSitAugment.IQuitSitting():  WTH!!!")
         #disable the Control key events
         PtDisableControlKeyEvents(self.key)
         # re-enable the dialog for someone else to use

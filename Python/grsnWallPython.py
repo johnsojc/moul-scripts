@@ -190,10 +190,12 @@ class grsnWallPython(ptResponder):
 
     def __init__(self):
         "construction"
-        PtDebugPrint("grsnWallPython::init begin")
         ptResponder.__init__(self)
         self.id = 52392
-        self.version = 3
+        version = 3
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: grsnWallPython v{}".format(self.version))
 """
     def Load(self):
         PtDebugPrint("grsnWallPython::Load")

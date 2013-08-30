@@ -67,8 +67,9 @@ class tldnShooterTrap(ptResponder):
         self.id = 5000
 
         version = 2
-        self.version = version
-        PtDebugPrint("__init__tldnShooterTrap v.%d" % (version))
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: tldnShooterTrap v{}".format(self.version))
 
     def OnNotify(self, state, id, events):
         if state:

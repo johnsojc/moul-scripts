@@ -69,8 +69,9 @@ class xVisitorPayDialog(ptResponder):
         self.id = 5345
 
         version = 1
-        self.version = version
-        PtDebugPrint("__init__ xVisitorPayDialog v.%d" % (version))
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: xVisitorPayDialog v{}".format(self.version))
 
     def OnServerInitComplete(self):
         global WebLaunchCmd
@@ -105,4 +106,4 @@ class xVisitorPayDialog(ptResponder):
                 WebLaunchCmd("https://account.gametap.com/storefront/myst/login/login.do")
 
             else:
-                PtDebugPrint("DEBUG: xVisitorPayDialog-->OnGUINotify -- Unknown Control Encountered")
+                PtDebugPrint("xVisitorPayDialog.OnGUINotify():  DEBUG: Unknown Control Encountered")

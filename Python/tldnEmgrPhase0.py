@@ -62,7 +62,7 @@ AgeStartedIn = None
 # This identifies the maximum valid value for INT Variables
 # The range is always from 00 to the value specified here
 def OutOfRange(VARname, NewSDLValue, myMaxINT):
-    PtDebugPrint("nb01EmgrPhase0.OutOfRange:\tERROR: Variable %s expected range from  0 - %d. Received value of %d" % (VARname, myMaxINT, NewSDLValue))
+    PtDebugPrint("tldnEmgrPhase0.OutOfRange:  ERROR: Variable {} expected range from  0 - {}. Received value of {}".format(VARname, myMaxINT, NewSDLValue))
 
 # the expected range of these intergers is defined in the list above. Convention is  "variablename" + "MaxINT"
 StateVARs = {}
@@ -75,8 +75,9 @@ class tldnEmgrPhase0(ptResponder):
         self.id = 5230
 
         version = 3
-        self.version = version
-        PtDebugPrint("__init__tldnEmgrPhase0 v.%d" % (version))
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: tldnEmgrPhase0 v{}".format(self.version))
 
     def OnFirstUpdate(self):
         global AgeStartedIn
@@ -99,10 +100,10 @@ class tldnEmgrPhase0(ptResponder):
 
         if AgeStartedIn == PtGetAgeName():
             ageSDL = PtGetAgeSDL()
-            PtDebugPrint("tldnEmgrPhase0.SDLNotify - name = %s, SDLname = %s" % (VARname, SDLname))
+            PtDebugPrint("tldnEmgrPhase0.OnSDLNotify():  name = {}, SDLname = {}".format(VARname, SDLname))
 
             if VARname in BooleanVARs:
-                PtDebugPrint("tldnEmgrPhase0.OnSDLNotify : %s is a BOOLEAN Variable" % (VARname))
+                PtDebugPrint("tldnEmgrPhase0.OnSDLNotify():  {} is a BOOLEAN Variable".format(VARname))
                 self.IManageBOOLs(VARname, SDLname)
 
             elif VARname in StateVARs.keys():
@@ -112,19 +113,19 @@ class tldnEmgrPhase0(ptResponder):
                 StateVARs[VARname](VARname, NewSDLValue)
 
             else:
-                PtDebugPrint("tldnEmgrPhase0.OnSDLNotify:\tERROR: Variable %s was not recognized as a Boolean, Performance, or State Variable. " % (VARname))
+                PtDebugPrint("tldnEmgrPhase0.OnSDLNotify():  ERROR: Variable {} was not recognized as a Boolean, Performance, or State Variable. ".format(VARname))
                 pass
 
     def IManageBOOLs(self, VARname, SDLname):
         if AgeStartedIn == PtGetAgeName():
             ageSDL = PtGetAgeSDL()
             if ageSDL[VARname][0] == 1:  # are we paging things in?
-                PtDebugPrint("tldnEmgrPhase0.OnSDLNotify:\tPaging in room %s" % (VARname))
+                PtDebugPrint("tldnEmgrPhase0.IManageBOOLs():  Paging in room {}".format(VARname))
                 PtPageInNode(VARname)
             elif ageSDL[VARname][0] == 0:  # are we paging things out?
-                PtDebugPrint("variable = %s" % (VARname))
-                PtDebugPrint("tldnEmgrPhase0.OnSDLNotify:\tPaging out room %s" % (VARname))
+                PtDebugPrint("tldnEmgrPhase0.IManageBOOLs():  variable = {}".format(VARname))
+                PtDebugPrint("tldnEmgrPhase0.IManageBOOLs():  Paging out room {}".format(VARname))
                 PtPageOutNode(VARname)
             else:
                 sdlvalue = ageSDL[VARname][0]
-                PtDebugPrint("tldnEmgrPhase0.OnSDLNotify:\tERROR: Variable %s had unexpected SDL value of %s" % (VARname, sdlvalue))
+                PtDebugPrint("tldnEmgrPhase0.IManageBOOLs():  ERROR: Variable {} had unexpected SDL value of {}".format(VARname, sdlvalue))

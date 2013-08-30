@@ -143,15 +143,17 @@ class bhroBahroYeeshaCave(ptModifier):
     def __init__(self):
         ptModifier.__init__(self)
         self.id = 5315
-        self.version = 6
-        PtDebugPrint("__init__bhroBahroYeeshaCave v. %d" % (self.version))
+        version = 6
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: bhroBahroYeeshaCave v{}".format(self.version))
         self.ageFrom = ""
         self.AgePlaying = ""
         self.SpeechRespReset = 1
         self.IsStarfield = 1
 
     def OnFirstUpdate(self):
-        PtDebugPrint("DEBUG: bhroBahroYeeshaCave.OnFirstUpdate():\tEverything ok so far")
+        PtDebugPrint("DEBUG: bhroBahroYeeshaCave.OnFirstUpdate():  Everything ok so far")
         xRandom.seed()
         xRandom.setmaxseries(1)
 
@@ -162,7 +164,7 @@ class bhroBahroYeeshaCave(ptModifier):
         entry = vault.findChronicleEntry("BahroCave")
 
         if entry is None:
-            PtDebugPrint("DEBUG: bhroBahroYeeshaCave.OnFirstUpdate: Did not find BahroCave chronicle...creating")
+            PtDebugPrint("DEBUG: bhroBahroYeeshaCave.OnFirstUpdate():  Did not find BahroCave chronicle...creating")
             vault.addChronicleEntry("BahroCave", 0, "0")
 
         self.varMap = {'YeeshaSymbolTouched': 0, 'SolutionSymbol': 1, 'YeeshaSpeech': 2}
@@ -223,11 +225,11 @@ class bhroBahroYeeshaCave(ptModifier):
         if self.ageFrom == "":
             self.ageFrom = "Garrison"
 
-        PtDebugPrint("DEBUG: bhroBahroYeeshaCave.OnServerInitComplete():\tCame from: %s" % self.ageFrom)
+        PtDebugPrint("bhroBahroYeeshaCave.OnServerInitComplete():  DEBUG: Came from: {}".format(self.ageFrom))
 
         # check if a cleft yeesha imager solution has already been created, otherwise create it
         if not self.CheckForSolution():
-            PtDebugPrint("No solution found, attempting to create")
+            PtDebugPrint("bhroBahroYeeshaCave.OnServerInitComplete():  No solution found, attempting to create")
             self.CreateSolution()
 
         self.UpdatePoleStates()
@@ -238,21 +240,20 @@ class bhroBahroYeeshaCave(ptModifier):
         # check and see if the yeesha speech variable has been set yet
         self.UseYeeshaSpeech = self.GetAgeVariable(self.ageFrom, "YeeshaSpeech")
         if self.UseYeeshaSpeech:
-            PtDebugPrint("bhroBahroYeeshaCave.OnServerInitComplete(): useYeeshaSpeech = %s" % (self.UseYeeshaSpeech))
+            PtDebugPrint("bhroBahroYeeshaCave.OnServerInitComplete():  useYeeshaSpeech = {}".format(self.UseYeeshaSpeech))
             if int(self.UseYeeshaSpeech) == 0:
                 serieslen = self.GetNumYSSet()
-                #self.SetAgeVariable(self.ageFrom, "YeeshaSpeech", serieslen + 1)
                 self.UseYeeshaSpeech = serieslen + 1
                 if self.GetAutoStartLevel() < self.UseYeeshaSpeech:
                     autostart = 1
                     self.IncrementAutoStartLevel()
-                PtDebugPrint("GetAutoStartLevel = %s" % (self.GetAutoStartLevel()))
+                PtDebugPrint("bhroBahroYeeshaCave.OnServerInitComplete():  GetAutoStartLevel = {}".format(self.GetAutoStartLevel()))
         else:
-            PtDebugPrint("bhroBahroYeeshaCave.OnServerInitComplete(): useYeeshaSpeech = None")
+            PtDebugPrint("bhroBahroYeeshaCave.OnServerInitComplete():  useYeeshaSpeech = None")
 
         UseYS = self.UseYeeshaSpeech
-        PtDebugPrint("bhroBahroYeeshaCave.OnServerInitComplete(): useYeeshaSpeech = %s" % (UseYS))
-        PtDebugPrint("bhroBahroYeeshaCave.OnServerInitComplete(): autostart = %d" % (autostart))
+        PtDebugPrint("bhroBahroYeeshaCave.OnServerInitComplete():  useYeeshaSpeech = {}".format(UseYS))
+        PtDebugPrint("bhroBahroYeeshaCave.OnServerInitComplete():  autostart = {}".format(autostart))
 
         journeyComplete = 0
 
@@ -265,7 +266,7 @@ class bhroBahroYeeshaCave(ptModifier):
         agelist = ["Teledahn", "Garrison", "Garden", "Kadish"]
         for age in agelist:
             currentState = self.ageDict[age]['State']
-            PtDebugPrint("Current state: %d" % (currentState))
+            PtDebugPrint("bhroBahroYeeshaCave.OnServerInitComplete():  Current state: {}".format(currentState))
 
             # if the age is not the one that I'm from then run the responder to make it back off
             if age != self.ageFrom and currentState < 8:
@@ -295,7 +296,7 @@ class bhroBahroYeeshaCave(ptModifier):
             PtAtTimeCallback(self.key, 3, 1)
 
     def OnNotify(self, state, id, events):
-        PtDebugPrint("DEBUG: bhroBahroYeeshaCave.OnNotify():\tid = %d" % (id))
+        PtDebugPrint("bhroBahroYeeshaCave.OnNotify():  DEBUG: id = {}".format(id))
 
         if not state:
             return
@@ -396,10 +397,10 @@ class bhroBahroYeeshaCave(ptModifier):
             cam = ptCamera()
             cam.undoFirstPerson()
             cam.disableFirstPersonOverride()
-            PtDebugPrint("undid first person and disabled override")
+            PtDebugPrint("bhroBahroYeeshaCave.OnNotify():  undid first person and disabled override")
 
     def OnTimer(self, id):
-        PtDebugPrint("DEBUG: bhroBahroYeeshaCave.OnTimer():\tid = %d" % id)
+        PtDebugPrint("bhroBahroYeeshaCave.OnTimer():  DEBUG: id = {}".format(id))
         if id == 1:
             self.PostYSOneShot(self.ageFrom, 1)
 
@@ -522,7 +523,7 @@ class bhroBahroYeeshaCave(ptModifier):
                     ypageSDL = psnlSDL.findVar("YeeshaPage25")
                     if ypageSDL:
                         size, state = divmod(ypageSDL.getInt(), 10)
-                        PtDebugPrint("YeeshaPage25 = %d" % (state))
+                        PtDebugPrint("bhroBahroYeeshaCave.DisablePole():  YeeshaPage25 = {}".format(state))
                         if state == 1:
                             PtDebugPrint("bhroBahroYeeshaCave.DisablePole():  sending the pole and YeeshaPage25 is on!  will do the age's wedge...")
                             self.DoWedge()
@@ -555,7 +556,7 @@ class bhroBahroYeeshaCave(ptModifier):
                 ypageSDL = psnlSDL.findVar("YeeshaPage25")
                 if ypageSDL:
                     size, state = divmod(ypageSDL.getInt(), 10)
-                    PtDebugPrint("YeeshaPage25 = %d" % (state))
+                    PtDebugPrint("bhroBahroYeeshaCave.PostJCOneShot():  YeeshaPage25 = {}".format(state))
                     if state != 1:
                         PtDebugPrint("bhroBahroYeeshaCave.PostJCOneShot():  can't send pole to Relto, YeeshaPage25 is off!  Returning the pole...")
                         self.ageDict[age]['JCClickable'].disable()
@@ -566,7 +567,7 @@ class bhroBahroYeeshaCave(ptModifier):
 
         state = self.ageDict[age]['State']
 
-        PtDebugPrint("Current %s state: %d" % (age, state))
+        PtDebugPrint("bhroBahroYeeshaCave.PostJCOneShot():  Current {} state: {}".format(age, state))
         self.ageDict[age]['JCClickable'].disable()
 
         if state == 2:
@@ -587,7 +588,7 @@ class bhroBahroYeeshaCave(ptModifier):
                 if self.ageDict[tage]['State'] == 9:
                     polesInPsnl += 1
             if polesInPsnl == 1:
-                PtDebugPrint("Playing Bahro Cave bahro scream")
+                PtDebugPrint("bhroBahroYeeshaCave.PostJCOneShot():  Playing Bahro Cave bahro scream")
                 respBahroScream.run(self.key)
             self.DisablePole(age)
             self.SetState(age, 9)
@@ -603,7 +604,7 @@ class bhroBahroYeeshaCave(ptModifier):
         self.AgePlaying = age
 
         if self.currentYS != "zz":
-            PtDebugPrint("Killing speech %s" % (self.currentYS))
+            PtDebugPrint("bhroBahroYeeshaCave.PostYSOneShot():  Killing speech {}".format(self.currentYS))
             respKillSpeeches.run(self.key, state=self.currentYS)
             self.currentYS = "zz"
             self.ageDict[prevage]["OneShotYS"].run(self.key, state="glowend")
@@ -612,7 +613,7 @@ class bhroBahroYeeshaCave(ptModifier):
                 return
 
         if not int(self.GetAgeVariable(age, "YeeshaSymbolTouched")) and not autotriggered:
-            PtDebugPrint("DEBUG: bhroBahroYeeshaCave.PostYSOneShot:\tFirst time touching the symbol")
+            PtDebugPrint("DEBUG: bhroBahroYeeshaCave.PostYSOneShot():  First time touching the symbol")
             self.SetAgeVariable(age, "YeeshaSymbolTouched", 1)
 
         self.PlayYeeshaSpeech(age)
@@ -643,15 +644,15 @@ class bhroBahroYeeshaCave(ptModifier):
             self.currentYS = "a"
 
         if self.currentYS == "age":
-            PtDebugPrint("playing 'age' YeeshaSpeech for: %s" % (age))
+            PtDebugPrint("bhroBahroYeeshaCave.PlayYeeshaSpeech():  playing 'age' YeeshaSpeech for: {}".format(age))
             self.ageDict[age]["YeeshaSpeech"].run(self.key)
             self.SpeechRespReset = 0
         elif self.currentYS != "zz":
-            PtDebugPrint("playing 'sequential' YeeshaSpeech...")
-            PtDebugPrint("speech = %s" % (speech))
-            PtDebugPrint("self.currentYS = %s" % (self.currentYS))
+            PtDebugPrint("bhroBahroYeeshaCave.PlayYeeshaSpeech():  playing 'sequential' YeeshaSpeech...")
+            PtDebugPrint("bhroBahroYeeshaCave.PlayYeeshaSpeech():\tspeech = {}".format(speech))
+            PtDebugPrint("bhroBahroYeeshaCave.PlayYeeshaSpeech():\tself.currentYS = {}".format(self.currentYS))
             state = speech + self.currentYS
-            PtDebugPrint("state = %s" % (state))
+            PtDebugPrint("bhroBahroYeeshaCave.PlayYeeshaSpeech():\tstate = {}".format(state))
             respSequentialYS.run(self.key, state)
             self.SpeechRespReset = 0
         else:
@@ -701,12 +702,12 @@ class bhroBahroYeeshaCave(ptModifier):
         elif self.ageFrom == "Teledahn":
             sdlName = "psnlBahroWedge04"
         else:
-            PtDebugPrint("bhroBahroYeeshaCave.DoWedge():  ERROR.  Didn't recognize previous age name, no wedge will be set")
+            PtDebugPrint("bhroBahroYeeshaCave.DoWedge():  ERROR:  Didn't recognize previous age name, no wedge will be set")
             return
 
         sdlVal = psnlSDL[sdlName][0]
         if not sdlVal:
-            PtDebugPrint("bhroBahroYeeshaCave.DoWedge():  previous age was %s, turning wedge SDL of %s to On" % (self.ageFrom, sdlName))
+            PtDebugPrint("bhroBahroYeeshaCave.DoWedge():  previous age was {}, turning wedge SDL of {} to On".format(self.ageFrom, sdlName))
             psnlSDL[sdlName] = (1,)
 
     def SetCurrentState(self, age, state):
@@ -761,9 +762,9 @@ class bhroBahroYeeshaCave(ptModifier):
                 val = int(val)
             bc.chronicleSetValue(str(val + 1))
             bc.save()
-            PtDebugPrint("bhroBahroYeeshaCave.IncrementAutoStartLevel(): setting BC chron = %s" % (str(val + 1)))
+            PtDebugPrint("bhroBahroYeeshaCave.IncrementAutoStartLevel():  setting BC chron = {}".format(str(val + 1)))
         else:
-            PtDebugPrint("bhroBahroYeeshaCave.IncrementAutoStartLevel(): no BC chron found")
+            PtDebugPrint("bhroBahroYeeshaCave.IncrementAutoStartLevel():  no BC chron found")
 
     def OnBackdoorMsg(self, target, param):
         if target == "kill":
@@ -796,13 +797,13 @@ class bhroBahroYeeshaCave(ptModifier):
             elif param == "Teledahn":
                 sdlName = "psnlBahroWedge04"
             else:
-                PtDebugPrint("bhroBahroYeeshaCave.OnBackdoorMsg():  ERROR.  Incorrect age specified, no wedge will be set")
+                PtDebugPrint("bhroBahroYeeshaCave.OnBackdoorMsg():  ERROR: Incorrect age specified, no wedge will be set")
                 return
 
             sdlVal = psnlSDL[sdlName][0]
             if sdlVal:
-                PtDebugPrint("bhroBahroYeeshaCave.OnBackdoorMsg():  previous age was %s, turning wedge SDL of %s to OFF" % (param, sdlName))
+                PtDebugPrint("bhroBahroYeeshaCave.OnBackdoorMsg():  previous age was {}, turning wedge SDL of {} to OFF".format(param, sdlName))
                 psnlSDL[sdlName] = (0,)
             else:
-                PtDebugPrint("bhroBahroYeeshaCave.OnBackdoorMsg():  previous age was %s, turning wedge SDL of %s to ON" % (param, sdlName))
+                PtDebugPrint("bhroBahroYeeshaCave.OnBackdoorMsg():  previous age was {}, turning wedge SDL of {} to ON".format(param, sdlName))
                 psnlSDL[sdlName] = (1,)

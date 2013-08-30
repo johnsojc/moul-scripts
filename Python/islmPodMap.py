@@ -75,8 +75,10 @@ class islmPodMap(ptResponder):
     def __init__(self):
         ptResponder.__init__(self)
         self.id = 221
-        self.version = 1
-        PtDebugPrint("islmPodMap: init  version = %d" % (self.version))
+        version = 1
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: islmPodMap v{}".format(self.version))
 
     ###########################
     def IGetAgeFilename(self):
@@ -123,7 +125,7 @@ class islmPodMap(ptResponder):
     ###########################
     def OnControlKeyEvent(self, controlKey, activeFlag):
         "Control key events... anything we're interested in?"
-        PtDebugPrint("Got controlKey event %d and its activeFlage is %d" % (controlKey, activeFlag), level=kDebugDumpLevel)
+        PtDebugPrint("islmPodMap.OnControlKeyEvent():  Got controlKey event {} and its activeFlag is {}".format(controlKey, activeFlag), level=kDebugDumpLevel)
         if controlKey == PlasmaControlKeys.kKeyExitMode:
             self.IQuitDialog()
 
@@ -136,7 +138,7 @@ class islmPodMap(ptResponder):
             PtSendKIMessage(kDisableKIandBB, 0)
             respZoom.run(self.key, state="out", netForce=0, netPropagate=0)
             PtShowDialog(Vignette.value)
-            PtDebugPrint("dialog: %s goes up" % (Vignette.value))
+            PtDebugPrint("islmPodMap.IStartDialog():  dialog: {} goes up".format(Vignette.value))
         # get control key events
         PtGetControlEvents(true, self.key)
 
@@ -148,8 +150,8 @@ class islmPodMap(ptResponder):
         if Vignette.value:
             PtSendKIMessage(kEnableKIandBB, 0)
             PtHideDialog(Vignette.value)
-            PtDebugPrint("Dialog: %s goes down" % (Vignette.value))
+            PtDebugPrint("islmPodMap.IQuitDialog():  {} goes down".format(Vignette.value))
         else:
-            PtDebugPrint("WTH!!!")
+            PtDebugPrint("islmPodMap.IQuitDialog():  WTH!!!")
         #disable the Control key events
         PtGetControlEvents(false, self.key)

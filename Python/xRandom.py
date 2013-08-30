@@ -158,7 +158,7 @@ class xRandom:
 
             if (self._range[1] - self._range[0] + 1) <= len(self._currentSequence):
                 self._currentSequence = [newInt]
-                PtDebugPrint("numTries: %d" % (numTries))
+                PtDebugPrint("xRandom.getUinqueInt():  numTries: {}".format(numTries))
                 return newInt
             else:
                 while newInt in self._currentSequence:
@@ -166,8 +166,8 @@ class xRandom:
                     numTries += 1
 
                 self._currentSequence.append(newInt)
-                PtDebugPrint("numTries: %d" % (numTries))
+                PtDebugPrint("xRandom.getUinqueInt():  numTries: {}".format(numTries))
                 return newInt
         else:
-            PtDebugPrint("numTries: %d" % (numTries))
+            PtDebugPrint("xRandom.getUinqueInt():  numTries: {}".format(numTries))
             return None

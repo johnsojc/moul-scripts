@@ -74,9 +74,10 @@ class philBookshelf(ptModifier):
     def __init__(self):
         ptModifier.__init__(self)
         self.id = 5327
-        self.version = 1
+        version = 1
         minor = 1
-        PtDebugPrint('__init__philBookshelf v. %d.%d' % (self.version, minor))
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint('__init__: philBookshelf v{}'.format(self.version))
 
     def OnServerInitComplete(self):
         global LocalAvatar
@@ -90,7 +91,7 @@ class philBookshelf(ptModifier):
         boolLinkerIsMe = false
         if PtWasLocallyNotified(self.key):
             boolLinkerIsMe = true
-        PtDebugPrint('philBookshelf.OnNotify(): state = %d, id = %d, me = %s' % (state, id, boolLinkerIsMe))
+        PtDebugPrint('philBookshelf.OnNotify():  state = {}, id = {}, me = {}'.format(state, id, boolLinkerIsMe))
 
         if id == actBookshelfExit.id:
             self.IDisengageShelf(boolLinkerIsMe)
@@ -101,7 +102,7 @@ class philBookshelf(ptModifier):
                 avatar = PtFindAvatar(events)
                 if event[0] == kMultiStageEvent and event[1] == 0 and LocalAvatar == avatar:  # Smart seek completed. Exit multistage, and show GUI.
                     SeekBehavior.gotoStage(avatar, -1)
-                    PtDebugPrint("philBookshelf.OnNotify():\tengaging bookshelf")
+                    PtDebugPrint("philBookshelf.OnNotify():  engaging bookshelf")
                     avatar.draw.disable()
                     # set camera to Shelf Camera
                     virtCam = ptCamera()
@@ -145,21 +146,21 @@ class philBookshelf(ptModifier):
         else:
             for event in events:
                 if event[0] == PtEventType.kBook:
-                    PtDebugPrint("philBookshelf: BookNotify  event=%d, id=%d" % (event[1], event[2]))
+                    PtDebugPrint("philBookshelf.OnNotify():  BookNotify  event={}, id={}".format(event[1], event[2]))
                     if event[1] == PtBookEventTypes.kNotifyImageLink:
                         if event[2] >= 0:
-                            PtDebugPrint("philBookshelf:Book: hit linking panel %s" % (event[2]))
+                            PtDebugPrint("philBookshelf.OnNotify():  Book: hit linking panel {}".format(event[2]))
                             theBook.hide()
                             self.IDisengageShelf(boolLinkerIsMe)
                             respLinkOut.run(self.key)
 
                     elif event[1] == PtBookEventTypes.kNotifyHide:
-                        PtDebugPrint("philBookshelf:Book: NotifyHide")
+                        PtDebugPrint("philBookshelf.OnNotify():  Book: NotifyHide")
 
                         respShelveBook.run(self.key)
 
     def IDisengageShelf(self, boolLinkerIsMe=false):
-        PtDebugPrint('philBookshelf.IDisengageShelf(): me = %s' % (boolLinkerIsMe))
+        PtDebugPrint('philBookshelf.IDisengageShelf():  me = {}'.format(boolLinkerIsMe))
         actBookshelfExit.disable()
         # fastforward removed because it disables netPropagate
         respMoveShelf.run(self.key, state="lower")

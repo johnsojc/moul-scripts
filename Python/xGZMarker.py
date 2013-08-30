@@ -72,8 +72,8 @@ class xGZMarker(ptMultiModifier):
     def __init__(self):
         ptMultiModifier.__init__(self)
         self.id = 205
-        self.version = MaxVersionNumber
-        PtDebugPrint("__xGZMarker: Max version %d - minor version %d" % (MaxVersionNumber, MinorVersionNumber), level=kDebugDumpLevel)
+        self.version = "{}.{}".format(MaxVersionNumber, MinorVersionNumber)
+        PtDebugPrint("__init__: xGZMarker v{}".format(self.version), level=kDebugDumpLevel)
 
     def OnFirstUpdate(self):
         global AgeStartedIn
@@ -90,7 +90,7 @@ class xGZMarker(ptMultiModifier):
             return 0
         ageSDL = PtGetAgeSDL()
         try:
-            PtDebugPrint("xGZMarker: SDL is %d" % (ageSDL[aStringVarName.value][0]), level=kDebugDumpLevel)
+            PtDebugPrint("xGZMarker.IsSDLEnabled():  SDL is {}".format(ageSDL[aStringVarName.value][0]), level=kDebugDumpLevel)
             return ageSDL[aStringVarName.value][0]
         except:
             pass
@@ -107,24 +107,24 @@ class xGZMarker(ptMultiModifier):
             if markerIdx >= 0 and markerIdx < len(markers):
                 if markers[markerIdx] == kGZMarkerAvailable:
                     # we're active!
-                    PtDebugPrint("xGZMarker: marker %d available" % (aGZSerialNumber.value), level=kDebugDumpLevel)
+                    PtDebugPrint("xGZMarker.IsMarkerAvailable():  marker {} available".format(aGZSerialNumber.value), level=kDebugDumpLevel)
                     return 1
                 else:
-                    PtDebugPrint("xGZMarker: marker not available - at %d is a '%s'" % (aGZSerialNumber.value, markers[markerIdx]), level=kDebugDumpLevel)
+                    PtDebugPrint("xGZMarker.IsMarkerAvailable():  marker not available - at {} is a '{}'".format(aGZSerialNumber.value, markers[markerIdx]), level=kDebugDumpLevel)
             else:
-                PtDebugPrint("xGZMarker - ERROR marker serial number invalid (%d) " % (aGZSerialNumber.value))
-                PtDebugPrint("xGZMarker - current markers are '%s'" % (markers))
+                PtDebugPrint("xGZMarker.IsMarkerAvailable():  - ERROR: marker serial number invalid ({}) ".format(aGZSerialNumber.value))
+                PtDebugPrint("xGZMarker.IsMarkerAvailable():  - current markers are '{}'".format(markers))
         else:
-            PtDebugPrint("xGZMarker - ERROR marker chronicle not found ")
+            PtDebugPrint("xGZMarker.IsMarkerAvailable():  - ERROR: marker chronicle not found ")
         return 0
 
     def EnableObject(self):
-        PtDebugPrint("DEBUG: xGZMarker.EnableObject:  Attempting to enable drawing and collision on %s..." % (self.sceneobject.getName()), level=kDebugDumpLevel)
+        PtDebugPrint("DEBUG: xGZMarker.EnableObject():  Attempting to enable drawing and collision on {}...".format(self.sceneobject.getName()), level=kDebugDumpLevel)
         self.sceneobject.draw.enable()
         self.sceneobject.physics.suppress(false)
 
     def DisableObject(self):
-        PtDebugPrint("DEBUG: xGZMarker.DisableObject:  Attempting to disable drawing and collision on %s..." % (self.sceneobject.getName()), level=kDebugDumpLevel)
+        PtDebugPrint("DEBUG: xGZMarker.DisableObject():  Attempting to disable drawing and collision on {}...".format(self.sceneobject.getName()), level=kDebugDumpLevel)
         self.sceneobject.draw.disable()
         self.sceneobject.physics.suppress(true)
 
@@ -138,7 +138,7 @@ class xGZMarker(ptMultiModifier):
                 if event[0] == kCollisionEvent:
                     if event[2] == PtGetLocalAvatar():
                         if event[1] == 1:
-                            PtDebugPrint("xGZMarker: enter region", level=kDebugDumpLevel)
+                            PtDebugPrint("xGZMarker.OnNotify():  enter region", level=kDebugDumpLevel)
                             if self.IsSDLEnabled():
                                 if self.IsMarkerAvailable():
                                     # make the marker visible
@@ -147,7 +147,7 @@ class xGZMarker(ptMultiModifier):
                                     gSoundRespWasCalled = 1
                                     PtSendKIGZMarkerMsg(aGZSerialNumber.value, self.key)
                         else:
-                            PtDebugPrint("xGZMarker: exit region", level=kDebugDumpLevel)
+                            PtDebugPrint("xGZMarker.OnNotify():  exit region", level=kDebugDumpLevel)
                             # just disable it
                             self.DisableObject()
                             if gSoundRespWasCalled:

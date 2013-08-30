@@ -67,8 +67,10 @@ class bhroBahroMink(ptResponder):
     def __init__(self):
         ptResponder.__init__(self)
         self.id = 8815
-        self.version = 1
-        PtDebugPrint("bhroBahroMink: init  version = %d" % (self.version))
+        version = 1
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: bhroBahroMink v{}".format(self.version))
 
     ###########################
     def __del__(self):
@@ -84,20 +86,20 @@ class bhroBahroMink(ptResponder):
     ###########################
     def OnServerInitComplete(self):
         psnlSDL = xPsnlVaultSDL()
-        PtDebugPrint(psnlSDL["psnlBahroWedge11"][0])
+        PtDebugPrint("bhroBahroMink.OnServerInitComplete():  {}".format(psnlSDL["psnlBahroWedge11"][0]))
 
         if psnlSDL["psnlBahroWedge11"][0]:
-            PtDebugPrint("bhroBahroMink.OnServerInitComplete: You have the Minkata wedge, no need to display it.")
+            PtDebugPrint("bhroBahroMink.OnServerInitComplete():  You have the Minkata wedge, no need to display it.")
             respRing.run(self.key, fastforward=1)
 
     ###########################
     def OnNotify(self, state, id, events):
 
         if id == clickable.id and not state:
-            PtDebugPrint("bhroBahroMink.OnNotify: clicked Minkata Spiral")
+            PtDebugPrint("bhroBahroMink.OnNotify():  clicked Minkata Spiral")
             respRing.run(self.key, avatar=PtFindAvatar(events))
             psnlSDL = xPsnlVaultSDL()
             sdlVal = psnlSDL["psnlBahroWedge11"][0]
             if not sdlVal:
-                PtDebugPrint("bhroBahroMink.OnNotify:  Turning wedge SDL of psnlBahroWedge11 to On")
+                PtDebugPrint("bhroBahroMink.OnNotify():  Turning wedge SDL of psnlBahroWedge11 to On")
                 psnlSDL["psnlBahroWedge11"] = (1,)

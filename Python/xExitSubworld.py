@@ -62,7 +62,10 @@ class xExitSubworld(ptResponder):
     def __init__(self):
         ptResponder.__init__(self)
         self.id = 53634
-        self.version = 1
+        version = 1
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: xExitSubworld v{}".format(self.version))
 
     def OnNotify(self, state, id, events):
         global inSafetyRegion
@@ -79,6 +82,6 @@ class xExitSubworld(ptResponder):
                     avatar.avatar.exitSubWorld()
                     return
                 elif (id == safetyRgn.id):
-                    PtDebugPrint("in safety region = ", entry)
+                    PtDebugPrint("xExitSubworld.OnNotify():  in safety region = {}".format(entry))
                     inSafetyRegion = entry
                     return

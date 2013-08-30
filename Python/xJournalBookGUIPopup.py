@@ -88,7 +88,10 @@ class xJournalBookGUIPopup(ptModifier):
     def __init__(self):
         ptModifier.__init__(self)
         self.id = 203
-        self.version = 1
+        version = 1
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: xJournalBookGUIPopup v{}".format(self.version))
 
     def OnFirstUpdate(self):
         pass
@@ -105,7 +108,7 @@ class xJournalBookGUIPopup(ptModifier):
             if PtWasLocallyNotified(self.key) and state:
                 PtToggleAvatarClickability(false)
                 if SeekBehavior.value is not None:  # remember, smart seek before GUI is optional.
-                    PtDebugPrint("xJournalBookGUIPopup: Smart seek used", level=kDebugDumpLevel)
+                    PtDebugPrint("xJournalBookGUIPopup.OnNotify():  Smart seek used", level=kDebugDumpLevel)
                     LocalAvatar = PtFindAvatar(events)
                     SeekBehavior.run(LocalAvatar)
                     return
@@ -118,7 +121,7 @@ class xJournalBookGUIPopup(ptModifier):
                 for event in events:
                     if event[0] == kMultiStageEvent and event[2] == kEnterStage:  # Smart seek completed. Exit multistage, and show GUI.
                         SeekBehavior.gotoStage(LocalAvatar, -1)
-                        PtDebugPrint("xJournalBookGUIPopup: attempting to draw link panel gui", level=kDebugDumpLevel)
+                        PtDebugPrint("xJournalBookGUIPopup.OnNotify():  attempting to draw link panel gui", level=kDebugDumpLevel)
                         self.IShowBook()
 
         # else was it one of the unknown id types? like scene input interface or from a ptBook?
@@ -126,23 +129,23 @@ class xJournalBookGUIPopup(ptModifier):
             for event in events:
                 # is it from the OpenBook? (we only have one book to worry about)
                 if event[0] == PtEventType.kBook:
-                    PtDebugPrint("xJournalBookGUIPopup: BookNotify  event=%d, id=%d" % (event[1], event[2]), level=kDebugDumpLevel)
+                    PtDebugPrint("xJournalBookGUIPopup.OnNotify():  BookNotify  event={}, id={}".format(event[1], event[2]), level=kDebugDumpLevel)
                     if event[1] == PtBookEventTypes.kNotifyShow:
-                        PtDebugPrint("xJournalBookGUIPopup:Book: NotifyShow", level=kDebugDumpLevel)
+                        PtDebugPrint("xJournalBookGUIPopup.OnNotify():  NotifyShow", level=kDebugDumpLevel)
                         # disable the KI
                         PtSendKIMessage(kDisableKIandBB, 0)
                     if event[1] == PtBookEventTypes.kNotifyHide:
-                        PtDebugPrint("xJournalBookGUIPopup:Book: NotifyHide", level=kDebugDumpLevel)
+                        PtDebugPrint("xJournalBookGUIPopup.OnNotify():  NotifyHide", level=kDebugDumpLevel)
                         # re-enable KI
                         PtSendKIMessage(kEnableKIandBB, 0)
                         # re-enable our avatar
                         PtToggleAvatarClickability(true)
                     elif event[1] == PtBookEventTypes.kNotifyNextPage:
-                        PtDebugPrint("xJournalBookGUIPopup:Book: NotifyNextPage", level=kDebugDumpLevel)
+                        PtDebugPrint("xJournalBookGUIPopup.OnNotify():  NotifyNextPage", level=kDebugDumpLevel)
                     elif event[1] == PtBookEventTypes.kNotifyPreviousPage:
-                        PtDebugPrint("xJournalBookGUIPopup:Book: NotifyPreviousPage", level=kDebugDumpLevel)
+                        PtDebugPrint("xJournalBookGUIPopup.OnNotify():  NotifyPreviousPage", level=kDebugDumpLevel)
                     elif event[1] == PtBookEventTypes.kNotifyCheckUnchecked:
-                        PtDebugPrint("xJournalBookGUIPopup:Book: NotifyCheckUncheck", level=kDebugDumpLevel)
+                        PtDebugPrint("xJournalBookGUIPopup.OnNotify():  NotifyCheckUncheck", level=kDebugDumpLevel)
                         pass
 
     def IShowBook(self):
@@ -150,7 +153,7 @@ class xJournalBookGUIPopup(ptModifier):
 
         # This lookup should be removed once all PFMs are converted to specify their details
         if JournalName.value != "":
-            PtDebugPrint("xJournalBookGUIPopup: deprecated journal format, using name '%s'" % (JournalName.value), level=kErrorLevel)
+            PtDebugPrint("xJournalBookGUIPopup.IShowBook():  deprecated journal format, using name '{}'".format(JournalName.value), level=kErrorLevel)
             try:
                 params = xJournalBookDefs.xJournalBooks[JournalName.value]
                 JournalIdent = JournalName.value
@@ -159,11 +162,12 @@ class xJournalBookGUIPopup(ptModifier):
                 else:
                     BookWidth.value, BookHeight.value, LocPath.value = params
             except LookupError:
-                PtDebugPrint("xJournalBookGUIPopup: could not find journal parameters for '%s'" % (JournalName.value), level=kErrorLevel)
+                PtDebugPrint("xJournalBookGUIPopup.IShowBook():  could not find journal parameters for '{}'".format(JournalName.value), level=kErrorLevel)
                 return
         else:
             JournalIdent = LocPath.value
 
+        # Hack for missing dynamic journal textnote in vault
         journalContents = "I'm an empty book"
 
         # compile journal text
@@ -171,29 +175,29 @@ class xJournalBookGUIPopup(ptModifier):
             inbox = ptVault().getGlobalInbox()
             inboxChildList = inbox.getChildNodeRefList()
             for child in inboxChildList:
-                PtDebugPrint("xJournalBookGUIPopupDyn: looking at node " + str(child), level=kDebugDumpLevel)
+                PtDebugPrint("xJournalBookGUIPopup.IShowBook():  looking at node {}".format(child), level=kDebugDumpLevel)
                 node = child.getChild()
                 folderNode = node.upcastToFolderNode()
                 if folderNode:
-                    PtDebugPrint("xJournalBookGUIPopupDyn: node is named %s" % (folderNode.getFolderName()), level=kDebugDumpLevel)
+                    PtDebugPrint("xJournalBookGUIPopup.IShowBook():  node is named {}".format(folderNode.getFolderName()), level=kDebugDumpLevel)
                     if folderNode.getFolderName() == "Journals":
                         folderNodeChildList = folderNode.getChildNodeRefList()
                         for folderChild in folderNodeChildList:
-                            PtDebugPrint("xJournalBookGUIPopupDyn: looking at child node " + str(folderChild), level=kDebugDumpLevel)
+                            PtDebugPrint("xJournalBookGUIPopup.IShowBook():  looking at child node {}".format(folderChild), level=kDebugDumpLevel)
                             childNode = folderChild.getChild()
                             textNode = childNode.upcastToTextNoteNode()
                             if textNode:
-                                PtDebugPrint("xJournalBookGUIPopupDyn: child node is named %s" % (textNode.getTitle()), level=kDebugDumpLevel)
+                                PtDebugPrint("xJournalBookGUIPopup.IShowBook():  child node is named {}".format(textNode.getTitle()), level=kDebugDumpLevel)
                                 # TODO: Convert this to use LocPath.value and migrate node values in DB if necessary once all PFMs
                                 #  are converted to use LocalizationPaths
                                 if textNode.getTitle() == JournalIdent:
                                     journalContents = textNode.getText()
-                                    PtDebugPrint("xJournalBookGUIPopupDyn: journal contents are '%s'" % (journalContents), level=kDebugDumpLevel)
+                                    PtDebugPrint("xJournalBookGUIPopup.IShowBook():  journal contents are '{}'".format(journalContents), level=kDebugDumpLevel)
         else:
             journalContents = PtGetLocalizedString(LocPath.value)
 
         if journalContents == U"":
-            PtDebugPrint(U"WARNING - EMPTY JOURNAL: JournalName.value = '{}' LocPath = '{}'".format(codecs.decode(JournalName.value, 'utf-8'), codecs.decode(LocPath.value, 'utf-8')), level=kDebugDumpLevel)
+            PtDebugPrint(U"xJournalBookGUIPopup.IShowBook():  WARNING - EMPTY JOURNAL: JournalName.value = '{}' LocPath = '{}'".format(codecs.decode(JournalName.value, 'utf-8'), codecs.decode(LocPath.value, 'utf-8')), level=kDebugDumpLevel)
 
         # hide the KI
         PtSendKIMessage(kDisableKIandBB, 0)

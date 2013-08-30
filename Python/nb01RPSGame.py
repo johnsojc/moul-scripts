@@ -146,8 +146,9 @@ class nb01RPSGame(ptResponder):
         ptResponder.__init__(self)
         self.id = 20000
         version = 9
-        self.version = version
-        PtDebugPrint("__init__nb01RPSGame v.%d" % (version))
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: nb01RPSGame v{}".format(self.version))
 
         self.isPlaying = 0
         self.tableId = 0  # for this one it's zero, cause there is only one table, other script will have a max attribute
@@ -187,7 +188,7 @@ class nb01RPSGame(ptResponder):
 
     def IGetHeekGameCli(self):
         if not self.joinedToGame:
-            PtDebugPrint("nb01RPSGame::IGetHeekGameCli(): Requesting game client before we have become an observer... returning None")
+            PtDebugPrint("nb01RPSGame.IGetHeekGame():  Requesting game client before we have become an observer... returning None")
             return None
 
         gameCli = PtGetGameCli(self.gameId)
@@ -215,9 +216,9 @@ class nb01RPSGame(ptResponder):
                 return  # nothing to do, our state matches the requested state
             self.buttonsEnabled = enable  # otherwise, save our new state
 
-        shutter1 = "buttonshutter%s1" % (pos+1)
-        shutter2 = "buttonshutter%s2" % (pos+1)
-        shutter3 = "buttonshutter%s3" % (pos+1)
+        shutter1 = "buttonshutter{}1".format(pos+1)
+        shutter2 = "buttonshutter{}2".format(pos+1)
+        shutter3 = "buttonshutter{}3".format(pos+1)
         if enable:
             detButtonRock.value[pos].enable()
             detButtonPaper.value[pos].enable()
@@ -253,8 +254,8 @@ class nb01RPSGame(ptResponder):
         light = (pos+1)*10+numTable[lightNum]
         if not lightNum == -1:
             if flash:
-                PtDebugPrint("nb01RPSGame::ISetScoreLights(): Flashing the GTdummy%sGlare%d light" % (colorTable[lightNum], light))
-                lightAnimsOn.byObject["GTdummy%sGlare%d" % (colorTable[lightNum], light)].playRange(10, 25)
+                PtDebugPrint("nb01RPSGame.ISetScoreLights():  Flashing the GTdummy{}Glare{} light".format(colorTable[lightNum], light))
+                lightAnimsOn.byObject["GTdummy{}Glare{}".format(colorTable[lightNum], light)].playRange(10, 25)
                 if pos == 0:
                     respSeat1Sounds.run(self.key, 'win')
                 elif pos == 1:
@@ -267,9 +268,9 @@ class nb01RPSGame(ptResponder):
                     respSeat5Sounds.run(self.key, 'win')
                 return
             if on:
-                PtDebugPrint("nb01RPSGame::ISetScoreLights(): Turning the GTdummy%sGlare%d light on" % (colorTable[lightNum], light))
+                PtDebugPrint("nb01RPSGame.ISetScoreLights():  Turning the GTdummy{}Glare{} light on".format(colorTable[lightNum], light))
                 if not fastforward:
-                    lightAnimsOn.byObject["GTdummy%sGlare%d" % (colorTable[lightNum], light)].playRange(0, 10)
+                    lightAnimsOn.byObject["GTdummy{}Glare{}".format(colorTable[lightNum], light)].playRange(0, 10)
                     if pos == 0:
                         respSeat1Sounds.run(self.key, 'on')
                     elif pos == 1:
@@ -281,18 +282,17 @@ class nb01RPSGame(ptResponder):
                     elif pos == 4:
                         respSeat5Sounds.run(self.key, 'on')
                 else:
-                    lightAnimsOn.byObject["GTdummy%sGlare%d" % (colorTable[lightNum], light)].playRange(10, 10)
+                    lightAnimsOn.byObject["GTdummy{}Glare{}".format(colorTable[lightNum], light)].playRange(10, 10)
             else:
-                PtDebugPrint("nb01RPSGame::ISetScoreLights(): Turning the GTdummy%sGlare%d light off" % (colorTable[lightNum], light))
+                PtDebugPrint("nb01RPSGame.ISetScoreLights():  Turning the GTdummy{}Glare{} light off".format(colorTable[lightNum], light))
                 # The flash light playRange function seems to make the animation "forget" it has a time 0, so we fake it for now
-                lightAnimsOn.byObject["GTdummy%sGlare%d" % (colorTable[lightNum], light)].playRange(0, 0)
+                lightAnimsOn.byObject["GTdummy{}Glare{}".format(colorTable[lightNum], light)].playRange(0, 0)
 
     def IRunResponder(self, result, tup):
         "Run a responder, designated by the tuple of values passed in, and the result 'win'/'lose'"
         resp = self.responderDict[tup]
         self.svCurResponders.append(resp)  # store currently executing responder
-        PtDebugPrint("nb01RPSGame::IRunResponder(): Adding resp=" + resp.name + " " + result +
-                     ", id=" + repr(resp.id) + " #curResps=" + repr(len(self.svCurResponders)))
+        PtDebugPrint("nb01RPSGame.IRunResponder():  Adding resp={} {}, id={!r} #curResps={!r}".format(resp.name, result, resp.id, len(self.svCurResponders)))
         if result != 'none':
             resp.run(self.key, result)
         else:
@@ -300,19 +300,19 @@ class nb01RPSGame(ptResponder):
 
     def IEnableSeatClickable(self, pos):
         if pos == 0:
-            PtDebugPrint("nb01RPSGame::IEnableSeatClickable(): Enabling seat button 1")
+            PtDebugPrint("nb01RPSGame.IEnableSeatClickable():  Enabling seat button 1")
             seatButton1.enable()
         elif pos == 1:
-            PtDebugPrint("nb01RPSGame::IEnableSeatClickable(): Enabling seat button 2")
+            PtDebugPrint("nb01RPSGame.IEnableSeatClickable():  Enabling seat button 2")
             seatButton2.enable()
         elif pos == 2:
-            PtDebugPrint("nb01RPSGame::IEnableSeatClickable(): Enabling seat button 3")
+            PtDebugPrint("nb01RPSGame.IEnableSeatClickable():  Enabling seat button 3")
             seatButton3.enable()
         elif pos == 3:
-            PtDebugPrint("nb01RPSGame::IEnableSeatClickable(): Enabling seat button 4")
+            PtDebugPrint("nb01RPSGame.IEnableSeatClickable():  Enabling seat button 4")
             seatButton4.enable()
         elif pos == 4:
-            PtDebugPrint("nb01RPSGame::IEnableSeatClickable(): Enabling seat button 5")
+            PtDebugPrint("nb01RPSGame.IEnableSeatClickable():  Enabling seat button 5")
             seatButton5.enable()
 
     def IGetRankPoints(self):
@@ -367,7 +367,7 @@ class nb01RPSGame(ptResponder):
         if (hitter.isAvatar()):
             heekCli = self.IGetHeekGameCli()
             if heekCli is None:
-                PtDebugPrint("nb01RPSGame::IHandleSit(): Unable to get heek game client")
+                PtDebugPrint("nb01RPSGame.IHandleSit():  Unable to get heek game client")
                 return
 
             if down == true:
@@ -375,23 +375,23 @@ class nb01RPSGame(ptResponder):
                     if (PtDetermineKILevel() >= 2):  # make sure we have a KI
                         self.ICheckForImagerLink()
                         self.curPosition = pos
-                        PtDebugPrint("nb01RPSGame::IHandleSit(): We are trying to join in position " + str(self.curPosition))
+                        PtDebugPrint("nb01RPSGame.IHandleSit():  We are trying to join in position {}".format(self.curPosition))
                         heekCli.playGame(self.curPosition, self.IGetRankPoints(), PtGetClientName())
                         return true
                     else:
-                        PtDebugPrint("nb01RPSGame::IHandleSit(): We don't have a KI, so don't join the game. Notifying player...")
+                        PtDebugPrint("nb01RPSGame.IHandleSit():  We don't have a KI, so don't join the game. Notifying player...")
                         PtSendKIMessage(kKILocalChatStatusMsg, PtGetLocalizedString("Heek.Messages.NoKI", []))
             else:
-                PtDebugPrint("nb01RPSGame::IHandleSit(): We are trying to leave")
+                PtDebugPrint("nb01RPSGame.IHandleSit():  We are trying to leave")
                 pos = self.curPosition
                 if pos >= 0:
                     if (PtDetermineKILevel() >= 2):  # make sure we have a KI
-                        PtDebugPrint("nb01RPSGame::IHandleSit(): Getting up/disabling position "+str(pos))
+                        PtDebugPrint("nb01RPSGame.IHandleSit():  Getting up/disabling position {}".format(pos))
                         heekCli.leaveGame()
                     else:
-                        PtDebugPrint("nb01RPSGame::IHandleSit(): Not sending a leave message to the server because we have no KI")
+                        PtDebugPrint("nb01RPSGame.IHandleSit():  Not sending a leave message to the server because we have no KI")
         else:
-            PtDebugPrint("nb01RPSGame::IHandleSit(): Hitter " + PtGetObjectName(hitter) + " is not an avatar or already paged out")
+            PtDebugPrint("nb01RPSGame.IHandleSit():  Hitter {} is not an avatar or already paged out".format(PtGetObjectName(hitter)))
 
     def IHandlePickedEvent(self, id, pickFlag, picker, pickee, state):
         pos = self.ICheckDetectorSitID(id)
@@ -401,8 +401,8 @@ class nb01RPSGame(ptResponder):
                 return  # player joined
             if state == false:  # player left
                 if picker.isLocallyOwned():
-                    PtDebugPrint("nb01RPSGame::IHandlePickedEvent(): Player Left. Change cams")
-                    respStandCam.run(self.key, '%d' % ((pos+1)))  # revert cam if its your player
+                    PtDebugPrint("nb01RPSGame.IHandlePickedEvent():  Player Left. Change cams")
+                    respStandCam.run(self.key, '{}'.format((pos+1)))  # revert cam if its your player
                 return
 
         # handle button clicks
@@ -410,10 +410,10 @@ class nb01RPSGame(ptResponder):
             if pickFlag == true:
                 heekCli = self.IGetHeekGameCli()
                 if heekCli is None:
-                    PtDebugPrint("nb01RPSGame::IHandlePickedEvent(): Unable to get heek game client")
+                    PtDebugPrint("nb01RPSGame.IHandlePickedEvent():  Unable to get heek game client")
                     return
 
-                PtDebugPrint("nb01RPSGame::IHandlePickedEvent(): " + PtGetObjectName(picker) + " picked " + PtGetObjectName(pickee))
+                PtDebugPrint("nb01RPSGame.IHandlePickedEvent():  {} picked {}".format(PtGetObjectName(picker), PtGetObjectName(pickee)))
                 if (id == detButtonRock.id):
                     heekCli.choose(PtHeekGameChoice.kHeekGameChoiceRock)
                 elif (id == detButtonPaper.id):
@@ -426,8 +426,7 @@ class nb01RPSGame(ptResponder):
         # Find currently execing responders with matching id
         respFound = [resp for resp in self.svCurResponders if resp.id == id]
         if len(respFound) < 1:
-            PtDebugPrint("nb01RPSGame::IHandleCallback(): ! Unknown CB from id=" + repr(id) + " numRespFound=" +
-                         repr(len(respFound)) + " len curResps=" + repr(len(self.svCurResponders)))
+            PtDebugPrint("nb01RPSGame.IHandleCallback():  ! Unknown CB from id={!r} numRespFound={!r} len curResps={!r}".format(id, len(respFound), len(self.svCurResponders)))
         else:
             # remove one of them
             resp = respFound[0]
@@ -435,25 +434,25 @@ class nb01RPSGame(ptResponder):
 
         heekCli = self.IGetHeekGameCli()
         if heekCli is None:
-            PtDebugPrint("nb01RPSGame::IHandleCallback(): Unable to get heek game client")
+            PtDebugPrint("nb01RPSGame.IHandleCallback():  Unable to get heek game client")
             return
 
         if id == respCountdown.id:  # Countdown is finished - play (resolve) the round
-            PtDebugPrint("nb01RPSGame::IHandleCallback(): Countdown has finished")
+            PtDebugPrint("nb01RPSGame.IHandleCallback():  Countdown has finished")
             if not self.isOwner:
-                PtDebugPrint("nb01RPSGame::IHandleCallback(): We are not the game owner, ignoring")
+                PtDebugPrint("nb01RPSGame.IHandleCallback():  We are not the game owner, ignoring")
                 return
             heekCli.sequenceFinished(PtHeekGameSeq.kHeekGameSeqCountdown)
             return
 
         if id == respGame0.id:  # end of game win anim
-            PtDebugPrint("nb01RPSGame::IHandleCallback(): End of game animation finished")
+            PtDebugPrint("nb01RPSGame.IHandleCallback():  End of game animation finished")
             lightAnimsOn.animation.stop()
             lightAnimsOn.animation.skipToTime(0)
             if self.isOwner:
                 heekCli.sequenceFinished(PtHeekGameSeq.kHeekGameSeqGameWinAnim)
             else:
-                PtDebugPrint("nb01RPSGame::IHandleCallback(): We are not the game owner, ignoring")
+                PtDebugPrint("nb01RPSGame.IHandleCallback():  We are not the game owner, ignoring")
             # kill all the lights
             self.ISetScoreLights(false, -1, 0)
             self.ISetScoreLights(false, -1, 1)
@@ -464,30 +463,30 @@ class nb01RPSGame(ptResponder):
 
         temp = [responder for responder in self.responderList if responder.id == id]
         if len(temp) != 0:
-            PtDebugPrint("nb01RPSGame::IHandleCallback(): Choice animation has finished")
+            PtDebugPrint("nb01RPSGame.IHandleCallback():  Choice animation has finished")
             if not self.isOwner:
-                PtDebugPrint("nb01RPSGame::IHandleCallback(): We are not the game owner, ignoring")
+                PtDebugPrint("nb01RPSGame.IHandleCallback():  We are not the game owner, ignoring")
                 return
             heekCli.sequenceFinished(PtHeekGameSeq.kHeekGameSeqChoiceAnim)
 
     def OnNotify(self, state, id, events):
         "Notify msg handler"
-        PtDebugPrint("nb01RPSGame::OnNotify(): numEvents=" + repr(len(events)) + ", state=" + repr(state) + ", id=" + repr(id))
+        PtDebugPrint("nb01RPSGame.OnNotify():  numEvents={!r}, state={!r}, id={!r}".format(len(events), state, id))
 
         if id == seatButton1.id:
-            PtDebugPrint("nb01RPSGame::OnNotify(): Disabling seat button 1")
+            PtDebugPrint("nb01RPSGame.OnNotify():  Disabling seat button 1")
             seatButton1.disable()
         elif id == seatButton2.id:
-            PtDebugPrint("nb01RPSGame::OnNotify(): Disabling seat button 2")
+            PtDebugPrint("nb01RPSGame.OnNotify():  Disabling seat button 2")
             seatButton2.disable()
         elif id == seatButton3.id:
-            PtDebugPrint("nb01RPSGame::OnNotify(): Disabling seat button 3")
+            PtDebugPrint("nb01RPSGame.OnNotify():  Disabling seat button 3")
             seatButton3.disable()
         elif id == seatButton4.id:
-            PtDebugPrint("nb01RPSGame::OnNotify(): Disabling seat button 4")
+            PtDebugPrint("nb01RPSGame.OnNotify():  Disabling seat button 4")
             seatButton4.disable()
         elif id == seatButton5.id:
-            PtDebugPrint("nb01RPSGame::OnNotify(): Disabling seat button 5")
+            PtDebugPrint("nb01RPSGame.OnNotify():  Disabling seat button 5")
             seatButton5.disable()
 
         for event in events:
@@ -498,18 +497,18 @@ class nb01RPSGame(ptResponder):
                         self.IEnableSeatClickable(pos)
 
         if not PtWasLocallyNotified(self.key):
-            PtDebugPrint("nb01RPSGame::OnNotify(): This message didn't come from our player...ignoring")
+            PtDebugPrint("nb01RPSGame.OnNotify():  This message didn't come from our player...ignoring")
             return
 
         for event in events:
             if event[0] == kPickedEvent:
-                PtDebugPrint("nb01RPSGame::OnNotify(): Handling kPickedEvent")
+                PtDebugPrint("nb01RPSGame.OnNotify():  Handling kPickedEvent")
                 self.IHandlePickedEvent(id, event[1], event[2], event[3], state)
             elif event[0] == kCallbackEvent:
-                PtDebugPrint("nb01RPSGame::OnNotify(): Handling kCallbackEvent")
+                PtDebugPrint("nb01RPSGame.OnNotify():  Handling kCallbackEvent")
                 self.IHandleCallback(id)
             else:
-                PtDebugPrint("nb01RPSGame::OnNotify(): Unhandled event, type: " + str(event[0]))
+                PtDebugPrint("nb01RPSGame.OnNotify():  Unhandled event, type: {}".format(event[0]))
 
     def OnGameCliMsg(self, msg):
         if (msg.getType() == PtGameCliMsgTypes.kGameCliPlayerJoinedMsg):
@@ -517,13 +516,13 @@ class nb01RPSGame(ptResponder):
             if (joinMsg.playerID() == self.clientId):
                 self.gameId = msg.getGameCli().gameID()
                 self.joinedToGame = 1
-                PtDebugPrint("nb01RPSGame::OnGameCliMsg(): Got join reply from the heek game, we are now an observer for game id " + str(self.gameId))
+                PtDebugPrint("nb01RPSGame.OnGameCliMsg():  Got join reply from the heek game, we are now an observer for game id {}".format(self.gameId))
 
         elif (msg.getType() == PtGameCliMsgTypes.kGameCliOwnerChangeMsg):
             ownerChangeMsg = msg.upcastToFinalGameCliMsg()
-            PtDebugPrint("nb01RPSGame::OnGameCliMsg(): Got owner change msg, ownerID = " + str(ownerChangeMsg.ownerID()) + ", clientId = " + str(self.clientId))
+            PtDebugPrint("nb01RPSGame.OnGameCliMsg():  Got owner change msg, ownerID = {}, clientId = {}".format(ownerChangeMsg.ownerID(), self.clientId))
             if (ownerChangeMsg.ownerID() == self.clientId):
-                PtDebugPrint("nb01RPSGame::OnGameCliMsg(): We are now the game owner")
+                PtDebugPrint("nb01RPSGame.OnGameCliMsg():  We are now the game owner")
                 self.isOwner = 1
                 self.UpdateImager()
 
@@ -533,7 +532,7 @@ class nb01RPSGame(ptResponder):
             finalMsg = heekMsg.upcastToFinalHeekMsg()
             if (msgType == PtHeekMsgTypes.kHeekPlayGame):
                 if finalMsg.isPlaying():
-                    PtDebugPrint("nb01RPSGame::OnGameCliMsg(): Got a response from the server, we ARE playing")
+                    PtDebugPrint("nb01RPSGame.OnGameCliMsg():  Got a response from the server, we ARE playing")
                     self.isPlaying = true
                     if finalMsg.isSinglePlayer():
                         msg = PtGetLocalizedString("Heek.Messages.SinglePlayerWarn", [])
@@ -541,10 +540,10 @@ class nb01RPSGame(ptResponder):
                     if finalMsg.enableButtons():
                         self.IEnableButtons()  # server tells us whether to enable our buttons or not
                 else:
-                    PtDebugPrint("nb01RPSGame::OnGameCliMsg(): Got a response from the server, we ARE NOT playing")
+                    PtDebugPrint("nb01RPSGame.OnGameCliMsg():  Got a response from the server, we ARE NOT playing")
 
             elif (msgType == PtHeekMsgTypes.kHeekGoodbye):
-                PtDebugPrint("nb01RPSGame::OnGameCliMsg(): Got goodbye message from server, cleaning up")
+                PtDebugPrint("nb01RPSGame.OnGameCliMsg():  Got goodbye message from server, cleaning up")
                 if self.buttonsEnabled:
                     self.IEnableButtons(false)
                 self.ISetScoreLights(false)
@@ -556,64 +555,64 @@ class nb01RPSGame(ptResponder):
                     statusMsg = PtGetLocalizedString("Heek.Messages.Welcome", [finalMsg.name(), unicode(finalMsg.rank()), unicode(finalMsg.points())])
                 else:
                     statusMsg = PtGetLocalizedString("Heek.Messages.WelcomePlural", [finalMsg.name(), unicode(finalMsg.rank()), unicode(finalMsg.points())])
-                PtDebugPrint("nb01RPSGame::OnGameCliMsg(): Sending welcome message to the KI: "+str(statusMsg))
+                PtDebugPrint("nb01RPSGame.OnGameCliMsg():  Sending welcome message to the KI: {}".format(statusMsg))
                 PtSendKIMessage(kKILocalChatStatusMsg, statusMsg)
 
             elif (msgType == PtHeekMsgTypes.kHeekDrop):
                 # this message should only be sent to the game owner, so we don't need to check to see if we are the owner
-                PtDebugPrint("nb01RPSGame::OnGameCliMsg(): We have been asked to cleanup position "+str(finalMsg.position()))
+                PtDebugPrint("nb01RPSGame.OnGameCliMsg():  We have been asked to cleanup position {}".format(finalMsg.position()))
                 self.IEnableButtons(false, finalMsg.position())
                 self.ISetScoreLights(false, -1, finalMsg.position())
                 self.IEnableSeatClickable(finalMsg.position())
 
             elif (msgType == PtHeekMsgTypes.kHeekSetup):
                 if finalMsg.buttonState():
-                    PtDebugPrint("nb01RPSGame::OnGameCliMsg(): We received a button setup message for position "+str(finalMsg.position()))
+                    PtDebugPrint("nb01RPSGame.OnGameCliMsg():  We received a button setup message for position {}".format(finalMsg.position()))
                     self.IEnableButtons(true, finalMsg.position(), true)  # fast forward the button open
                 lights = finalMsg.lightOn()  # array of 6 booleans
                 for curLight in range(len(lights)):
                     if lights[curLight]:
-                        PtDebugPrint("nb01RPSGame::OnGameCliMsg(): Light " + str(curLight) + " in position " + str(finalMsg.position()) + " is ON")
+                        PtDebugPrint("nb01RPSGame.OnGameCliMsg():  Light {} in position {} is ON".format(curLight, finalMsg.position()))
                         self.ISetScoreLights(true, curLight, finalMsg.position(), false, true)  # fast forward the light on
                     else:
-                        PtDebugPrint("nb01RPSGame::OnGameCliMsg(): Light " + str(curLight) + " in position " + str(finalMsg.position()) + " is OFF")
+                        PtDebugPrint("nb01RPSGame.OnGameCliMsg():  Light {} in position {} is OFF".format(curLight, finalMsg.position()))
 
             elif (msgType == PtHeekMsgTypes.kHeekLightState):
                 if finalMsg.state() == PtHeekLightStates.kHeekLightOn:
-                    PtDebugPrint("nb01RPSGame::OnGameCliMsg(): Turning light number "+str(finalMsg.lightNum())+" on.")
+                    PtDebugPrint("nb01RPSGame.OnGameCliMsg():  Turning light number {} on.".format(finalMsg.lightNum()))
                     self.ISetScoreLights(true, finalMsg.lightNum())
                 elif finalMsg.state() == PtHeekLightStates.kHeekLightOff:
-                    PtDebugPrint("nb01RPSGame::OnGameCliMsg(): Turning light number "+str(finalMsg.lightNum())+" off.")
+                    PtDebugPrint("nb01RPSGame.OnGameCliMsg():  Turning light number {} off.".format(finalMsg.lightNum()))
                     self.ISetScoreLights(false, finalMsg.lightNum())
                 elif finalMsg.state() == PtHeekLightStates.kHeekLightFlash:
-                    PtDebugPrint("nb01RPSGame::OnGameCliMsg(): Flashing light number "+str(finalMsg.lightNum()))
+                    PtDebugPrint("nb01RPSGame.OnGameCliMsg():  Flashing light number {}".format(finalMsg.lightNum()))
                     self.ISetScoreLights(false, finalMsg.lightNum(), -1, true)
 
             elif (msgType == PtHeekMsgTypes.kHeekInterfaceState):
                 if finalMsg.buttonsEnabled():
-                    PtDebugPrint("nb01RPSGame::OnGameCliMsg(): Enabling interface")
+                    PtDebugPrint("nb01RPSGame.OnGameCliMsg():  Enabling interface")
                     self.IEnableButtons()
                 else:
-                    PtDebugPrint("nb01RPSGame::OnGameCliMsg(): Disabling interface")
+                    PtDebugPrint("nb01RPSGame.OnGameCliMsg():  Disabling interface")
                     self.IEnableButtons(false)
 
             elif (msgType == PtHeekMsgTypes.kHeekCountdownState):
                 # this message should only be sent to the game owner, so we don't need to check to see if we are the owner
                 if finalMsg.state() == PtHeekCountdownStates.kHeekCountdownStart:
-                    PtDebugPrint("nb01RPSGame::OnGameCliMsg(): Starting countdown")
+                    PtDebugPrint("nb01RPSGame.OnGameCliMsg():  Starting countdown")
                     respCountdown.run(self.key, 'countdown')
                 if finalMsg.state() == PtHeekCountdownStates.kHeekCountdownStop:
-                    PtDebugPrint("nb01RPSGame::OnGameCliMsg(): Stopping countdown")
+                    PtDebugPrint("nb01RPSGame.OnGameCliMsg():  Stopping countdown")
                     respGame0.run(self.key, 'stop')
                     # manually send the CountdownFinished message since the countdown responder is really bad at telling us
                     # when it actually finishes.
                     heekCli = self.IGetHeekGameCli()
                     if heekCli is None:
-                        PtDebugPrint("nb01RPSGame::OnGameCliMsg(): Unable to get heek game client")
+                        PtDebugPrint("nb01RPSGame.OnGameCliMsg():  Unable to get heek game client")
                         return
                     heekCli.sequenceFinished(PtHeekGameSeq.kHeekGameSeqCountdown)
                 if finalMsg.state() == PtHeekCountdownStates.kHeekCountdownIdle:
-                    PtDebugPrint("nb01RPSGame::OnGameCliMsg(): Showing idle animation")
+                    PtDebugPrint("nb01RPSGame.OnGameCliMsg():  Showing idle animation")
                     respCountdown.run(self.key, 'attractmode')
 
             elif (msgType == PtHeekMsgTypes.kHeekWinLose):
@@ -625,14 +624,14 @@ class nb01RPSGame(ptResponder):
                 elif finalMsg.choice() == PtHeekGameChoice.kHeekGameChoiceScissors:
                     selection = kScissors
                 else:
-                    PtDebugPrint("nb01RPSGame::OnGameCliMsg(): selection was kNone or unknown, aborting handling of kHeekWinLose msg (position "+str(self.curPosition)+", choice "+str(finalMsg.choice())+")")
+                    PtDebugPrint("nb01RPSGame.OnGameCliMsg():  selection was kNone or unknown, aborting handling of kHeekWinLose msg (position {}, choice {})".format(self.curPosition, finalMsg.choice()))
                     return
 
                 if finalMsg.win():
-                    PtDebugPrint("nb01RPSGame::OnGameCliMsg(): Showing win animation for selection "+str(selection))
+                    PtDebugPrint("nb01RPSGame.OnGameCliMsg():  Showing win animation for selection {}".format(selection))
                     self.IRunResponder('win', (selection, self.curPosition))
                 else:
-                    PtDebugPrint("nb01RPSGame::OnGameCliMsg(): Showing lose animation for selection "+str(selection))
+                    PtDebugPrint("nb01RPSGame.OnGameCliMsg():  Showing lose animation for selection {}".format(selection))
                     self.IRunResponder('lose', (selection, self.curPosition))
 
             elif (msgType == PtHeekMsgTypes.kHeekGameWin):
@@ -644,11 +643,11 @@ class nb01RPSGame(ptResponder):
                     selection = "paper"
                 elif finalMsg.choice() == PtHeekGameChoice.kHeekGameChoiceScissors:
                     selection = "scissors"
-                PtDebugPrint("nb01RPSGame::OnGameCliMsg(): Showing game win animation for winner "+selection)
+                PtDebugPrint("nb01RPSGame.OnGameCliMsg():  Showing game win animation for winner {}".format(selection))
                 self.IRunResponder(selection, (kNone, 0))
 
             elif (msgType == PtHeekMsgTypes.kHeekPointUpdate):
-                PtDebugPrint("nb01RPSGame::OnGameCliMsg(): Setting our current points to "+str(finalMsg.points()))
+                PtDebugPrint("nb01RPSGame.OnGameCliMsg():  Setting our current points to ".format(finalMsg.points()))
                 self.ISetRankPoints(finalMsg.points())
                 if self.isOwner:
                     self.UpdateImager()
@@ -657,11 +656,11 @@ class nb01RPSGame(ptResponder):
                         statusMsg = PtGetLocalizedString("Heek.Messages.Rank", [unicode(finalMsg.rank()), unicode(finalMsg.points())])
                     else:
                         statusMsg = PtGetLocalizedString("Heek.Messages.RankPlural", [unicode(finalMsg.rank()), unicode(finalMsg.points())])
-                    PtDebugPrint("nb01RPSGame::OnGameCliMsg(): Sending point message to the KI: "+str(statusMsg))
+                    PtDebugPrint("nb01RPSGame.OnGameCliMsg():  Sending point message to the KI: {}".format(statusMsg))
                     PtSendKIMessage(kKILocalChatStatusMsg, statusMsg)
 
     def OnFirstUpdate(self):
-        PtDebugPrint("nb01RPSGame::OnFirstUpdate(): "+PtGetClientName())
+        PtDebugPrint("nb01RPSGame.OnFirstUpdate():  {}".format(PtGetClientName()))
         initTable.run(self.key)
         self.clientId = PtGetLocalClientID()
         # join the common heek game
@@ -674,13 +673,13 @@ class nb01RPSGame(ptResponder):
     def ICheckForImagerLink(self):
         vault = ptVault()
         if not vault.inMyNeighborhoodAge():
-            PtDebugPrint("nb01RPSGame::ICheckForImagerLink():  leaving because this isn't my neighborhood")
+            PtDebugPrint("nb01RPSGame.ICheckForImagerLink():  leaving because this isn't my neighborhood")
             return
 
         myhschron = vault.findChronicleEntry("HeekPoints")
 
         if not myhschron:
-            PtDebugPrint("nb01RPSGame::ICheckForImagerLink():  leaving because I don't have a heek score")
+            PtDebugPrint("nb01RPSGame.ICheckForImagerLink():  leaving because I don't have a heek score")
             return
 
         ageVault = ptAgeVault()
@@ -696,10 +695,10 @@ class nb01RPSGame(ptResponder):
                     heekScores = folder
                     break
 
-            print "heekScores:", heekScores
+            PtDebugPrint("nb01RPSGame.ICheckForImagerLink():  heekScores:{}".format(heekScores))
             if heekScores:
                 if not heekScores.hasNode(myhschron.getID()):
-                    print "nb01RPSGame::ICheckForImagerLink(): add my chron to the imager"
+                    PtDebugPrint("nb01RPSGame.ICheckForImagerLink():  add my chron to the imager")
                     # our chronicle wasn't found so we better add it
                     heekScores.addNode(myhschron)
             else:
@@ -716,7 +715,7 @@ class nb01RPSGame(ptResponder):
             hschronsf and hschronsf.addNode(myhschron)
 
     def UpdateImager(self):
-        print "nb01RPSGame::UpdateImager(): attempting to update the imager with heek scores"
+        PtDebugPrint("nb01RPSGame.UpdateImager():  attempting to update the imager with heek scores")
         ageVault = ptAgeVault()
         dinbox = ageVault.getDeviceInbox("D'ni  Imager Right")
 
@@ -731,7 +730,7 @@ class nb01RPSGame(ptResponder):
                     heekScores = folder
                     break
 
-            print "nb01RPSGame::UpdateImager(): heekscores:", heekScores
+            PtDebugPrint("nb01RPSGame.UpdateImager():  heekscores:{}".format(heekScores))
             if heekScores:
 # ------------- Clean up the chron list and gather the score list ----------------------------------
                 ageOwnerList = ageVault.getAgeInfo().getAgeOwnersFolder()
@@ -739,7 +738,7 @@ class nb01RPSGame(ptResponder):
                 childreflist = heekScores.getChildNodeRefList()
                 for childref in childreflist:
                     chron = childref.getChild().upcastToChronicleNode()
-                    print "nb01RPSGame::UpdateImager(): chron:", chron
+                    PtDebugPrint("nb01RPSGame.UpdateImager():  chron:".format(chron))
                     if chron:
                         ownerNode = chron.getOwnerNode()
                         if ownerNode:  # apparently a chronicle node doesn't have a parent sometimes?
@@ -747,12 +746,12 @@ class nb01RPSGame(ptResponder):
                         if ownerNode:
                             if ageOwnerList.playerlistHasPlayer(ownerNode.playerGetID()):
                                 ownerNode = ownerNode.upcastToPlayerInfoNode()
-                                print "nb01RPSGame::UpdateImager(): owner node:", ownerNode
+                                PtDebugPrint("nb01RPSGame.UpdateImager():  owner node:".format(ownerNode))
                                 if ownerNode:
                                     scorelist.append((int(chron.chronicleGetValue()), ownerNode.playerGetName()))
-                                    print scorelist
+                                    PtDebugPrint("nb01RPSGame.UpdateImager():  scorelist: {}".format(scorelist))
                             else:
-                                print "nb01RPSGame::UpdateImager(): removing chronicle node"
+                                PtDebugPrint("nb01RPSGame::UpdateImager(): removing chronicle node")
                                 heekScores.removeNode(chron)
 
 # ------------- Update the imager text note ----------------------------------
@@ -763,7 +762,7 @@ class nb01RPSGame(ptResponder):
                 for score in scorelist:
                     if count > 10:
                         break
-                    nbscorestxt += ("  %d - %s has %d points\n" % (count, score[1], score[0]))
+                    nbscorestxt += ("  {} - {} has {} points\n".format(count, score[1], score[0]))
                     count += 1
 
                 neighborhoodScoreNote = None

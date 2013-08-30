@@ -62,4 +62,6 @@ class Minkata(ptResponder):
         ptResponder.__init__(self)
         self.id = 5257
         version = 1
-        self.version = version
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: Minkata v{}".format(self.version))

@@ -146,11 +146,14 @@ class grsnPowerOn(ptResponder):
 
     def __init__(self):
         "construction"
-        PtDebugPrint("grsnPowerGearOn::init begin")
+        #PtDebugPrint("__init__: grsnPowerOn init begin")
         ptResponder.__init__(self)
         self.id = 50119
-        self.version = 5
-        PtDebugPrint("grsnPowerGearOn::init end, version %d" % (self.version))
+        version = 5
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: grsnPowerOn v{}".format(self.version))
+        #PtDebugPrint("__init__: grsnPowerOn init end, v{}".format(self.version))
 
     def OnFirstUpdate(self):
         global AgeStartedIn
@@ -188,26 +191,26 @@ class grsnPowerOn(ptResponder):
             gearOn = false
             try:
                 gearOn = ageSDL[gearSwitchSDL.value][0]
-                PtDebugPrint("server says gear on %s" % (gearOn))
+                PtDebugPrint("grsnPowerOn.OnServerInitComplete():  server says gear on {}".format(gearOn))
             except:
                 gearOn = false
-                PtDebugPrint("failed to retrieve gear on state from server")
+                PtDebugPrint("grsnPowerOn.OnServerInitComplete():  failed to retrieve gear on state from server")
 
             upElevOn = false
             try:
                 upElevOn = ageSDL[upElevSwitchSDL.value][0]
-                PtDebugPrint("server says up elevator on %s" % (upElevOn))
+                PtDebugPrint("grsnPowerOn.OnServerInitComplete():  server says up elevator on {}".format(upElevOn))
             except:
                 upElevOn = false
-                PtDebugPrint("failed to retrieve elevator switch state from server")
+                PtDebugPrint("grsnPowerOn.OnServerInitComplete():  failed to retrieve elevator switch state from server")
 
             dnElevOn = false
             try:
                 dnElevOn = ageSDL[dnElevSwitchSDL.value][0]
-                PtDebugPrint("server says down elevator on %s" % (dnElevOn))
+                PtDebugPrint("grsnPowerOn.OnServerInitComplete():  server says down elevator on {}".format(dnElevOn))
             except:
                 dnElevOn = false
-                PtDebugPrint("failed to retrieve elevator switch state from server")
+                PtDebugPrint("grsnPowerOn.OnServerInitComplete():  failed to retrieve elevator switch state from server")
 
             if gearOn:
                 ageSDL[mainSwitchSDL.value] = (1,)
@@ -238,7 +241,7 @@ class grsnPowerOn(ptResponder):
                     dnElevSwitchResp.run(self.key, state='TurnOff', avatar=PtGetLocalAvatar(), fastforward=true)
 
             else:  # main off
-                PtDebugPrint("main off")
+                PtDebugPrint("grsnPowerOn.OnServerInitComplete():  main off")
                 ageSDL[mainSwitchSDL.value] = (0,)
                 ageSDL[gearSwitchSDL.value] = (0,)
                 ageSDL[upElevSwitchSDL.value] = (0,)
@@ -279,7 +282,7 @@ class grsnPowerOn(ptResponder):
         if state == 0:
             return
 
-        PtDebugPrint("id %d" % (id))
+        PtDebugPrint("grsnPowerOn.OnNotify():  id {}".format(id))
         ageSDL = PtGetAgeSDL()
 
         mainOn = false
@@ -322,20 +325,20 @@ class grsnPowerOn(ptResponder):
 
         if id == weightTrigger.id:
             scaleEngaged = true
-            PtDebugPrint("weight activator")
+            PtDebugPrint("grsnPowerOn.OnNotify():  weight activator")
             if gearOn:
-                PtDebugPrint("gear on")
+                PtDebugPrint("grsnPowerOn.OnNotify():  gear on")
                 import xSndLogTracks
                 xSndLogTracks.LogTrack("15", "27")
                 weightEngageDisabled = true
                 return
 
-            PtDebugPrint("set weight forward")
+            PtDebugPrint("grsnPowerOn.OnNotify():  set weight forward")
             reverser.run(self.key, state='Forward', avatar=triggerer)
             weightControlResponder.run(self.key, state='High', avatar=triggerer)
             weightDirection = kUp
             if weightNearDownEnd:
-                PtDebugPrint("weight sound looping down")
+                PtDebugPrint("grsnPowerOn.OnNotify():  weight sound looping down")
                 weightStartSoundResp.run(self.key, state='Loop', avatar=triggerer)
                 weightNearDownEnd = false
                 weightSoundLoopingDown = true
@@ -343,7 +346,7 @@ class grsnPowerOn(ptResponder):
             if generatorPrimed == false:
                 generatorPrimed = true
                 flashingLightsResponder.run(self.key, state='Blink', avatar=PtGetLocalAvatar())
-                PtDebugPrint("generator primed")
+                PtDebugPrint("grsnPowerOn.OnNotify():  generator primed")
                 if mainOn:
                     switchGlowResponder.run(self.key, state='On', avatar=triggerer)
 
@@ -354,10 +357,10 @@ class grsnPowerOn(ptResponder):
             if gearOn == false:
                 generatorPrimed = true
                 flashingLightsResponder.run(self.key, state='Blink', avatar=PtGetLocalAvatar())
-                PtDebugPrint("generator primed")
+                PtDebugPrint("grsnPowerOn.OnNotify():  generator primed")
                 if mainOn:
                     switchGlowResponder.run(self.key, state='On', avatar=triggerer)
-            PtDebugPrint("set weight reverse")
+            PtDebugPrint("grsnPowerOn.OnNotify():  set weight reverse")
             reverser.run(self.key, state='Reverse', avatar=triggerer)
             weightControlResponder.run(self.key, state='High', avatar=triggerer)
             weightDirection = kDown
@@ -372,11 +375,11 @@ class grsnPowerOn(ptResponder):
                 weightSoundLoopingDown = true
             elif weightDirection == kDown:
                 if weightSoundLoopingDown:
-                    PtDebugPrint("stop all at bottom")
+                    PtDebugPrint("grsnPowerOn.OnNotify():  stop all at bottom")
                     weightSoundLoopingDown = false
                     weightStartSoundResp.run(self.key, state='StopAll', avatar=triggerer)
                 else:
-                    PtDebugPrint("let weight stop sound play out")
+                    PtDebugPrint("grsnPowerOn.OnNotify():  let weight stop sound play out")
             return
 
         if id == weightStopSoundTrigger.id:
@@ -399,14 +402,14 @@ class grsnPowerOn(ptResponder):
             if weightDirection == kDown:
                 weightStartSoundResp.run(self.key, state='Stop', avatar=triggerer)
                 weightNearDownEnd = true
-                PtDebugPrint("weight near down end")
+                PtDebugPrint("grsnPowerOn.OnNotify():  weight near down end")
             elif weightDirection == kUp:
                 weightNearDownEnd = false
                 weightSoundLoopingDown = false
             return
 
         if id == weightHighUp.id:
-            PtDebugPrint("weight down")
+            PtDebugPrint("grsnPowerOn.OnNotify():  weight down")
             weightEngageDisabled = false
             if scaleEngaged:
                 return
@@ -439,28 +442,28 @@ class grsnPowerOn(ptResponder):
                 ageSDL[gearBrake02SDL.value] = (1,)
 
         if id == gearStopTrigger.id:
-            PtDebugPrint("gear stop trigger")
+            PtDebugPrint("grsnPowerOn.OnNotify():  gear stop trigger")
             if gearStopping:
-                PtDebugPrint("gear stop trigger: gear stopped, begin final descent")
+                PtDebugPrint("grsnPowerOn.OnNotify():  gear stop trigger: gear stopped, begin final descent")
                 gearStopping = false
                 if gearStartingDown:
-                    PtDebugPrint("gear stop trigger: gear still in initial descent - do nothing")
+                    PtDebugPrint("grsnPowerOn.OnNotify():  gear stop trigger: gear still in initial descent - do nothing")
                 else:
                     mainPowerOffResponder.run(self.key, state='GearDown', avatar=PtGetLocalAvatar())
 
         if id == mainPowerOffResponder.id:
             if gearStartingDown:
-                PtDebugPrint("main power responder callback - gear finished initial descent")
+                PtDebugPrint("grsnPowerOn.OnNotify():  main power responder callback - gear finished initial descent")
                 # gear is finished moving partway down, okay to start second half
                 gearStartingDown = false
                 if gearStopping == false:
-                    PtDebugPrint("main power responder callback - gear also stopped, begin final descent")
+                    PtDebugPrint("grsnPowerOn.OnNotify():  main power responder callback - gear also stopped, begin final descent")
                     mainPowerOffResponder.run(self.key, state='GearDown', avatar=PtGetLocalAvatar())
                 else:
-                    PtDebugPrint("main power responder callback - gear still turning, wait for it to stop")
+                    PtDebugPrint("grsnPowerOn.OnNotify():  main power responder callback - gear still turning, wait for it to stop")
                 return
             if gearStopping == false and gearStartingDown == false:
-                PtDebugPrint("main power responder callback - reengage locks")
+                PtDebugPrint("grsnPowerOn.OnNotify():  main power responder callback - reengage locks")
                 # gear is down, reengage the locks
                 if generatorPrimed == false:
                     if brake01On == false:
@@ -472,13 +475,13 @@ class grsnPowerOn(ptResponder):
                         ageSDL[gearBrake02SDL.value] = (1,)
 
         if id == mainSwitchResp.id:
-            PtDebugPrint("main switch callback")
+            PtDebugPrint("grsnPowerOn.OnNotify():  main switch callback")
             if mainOn:
-                PtDebugPrint("main switch now on")
+                PtDebugPrint("grsnPowerOn.OnNotify():  main switch now on")
                 if generatorPrimed:
                     switchGlowResponder.run(self.key, state='On', avatar=triggerer)
             else:
-                PtDebugPrint("main switch now off")
+                PtDebugPrint("grsnPowerOn.OnNotify():  main switch now off")
                 flashingLightsResponder.run(self.key, state='Off', avatar=PtGetLocalAvatar())
                 if upElevOn:
                     upElevSwitchResp.run(self.key, state='Break', avatar=triggerer)
@@ -517,9 +520,9 @@ class grsnPowerOn(ptResponder):
                 mainBreakerResponder.run(self.key, avatar=triggerer)
 
         if id == mainSwitch.id:
-            PtDebugPrint("main switch")
+            PtDebugPrint("grsnPowerOn.OnNotify():  main switch")
             if mainOn:
-                PtDebugPrint("main going off")
+                PtDebugPrint("grsnPowerOn.OnNotify():  main going off")
                 ageSDL[mainSwitchSDL.value] = (0,)
                 if gearOn:
                     gearRoomDoors.run(self.key, state='TurnOff', avatar=PtGetLocalAvatar())
@@ -527,15 +530,15 @@ class grsnPowerOn(ptResponder):
                     secondFloorDoors.run(self.key, state='TurnOff', avatar=PtGetLocalAvatar())
                     mainSwitchResp.run(self.key, state='Break', avatar=triggerer)
                     self.DisableCamera()
-                    PtDebugPrint("break main switch")
+                    PtDebugPrint("grsnPowerOn.OnNotify():  break main switch")
                 else:
                     mainSwitchResp.run(self.key, state='TurnOff', avatar=triggerer)
-                    PtDebugPrint("turn off main switch")
+                    PtDebugPrint("grsnPowerOn.OnNotify():  turn off main switch")
                 if generatorPrimed:
                     switchGlowResponder.run(self.key, state='Off', avatar=triggerer)
 
             else:
-                PtDebugPrint("main going on")
+                PtDebugPrint("grsnPowerOn.OnNotify():  main going on")
                 if generatorPrimed:
                     ageSDL[mainSwitchSDL.value] = (1,)
                     mainSwitchResp.run(self.key, state='TurnOn', avatar=triggerer)
@@ -545,9 +548,9 @@ class grsnPowerOn(ptResponder):
             return
 
         if id == gearSwitchResp.id:
-            PtDebugPrint("gear switch callback")
+            PtDebugPrint("grsnPowerOn.OnNotify():  gear switch callback")
             if gearOn:
-                PtDebugPrint("gear switch now on")
+                PtDebugPrint("grsnPowerOn.OnNotify():  gear switch now on")
                 mainPowerOnResponder.run(self.key, avatar=triggerer)
                 flashingLightsResponder.run(self.key, state='On', avatar=triggerer)
                 gearGlowResponder.run(self.key, state='On', avatar=triggerer)
@@ -555,7 +558,7 @@ class grsnPowerOn(ptResponder):
                     # lights went out while firing up
                     switchGlowResponder.run(self.key, state='On', avatar=triggerer)
             else:
-                PtDebugPrint("gear switch now off")
+                PtDebugPrint("grsnPowerOn.OnNotify():  gear switch now off")
                 mainPowerOffResponder.run(self.key, state='GearOff', avatar=triggerer)
                 gearStopping = true
                 gearStartingDown = true
@@ -648,50 +651,50 @@ class grsnPowerOn(ptResponder):
             return
 
         if id == gearBrake01.id:
-            PtDebugPrint("brake01")
+            PtDebugPrint("grsnPowerOn.OnNotify():  brake01")
             if gearOn:
                 gearBrake01Resp.run(self.key, state='Trip', avatar=triggerer)
                 return
             elif mainOn == false:
-                PtDebugPrint("main off")
+                PtDebugPrint("grsnPowerOn.OnNotify():  main off")
                 gearBrake01Resp.run(self.key, state='Trip', avatar=triggerer)
             else:  # main on
-                PtDebugPrint("main on")
+                PtDebugPrint("grsnPowerOn.OnNotify():  main on")
                 if generatorPrimed:
                     if brake01On:
-                        PtDebugPrint("unlock")
+                        PtDebugPrint("grsnPowerOn.OnNotify():  unlock")
                         gearBrake01Resp.run(self.key, state='Unlock', avatar=triggerer)
                         ageSDL[gearBrake01SDL.value] = (0,)
                     else:
-                        PtDebugPrint("lock")
+                        PtDebugPrint("grsnPowerOn.OnNotify():  lock")
                         gearBrake01Resp.run(self.key, state='Lock', avatar=triggerer)
                         ageSDL[gearBrake01SDL.value] = (1,)
                 else:  # generator not primed
-                    PtDebugPrint("trip")
+                    PtDebugPrint("grsnPowerOn.OnNotify():  trip")
                     gearBrake01Resp.run(self.key, state='Trip', avatar=triggerer)
             return
 
         if id == gearBrake02.id:
-            PtDebugPrint("brake02")
+            PtDebugPrint("grsnPowerOn.OnNotify():  brake02")
             if gearOn:
                 gearBrake02Resp.run(self.key, state='Trip', avatar=triggerer)
                 return
             elif mainOn == false:
-                PtDebugPrint("main off")
+                PtDebugPrint("grsnPowerOn.OnNotify():  main off")
                 gearBrake02Resp.run(self.key, state='Trip', avatar=triggerer)
             else:  # main on
-                PtDebugPrint("main on")
+                PtDebugPrint("grsnPowerOn.OnNotify():  main on")
                 if generatorPrimed:
                     if brake02On:
-                        PtDebugPrint("unlock")
+                        PtDebugPrint("grsnPowerOn.OnNotify():  unlock")
                         gearBrake02Resp.run(self.key, state='Unlock', avatar=triggerer)
                         ageSDL[gearBrake02SDL.value] = (0,)
                     else:
-                        PtDebugPrint("lock")
+                        PtDebugPrint("grsnPowerOn.OnNotify():  lock")
                         gearBrake02Resp.run(self.key, state='Lock', avatar=triggerer)
                         ageSDL[gearBrake02SDL.value] = (1,)
                 else:  # generator not primed
-                    PtDebugPrint("trip")
+                    PtDebugPrint("grsnPowerOn.OnNotify():  trip")
                     gearBrake02Resp.run(self.key, state='Trip', avatar=triggerer)
             return
 

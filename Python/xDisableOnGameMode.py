@@ -59,9 +59,11 @@ class xDisableOnGameMode(ptMultiModifier):
     def __init__(self):
         ptMultiModifier.__init__(self)
         self.id = 5316
-        self.version = 1
+        version = 1
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
 
-        PtDebugPrint("DEBUG: xDisableOnGameMode.__init__: version = %d" % (self.version))
+        PtDebugPrint("__init__: xDisableOnGameMode v{}".format(self.version))
 
     def OnFirstUpdate(self):
         if boolSinglePlayerDisable.value:
@@ -76,11 +78,11 @@ class xDisableOnGameMode(ptMultiModifier):
                 self.EnableObject()
 
     def EnableObject(self):
-        PtDebugPrint("DEBUG: xDisableOnGameMode.EnableObject:  Attempting to enable drawing and collision on %s..." % (self.sceneobject.getName()))
+        PtDebugPrint("xDisableOnGameMode.EnableObject():  DEBUG: Attempting to enable drawing and collision on {}...".format(self.sceneobject.getName()))
         self.sceneobject.draw.enable()
         self.sceneobject.physics.suppress(false)
 
     def DisableObject(self):
-        PtDebugPrint("DEBUG: xDisableOnGameMode.DisableObject:  Attempting to disable drawing and collision on %s..." % (self.sceneobject.getName()))
+        PtDebugPrint("xDisableOnGameMode.DisableObject():  DEBUG: Attempting to disable drawing and collision on {}...".format(self.sceneobject.getName()))
         self.sceneobject.draw.disable()
         self.sceneobject.physics.suppress(true)

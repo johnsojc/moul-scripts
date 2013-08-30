@@ -66,11 +66,14 @@ class xAgeSDLBoolSet(ptResponder):
     def __init__(self):
         ptResponder.__init__(self)
         self.id = 5029
-        self.version = 1
+        version = 1
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: xAgeSDLBoolSet v{}".format(self.version))
 
     def OnFirstUpdate(self):
         if not(type(stringVarName.value) is str and stringVarName.value != ""):
-            PtDebugPrint("ERROR: xAgeSDLBoolSet.OnFirstUpdate():\tERROR: missing SDL var name in max file")
+            PtDebugPrint("xAgeSDLBoolSet.OnFirstUpdate():  ERROR: missing SDL var name in max file")
 
     def OnServerInitComplete(self):
         ageSDL = PtGetAgeSDL()
@@ -85,16 +88,16 @@ class xAgeSDLBoolSet(ptResponder):
             return
         else:
             if type(actTrigger.value) is list and len(actTrigger.value) > 0:
-                PtDebugPrint("DEBUG: xAgeSDLBoolSet.OnNotify():\t local player requesting %s change via %s" % (stringVarName.value, actTrigger.value[0].getName()))
+                PtDebugPrint("xAgeSDLBoolSet.OnNotify():  DEBUG: local player requesting {} change via {}".format(stringVarName.value, actTrigger.value[0].getName()))
                 pass
 
         # error check
         if type(stringVarName.value) is not str or stringVarName.value == "":
-            PtDebugPrint("ERROR: xAgeSDLBoolSet.OnNotify():\tERROR: missing SDL var name")
+            PtDebugPrint("xAgeSDLBoolSet.OnNotify():  ERROR: missing SDL var name")
             return
 
         ageSDL = PtGetAgeSDL()
         # Set the sdl value
         ageSDL.setTagString(stringVarName.value, stringInfo.value)
         ageSDL[stringVarName.value] = (intValue.value,)
-        PtDebugPrint("DEBUG: xAgeSDLBoolSet.OnNotify():\tset age SDL var %s to %d" % (stringVarName.value, intValue.value))
+        PtDebugPrint("xAgeSDLBoolSet.OnNotify():  DEBUG: set age SDL var {} to {}".format(stringVarName.value, intValue.value))

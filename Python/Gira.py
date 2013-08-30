@@ -55,7 +55,10 @@ class Gira(ptResponder):
     def __init__(self):
         ptResponder.__init__(self)
         self.id = 5311
-        self.version = 1
+        version = 1
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: Gira v{}".format(self.version))
 
     def OnFirstUpdate(self):
         pass

@@ -63,7 +63,10 @@ class GiraDoor(ptResponder):
     def __init__(self):
         ptResponder.__init__(self)
         self.id = 53637
-        self.version = 2
+        version = 2
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: GiraDoor v{}".format(self.version))
 
     def OnServerInitComplete(self):
         self.ageSDL = PtGetAgeSDL()
@@ -82,10 +85,10 @@ class GiraDoor(ptResponder):
             doorOpen = true
 
         if doorOpen:
-            PtDebugPrint("gira door open")
+            PtDebugPrint("GiraDoor.OnServerInitComplete():  gira door open")
             doorOpenInitResp.run(self.key, avatar=PtGetLocalAvatar())
         else:
-            PtDebugPrint("gira door closed")
+            PtDebugPrint("GiraDoor.OnServerInitComplete():  gira door closed")
 
     def OnNotify(self, state, id, events):
         self.ageSDL = PtGetAgeSDL()

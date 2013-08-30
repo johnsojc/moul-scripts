@@ -80,7 +80,7 @@ def UpdateScore(gameNum, startTime, bestTime):
     #SPECIAL NOTES:
     #   If startTime < 0 or bestTime < 0 it will NOT update the corresponding value!
     if gameNum < 0 or gameNum > len(mgs):
-        PtDebugPrint("ERROR: grtzMarkerGames.UpdateScore():\tAborting update, invalid game number: %s" % (gameNum))
+        PtDebugPrint("grtzMarkerGames.UpdateScore():  ERROR: Aborting update, invalid game number: {}".format(gameNum))
         return
 
     vault = ptVault()
@@ -93,13 +93,13 @@ def UpdateScore(gameNum, startTime, bestTime):
         # But only if we're creating a new variable!
         if startTime < 0:
             startTime = 0.0
-        vault.addChronicleEntry(gameName, 1, "%f,%f" % (startTime, bestTime))
+        vault.addChronicleEntry(gameName, 1, "{:f},{:f}".format(startTime, bestTime))
 
         if bestTime > 0:
             isNewBestTime = 1
-            PtDebugPrint("grtzMarkerGames.UpdateScore():\tDEBUG: Found no previous bestTime entry, setting new best time!")
+            PtDebugPrint("grtzMarkerGames.UpdateScore():  DEBUG: Found no previous bestTime entry, setting new best time!")
 
-        PtDebugPrint("grtzMarkerGames.UpdateScore():\tDEBUG: Game Num: %d, updated for the first time: StartTime = %f  BestTime = %f" % (gameNum, startTime, bestTime))
+        PtDebugPrint("grtzMarkerGames.UpdateScore():  DEBUG: Game Num: {}, updated for the first time: StartTime = {:f}  BestTime = {:f}".format(gameNum, startTime, bestTime))
         return
     else:
         statString = entry.chronicleGetValue()
@@ -116,7 +116,7 @@ def UpdateScore(gameNum, startTime, bestTime):
                 if bestTime > 0.1:
                     if bestTime < oldBestTime or oldBestTime < 0.1:
                         isNewBestTime = 1
-                        PtDebugPrint("grtzMarkerGames.UpdateScore():\tDEBUG: Found new best time, updating...   old best time score: %f" % (oldBestTime))
+                        PtDebugPrint("grtzMarkerGames.UpdateScore():  DEBUG: Found new best time, updating...   old best time score: {:f}".format(oldBestTime))
                     else:
                         bestTime = oldBestTime
                 else:
@@ -124,8 +124,8 @@ def UpdateScore(gameNum, startTime, bestTime):
             except:
                 pass
 
-                PtDebugPrint("grtzMarkerGames.UpdateScore():\tDEBUG: Game Num: %d, updated score: Start Time = %f  BestTime = %f" % (gameNum, startTime, bestTime))
-        entry.chronicleSetValue("%f,%f" % (startTime, bestTime))
+                PtDebugPrint("grtzMarkerGames.UpdateScore():  DEBUG: Game Num: {}, updated score: Start Time = {:f}  BestTime = {:f}".format(gameNum, startTime, bestTime))
+        entry.chronicleSetValue("{:f},{:f}".format(startTime, bestTime))
         entry.save()
 
 

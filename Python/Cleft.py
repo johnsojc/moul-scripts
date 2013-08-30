@@ -66,9 +66,12 @@ class Cleft(ptResponder):
     def __init__(self):
         ptResponder.__init__(self)
         self.id = 5209
-        self.version = 22
+        version = 22
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: Cleft v{}".format(self.version))
 
-        #var used to load in Cleft/Tomahna specific stuff based on chronicle vals
+        # var used to load in Cleft/Tomahna specific stuff based on chronicle vals
         global loadTomahna
         global loadZandi
         global loadBook
@@ -77,8 +80,8 @@ class Cleft(ptResponder):
         loadZandi = 0
         loadBook = 0
 
-        #checks chronicle entries, if don't exist or is set to no,
-        #then decides if Tomahna or Zandi should be paged in
+        # checks chronicle entries, if don't exist or is set to no,
+        # then decides if Tomahna or Zandi should be paged in
 
         vault = ptVault()
         entryCleft = vault.findChronicleEntry("CleftSolved")
@@ -127,11 +130,11 @@ class Cleft(ptResponder):
             pages += ["ZandiJC05bFace", "ZandiJC06aFace", "ZandiJC06bFace"]
             pages += ["ZandiJC07aFace", "ZandiJC07bFace"]
         else:
-            print "Zandi seems to have stepped away from the Airstream. Hmmm..."
+            PtDebugPrint("Cleft.__init__():  Zandi seems to have stepped away from the Airstream. Hmmm...")
         if loadBook:
             pages += ["clftYeeshaBookVis", "FemaleGetPersonalBook", "MaleGetPersonalBook"]
         else:
-            print "Zandi seems to have stepped away from the Airstream. Hmmm..."
+            PtDebugPrint("Cleft.__init__():  Zandi seems to have stepped away from the Airstream. Hmmm...")
 
         # Put in all the common pages
         pages += ["BookRoom", "clftAtrusNote"]
@@ -167,17 +170,17 @@ class Cleft(ptResponder):
         if loadTomahna:
             SDLVarName = "clftTomahnaActive"
             ageSDL[SDLVarName] = (1,)
-            PtDebugPrint("Cleft.OnServerInitComplete: loadTomahna is 1, setting clftTomahnaActive SDL to 1")
+            PtDebugPrint("Cleft.OnServerInitComplete():  loadTomahna is 1, setting clftTomahnaActive SDL to 1")
             PtFogSetDefLinear(0, 0, 0)
             PtSetClearColor(.4, .4, .5)
 
             SDLVarSceneBahro = "clftSceneBahroUnseen"
             boolSceneBahro = ageSDL[SDLVarSceneBahro][0]
             if boolSceneBahro:
-                PtDebugPrint("Cleft.OnServerInitComplete: SDL says bahro hasn't played yet, paging in SceneBahro stuff...")
+                PtDebugPrint("Cleft.OnServerInitComplete():  SDL says bahro hasn't played yet, paging in SceneBahro stuff...")
                 PtPageInNode("clftSceneBahro")
             else:
-                PtDebugPrint("Cleft.OnServerInitComplete: SDL says SceneBahro already played, will NOT page in")
+                PtDebugPrint("Cleft.OnServerInitComplete():  SDL says SceneBahro already played, will NOT page in")
 
             ageSDL.setNotify(self.key, SDLVarSceneBahro, 0.0)
 
@@ -187,15 +190,15 @@ class Cleft(ptResponder):
                 SDLVarOfficeDoor = "clftOfficeDoorClosed"
                 boolOfficeDoor = ageSDL[SDLVarOfficeDoor][0]
                 if boolOfficeDoor:
-                    PtDebugPrint("Cleft.OnServerInitComplete: SDL says Yeesha will play and office door is shut, will open it")
+                    PtDebugPrint("Cleft.OnServerInitComplete():  SDL says Yeesha will play and office door is shut, will open it")
                     ageSDL[SDLVarOfficeDoor] = (0,)
             else:
-                PtDebugPrint("Cleft.OnServerInitComplete: SDL says SceneYeesha already played, will NOT page in")
+                PtDebugPrint("Cleft.OnServerInitComplete():  SDL says SceneYeesha already played, will NOT page in")
 
         else:
             SDLVarName = "clftTomahnaActive"
             ageSDL[SDLVarName] = (0,)
-            PtDebugPrint("Cleft.OnServerInitComplete: loadTomahna is 0, setting clftTomahnaActive SDL set to 0")
+            PtDebugPrint("Cleft.OnServerInitComplete():  loadTomahna is 0, setting clftTomahnaActive SDL set to 0")
             PtFogSetDefLinear(0, 0, 0)
             PtSetClearColor(0, 0, 0)
 
@@ -212,7 +215,7 @@ class Cleft(ptResponder):
             try:
                 avatar = PtGetLocalAvatar()
             except:
-                print"failed to get local avatar"
+                PtDebugPrint("Cleft.OnServerInitComplete():  failed to get local avatar")
                 return
             avatar.avatar.registerForBehaviorNotify(self.key)
             cam = ptCamera()
@@ -236,10 +239,10 @@ class Cleft(ptResponder):
         boolOfficeDoor = ageSDL[SDLVarOfficeDoor][0]
 
         if boolKitchenDoor and boolOfficeDoor:
-            PtDebugPrint("Cleft.OnLoad: both Kitchen and Office doors are closed... setting Kitchen door SDL to open")
+            PtDebugPrint("Cleft.Load():  both Kitchen and Office doors are closed... setting Kitchen door SDL to open")
             ageSDL[SDLVarKitchenDoor] = (0,)
         else:
-            PtDebugPrint("Cleft.OnLoad: either Kitchen and/or Office door is already open... leaving Kitchen door alone")
+            PtDebugPrint("Cleft.Load():  either Kitchen and/or Office door is already open... leaving Kitchen door alone")
 
         pass
 
@@ -247,7 +250,7 @@ class Cleft(ptResponder):
         global fissureDrop
 
         if (id == respFissureDropMain.id):
-            print "FISSUREDROP.OnNotify:  respFissureDropMain.id callback"
+            PtDebugPrint("Cleft.OnNotify():  respFissureDropMain.id callback")
             if fissureDrop:
                 cam = ptCamera()
                 cam.enableFirstPersonOverride()
@@ -261,7 +264,7 @@ class Cleft(ptResponder):
         global fissureDrop
 
         if type == PtBehaviorTypes.kBehaviorTypeLinkIn and not state:
-            print "FISSUREDROP.OnBehaviorNotify: fissureDrop = %d" % (fissureDrop)
+            PtDebugPrint("Cleft.OnBehaviorNotify():  fissureDrop = {}".format(fissureDrop))
             if fissureDrop:
-                PtDebugPrint("Cleft.OnBehaviorNotify(): will run respFissureDropMain now.")
+                PtDebugPrint("Cleft.OnBehaviorNotify():  will run respFissureDropMain now.")
                 respFissureDropMain.run(self.key, avatar=PtGetLocalAvatar())

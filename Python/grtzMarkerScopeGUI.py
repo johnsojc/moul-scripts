@@ -102,7 +102,7 @@ class grtzMarkerScopeGUI(ptModifier):
     def __init__(self):
         ptModifier.__init__(self)
         self.id = 213
-        self.version = MaxVersionNumber
+        self.version = "{}.{}".format(MaxVersionNumber, MinorVersionNumber)
         self.selectorChanged = 0
         self.init = 0
         self.lastGame = -1
@@ -110,7 +110,7 @@ class grtzMarkerScopeGUI(ptModifier):
         self.updateLevel = kNoRefresh
         self.scopeID = -1
         self.debug = 0
-        PtDebugPrint("__grtzMarkerScopeGUI: Max version %d - minor version %d" % (MaxVersionNumber, MinorVersionNumber))
+        PtDebugPrint("__init__: grtzMarkerScopeGUI v{}".format(self.version))
 
     def __del__(self):
         "the destructor - unload any dialogs we loaded"
@@ -123,7 +123,8 @@ class grtzMarkerScopeGUI(ptModifier):
     def OnNotify(self, state, id, events):
         "Activated... start telescope"
         if id == (-1):
-            PtDebugPrint("Tye: YEA!! IT WORKED!")
+            # PtDebugPrint("grtzMarkerScopeGUI.OnNotify():  Tye: YEA!! IT WORKED!")  # JCJ: This msg is NOT useful!
+            PtDebugPrint("grtzMarkerScopeGUI.OnNotify():  start telescope")
             return
 
         if id == aScope1Act.id or id == aScope2Act.id or id == aScope3Act.id or id == aScope4Act.id:
@@ -150,23 +151,23 @@ class grtzMarkerScopeGUI(ptModifier):
             return
 
         if event == kDialogLoaded:
-            PtDebugPrint("DEBUG: grtzMarkerScopeGUI():\tMarker Scope GUU--->Dialog Loaded!")
+            PtDebugPrint("DEBUG: grtzMarkerScopeGUI.OnGUINotify():  Marker Scope GUI--->Dialog Loaded!")
             # hide stuff until needed
             MGAnim.animation.skipToTime(1.5)
 
         elif event == kShowHide:
             if control.isEnabled():
-                PtDebugPrint("DEBUG: grtzMarkerScopeGUI():\tMarker Scope-GUI--->Show Dialog")
+                PtDebugPrint("DEBUG: grtzMarkerScopeGUI.OnGUINotify():  Marker Scope-GUI--->Show Dialog")
                 # make sure the player has enough level to see the GUI
                 gameType = grtzMarkerGames.GetCurrentGameType()
                 if PtDetermineKIMarkerLevel() < kKIMarkerNormalLevel:
-                    PtDebugPrint("DEBUG: grtzMarkerScopeGUI.OnGUINotify():\tKI Level not high enough, disabling GUI controls")
+                    PtDebugPrint("DEBUG: grtzMarkerScopeGUI.OnGUINotify():  KI Level not high enough, disabling GUI controls")
                     gameSelector = ptGUIControlRadioGroup(MarkerGameDlg.dialog.getControlFromTag(kRGMarkerGameSelect))
                     gameSelector.setValue(-1)
                     gameSelector.disable()
                     self.updateLevel = kNoRefresh
                 elif gameType > -1 and gameType != PtMarkerGameTypes.kMarkerGameCGZ:
-                    PtDebugPrint("DEBUG: grtzMarkerScopeGUI.OnGUINotify():\tUser Created Marker Game in Progress, disabling GUI controls")
+                    PtDebugPrint("DEBUG: grtzMarkerScopeGUI.OnGUINotify():  User Created Marker Game in Progress, disabling GUI controls")
                     gameSelector = ptGUIControlRadioGroup(MarkerGameDlg.dialog.getControlFromTag(kRGMarkerGameSelect))
                     gameSelector.setValue(-1)
                     gameSelector.disable()
@@ -178,7 +179,7 @@ class grtzMarkerScopeGUI(ptModifier):
                 else:  # We're loading the GUI
                     # Get gameData (if Any)
                     gameNum, numCaptured, numMarkers = grtzMarkerGames.GetGameProgress()
-                    PtDebugPrint("DEBUG: grtzMarkerScopeGUI.OnGUINotify():\tInitializing GUI, current gameNum = %s" % gameNum)
+                    PtDebugPrint("DEBUG: grtzMarkerScopeGUI.OnGUINotify():  Initializing GUI, current gameNum = {}".format(gameNum))
 
                     # Set refresh level to not update, later we'll change it if necessary...
                     self.updateLevel = kNoRefresh
@@ -223,7 +224,7 @@ class grtzMarkerScopeGUI(ptModifier):
                     if self.updateLevel > kNoRefresh:
                         PtAtTimeCallback(self.key, 1, kDisplayTimer)
             else:
-                PtDebugPrint("DEBUG: grtzMarkerScopeGUI():\tMarker Scope-GUI--->Hide dialog")
+                PtDebugPrint("DEBUG: grtzMarkerScopeGUI.OnGUINotify():  Marker Scope-GUI--->Hide dialog")
                 # Hide scope...
                 MGAnim.animation.skipToTime(1.5)
                 self.lastGame = -1
@@ -241,11 +242,11 @@ class grtzMarkerScopeGUI(ptModifier):
                 if self.selectorChanged:
                     # Exit if somehow we really don't have a valid game!
                     if reqGameNum < 0 or reqGameNum > len(grtzMarkerGames.mgs):
-                        PtDebugPrint("ERROR: grtzMarkerScopeGUI.OnGUINotify:\tCannot start invalid game number: %d" % (reqGameNum))
+                        PtDebugPrint("ERROR: grtzMarkerScopeGUI.OnGUINotify:  Cannot start invalid game number: {}".format(reqGameNum))
                         return
 
                     # Finally, start the new game!
-                    PtDebugPrint("DEBUG: grtzMarkerScopeGUI.OnGUINotify():\tReceived GUI notification to start game: %s" % (reqGameNum))
+                    PtDebugPrint("DEBUG: grtzMarkerScopeGUI.OnGUINotify():  Received GUI notification to start game: {}".format(reqGameNum))
                     PtSendKIMessageInt(kMGStartCGZGame, reqGameNum)
 
                     # Reset selector sensor
@@ -257,19 +258,19 @@ class grtzMarkerScopeGUI(ptModifier):
                 # The first time we update the selector, we don't want to register a new game selected!!!
                 # All played games are initialized upon age load, not upon marker scope GUI load....
                 if self.init == 0:
-                    PtDebugPrint("DEBUG: grtzMarkerScopeGUI.OnGUINotify():\tFinished initialization.... (ignoring selector change)")
+                    PtDebugPrint("DEBUG: grtzMarkerScopeGUI.OnGUINotify():  Finished initialization.... (ignoring selector change)")
                     self.init = 1  # Make sure we don't try to re-init!
                     return
 
                 self.selectorChanged = 1  # let us know if the selector changed for (so we can start/stop a game if necessary)
 
                 gameNum = control.getValue()
-                PtDebugPrint("DEBUG: grtzMarkerScopeGUI.OnGUINotify():\tReceived CGZ Game Selector change: %s" % (gameNum))
+                PtDebugPrint("DEBUG: grtzMarkerScopeGUI.OnGUINotify():  Received CGZ Game Selector change: {}".format(gameNum))
 
                 # If we were playing an existing game, we need to quit it!!!
                 curGame = grtzMarkerGames.GetCurrentCGZGame()
                 if curGame is not None and curGame > -1:
-                    PtDebugPrint("DEBUG: grtzMarkerScopeGUI.OnGUINotify():\tSelector value changed, stopping current game!")
+                    PtDebugPrint("DEBUG: grtzMarkerScopeGUI.OnGUINotify():  Selector value changed, stopping current game!")
                     PtSendKIMessage(kMGStopCGZGame, 0)
                     self.updateLevel = kOneTimeFullRefresh
 
@@ -330,7 +331,7 @@ class grtzMarkerScopeGUI(ptModifier):
                 for script in pythonScripts:
                     notify.addReceiver(script)
             except:
-                PtDebugPrint("ERROR: IQuitTelescope():\tCould not send quit message to the scope named: %s" % name)
+                PtDebugPrint("ERROR: grtzMarkerScopeGUI.IQuitTelescope():  Could not send quit message to the scope named: {}".format(name))
 
         notify.netPropagate(0)
         notify.setActivate(1.0)
@@ -339,7 +340,7 @@ class grtzMarkerScopeGUI(ptModifier):
     def IRefreshGamesDisplay(self):
         "refresh the number and best time fields for the games"
         if self.debug:
-            PtDebugPrint("---->FULL UPDATE!")
+            PtDebugPrint("grtzMarkerScopeGUI.IRefreshGameDisplay():  ---->FULL UPDATE!")
         gameSelector = ptGUIControlRadioGroup(MarkerGameDlg.dialog.getControlFromTag(kRGMarkerGameSelect))
         curGame = gameSelector.getValue()
 
@@ -348,7 +349,7 @@ class grtzMarkerScopeGUI(ptModifier):
             numTB = ptGUIControlTextBox(MarkerGameDlg.dialog.getControlFromTag(fieldID+kMarkerGameNumFieldOffset))
             timeTB = ptGUIControlTextBox(MarkerGameDlg.dialog.getControlFromTag(fieldID+kMarkerGameNameFieldOffset))
             gameidx = (fieldID-kMarkerGameFieldStart)/10
-            numTB.setString("%d" % (grtzMarkerGames.GetNumMarkers(gameidx)))
+            numTB.setString("{}".format(grtzMarkerGames.GetNumMarkers(gameidx)))
             gameName = grtzMarkerGames.GetCGZGameName(gameidx)
 
             startTime, bestTime = grtzMarkerGames.GetGameTime(gameName)
@@ -365,17 +366,17 @@ class grtzMarkerScopeGUI(ptModifier):
                 preText = ""
                 postText = ""
 
-                #Check for best game....
+                # Check for best game....
                 if self.lastGame == gameidx:
                     if self.lastGameScore < bestTime or (self.lastGameScore > 0 and bestTime <= 0):
                         preText = "*"
                         postText = "*"
                 if tuptime[2] == 1:
-                    ostring = preText+"%02d:%02d:%02d"+postText
-                    timeTB.setString(ostring % (tuptime[3], tuptime[4], tuptime[5]))
+                    ostring = preText+"{:02d}:{:02d}:{:02d}"+postText
+                    timeTB.setString(ostring.format(tuptime[3], tuptime[4], tuptime[5]))
                 else:
-                    ostring = preText+"%02d:%02d:%02d:%02d"+postText
-                    timeTB.setString(ostring % (tuptime[2]-1, tuptime[3], tuptime[4], tuptime[5]))
+                    ostring = preText+"{:02d}:{:02d}:{:02d}:{:02d}"+postText
+                    timeTB.setString(ostring.format(tuptime[2]-1, tuptime[3], tuptime[4], tuptime[5]))
             else:
                 timeTB.setString("--:--:--")
 
@@ -388,7 +389,7 @@ class grtzMarkerScopeGUI(ptModifier):
         # check a completed game
         if self.lastGame > -1:
             if self.debug:
-                PtDebugPrint("PARTIAL--LASTGAME!")
+                PtDebugPrint("grtzMarkerScopeGUI.IPartialRefreshDisplay():  PARTIAL--LASTGAME!")
             fieldID = self.lastGame * 10 + kMarkerGameFieldStart
             timeTB = ptGUIControlTextBox(MarkerGameDlg.dialog.getControlFromTag(fieldID+kMarkerGameNameFieldOffset))
             gameName = grtzMarkerGames.GetCGZGameName(self.lastGame)
@@ -405,18 +406,18 @@ class grtzMarkerScopeGUI(ptModifier):
                     if curGame == -1:
                         self.updateLevel = kNoRefresh
                 if tuptime[2] == 1:
-                    ostring = modText+"%02d:%02d:%02d"+modText
-                    timeTB.setString(ostring % (tuptime[3], tuptime[4], tuptime[5]))
+                    ostring = modText+"{:02d}:{:02d}:{:02d}"+modText
+                    timeTB.setString(ostring.format(tuptime[3], tuptime[4], tuptime[5]))
                 else:
-                    ostring = modText+"%02d:%02d:%02d:%02d"+modText
-                    timeTB.setString(ostring % (tuptime[2]-1, tuptime[3], tuptime[4], tuptime[5]))
+                    ostring = modText+"{:02d}:{:02d}:{:02d}:{:02d}"+modText
+                    timeTB.setString(ostring.format(tuptime[2]-1, tuptime[3], tuptime[4], tuptime[5]))
             else:
                 timeTB.setString("--:--:--")
 
         # Check the current game
         if curGame > -1:
             if self.debug:
-                PtDebugPrint("PARTIAL--CURRENT!")
+                PtDebugPrint("grtzMarkerScopeGUI.IPartialRefreshDisplay():  PARTIAL--CURRENT!")
             fieldID = curGame * 10 + kMarkerGameFieldStart
             timeTB = ptGUIControlTextBox(MarkerGameDlg.dialog.getControlFromTag(fieldID+kMarkerGameNameFieldOffset))
             gameName = grtzMarkerGames.GetCGZGameName(curGame)
@@ -429,11 +430,11 @@ class grtzMarkerScopeGUI(ptModifier):
             elif bestTime >= 0.1:
                 tuptime = time.gmtime(bestTime)
                 if tuptime[2] == 1:
-                    ostring = "%02d:%02d:%02d"
-                    timeTB.setString(ostring % (tuptime[3], tuptime[4], tuptime[5]))
+                    ostring = "{:02d}:{:02d}:{:02d}"
+                    timeTB.setString(ostring.format(tuptime[3], tuptime[4], tuptime[5]))
                 else:
-                    ostring = "%02d:%02d:%02d:%02d"
-                    timeTB.setString(ostring % (tuptime[2]-1, tuptime[3], tuptime[4], tuptime[5]))
+                    ostring = "{:02d}:{:02d}:{:02d}:{:02d}"
+                    timeTB.setString(ostring.format(tuptime[2]-1, tuptime[3], tuptime[4], tuptime[5]))
             else:
                 timeTB.setString("--:--:--")
 
@@ -443,7 +444,7 @@ class grtzMarkerScopeGUI(ptModifier):
             levels = ("kNoRefresh", "kFullRefresh", "kPartialRefresh", "kOneTimeFullRefresh")
 
             if param.lower() == "print":
-                PtDebugPrint("***Current Update Level = %s" % (levels[self.updateLevel]))
+                PtDebugPrint("grtzMarkerScopeGUI.OnBackDoorMsg():  ***Current Update Level = {}".format(levels[self.updateLevel]))
             else:
                 reqLevel = -1
                 try:
@@ -451,10 +452,10 @@ class grtzMarkerScopeGUI(ptModifier):
                     if reqLevel < 0 or reqLevel > len(levels):
                         raise
                 except:
-                    PtDebugPrint("@@@ ERROR: invalid argument @@@")
+                    PtDebugPrint("grtzMarkerScopeGUI.OnBackDoorMsg():  @@@ ERROR: invalid argument @@@")
                     return
 
-                PtDebugPrint("***Setting Update Level = %s" % (reqLevel))
+                PtDebugPrint("grtzMarkerScopeGUI.OnBackDoorMsg():  ***Setting Update Level = {}".format(reqLevel))
                 oldLevel = self.updateLevel
                 self.updateLevel = reqLevel
                 if reqLevel > kNoRefresh and oldLevel > kNoRefresh:
@@ -462,31 +463,31 @@ class grtzMarkerScopeGUI(ptModifier):
 
         elif target.lower() == "lastgame":
             if param.lower() == "print":
-                PtDebugPrint("***Last Game = %s, with last score = %s" % (self.lastGame, self.lastGameScore))
+                PtDebugPrint("grtzMarkerScopeGUI.OnBackDoorMsg():  ***Last Game = {}, with last score = {}".format(self.lastGame, self.lastGameScore))
             else:
                 try:
                     reqGame = int(param)
                     if reqGame < 0 or reqGame > 13:
                         raise
                 except:
-                    PtDebugPrint("@@@ ERROR: invalid argument @@@")
+                    PtDebugPrint("grtzMarkerScopeGUI.OnBackDoorMsg():  @@@ ERROR: invalid argument @@@")
                     return
 
-                PtDebugPrint("***Setting Last Game = %s" % (reqGame))
+                PtDebugPrint("grtzMarkerScopeGUI.OnBackDoorMsg():  ***Setting Last Game = {}".format(reqGame))
                 self.lastGame = reqGame
 
         elif target.lower() == "lastgamescore":
             if param.lower() == "print":
-                PtDebugPrint("***Last Game = %s, with last score = %s" % (self.lastGame, self.lastGameScore))
+                PtDebugPrint("grtzMarkerScopeGUI.OnBackDoorMsg():  ***Last Game = {}, with last score = {}".format(self.lastGame, self.lastGameScore))
             else:
                 try:
                     reqScore = int(param)
                     if reqScore < 0:
                         raise
                 except:
-                    PtDebugPrint("@@@ ERROR: invalid argument @@@")
+                    PtDebugPrint("grtzMarkerScopeGUI.OnBackDoorMsg():  @@@ ERROR: invalid argument @@@")
                     return
-                PtDebugPrint("***Setting Last Game Score = %s" % (reqScore))
+                PtDebugPrint("grtzMarkerScopeGUI.OnBackDoorMsg():  ***Setting Last Game Score = {}".format(reqScore))
                 self.lastGameScore = reqScore
 
         elif target.lower() == "debug":
@@ -495,4 +496,4 @@ class grtzMarkerScopeGUI(ptModifier):
             if self.debug:
                 mode = "ON"
 
-            PtDebugPrint("***Turning on CGZ Marker Scope GUI Debug Mode: %s" % (mode))
+            PtDebugPrint("grtzMarkerScopeGUI.OnBackDoorMsg():  ***Turning on CGZ Marker Scope GUI Debug Mode: {}".format(mode))

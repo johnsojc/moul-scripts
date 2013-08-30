@@ -77,11 +77,11 @@ def ReadIni():
 def SetSoundPriority(priority):
     if gIniFile:
         entry, idx = gIniFile.findByCommand(kSoundPri)
-        pristr = "%d" % priority
+        pristr = "{}".format(priority)
         if entry:
             entry.setValue(0, pristr)
         else:
-            gIniFile.addEntry("%s %d" % (kSoundPri, priority))
+            gIniFile.addEntry("{} {}".format(kSoundPri, priority))
 
 
 def GetSoundPriority():

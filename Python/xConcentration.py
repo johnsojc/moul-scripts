@@ -85,25 +85,26 @@ class xConcentration(ptModifier):
         ptModifier.__init__(self)
         self.id = 5120
         version = 1
-        self.version = version
-        PtDebugPrint("__init__xConcentration v.%d" % (version))
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: xConcentration v{}".format(self.version))
 
     def OnServerInitComplete(self):
         global puz
         self.SDL.setDefault("puz", (0,))
         puztuple = self.SDL["puz"]
-        PtDebugPrint(puztuple[0], "Existing Value!")
+        PtDebugPrint("xConcentration.OnServerInitComplete():  {} - Existing Value!".format(puztuple[0]))
         if puztuple[0] != puzname.value:
             puz = list(puztuple)
             puz = BuildPuzList()
             puz[0] = puzname.value
-            PtDebugPrint(puz[0], "firstupdate")
+            PtDebugPrint("xConcentration.OnServerInitComplete():  {} - firstupdate".format(puz[0]))
             self.SDL["puz"] = tuple(puz)  # writes it
 
         dtext.textmap.clearToColor(ptColor(0, 0, 0, 0))
 
     def Load(self):
-        PtDebugPrint("load XXXXXXXX")
+        PtDebugPrint("xConcentration.Load():  load XXXXXXXX")
         global puz
         # puz = self.SDL["puz"][1032]
         # if not puz[0]: #thing is empty, else we already have a list.
@@ -139,11 +140,16 @@ class xConcentration(ptModifier):
                         xSquare = round(xSquarepicked+.5)
                         ySquare = round(ySquarepicked+.5)
 
-                        PtDebugPrint(TruePickx, "Truepickx=xSquarepicked", xSquarepicked, "Rounded:", xSquare)
-                        PtDebugPrint(TruePicky, "Truepicky=ySquarepicked", ySquarepicked, "Rounded:", ySquare)
+                        PtDebugPrint("xConcentration.OnNotify()")
+                        PtDebugPrint("\tTruePickx     = {:f}".format(TruePickx))
+                        PtDebugPrint("\txSquarepicked = {:f}".format(xSquarepicked))
+                        PtDebugPrint("\tRounded       = {:f}\n".format(xSquare))
+                        PtDebugPrint("\tTruePicky     = {:f}".format(TruePicky))
+                        PtDebugPrint("\tySquarepicked = {:f}".format(ySquarepicked))
+                        PtDebugPrint("\tRounded       = {:f}".format(ySquare))
 
                         pick = (int(ySquare-1) * matrix.value) + int(xSquare)  # pick is the array location
-                        PtDebugPrint("Pick=", whichpick, " Square:", pick, "value=", puz[pick])
+                        PtDebugPrint("\tPick={}, Square:{}, value={}".format(whichpick, pick, puz[pick]))
 
                         # Now do something with the pick
                         texX = 512
@@ -162,11 +168,11 @@ class xConcentration(ptModifier):
                         getFromX = texXBox * (imageSquareX)
                         getFromY = texYBox * (imageSquareY)
 
-                        PtDebugPrint(imageSquareX, "GETFROM", imageSquareY)
+                        PtDebugPrint("xConcentration.OnNotify():  {} GETFROM {}".format(imageSquareX, imageSquareY))
 
                         if puz[pick] == pick:  # solved spot already
                             # play moot graphic.
-                            PtDebugPrint("skippingpick")
+                            PtDebugPrint("xConcentration.OnNotify():  skippingpick")
                             pass
                         elif whichpick == 0:  # first selection
                             pick1 = pick
@@ -181,9 +187,9 @@ class xConcentration(ptModifier):
                                 puz[pick1] = puz[pick]
                                 puz[pick] = pick  # swap numbers
                                 self.SDL["puz"] = tuple(puz)  # writes it
-                                PtDebugPrint("MATCH:")
-                                PtDebugPrint("Square:", pick1, "value=", puz[pick1])
-                                PtDebugPrint("Square:", pick, "value=", puz[pick])
+                                PtDebugPrint("xConcentration.OnNotify():  MATCH:")
+                                PtDebugPrint("\tSquare: {}  value={}".format(pick1, puz[pick1]))
+                                PtDebugPrint("\tSquare: {}  value={}".format(pick, puz[pick]))
                                 dtext.textmap.clearToColor(black)
                             else:
                                 pass
@@ -201,7 +207,7 @@ def BuildPuzList():
     for x in range(1033):  # fills the list with a number coinciding with its position
         p.append(x)
 
-    PtDebugPrint("start list")
+    PtDebugPrint("xConcentration.BuildPuzList():  start list")
     for x in range(1, 1032):  # fill numbers
         p[x] = x
     for x in range(1, 1032):  # scrambles those numbers
@@ -209,7 +215,7 @@ def BuildPuzList():
         z = p[x]
         p[x] = p[y]
         p[y] = z
-        PtDebugPrint(x, ",", p[x])
+        PtDebugPrint("\t{},{}".format(x, p[x]))
 
     for x in range(1, 1032):  # makes sure there were no "put backs"
         if p[x] == x:
@@ -218,5 +224,5 @@ def BuildPuzList():
             p[x] = y
             p[y] = z
             PtDebugPrint(x, ",,,", p[x])
-    PtDebugPrint("end list")
+    PtDebugPrint("xConcentration.BuildPuzList():  end list")
     return p

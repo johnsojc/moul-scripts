@@ -82,7 +82,10 @@ class GiraBugs(ptResponder):
     def __init__(self):
         ptResponder.__init__(self)
         self.id = 53627
-        self.version = 2
+        version = 2
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: GiraBugs v{}".format(self.version))
         self.bugCount = 0
 
     def ISaveBugCount(self, count):
@@ -109,22 +112,22 @@ class GiraBugs(ptResponder):
         try:
             avatar = PtGetLocalAvatar()
         except:
-            PtDebugPrint("GiraBugs.OnFirstUpdate():\tfailed to get local avatar")
+            PtDebugPrint("GiraBugs.OnServerInitComplete():  failed to get local avatar")
             return
         avatar.avatar.registerForBehaviorNotify(self.key)
 
         self.bugCount = self.IGetBugCount()
-        PtDebugPrint("GiraBugs.OnFirstUpdate():\tStarting with %d bugs" % (self.bugCount))
+        PtDebugPrint("GiraBugs.OnServerInitComplete():  Starting with {} bugs".format(self.bugCount))
 
         # first, kill all bugs on the avatar that might have been brought over
         PtKillParticles(0, 1, avatar.getKey())
 
         if (self.bugCount > 0):
             PtSetLightAnimStart(avatar.getKey(), bugLightObjectName, true)
-            PtDebugPrint("GiraBugs.OnFirstUpdate():\tlights on at start")
+            PtDebugPrint("GiraBugs.OnServerInitComplete():  lights on at start")
         else:
             PtSetLightAnimStart(avatar.getKey(), bugLightObjectName, false)
-            PtDebugPrint("GiraBugs.OnFirstUpdate():\tlights off at start")
+            PtDebugPrint("GiraBugs.OnServerInitComplete():  lights off at start")
 
         # this will add the bugs back that we have
         PtAtTimeCallback(self.key, 0.1, kAddBugs)
@@ -133,16 +136,16 @@ class GiraBugs(ptResponder):
         try:
             local = PtGetLocalAvatar()
         except:
-            PtDebugPrint("ERROR: GiraBugs.BeginAgeUnload()-->\tFailed to get local avatar!")
+            PtDebugPrint("GiraBugs.BeginAgeUnload():  ERROR: Failed to get local avatar!")
             return
 
         if (local == avObj):
-            PtDebugPrint("GiraBugs.BeginAgeUnload():\tavatar page out")
+            PtDebugPrint("GiraBugs.BeginAgeUnload():  avatar page out")
             local.avatar.unRegisterForBehaviorNotify(self.key)
 
             # update with the number currently on the avatar and save it to the chronicle
             self.bugCount = PtGetNumParticles(local.getKey())
-            PtDebugPrint("GiraBugs.BeginAgeUnload():\tparticles at age unload %d" % (self.bugCount))
+            PtDebugPrint("GiraBugs.BeginAgeUnload():  particles at age unload {}".format(self.bugCount))
             self.ISaveBugCount(self.bugCount)
 
             # help ensure all bugs are dead
@@ -169,11 +172,11 @@ class GiraBugs(ptResponder):
                 # kill some particles
                 particlesToKill = -particlesToTransfer
                 percentToKill = float(particlesToKill) / float(self.bugCount)
-                PtDebugPrint("GiraBugs.OnTimer() - Particles to kill: %s (%s%)" % (str(particlesToKill), str(percentToKill * 100)))
+                PtDebugPrint("GiraBugs.OnTimer():  Particles to kill: {} ({}%)".format(particlesToKill, percentToKill * 100))
                 PtKillParticles(0, percentToKill, avatar.getKey())
             elif particlesToTransfer != 0:
                 # add some particles
-                PtDebugPrint("GiraBugs.OnTimer() - Particles to add: %s" % (str(particlesToTransfer)))
+                PtDebugPrint("GiraBugs.OnTimer():  Particles to add: {}".format(particlesToTransfer))
                 PtTransferParticlesToObject(particleSystem.value.getKey(), avatar.getKey(), particlesToTransfer)
             PtSetParticleDissentPoint(0, 0, 10000, avatar.getKey())
             return
@@ -204,10 +207,10 @@ class GiraBugs(ptResponder):
                 id == fumerol10.id or id == fumerol11.id or id == fumerol12.id or
                 id == fumerol13.id or id == fumerol14.id or id == fumerol15.id):
 
-            PtDebugPrint("GiraBugs.OnNotify():\tsplashdown! %d" % (id))
+            PtDebugPrint("GiraBugs.OnNotify():  splashdown! {}".format(id))
             if (self.bugCount):
                 self.bugCount = 0
-                PtDebugPrint("GiraBugs.OnNotify():\tkill all bugs")
+                PtDebugPrint("GiraBugs.OnNotify():  kill all bugs")
                 PtSetParticleDissentPoint(0, 0, 10000, avatar.getKey())
                 PtKillParticles(3.0, 1, avatar.getKey())
                 PtSetLightAnimStart(avatar.getKey(), bugLightObjectName, false)
@@ -253,7 +256,7 @@ class GiraBugs(ptResponder):
                     return
 
             if (behavior == PtBehaviorTypes.kBehaviorTypeRunningJump):
-                PtDebugPrint("GiraBugs.OnBehaviorNotify():\tkill all bugs")
+                PtDebugPrint("GiraBugs.OnBehaviorNotify():  kill all bugs")
                 PtSetParticleDissentPoint(0, 0, 10000, avatar.getKey())
                 PtKillParticles(3.0, 1, avatar.getKey())
                 PtSetLightAnimStart(avatar.getKey(), bugLightObjectName, false)
@@ -263,7 +266,7 @@ class GiraBugs(ptResponder):
 
             if (behavior == PtBehaviorTypes.kBehaviorTypeRun):
                 #kill some of them and set a timer
-                PtDebugPrint("GiraBugs.OnBehaviorNotify():\tstarted running, kill some bugs")
+                PtDebugPrint("GiraBugs.OnBehaviorNotify():  tstarted running, kill some bugs")
                 PtSetParticleDissentPoint(0, 0, 10000, avatar.getKey())
                 PtKillParticles(3.0, 0.1, avatar.getKey())
                 PtAtTimeCallback(self.key, 0.25, PtBehaviorTypes.kBehaviorTypeRun)

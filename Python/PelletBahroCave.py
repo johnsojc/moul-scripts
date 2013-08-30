@@ -98,7 +98,10 @@ class PelletBahroCave(ptResponder):
     def __init__(self):
         ptResponder.__init__(self)
         self.id = 8000
-        self.version = 7
+        version = 7
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: PelletBahroCave v{}".format(self.version))
 
     def OnFirstUpdate(self):
         pass
@@ -126,12 +129,12 @@ class PelletBahroCave(ptResponder):
             chronString = chronString.split(",")
             for sol in chronString:
                 chronSolutions.append(string.atoi(sol))
-            PtDebugPrint("found pellet cave solution: ", chronSolutions)
-            PtDebugPrint("current sdl values for solution = ", sdlSolutions)
+            PtDebugPrint("PelletBahroCave.OnServerInitComplete():  found pellet cave solution:       {}".format(chronSolutions))
+            PtDebugPrint("PelletBahroCave.OnServerInitComplete():  current sdl values for solution = {}".format(sdlSolutions))
             if self.sceneobject.isLocallyOwned():
                 self.ShowSymbols()
         except:
-            PtDebugPrint("ERROR!  Couldn't get the solution information, symbols won't appear")
+            PtDebugPrint("PelletBahroCave.OnServerInitComplete():  ERROR: Couldn't get the solution information, symbols won't appear")
 
         linkmgr = ptNetLinkingMgr()
         link = linkmgr.getCurrAgeLink()
@@ -146,7 +149,7 @@ class PelletBahroCave(ptResponder):
             try:
                 avatar = PtGetLocalAvatar()
             except:
-                PtDebugPrint("failed to get local avatar")
+                PtDebugPrint("PelletBahroCave.OnServerInitComplete():  failed to get local avatar")
                 return
             avatar.avatar.registerForBehaviorNotify(self.key)
         else:
@@ -157,7 +160,7 @@ class PelletBahroCave(ptResponder):
                 entryValue = entry.chronicleGetValue()
                 gotPellet = string.atoi(entryValue)
                 if gotPellet != 0:
-                    entry.chronicleSetValue("%d" % (0))
+                    entry.chronicleSetValue("{}".format(0))
                     entry.save()
                     avatar = PtGetLocalAvatar()
                     avatar.avatar.registerForBehaviorNotify(self.key)
@@ -169,7 +172,7 @@ class PelletBahroCave(ptResponder):
             try:
                 ageSDL = PtGetAgeSDL()
             except:
-                PtDebugPrint("PelletBahroCave.OnServerInitComplete():\tERROR---Cannot find the PelletBahroCave Age SDL")
+                PtDebugPrint("PelletBahroCave.OnServerInitComplete():  ERROR: Cannot find the PelletBahroCave Age SDL")
                 ageSDL[SDLGotPellet.value] = (0, )
 
             ageSDL.setNotify(self.key, SDLGotPellet.value, 0.0)
@@ -178,7 +181,7 @@ class PelletBahroCave(ptResponder):
             if pelletSDL != gotPellet:
                 ageSDL[SDLGotPellet.value] = (gotPellet, )
 
-            PtDebugPrint("PelletBahroCave:OnServerInitComplete:  SDL for pellet is now %d" % (gotPellet))
+            PtDebugPrint("PelletBahroCave.OnServerInitComplete():  SDL for pellet is now {}".format(gotPellet))
 
     def OnSDLNotify(self, VARname, SDLname, playerID, tag):
         global sdlSolutions
@@ -187,13 +190,13 @@ class PelletBahroCave(ptResponder):
             id = sdlSolutionNames.index(VARname)
             ageSDL = PtGetAgeSDL()
             sdlSolutions[id] = ageSDL[sdlSolutionNames[id]][0]
-            PtDebugPrint("PelletBahroCave.OnSDLNotify(): %s now = %s" % (sdlSolutionNames[id], sdlSolutions[id]))
+            PtDebugPrint("PelletBahroCave.OnSDLNotify():  {} now = {}".format(sdlSolutionNames[id], sdlSolutions[id]))
 
     def OnBehaviorNotify(self, type, id, state):
         global gotPellet
         global lowerCave
 
-        PtDebugPrint("PelletBahroCave.OnBehaviorNotify(): %d" % (type))
+        PtDebugPrint("PelletBahroCave.OnBehaviorNotify():  {}".format(type))
         if type == PtBehaviorTypes.kBehaviorTypeLinkIn and state:
             if not lowerCave:
                 if gotPellet != 0:
@@ -216,7 +219,7 @@ class PelletBahroCave(ptResponder):
             self.IDropUpper(gotPellet)
 
         if id == RespDropPellet.id and gotPellet:
-            PtDebugPrint("PelletBahroCave.OnNotify: RespDropPellet callback, will now play FX")
+            PtDebugPrint("PelletBahroCave.OnNotify():  RespDropPellet callback, will now play FX")
             pellet = (gotPellet - 300)
             if pellet <= 0:
                 if pellet <= -250:
@@ -269,7 +272,7 @@ class PelletBahroCave(ptResponder):
             self.PlaySymbols(0)
 
     def IDropUpper(self, recipe):
-        PtDebugPrint("in IDropUpper.")
+        PtDebugPrint("PelletBahroCave.IDropUpper():")
         RespDropPellet.run(self.key, state="upper")
 
     def GetPelletCaveSolution(self):
@@ -280,7 +283,7 @@ class PelletBahroCave(ptResponder):
             ageInfoChild = ageInfoChildRef.getChild()
             folder = ageInfoChild.upcastToFolderNode()
             if folder and folder.folderGetName() == "AgeData":
-                PtDebugPrint("Found age data folder")
+                PtDebugPrint("PelletBahroCave.GetPelletCaveSolution():  Found age data folder")
                 ageDataChildren = folder.getChildNodeRefList()
                 for ageDataChildRef in ageDataChildren:
                     ageDataChild = ageDataChildRef.getChild()
@@ -301,7 +304,7 @@ class PelletBahroCave(ptResponder):
                 ageSDL[sdlSolutionNames[n]] = (newVal, )
                 sdlSolutions[n] = newVal
             n += 1
-        PtDebugPrint("SDL solutions list now = ", sdlSolutions)
+        PtDebugPrint("PelletBahroCave.ShowSymbols():  SDL solutions list now = {}".format(sdlSolutions))
 
     def PlaySymbols(self, state):
         n = 0

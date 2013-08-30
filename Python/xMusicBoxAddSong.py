@@ -69,8 +69,10 @@ class xMusicBoxAddSong(ptModifier):
     def __init__(self):
         ptModifier.__init__(self)
         self.id = 5346
-        self.version = 1
-        PtDebugPrint("xMusicBoxAddSong: init  version = %d" % (self.version))
+        version = 1
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: xMusicBoxAddSong v{}".format(self.version))
 
     def OnNotify(self, state, id, events):
         global IClicked
@@ -109,12 +111,12 @@ class xMusicBoxAddSong(ptModifier):
                         if chron and chron.getName() == "MusicBoxSongs":
                             songs = chron.getValue()
                             if songs.find(strSoundFile.value) == -1:
-                                PtDebugPrint("xMusicBoxAddSong.AddSong: Adding file %s" % (strSoundFile.value))
+                                PtDebugPrint("xMusicBoxAddSong.AddSong():  Adding file {}".format(strSoundFile.value))
                                 chron.setValue(strSoundFile.value + ";" + songs)
                                 PtSendKIMessageInt(PlasmaKITypes.kStartBookAlert, 0)
                                 return
                     break
-        PtDebugPrint("ERROR: xMusicBoxAddSong.AddSong():\tCould not add song: %s" % strSoundFile.value)
+        PtDebugPrint("xMusicBoxAddSong.AddSong():  ERROR: Could not add song: {}".format(strSoundFile.value))
 
     def HasMusicBoxYeeshaPage(self):
         sdl = xPsnlVaultSDL()

@@ -61,7 +61,10 @@ class psnlBugs(ptResponder):
     def __init__(self):
         ptResponder.__init__(self)
         self.id = 53427
-        self.version = 2
+        version = 2
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: psnlBugs v{}".format(self.version))
         self.bugCount = 0
 
     def ISaveBugCount(self, count):
@@ -89,11 +92,11 @@ class psnlBugs(ptResponder):
         try:
             avatar = PtGetLocalAvatar()
         except:
-            PtDebugPrint("failed to get local avatar")
+            PtDebugPrint("psnlBugs.OnServerInitComplete():  failed to get local avatar")
             return
 
         self.bugCount = self.IGetBugCount()
-        PtDebugPrint("psnl Bugs: %d" % (self.bugCount))
+        PtDebugPrint("psnlBugs.OnServerInitComplete():  psnl Bugs: {}".format(self.bugCount))
 
         thisAge = PtGetAgeName()
 
@@ -101,7 +104,7 @@ class psnlBugs(ptResponder):
             PtSetParticleDissentPoint(0, 0, 10000, avatar.getKey())
             PtKillParticles(10.0, 1, avatar.getKey())
             PtSetLightAnimStart(avatar.getKey(), bugLightObjectName, false)
-            PtDebugPrint("kill all bugs in age: %s" % (thisAge))
+            PtDebugPrint("psnlBugs.OnServerInitComplete():  kill all bugs in age: {}".format(thisAge))
             self.ISaveBugCount(0)
 
         if thisAge != "Personal":
@@ -114,11 +117,11 @@ class psnlBugs(ptResponder):
         sdl = PtGetAgeSDL()
         bugState = sdl["psnlBugsVis"]
         if rainState == 1 or (rainState == 4 and len(PtGetPlayerList()) == 0) or (rainState == 3 and len(PtGetPlayerList()) > 0):
-            PtDebugPrint("turning off bugs")
+            PtDebugPrint("psnlBugs.OnServerInitComplete():  turning off bugs")
             if bugState != 0:
                 sdl["psnlBugsVis"] = (0,)
         else:
             if self.bugCount > 0:
-                print "turning on bugs"
+                print "psnlBugs.OnServerInitComplete():  turning on bugs"
                 if bugState != 1:
                     sdl["psnlBugsVis"] = (1,)

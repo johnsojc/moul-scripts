@@ -93,9 +93,9 @@ def getmods():
         mod = sys.modules[modname]
         if hasattr(mod, "glue_inst"):
             if __sel == len(__pmods):
-                print("*%d. %s" % (len(__pmods), modname[:-13]))
+                print("*{}. {}".format(len(__pmods), modname[:-13]))
             else:
-                print(" %d. %s" % (len(__pmods), modname[:-13]))
+                print(" {}. {}".format(len(__pmods), modname[:-13]))
             __pmods.append([modname, mod])
 
 
@@ -107,9 +107,9 @@ def showmods():
     print("Plasma modules:")
     for mod in __pmods:
         if idx == __sel:
-            print("*%d. %s" % (idx, mod[0][:-13]))
+            print("*{}. {}".format(idx, mod[0][:-13]))
         else:
-            print(" %d. %s" % (idx, mod[0][:-13]))
+            print(" {}. {}".format(idx, mod[0][:-13]))
         idx += 1
 
 
@@ -128,15 +128,15 @@ def selmod(idx=None):
             i += 1
         # if we didn't find the module
         if i == len(__pmods):
-            print("Module %s not found" % idx)
+            print("Module {} not found".format(idx))
             return
         idx = i
     if idx < len(__pmods):
         __sel = idx
-        print("%s selected" % (__pmods[idx][0][:-13]))
+        print("{} selected".format(__pmods[idx][0][:-13]))
         return __pmods[__sel][1]
     else:
-        print("Error: index not valid. There are %d modules" % (len(__pmods)))
+        print("Error: index not valid. There are {} modules".format(len(__pmods)))
 
 
 # find attributes
@@ -144,7 +144,7 @@ def showmod():
     "show details of the selected module"
     global __pmods
     global __sel
-    print("Module: %s" % (__pmods[__sel][0][:-13]))
+    print("Module: {}".format(__pmods[__sel][0][:-13]))
     showdoc()
     showattribs()
     showglobals()
@@ -164,14 +164,14 @@ def showattribs():
     global __pmods
     global __sel
     global __selattr
-    print("Attributes in %s:" % (__pmods[__sel][0][:-13]))
+    print("Attributes in {}:".format(__pmods[__sel][0][:-13]))
     for name in __pmods[__sel][1].__dict__.keys():
         ist = __pmods[__sel][1].__dict__[name]
         if isinstance(ist, PlasmaTypes.ptAttribute):
             if __selattr == ist.id:
-                print("*(%d) %s(%s) =" % (ist.id, name, ist.__class__.__name__), ist.value)
+                print("*({}) {}({}) =".format(ist.id, name, ist.__class__.__name__), ist.value)
             else:
-                print(" (%d) %s(%s) =" % (ist.id, name, ist.__class__.__name__), ist.value)
+                print(" ({}) {}({}) =".format(ist.id, name, ist.__class__.__name__), ist.value)
 
 
 def selattrib(id=None):
@@ -186,9 +186,9 @@ def selattrib(id=None):
         if isinstance(ist, PlasmaTypes.ptAttribute):
             if id == ist.id:
                 __selattr = ist.id
-                print("%s(%s) =" % (name, ist.__class__.__name__), ist.value)
+                print("{}({}) =".format(name, ist.__class__.__name__), ist.value)
                 return ist
-    print("Error: Attribute ID %d not found" % (id))
+    print("Error: Attribute ID {} not found".format(id))
 
 
 def setattrib(value):
@@ -209,7 +209,7 @@ def setattrib(value):
                 else:
                     print("Error: value is not same type as attribute")
                 return
-    print("Error: Attribute ID %d not found" % (id))
+    print("Error: Attribute ID {} not found".format(id))
 # find globals
 
 
@@ -225,7 +225,7 @@ def showglobals():
             if not isinstance(ist, PlasmaTypes.ptAttribute) and not isinstance(ist, PlasmaTypes.ptModifier):
                 if name[:2] != '__' and name[:4] != 'glue':
                     if type(ist) != type(sys) and type(ist) != type(PlasmaTypes.ptAttribute):
-                        print("  %s =" % (name), ist)
+                        print("  {} =".format(name), ist)
 
 
 def setglobal(name, value):
@@ -236,7 +236,7 @@ def setglobal(name, value):
     if not name in __pmods[__sel][1].__dict__:
         print("Warning: creating new global!")
     __pmods[__sel][1].__dict__[name] = value
-    print("%s = " % (name), __pmods[__sel][1].__dict__[name])
+    print("{} = ".format(name), __pmods[__sel][1].__dict__[name])
 
 
 def getglobal(name):
@@ -254,7 +254,7 @@ def showinst():
     for name in __pmods[__sel][1].__dict__.keys():
         ist = __pmods[__sel][1].__dict__[name]
         if isinstance(ist, PlasmaTypes.ptModifier):
-            print("Instance of %s in module %s:" % (ist.__class__.__name__, __pmods[__sel][1].__name__[:-13]))
+            print("Instance of {} in module {}:".format(ist.__class__.__name__, __pmods[__sel][1].__name__[:-13]))
             print("  Doc: ", ist.__doc__)
             showvars(ist)
             showmethods(ist)
@@ -275,7 +275,7 @@ def showvars(instance):
     print("  Variables:")
     if len(instance.__dict__) > 0:
         for vname in instance.__dict__.keys():
-            print("    %s =" % (vname), instance.__dict__[vname])
+            print("    {} =".format(vname), instance.__dict__[vname])
     else:
         print("    (none)")
 
@@ -294,7 +294,7 @@ def showmethods(instance):
                 if i+1 < mist.func_code.co_argcount:
                     args += ","
             args += ")"
-            print("    %s%s" % (mist.__name__, args))
+            print("    {}{}".format(mist.__name__, args))
             print("      Doc:", mist.__doc__)
 
 
@@ -311,7 +311,7 @@ def showfunc(f):
             if argcount < f.func_code.co_argcount:
                 argstr += ","
         argstr += ")"
-        print("%s%s" % (f.func_name, argstr))
+        print("{}{}".format(f.func_name, argstr))
         print("    Doc:", f.__doc__)
         decompyle.decompyle(f.func_code)
 
@@ -325,9 +325,9 @@ def setvar(vname, value):
         if isinstance(ist, PlasmaTypes.ptModifier):
             # first see if there is already a glabal by that name
             if not vname in ist.__dict__:
-                print "Warning: creating new class variable!"
+                print("Warning: creating new class variable!")
             ist.__dict__[vname] = value
-            print("%s = " % (vname), ist.__dict__[vname])
+            print("{} = ".format(vname), ist.__dict__[vname])
 
 
 def getvar(vname):

@@ -211,18 +211,18 @@ def PtGetCGZGameState(whichGame):
         entry = vault.findChronicleEntry(kChronicleCalGZMarkersAquired)
         if entry is not None:
             allStates = entry.chronicleGetValue()
-            PlasmaTypes.PtDebugPrint("PlasmaKITypes:PtGetCGZGameLevel current chronicle is %s" % (allStates), level=PlasmaTypes.kDebugDumpLevel)
+            PlasmaTypes.PtDebugPrint("PlasmaKITypes.PtGetCGZGameLevel():  current chronicle is {}".format(allStates), level=PlasmaTypes.kDebugDumpLevel)
             state = kCGZMarkerInactive  # assume inactive
             try:
                 state = allStates[whichGame]
             except LookupError:
-                PlasmaTypes.PtDebugPrint("PlasmaKITypes:PtGetCGZGameLevel - CGZ marker game not there? chron=%s" % (allStates), level=PlasmaTypes.kErrorLevel)
+                PlasmaTypes.PtDebugPrint("PlasmaKITypes.PtGetCGZGameLevel():  CGZ marker game not there? chron={}".format(allStates), level=PlasmaTypes.kErrorLevel)
                 pass
             return state
         else:
-            PlasmaTypes.PtDebugPrint("PlasmaKITypes:PtGetCGZGameLevel no chronicle yet", level=PlasmaTypes.kDebugDumpLevel)
+            PlasmaTypes.PtDebugPrint("PlasmaKITypes.PtGetCGZGameLevel():  no chronicle yet", level=PlasmaTypes.kDebugDumpLevel)
     else:
-        PlasmaTypes.PtDebugPrint("PlasmaKITypes:PtGetCGZGameLevel - invalid CGZ game of %d" % (whichGame), level=PlasmaTypes.kErrorLevel)
+        PlasmaTypes.PtDebugPrint("PlasmaKITypes.PtGetCGZGameLevel():  invalid CGZ game of {}".format(whichGame), level=PlasmaTypes.kErrorLevel)
         pass
     # if couldn't be determine... just assume lowest form
     return kCGZMarkerInactive
@@ -235,7 +235,7 @@ def PtSetCGZGameState(whichGame, state):
     import PlasmaTypes
     if whichGame >= kCGZFirstGame and whichGame <= kCGZFinalGame:
         if type(state) is str and state in gCGZAllStates:
-            PlasmaTypes.PtDebugPrint("PlasmaKITypes:PtSetCGZGameLevel - setting game %d to %s" % (whichGame, state), level=PlasmaTypes.kDebugDumpLevel)
+            PlasmaTypes.PtDebugPrint("PlasmaKITypes.PtSetCGZGameLevel():  setting game {} to {}".format(whichGame, state), level=PlasmaTypes.kDebugDumpLevel)
             vault = Plasma.ptVault()
             entry = vault.findChronicleEntry(kChronicleCalGZMarkersAquired)
             if entry is not None:
@@ -263,10 +263,10 @@ def PtSetCGZGameState(whichGame, state):
                         newStates += kCGZMarkerInactive
                 vault.addChronicleEntry(kChronicleCalGZMarkersAquired, kChronicleCalGZMarkersAquiredType, newStates)
         else:
-            PlasmaTypes.PtDebugPrint("PlasmaKITypes:PtSetCGZGameLevel - invalid CGZ game state of:", state, level=PlasmaTypes.kErrorLevel)
+            PlasmaTypes.PtDebugPrint("PlasmaKITypes.PtSetCGZGameLevel():  invalid CGZ game state of: {}".format(state), level=PlasmaTypes.kErrorLevel)
             pass
     else:
-        PlasmaTypes.PtDebugPrint("PlasmaKITypes:PtSetCGZGameLevel - invalid CGZ game of %d" % (whichGame), level=PlasmaTypes.kErrorLevel)
+        PlasmaTypes.PtDebugPrint("PlasmaKITypes.PtSetCGZGameLevel():  invalid CGZ game of {}".format(whichGame), level=PlasmaTypes.kErrorLevel)
         pass
 
 
@@ -329,7 +329,7 @@ def PtDetermineGZ():
             entry = vault.findChronicleEntry(kChronicleGZGames)
             if entry is not None:
                 gameString = entry.chronicleGetValue()
-                PlasmaTypes.PtDebugPrint("PtDetermineGZ: - game string is %s" % (gameString), level=PlasmaTypes.kDebugDumpLevel)
+                PlasmaTypes.PtDebugPrint("PlasmaKITypes.PtDetermineGZ():  game string is {}".format(gameString), level=PlasmaTypes.kDebugDumpLevel)
                 args = gameString.split()
                 if len(args) == 3:
                     try:
@@ -341,7 +341,7 @@ def PtDetermineGZ():
                         MarkerGottenNumber = string.atoi(outof[0])
                         MarkerToGetNumber = string.atoi(outof[1])
                     except ValueError:
-                        PlasmaTypes.PtDebugPrint("xKI:GZ - error trying to read GZGames Chronicle", level=PlasmaTypes.kErrorLevel)
+                        PlasmaTypes.PtDebugPrint("PlasmaKITypes.PtDetermineGZ():  error trying to read GZGames Chronicle", level=PlasmaTypes.kErrorLevel)
                         # we don't know which one it errored on, so just reset them all
                         GZPlaying = 0
                         MarkerToGetColor = 'off'
@@ -349,13 +349,13 @@ def PtDetermineGZ():
                         MarkerToGetNumber = 0
                         MarkerGottenNumber = 0
                 else:
-                    PlasmaTypes.PtDebugPrint("xKI:GZ - error GZGames string formation error", level=PlasmaTypes.kErrorLevel)
+                    PlasmaTypes.PtDebugPrint("PlasmaKITypes.PtDetermineGZ():  error GZGames string formation error", level=PlasmaTypes.kErrorLevel)
                     pass
         else:
             # can't be playing a GZGame!
             # ...might be a MarkerTag game... let the KI determine that.
             pass
-    PlasmaTypes.PtDebugPrint("PtDetermineGZ: - returning game=%d colors=%s:%s markers=%d:%d" % (GZPlaying, MarkerGottenColor, MarkerToGetColor, MarkerGottenNumber, MarkerToGetNumber), level=PlasmaTypes.kDebugDumpLevel)
+    PlasmaTypes.PtDebugPrint("PlasmaKITypes.PtDetermineGZ():  returning game={} colors={}:{} markers={}:{}".format(GZPlaying, MarkerGottenColor, MarkerToGetColor, MarkerGottenNumber, MarkerToGetNumber), level=PlasmaTypes.kDebugDumpLevel)
     return (GZPlaying, MarkerGottenColor, MarkerToGetColor, MarkerGottenNumber, MarkerToGetNumber)
 
 
@@ -376,12 +376,11 @@ def PtCaptureGZMarker(GZMarkerInRange):
             markerIdx = GZMarkerInRange - 1
             if markerIdx >= 0 and markerIdx < len(markers):
                 # Set the marker to "captured"
-                PlasmaTypes.PtDebugPrint("PtCaptureGZMarker: starting with '%s' changing %d to '%s'" % (markers, GZMarkerInRange, kGZMarkerCaptured), level=PlasmaTypes.kDebugDumpLevel)
+                PlasmaTypes.PtDebugPrint("PlasmaKITypes.PtCaptureGZMarker():  starting with '{}' changing {} to '{}'".format(markers, GZMarkerInRange, kGZMarkerCaptured), level=PlasmaTypes.kDebugDumpLevel)
                 if len(markers)-(markerIdx+1) != 0:
                     markers = markers[:markerIdx] + kGZMarkerCaptured + markers[-(len(markers)-(markerIdx+1)):]
                 else:
                     markers = markers[:markerIdx] + kGZMarkerCaptured
-                #PlasmaTypes.PtDebugPrint("xKI: out string is '%s'" % (markers),level=PlasmaTypes.kDebugDumpLevel)
                 entry.chronicleSetValue(markers)
                 entry.save()
                 # update the marker Gotten count
@@ -398,13 +397,13 @@ def PtCaptureGZMarker(GZMarkerInRange):
                 # save update to chronicle
                 PtUpdateGZGamesChonicles(GZPlaying, MarkerGottenColor, MarkerToGetColor, MarkerGottenNumber, MarkerToGetNumber)
             else:
-                PlasmaTypes.PtDebugPrint("PtCaptureGZMarker: invalid marker serial number of %d" % (gGZMarkerInRange), level=PlasmaTypes.kErrorLevel)
+                PlasmaTypes.PtDebugPrint("PlasmaKITypes.PtCaptureGZMarker():  invalid marker serial number of {}".format(gGZMarkerInRange), level=PlasmaTypes.kErrorLevel)
                 pass
         else:
-            PlasmaTypes.PtDebugPrint("PtCaptureGZMarker: no chronicle entry found", level=PlasmaTypes.kErrorLevel)
+            PlasmaTypes.PtDebugPrint("PlasmaKITypes.PtCaptureGZMarker():  no chronicle entry found", level=PlasmaTypes.kErrorLevel)
             pass
     else:
-        PlasmaTypes.PtDebugPrint("PtCaptureGZMarker: no game or this game is complete", level=PlasmaTypes.kErrorLevel)
+        PlasmaTypes.PtDebugPrint("PlasmaKITypes.PtCaptureGZMarker():  no game or this game is complete", level=PlasmaTypes.kErrorLevel)
         pass
 
 
@@ -433,7 +432,7 @@ def PtVerifyGZMarker():
             if totalGotten > MarkerToGetNumber:
                 totalGotten = MarkerToGetNumber
             if totalGotten != MarkerGottenNumber:
-                PlasmaTypes.PtDebugPrint("PtVerifyGZMarker: Error! Gotten different than real. They say=%d We say=%d" % (MarkerGottenNumber, totalGotten), level=PlasmaTypes.kErrorLevel)
+                PlasmaTypes.PtDebugPrint("PlasmaKITypes.PtVerifyGZMarker():  ERROR: Gotten different than real. They say={} We say={}".format(MarkerGottenNumber, totalGotten), level=PlasmaTypes.kErrorLevel)
                 MarkerGottenNumber = totalGotten
                 # save update to chronicle
                 PtUpdateGZGamesChonicles(GZPlaying, MarkerGottenColor, MarkerToGetColor, MarkerGottenNumber, MarkerToGetNumber)
@@ -449,7 +448,7 @@ def PtUpdateGZGamesChonicles(GZPlaying, MarkerGottenColor, MarkerToGetColor, Mar
     # is there a chronicle for the GZ games?
     entry = vault.findChronicleEntry(kChronicleGZGames)
     try:
-        upstring = "%d %s:%s %d:%d" % (GZPlaying, MarkerGottenColor, MarkerToGetColor, MarkerGottenNumber, MarkerToGetNumber)
+        upstring = "{} {}:{} {}:{}".format(GZPlaying, MarkerGottenColor, MarkerToGetColor, MarkerGottenNumber, MarkerToGetNumber)
         if entry is not None:
             entry.chronicleSetValue(upstring)
             entry.save()
@@ -458,19 +457,19 @@ def PtUpdateGZGamesChonicles(GZPlaying, MarkerGottenColor, MarkerToGetColor, Mar
             vault.addChronicleEntry(kChronicleGZGames, kChronicleGZGamesType, upstring)
     except TypeError:
         if type(GZPlaying) is not int:
-            PlasmaTypes.PtDebugPrint("PtUpdateGZGamesChronicle: GZPlaying wrong type (should be integer)", level=PlasmaTypes.kErrorLevel)
+            PlasmaTypes.PtDebugPrint("PlasmaKITypes.PtUpdateGZGamesChronicle():  GZPlaying wrong type (should be integer)", level=PlasmaTypes.kErrorLevel)
             pass
         if type(MarkerToGetColor) is not str:
-            PlasmaTypes.PtDebugPrint("PtUpdateGZGamesChronicle: GZPlaying wrong type (should be string)", level=PlasmaTypes.kErrorLevel)
+            PlasmaTypes.PtDebugPrint("PlasmaKITypes.PtUpdateGZGamesChronicle():  GZPlaying wrong type (should be string)", level=PlasmaTypes.kErrorLevel)
             pass
         if type(MarkerGottenColor) is not str:
-            PlasmaTypes.PtDebugPrint("PtUpdateGZGamesChronicle: GZPlaying wrong type (should be string)", level=PlasmaTypes.kErrorLevel)
+            PlasmaTypes.PtDebugPrint("PlasmaKITypes.PtUpdateGZGamesChronicle():  GZPlaying wrong type (should be string)", level=PlasmaTypes.kErrorLevel)
             pass
         if type(MarkerToGetNumber) is not int:
-            PlasmaTypes.PtDebugPrint("PtUpdateGZGamesChronicle: GZPlaying wrong type (should be integer)", level=PlasmaTypes.kErrorLevel)
+            PlasmaTypes.PtDebugPrint("PlasmaKITypes.PtUpdateGZGamesChronicle():  GZPlaying wrong type (should be integer)", level=PlasmaTypes.kErrorLevel)
             pass
         if type(MarkerGottenNumber) is not int:
-            PlasmaTypes.PtDebugPrint("PtUpdateGZGamesChronicle: GZPlaying wrong type (should be integer)", level=PlasmaTypes.kErrorLevel)
+            PlasmaTypes.PtDebugPrint("PlasmaKITypes.PtUpdateGZGamesChronicle():  GZPlaying wrong type (should be integer)", level=PlasmaTypes.kErrorLevel)
             pass
         pass
 

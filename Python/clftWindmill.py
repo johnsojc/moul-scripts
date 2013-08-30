@@ -86,7 +86,10 @@ class clftWindmill(ptResponder):
     def __init__(self):
         ptResponder.__init__(self)
         self.id = 50248353
-        self.version = 10
+        version = 10
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: clftWindmill v{}".format(self.version))
 
     def OnFirstUpdate(self):
         pass
@@ -102,14 +105,14 @@ class clftWindmill(ptResponder):
             self.ageSDL.setFlags(stringSDLVarLocked.value, 1, 1)
             self.ageSDL.sendToClients(stringSDLVarLocked.value)
         else:
-            PtDebugPrint("clftWindmill.OnFirstUpdate():\tERROR: missing SDL var locked in max file")
+            PtDebugPrint("clftWindmill.OnServerInitComplete():  ERROR: missing SDL var locked in max file")
 
         if type(stringSDLVarRunning.value) is str and stringSDLVarRunning.value != "":
             self.ageSDL = PtGetAgeSDL()
             self.ageSDL.setFlags(stringSDLVarRunning.value, 1, 1)
             self.ageSDL.sendToClients(stringSDLVarRunning.value)
         else:
-            PtDebugPrint("clftWindmill.OnFirstUpdate():\tERROR: missing SDL var running in max file")
+            PtDebugPrint("clftWindmill.OnServerInitCompletee():  ERROR: missing SDL var running in max file")
 
         respLightsOnOff.run(self.key, state='Off')
         respImagerButtonLight.run(self.key, state='Off')
@@ -119,7 +122,7 @@ class clftWindmill(ptResponder):
             self.ageSDL.setFlags(stringSDLVarUnstuck.value, 1, 1)
             self.ageSDL.sendToClients(stringSDLVarUnstuck.value)
         else:
-            PtDebugPrint("clftWindmill.OnFirstUpdate():\tERROR: missing SDL var unstuck in max file")
+            PtDebugPrint("clftWindmill.OnServerInitComplete():  ERROR: missing SDL var unstuck in max file")
 
         self.ageSDL = PtGetAgeSDL()
 
@@ -135,7 +138,7 @@ class clftWindmill(ptResponder):
             windmillLocked = self.ageSDL[stringSDLVarLocked.value][0]
         except:
             windmillLocked = 1
-            PtDebugPrint("ERROR: clftWindmill.OnServerInitComplete():\tERROR: age sdl read failed, defaulting windmill locked")
+            PtDebugPrint("clftWindmill.OnServerInitComplete():  ERROR: age sdl read failed, defaulting windmill locked")
         if windmillLocked == 0:
             respBrakeOffAtStart.run(self.key)
         elif windmillLocked == 1:
@@ -150,13 +153,13 @@ class clftWindmill(ptResponder):
             windmillRunning = self.ageSDL[stringSDLVarRunning.value][0]
         except:
             windmillRunning = 0
-            PtDebugPrint("ERROR: clftWindmill.OnServerInitComplete():\tERROR: age sdl read failed, defaulting windmill stopped")
+            PtDebugPrint("clftWindmill.OnServerInitComplete():  ERROR: age sdl read failed, defaulting windmill stopped")
         if windmillRunning == 1:
             respStartAtLoad.run(self.key)
             respLightsOnOff.run(self.key, state='On')
             respGrinderOn.run(self.key)
             if boolTomahnaActive == 0:
-                PtDebugPrint("clftWindmill.OnServerInitComplete: SDL says Tomahna is active, will set Imager light on...")
+                PtDebugPrint("clftWindmill.OnServerInitComplete():  SDL says Tomahna is active, will set Imager light on...")
                 respImagerButtonLight.run(self.key, state='On')
 
         # register for notification of running SDL var changes
@@ -168,7 +171,7 @@ class clftWindmill(ptResponder):
             windmillUnstuck = self.ageSDL[stringSDLVarUnstuck.value][0]
         except:
             windmillUnstuck = 0
-            PtDebugPrint("ERROR: clftWindmill.OnServerInitComplete():\tERROR: age sdl read failed, defaulting windmill stuck")
+            PtDebugPrint("clftWindmill.OnServerInitComplete():  ERROR: age sdl read failed, defaulting windmill stuck")
 
     def OnSDLNotify(self, VARname, SDLname, playerID, tag):
         global windmillLocked
@@ -188,16 +191,16 @@ class clftWindmill(ptResponder):
 
         if VARname == stringSDLVarLocked.value:
             windmillLocked = self.ageSDL[stringSDLVarLocked.value][0]
-            PtDebugPrint("clftWindmill.OnSDLNotify():\t windmill locked ", windmillLocked)
+            PtDebugPrint("clftWindmill.OnSDLNotify():  windmill locked {}".format(windmillLocked))
             if windmillLocked == 1 and windmillRunning == 0:
                 respBrakeOn.run(self.key, avatar=player)
             if windmillLocked == 1 and windmillRunning == 1:
-                PtDebugPrint("clftWindmill.OnSDLNotify: Both running and locked are 1, so stop windmill.")
+                PtDebugPrint("clftWindmill.OnSDLNotify():  Both running and locked are 1, so stop windmill.")
                 stopGrinder = 1
                 respBrakeOn.run(self.key, avatar=player)
             elif windmillLocked == 0 and windmillUnstuck == 1:
                 respBrakeOff.run(self.key, avatar=player)
-                PtDebugPrint("clftWindmill.OnSDLNotify: Locked is 0 and windmillUnstuck is 1, run StartAtLoad.")
+                PtDebugPrint("clftWindmill.OnSDLNotify():  Locked is 0 and windmillUnstuck is 1, run StartAtLoad.")
                 windmillRunning = 1
             elif windmillLocked == 0 and windmillUnstuck == 0:
                 respBrakeOff.run(self.key, avatar=player)

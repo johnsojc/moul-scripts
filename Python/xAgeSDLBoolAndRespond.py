@@ -76,13 +76,16 @@ class xAgeSDLBoolAndRespond(ptResponder):
     def __init__(self):
         ptResponder.__init__(self)
         self.id = 5039
-        self.version = 1
+        version = 1
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: xAgeSDLBoolAndRespond v{}".format(self.version))
 
     def OnFirstUpdate(self):
         if not(type(stringVar1Name.value) is str and stringVar1Name.value != ""):
-            PtDebugPrint("ERROR: xAgeSDLBoolAndRespond.OnFirstUpdate():\tERROR: missing SDL var1 name in max file")
+            PtDebugPrint("xAgeSDLBoolAndRespond.OnFirstUpdate():  ERROR: missing SDL var1 name in max file")
         if not(type(stringVar2Name.value) is str and stringVar2Name.value != ""):
-            PtDebugPrint("ERROR: xAgeSDLBoolAndRespond.OnFirstUpdate():\tERROR: missing SDL var2 name in max file")
+            PtDebugPrint("xAgeSDLBoolAndRespond.OnFirstUpdate():  ERROR: missing SDL var2 name in max file")
 
     def OnServerInitComplete(self):
         global boolCurrentState
@@ -92,18 +95,18 @@ class xAgeSDLBoolAndRespond(ptResponder):
             ageSDL.setNotify(self.key, stringVar1Name.value, 0.0)
             ageSDL.setNotify(self.key, stringVar2Name.value, 0.0)
             if ageSDL[stringVar1Name.value][0] and ageSDL[stringVar2Name.value][0]:
-                PtDebugPrint("DEBUG: xAgeSDLBoolAndRespond.OnServerInitComplete:\tRunning true responder on %s, fastforward=%d" % (self.sceneobject.getName(), boolFFOnInit.value))
+                PtDebugPrint("xAgeSDLBoolAndRespond.OnServerInitComplete():  DEBUG: Running true responder on {}, fastforward={}".format(self.sceneobject.getName(), boolFFOnInit.value))
                 respBoolTrue.run(self.key, fastforward=boolFFOnInit.value)
                 boolCurrentState = true
             else:
-                PtDebugPrint("DEBUG: xAgeSDLBoolAndRespond.OnServerInitComplete:\tRunning false responder on %s, fastforward=%d" % (self.sceneobject.getName(), boolFFOnInit.value))
+                PtDebugPrint("xAgeSDLBoolAndRespond.OnServerInitComplete():  DEBUG: Running false responder on {}, fastforward={}".format(self.sceneobject.getName(), boolFFOnInit.value))
                 respBoolFalse.run(self.key, fastforward=boolFFOnInit.value)
                 boolCurrentState = false
         except:
             self.runDefault()
 
     def runDefault(self):
-        PtDebugPrint("xAgeSDLBoolAndRespond: running internal default")
+        PtDebugPrint("xAgeSDLBoolAndRespond.runDefault():  running internal default")
         if boolDefault.value:
             respBoolTrue.run(self.key, fastforward=boolFFOnInit.value)
             boolCurrentState = true
@@ -119,7 +122,7 @@ class xAgeSDLBoolAndRespond(ptResponder):
             return
 
         ageSDL = PtGetAgeSDL()
-        PtDebugPrint("DEBUG: xAgeSDLBoolAndRespond.OnSDLNotify():\t VARname:%s, SDLname:%s, tag:%s, value:%d" % (VARname, SDLname, tag, ageSDL[VARname][0]))
+        PtDebugPrint("xAgeSDLBoolAndRespond.OnSDLNotify():  DEBUG: VARname:{}, SDLname:{}, tag:{}, value:{}".format(VARname, SDLname, tag, ageSDL[VARname][0]))
 
         # is state change from player or vault manager?
         if playerID:  # non-zero means it's a player
@@ -128,7 +131,7 @@ class xAgeSDLBoolAndRespond(ptResponder):
         else:  # invalid player aka Vault Manager
             objAvatar = None
             fastforward = boolVltMgrFastForward.value  # we need to skip any one-shots
-        PtDebugPrint("DEBUG: xAgeSDLBoolAndRespond.OnSDLNotify():\tnotification from playerID: %d" % (playerID))
+        PtDebugPrint("xAgeSDLBoolAndRespond.OnSDLNotify():  DEBUG: notification from playerID: {}".format(playerID))
 
         # does the change change our current state?
         if boolCurrentState == false and (ageSDL[stringVar1Name.value][0] and ageSDL[stringVar2Name.value][0]):
@@ -136,14 +139,14 @@ class xAgeSDLBoolAndRespond(ptResponder):
         elif boolCurrentState == true and not (ageSDL[stringVar1Name.value][0] and ageSDL[stringVar2Name.value][0]):
             boolCurrentState = false
         else:
-            PtDebugPrint("DEBUG: xAgeSDLBoolAndRespond.OnSDLNotify():\t %s ANDed state didn't change." % (self.sceneobject.getName()))
+            PtDebugPrint("xAgeSDLBoolAndRespond.OnSDLNotify():  DEBUG: {} ANDed state didn't change.".format(self.sceneobject.getName()))
             return
-        PtDebugPrint("DEBUG: xAgeSDLBoolAndRespond.OnSDLNotify():\t state changed to %d" % (boolCurrentState))
+        PtDebugPrint("xAgeSDLBoolAndRespond.OnSDLNotify():  DEBUG: state changed to {}".format(boolCurrentState))
 
         # run the appropriate responder!
         if boolCurrentState:
-            PtDebugPrint("DEBUG: xAgeSDLBoolAndRespond.OnSDLNotify:\tRunning true responder on %s, fastforward=%d" % (self.sceneobject.getName(), fastforward))
+            PtDebugPrint("xAgeSDLBoolAndRespond.OnSDLNotify():  DEBUG: Running true responder on {}, fastforward={}".format(self.sceneobject.getName(), fastforward))
             respBoolTrue.run(self.key, avatar=objAvatar, fastforward=fastforward)
         else:
-            PtDebugPrint("DEBUG: xAgeSDLBoolAndRespond.OnSDLNotify:\tRunning false responder on %s, fastforward=%d" % (self.sceneobject.getName(), fastforward))
+            PtDebugPrint("xAgeSDLBoolAndRespond.OnSDLNotify():  DEBUG: Running false responder on {}, fastforward={}".format(self.sceneobject.getName(), fastforward))
             respBoolFalse.run(self.key, avatar=objAvatar, fastforward=fastforward)

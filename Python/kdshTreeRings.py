@@ -90,8 +90,9 @@ class kdshTreeRings(ptModifier):
         self.id = 5228
 
         version = 13
-        self.version = version
-        PtDebugPrint("__init__kdshTreeRings v.%d.1" % (version))
+        minor = 1
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: kdshTreeRings v{}".format(self.version))
 
     def OnFirstUpdate(self):
         PtLoadDialog("kdshScope0" + str(ScopeNumber.value), self.key, "Kadish")
@@ -107,10 +108,10 @@ class kdshTreeRings(ptModifier):
         MiddleRing = ageSDL["MiddleRing0" + str(ScopeNumber.value)][0]
         InnerRing = ageSDL["InnerRing0" + str(ScopeNumber.value)][0]
 
-        PtDebugPrint("Current %s Ring settings:" % (ScopeNumber.value))
-        PtDebugPrint("/tOuterRing: %d" % (OuterRing))
-        PtDebugPrint("/tMiddleRing: %d" % (MiddleRing))
-        PtDebugPrint("/tInnerRing: %d" % (InnerRing))
+        PtDebugPrint("kdshTreeRings.OnServerInitComplete():  Current {} Ring settings:".format(ScopeNumber.value))
+        PtDebugPrint("\tOuterRing: {}".format(OuterRing))
+        PtDebugPrint("\tMiddleRing: {}".format(MiddleRing))
+        PtDebugPrint("\tInnerRing: {}".format(InnerRing))
 
         solo = true
         if len(PtGetPlayerList()):
@@ -119,14 +120,14 @@ class kdshTreeRings(ptModifier):
         boolOperated = ageSDL["boolOperatedScope0" + str(ScopeNumber.value)][0]
         if boolOperated:
             if solo:
-                PtDebugPrint("kdshTreeRings.Load():\tboolOperated=%d but no one else here...correcting" % (boolOperated))
+                PtDebugPrint("kdshTreeRings.OnServerInitComplete():  boolOperated={} but no one else here...correcting".format(boolOperated))
                 boolOperated = 0
                 ageSDL["boolOperatedScope0" + str(ScopeNumber.value)] = (0,)
                 ageSDL["OperatorIDScope0" + str(ScopeNumber.value)] = (-1,)
                 Activate.enable()
             else:
                 Activate.disable()
-                PtDebugPrint("kdshTreeRings.Load():\tboolOperated=%d, disabling telescope clickable" % (boolOperated))
+                PtDebugPrint("kdshTreeRings.OnServerInitComplete():  boolOperated={}, disabling telescope clickable".format(boolOperated))
 
         # START-->multiplayer fix
         ageSDL.sendToClients(('boolOperatedScope0' + str(ScopeNumber.value)))
@@ -159,7 +160,7 @@ class kdshTreeRings(ptModifier):
             Activate.enable()
             ageSDL["OperatorIDScope0" + str(ScopeNumber.value)] = (-1,)
             ageSDL["boolOperatedScope0" + str(ScopeNumber.value)] = (0,)
-            PtDebugPrint("kdshTreeRings.AvatarPage(): telescope operator paged out, reenabled telescope.")
+            PtDebugPrint("kdshTreeRings.AvatarPage():  telescope operator paged out, reenabled telescope.")
         else:
             return
 
@@ -179,7 +180,7 @@ class kdshTreeRings(ptModifier):
             respResetBtn.run(self.key, state='Reset', events=events)
 
         elif id == respResetBtn.id and OnlyOneOwner.sceneobject.isLocallyOwned():
-            PtDebugPrint("kdshTreeRing Reset Button Pushed. Puzzle resetting.")
+            PtDebugPrint("kdshTreeRings.OnNotify():  kdshTreeRing Reset Button Pushed. Puzzle resetting.")
 
             # close the door
             ageSDL.setTagString("TreeRingDoorClosed", "fromInside")
@@ -206,10 +207,10 @@ class kdshTreeRings(ptModifier):
 
         if event == kDialogLoaded:
             return
-            PtDebugPrint("GUI Notify id=%d, event=%d control=" % (id, event), control)
+            PtDebugPrint("kdshTreeRings.OnGUINotify():  id={}, event={} control={}".format(id, event, control))
             # if the dialog was just loaded then show it
             PtShowDialog("kdshScope0" + str(ScopeNumber.value))
-            PtDebugPrint("kdshTreeRings: Showing scope dialog %s" % ("kdshScope0" + str(ScopeNumber.value)))
+            PtDebugPrint("kdshTreeRings.OnGUINotify():  Showing scope dialog kdshScope0{}".format(ScopeNumber.value))
 
         btnID = 0
 
@@ -262,7 +263,7 @@ class kdshTreeRings(ptModifier):
         ageSDL["boolOperatedScope0" + str(ScopeNumber.value)] = (1,)
         avID = PtGetClientIDFromAvatarKey(LocalAvatar.getKey())
         ageSDL["OperatorIDScope0" + str(ScopeNumber.value)] = (avID,)
-        PtDebugPrint("kdshTreeRings.OnNotify:\twrote SDL - scope operator id = %d" % (avID))
+        PtDebugPrint("kdshTreeRings.IStartTelescope():  wrote SDL - scope operator id = {}".format(avID))
         # start the behavior
         Behavior.run(LocalAvatar)
 

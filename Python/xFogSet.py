@@ -71,8 +71,9 @@ class xFogSet(ptMultiModifier):
         ptMultiModifier.__init__(self)
         self.id = 5348
         version = 1
-        self.version = version
-        PtDebugPrint("__init__xFogSet v.%d" % (version))
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: xFogSet v{}".format(version))
 
         self.PointA_RGBList = []
 
@@ -83,8 +84,8 @@ class xFogSet(ptMultiModifier):
         self.PointA_RGBList[1] = float(self.PointA_RGBList[1])
         self.PointA_RGBList[2] = float(self.PointA_RGBList[2])
 
-        PtDebugPrint("xFogSet.OnFirstUpdate: PointA_RGB=(%s,%s,%s)" % (self.PointA_RGBList[0], self.PointA_RGBList[1], self.PointA_RGBList[2]))
-        PtDebugPrint("xFogSet.OnFirstUpdate: PointA_SED=(%s,%s,%s)" % (PointA_Start.value, PointA_End.value, PointA_Density.value))
+        PtDebugPrint("xFogSet.OnFirstUpdate():  PointA_RGB=({},{},{})".format(self.PointA_RGBList[0], self.PointA_RGBList[1], self.PointA_RGBList[2]))
+        PtDebugPrint("xFogSet.OnFirstUpdate():  PointA_SED=({},{},{})".format(PointA_Start.value, PointA_End.value, PointA_Density.value))
 
     ###########################
     def OnNotify(self, state, id, events):
@@ -107,16 +108,16 @@ class xFogSet(ptMultiModifier):
         PtFogSetDefColor(newfogcolor)
 
         if FogMode.value == "Linear":
-            PtDebugPrint("xFogSet.UpdateFog: Using Linear Fog")
+            PtDebugPrint("xFogSet.UpdateFog():  Using Linear Fog")
             PtFogSetDefLinear(PointA_Start.value, PointA_End.value, PointA_Density.value)
 
         elif FogMode.value == "Exponential":
-            PtDebugPrint("xFogSet.UpdateFog: Using Exponential Fog")
+            PtDebugPrint("xFogSet.UpdateFog():  Using Exponential Fog")
             PtFogSetDefExp(PointA_End.value, PointA_Density.value)
 
         elif FogMode.value == "Exponential2":
-            PtDebugPrint("xFogSet.UpdateFog: Using Exponential2 Fog")
+            PtDebugPrint("xFogSet.UpdateFog():  Using Exponential2 Fog")
             PtFogSetDefExp2(PointA_End.value, PointA_Density.value)
 
         else:
-            PtDebugPrint("xFogSet.UpdateFog: What type of Fog?")
+            PtDebugPrint("xFogSet.UpdateFog():  What type of Fog?")

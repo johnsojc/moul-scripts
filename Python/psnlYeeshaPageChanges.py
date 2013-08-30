@@ -74,8 +74,9 @@ class psnlYeeshaPageChanges(ptMultiModifier):
         ptMultiModifier.__init__(self)
         self.id = 5232
         version = 7
-        self.version = version
-        PtDebugPrint("__init__psnlYeeshaPageChanges v%d.%d" % (version, 1), level=kWarningLevel)
+        minor = 1
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: psnlYeeshaPageChanges v{}".format(self.version), level=kWarningLevel)
 
 # Yeesha Pages available:
 #
@@ -119,7 +120,7 @@ class psnlYeeshaPageChanges(ptMultiModifier):
                 for i in range(len(self.enabledStateList)):
                     self.enabledStateList[i] = int(self.enabledStateList[i].strip())
             except:
-                PtDebugPrint("xAgeSDLIntActEnabler.OnFirstUpdate():\tERROR: couldn't process start state list")
+                PtDebugPrint("psnlYeeshaPageChanges.OnFirstUpdate():  ERROR: couldn't process start state list")
 
     def OnServerInitComplete(self):
         "PlayerBook - determine what Yeesha pages are found"
@@ -137,7 +138,7 @@ class psnlYeeshaPageChanges(ptMultiModifier):
                     SDLVar = self.ageSDL.findVar("YeeshaPage" + str(PageNumber.value))
                     CurrentValue = SDLVar.getInt()
                 except:
-                    PtDebugPrint("psnlYeeshaPageChanges:\tERROR reading age SDLVar. Assuming CurrentValue = 0")
+                    PtDebugPrint("psnlYeeshaPageChanges.OnServerInitComplete():  ERROR reading age SDLVar. Assuming CurrentValue = 0")
                     CurrentValue = 0
 
                 if PageNumber.value == 10:
@@ -146,7 +147,7 @@ class psnlYeeshaPageChanges(ptMultiModifier):
 
                     if len(PtGetPlayerList()) == 0 and state != 0:
                         growSizes = self.TimeToGrow()
-                        PtDebugPrint("Growsizes: %d" % (growSizes))
+                        PtDebugPrint("psnlYeeshaPageChanges.OnServerInitComplete():  Growsizes: {}".format(growSizes))
                         if growSizes and size < MAX_SIZE:
                             size = size + growSizes
                             if size > MAX_SIZE:
@@ -162,7 +163,7 @@ class psnlYeeshaPageChanges(ptMultiModifier):
                     else:
                         newstate = state
 
-                    PtDebugPrint("CurrentValue: %d, size: %d, state %d" % (CurrentValue, size, state))
+                    PtDebugPrint("psnlYeeshaPageChanges.OnServerInitComplete():  CurrentValue: {}, size: {}, state {}".format(CurrentValue, size, state))
                     self.EnableDisable((size * 10) + newstate)
 
                 else:
@@ -181,13 +182,13 @@ class psnlYeeshaPageChanges(ptMultiModifier):
                                         val = ageSDL["CleftVisited"][0]
                                         if not val:
                                             HideCleftPole = 1
-                                            PtDebugPrint("psnlYeeshaPageChanges.OnServerInitComplete():\t Fissure is open, so setting HideCleftPole = %d" % (HideCleftPole))
+                                            PtDebugPrint("psnlYeeshaPageChanges.OnServerInitComplete():  Fissure is open, so setting HideCleftPole = {}".format(HideCleftPole))
                                 else:
-                                    PtDebugPrint("ERROR: psnlYeeshaPageChanges.OnServerInitComplete():\tProblem trying to access age SDLs for Bahro poles")
+                                    PtDebugPrint("psnlYeeshaPageChanges.OnServerInitComplete():  ERROR: Problem trying to access age SDLs for Bahro poles")
                                     pass
 
                             except:
-                                PtDebugPrint("ERROR: psnlYeeshaPageChanges.OnServerInitComplete():\tException occurred trying to access age SDL")
+                                PtDebugPrint("psnlYeeshaPageChanges.OnServerInitComplete():  ERROR: Exception occurred trying to access age SDL")
 
                     if len(PtGetPlayerList()) == 0:
                         newstate = self.UpdateState(CurrentValue, 0, SDLVar, AgeVault, 0)
@@ -198,27 +199,27 @@ class psnlYeeshaPageChanges(ptMultiModifier):
 
                 # There is only one object in Yeesha Page 5 with a value of 0, so I'm temporarily nestling my print statement here...
                 if PageNumber.value == 5 and stringShowStates.value == "0":
-                    PtDebugPrint("psnlYeeshaPageChanges: You've found the following Yeesha Pages:")
+                    PtDebugPrint("psnlYeeshaPageChanges.OnServerInitComplete():  You've found the following Yeesha Pages:")
                     for thispage in range(1, TotalPossibleYeeshaPages+1):
                         FoundValue = self.ageSDL.findVar("YeeshaPage" + str(thispage))
-                        PtDebugPrint("\t The previous value of the SDL variable %s is %s" % ("YeeshaPage" + str(thispage), FoundValue.getInt()))
+                        PtDebugPrint("\tThe previous value of the SDL variable YeeshaPage{} is {}".format(thispage, FoundValue.getInt()))
                         if type(FoundValue) is not None and FoundValue.getInt() != 0:
-                            PtDebugPrint("psnlYeeshaPageChanges: You have found Yeesha Page # %s." % (thispage))
+                            PtDebugPrint("psnlYeeshaPageChanges.OnServerInitComplete():  You have found Yeesha Page # {}.".format(thispage))
 
             else:
-                PtDebugPrint("psnlYeeshaPageChanges: Error trying to access the Chronicle self.ageSDL. self.ageSDL = %s" % (self.ageSDL))
+                PtDebugPrint("psnlYeeshaPageChanges.OnServerInitComplete():  Error trying to access the Chronicle self.ageSDL. self.ageSDL = {}".format(self.ageSDL))
         else:
-            PtDebugPrint("psnlYeeshaPageChanges: Error trying to access the Vault. Can't access YeeshaPageChanges chronicle.")
+            PtDebugPrint("psnlYeeshaPageChanges.OnServerInitComplete():  Error trying to access the Vault. Can't access YeeshaPageChanges chronicle.")
 
     def EnableDisable(self, val):
         if val in self.enabledStateList:
             if PageNumber.value == 10:
-                PtDebugPrint("psnlYeeshaPageChanges: Attempting to enable drawing and collision on %s..." % (self.sceneobject.getName()))
+                PtDebugPrint("psnlYeeshaPageChanges.EnableDisable():  Attempting to enable drawing and collision on {}...".format(self.sceneobject.getName()))
                 self.sceneobject.draw.enable()
                 self.sceneobject.physics.suppress(false)
             else:
                 if HideCleftPole:
-                    PtDebugPrint("psnlYeeshaPageChanges.EnableDisable():\tFissure is open and Totem yeesha page is set 'off', so we gotta get rid of the Cleft pole for now")
+                    PtDebugPrint("psnlYeeshaPageChanges.EnableDisable():  Fissure is open and Totem yeesha page is set 'off', so we gotta get rid of the Cleft pole for now")
                     self.sceneobject.draw.disable()
                     self.sceneobject.physics.suppress(true)
                 else:
@@ -229,7 +230,7 @@ class psnlYeeshaPageChanges(ptMultiModifier):
             respEnable.run(self.key, avatar=None, fastforward=0)
         else:
             if PageNumber.value == 10:
-                PtDebugPrint("psnlYeeshaPageChanges: Attempting to disable drawing and collision on %s..." % (self.sceneobject.getName()))
+                PtDebugPrint("psnlYeeshaPageChanges.EnableDisable():  Attempting to disable drawing and collision on {}...".format(self.sceneobject.getName()))
             self.sceneobject.draw.disable()
             self.sceneobject.physics.suppress(true)
 
@@ -243,7 +244,7 @@ class psnlYeeshaPageChanges(ptMultiModifier):
         currentTime = PtGetDniTime()
         lastGrowth = sdl["YP10LastTreeGrowth"][0]
 
-        PtDebugPrint("Dni time: %d, last growth: %d" % (currentTime, lastGrowth))
+        PtDebugPrint("psnlYeeshaPageChanges.TimeToGrow():  Dni time: {}, last growth: {}".format(currentTime, lastGrowth))
 
         if lastGrowth == 0:
             sizes = 1
@@ -261,13 +262,13 @@ class psnlYeeshaPageChanges(ptMultiModifier):
     def UpdateState(self, state, size, SDLVar, AgeVault, sizechanged):
         if state == 3:
             state = 2
-            PtDebugPrint("psnlYeeshaPageChanges: Updated value of YeeshaPage %s from 3 to 2." % ("YeeshaPage" + str(PageNumber.value)))
+            PtDebugPrint("psnlYeeshaPageChanges.UpdateState():  Updated value of YeeshaPage YeeshaPage{} from 3 to 2.".format(PageNumber.value))
             SDLVar.setInt((size * 10) + state)
             AgeVault.updateAgeSDL(self.ageSDL)
 
         elif state == 4 or state > 4:
             state = 1
-            PtDebugPrint("psnlYeeshaPageChanges: Updated value of YeeshaPage %s from 4 to 1." % ("YeeshaPage" + str(PageNumber.value)))
+            PtDebugPrint("psnlYeeshaPageChanges: Updated value of YeeshaPage YeeshaPage{} from 4 to 1.".format(PageNumber.value))
             SDLVar.setInt((size * 10) + state)
             AgeVault.updateAgeSDL(self.ageSDL)
         elif sizechanged:

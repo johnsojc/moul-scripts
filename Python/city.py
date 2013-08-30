@@ -66,7 +66,10 @@ class city(ptResponder):
     def __init__(self):
         ptResponder.__init__(self)
         self.id = 5026
-        self.version = 1
+        version = 1
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: city v{}".format(self.version))
 
         global IsPublic
         global IsKadishGallery
@@ -84,9 +87,9 @@ class city(ptResponder):
 
         if parentname == "Neighborhood":
             IsPublic = 1
-            PtDebugPrint("city.__init__(): city version = public")
+            PtDebugPrint("city.__init__():  city version = public")
         else:
-            PtDebugPrint("city.__init__(): city version = Yeesha")
+            PtDebugPrint("city.__init__():  city version = Yeesha")
 
         if not IsPublic:
             pass
@@ -101,8 +104,8 @@ class city(ptResponder):
             spTitle = "title unknown"
             spName = "spawn point unknown"
 
-        PtDebugPrint("city.__init__(): spTitle = %s" % (spTitle))
-        PtDebugPrint("city.__init__(): spName = %s" % (spName))
+        PtDebugPrint("city.__init__():  spTitle      = {}".format(spTitle))
+        PtDebugPrint("city.__init__():  spName       = {}".format(spName))
 
         pages = []
 
@@ -134,7 +137,7 @@ class city(ptResponder):
                     self.ILoadS1FinaleBahro(n, 1)
                 n += 1
         except:
-            PtDebugPrint("ERROR!  Couldn't find all Bahro sdl, leaving default = 0")
+            PtDebugPrint("city.OnServerInitComplete():  ERROR: Couldn't find all Bahro sdl, leaving default = 0")
 
     def Load(self):
         pass
@@ -144,7 +147,7 @@ class city(ptResponder):
 
     def OnSDLNotify(self, VARname, SDLname, playerID, tag):
         ageSDL = PtGetAgeSDL()
-        PtDebugPrint("city.OnSDLNotify():\t VARname: %s, SDLname: %s, tag: %s, value: %d" % (VARname, SDLname, tag, ageSDL[VARname][0]))
+        PtDebugPrint("city.OnSDLNotify():  VARname: {}, SDLname: {}, tag: {}, value: {}".format(VARname, SDLname, tag, ageSDL[VARname][0]))
 
         if VARname in sdlS1FinaleBahro:
             id = sdlS1FinaleBahro.index(VARname)
@@ -152,7 +155,7 @@ class city(ptResponder):
             self.ILoadS1FinaleBahro(id, val)
 
     def ILoadS1FinaleBahro(self, bahro, state):
-        PtDebugPrint("city.ILoadS1FinaleBahro(): bahro = %d, load = %d" % (bahro, state))
+        PtDebugPrint("city.ILoadS1FinaleBahro():  bahro = {}, load = {}".format(bahro, state))
         if state:
             PtPageInNode(pagesS1FinaleBahro[bahro])
         else:

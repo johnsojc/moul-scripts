@@ -70,7 +70,10 @@ class AhnyVogondolaRide(ptResponder):
     def __init__(self):
         ptResponder.__init__(self)
         self.id = 4395
-        self.version = 1
+        version = 1
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: AhnyVogondolaRide v{}".format(self.version))
 
     def OnFirstUpdate(self):
         pass
@@ -83,7 +86,7 @@ class AhnyVogondolaRide(ptResponder):
         if (id == click.id and state):
             avatar = PtFindAvatar(events)
             climb.run(avatar)
-            PtDebugPrint("clicked on chair")
+            PtDebugPrint("AhnyVogondolaRide.OnNotify():  clicked on chair")
             return
 
         if (id == hutChairClickable.id and state):
@@ -91,20 +94,20 @@ class AhnyVogondolaRide(ptResponder):
             theAvatar.physics.warpObj(dummy.value.getKey())
             PtAttachObject(theAvatar.getKey(), dummy.value.getKey())
             theAvatar.avatar.enterSubWorld(subworld.value)
-            PtDebugPrint("pinned avatar")
+            PtDebugPrint("AhnyVogondolaRide.OnNotify():  pinned avatar")
             beginHutRide.run(self.key, avatar=theAvatar)
 
         if (id == climb.id):
             for event in events:
                 if event[0] == kMultiStageEvent and event[1] == 0 and event[2] == kEnterStage:
                     lower.run(self.key, avatar=PtGetLocalAvatar())
-                    PtDebugPrint("finished smart-seek")
+                    PtDebugPrint("AhnyVogondolaRide.OnNotify():  finished smart-seek")
                 elif event[0] == kMultiStageEvent and event[1] == 0 and event[2] == kAdvanceNextStage:
                     theAvatar = PtGetLocalAvatar()
                     theAvatar.physics.warpObj(dummy.value.getKey())
                     PtAttachObject(theAvatar.getKey(), dummy.value.getKey())
                     theAvatar.avatar.enterSubWorld(subworld.value)
-                    PtDebugPrint("pinned avatar")
+                    PtDebugPrint("AhnyVogondolaRide.OnNotify():  pinned avatar")
                     ride.run(self.key, avatar=theAvatar)
 
         if (id == eject1.id and state):
@@ -118,11 +121,11 @@ class AhnyVogondolaRide(ptResponder):
             PtDetachObject(theAvatar.getKey(), dummy.value.getKey())
             theAvatar.avatar.exitSubWorld()
             theAvatar.physics.warpObj(ejectPt1.value.getKey())
-            PtDebugPrint("ejecting at the hub")
+            PtDebugPrint("AhnyVogondolaRide.OnNotify():  ejecting at the hub")
 
         if (id == ejectResp2.id and state):
             theAvatar = PtGetLocalAvatar()
             PtDetachObject(theAvatar.getKey(), dummy.value.getKey())
             theAvatar.avatar.exitSubWorld()
             theAvatar.physics.warpObj(ejectPt2.value.getKey())
-            PtDebugPrint("ejecting at the hut")
+            PtDebugPrint("AhnyVogondolaRide.OnNotify():  ejecting at the hut")

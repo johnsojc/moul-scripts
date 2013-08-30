@@ -59,8 +59,10 @@ class nb01UpdateHoodInfoImager(ptResponder):
         ptResponder.__init__(self)
         self.id = 5262
 
-        self.version = 2
-        PtDebugPrint("__init__nb01UpdateHoodInfoImager v.%d" % (self.version))
+        version = 2
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: nb01UpdateHoodInfoImager v{}".format(self.version))
 
     def IGetDeviceInbox(self):
         deviceNode = None
@@ -110,7 +112,7 @@ class nb01UpdateHoodInfoImager(ptResponder):
             # if we have the text note then update it, otherwise create it
             if playerlist:
                 currenttime = time.gmtime(PtGetDniTime())
-                currenttimestr = time.strftime("%m/%d/%Y %I:%M %p", currenttime)
+                currenttimestr = time.strftime("%m/%d/%Y %I:%M %p}", currenttime)
                 thetext = playerlist.getText()
                 if (thetext.count("\n") + 1) > 15:
                     thetext = thetext[:thetext.rfind("\n")]
@@ -129,7 +131,7 @@ class nb01UpdateHoodInfoImager(ptResponder):
                 deviceInbox.addNode(playerlist)
 
         if playerlist and playerlist.getID() > 0:
-            sname = "Update=%d" % (playerlist.getID())
+            sname = "Update={}".format(playerlist.getID())
             self.ISendNotify(HoodInfoImagerScript.value, sname, 1.0)
 
     def IFixupScoreLine(self, scorerow):
@@ -161,7 +163,7 @@ class nb01UpdateHoodInfoImager(ptResponder):
                 if msg.getName() == "PelletDrop":
                     self.IUpdateHoodPelletScore(score)
             except Exception, detail:
-                PtDebugPrint("nb01UpdateHoodInfoImager.OnGameScoreMsg(): " + detail)
+                PtDebugPrint("nb01UpdateHoodInfoImager.OnGameScoreMsg():  {}".format(detail))
 
     def IUpdateHoodPelletScore(self, score):
         hoodpoints = score.getPoints()
@@ -188,7 +190,7 @@ class nb01UpdateHoodInfoImager(ptResponder):
                 deviceInbox.addNode(hoodpelletscore)
 
             if hoodpelletscore and hoodpelletscore.getID() > 0:
-                sname = "Update=%d" % (hoodpelletscore.getID())
+                sname = "Update={}".format(hoodpelletscore.getID())
                 self.ISendNotify(HoodInfoImagerScript.value, sname, 1.0)
 
     def IUpdatePelletScores(self, newplayername, pelletscore):
@@ -230,18 +232,18 @@ class nb01UpdateHoodInfoImager(ptResponder):
                 pelletscores.forceSave()
             else:
                 playername = PtGetLocalPlayer().getPlayerName()
-                thetext = "%s\t%i\n" % (newplayername, pelletscore)
+                thetext = "{}\t{}\n".format(newplayername, pelletscore)
                 pelletscores = ptVaultTextNoteNode(0)
                 pelletscores.setTitle("Pellet Scores")
                 pelletscores.setText(thetext)
                 deviceInbox.addNode(pelletscores)
 
             if pelletscores and pelletscores.getID() > 0:
-                sname = "Update=%d" % (pelletscores.getID())
-                PtDebugPrint("Sending notify to update node: %d" % (pelletscores.getID()))
+                sname = "Update={}".format(pelletscores.getID())
+                PtDebugPrint("tldn3FloorElevator.IUpdatePelletScores():  Sending notify to update node: {}".format(pelletscores.getID()))
                 self.ISendNotify(HoodInfoImagerScript.value, sname, 1.0)
             else:
-                PtDebugPrint("Not sending notify because we don't have a valid pelletscore node")
+                PtDebugPrint("tldn3FloorElevator.IUpdatePelletScores():  Not sending notify because we don't have a valid pelletscore node")
 
             self.IUpdateHoodImager()
 
@@ -268,22 +270,22 @@ class nb01UpdateHoodInfoImager(ptResponder):
             AmCCR = 0
 
         if not AmCCR:
-            sname = "Join=%s" % (PtGetLocalPlayer().getPlayerName())
+            sname = "Join={}".format(PtGetLocalPlayer().getPlayerName())
             self.ISendNotify(self.key, sname, 1.0)
 
-            PtDebugPrint("nb01UpdateHoodInfoImager.OnServerInitComplete: Sent player join update notify")
+            PtDebugPrint("nb01UpdateHoodInfoImager.OnServerInitComplete():  Sent player join update notify")
 
     def OnNotify(self, state, id, events):
         for event in events:
             if event[0] == kVariableEvent:
                 if self.sceneobject.isLocallyOwned():
-                    PtDebugPrint("nb01UpdateHoodInfoImager.OnNotify: I am owner so I'll update the imager")
+                    PtDebugPrint("nb01UpdateHoodInfoImager.OnNotify():  I am owner so I'll update the imager")
                     if event[1][:5] == "Join=":
                         playername = event[1][5:]
                         self.IUpdatePlayerList(playername)
-                        PtDebugPrint("nb01UpdateHoodInfoImager.OnNotify: Updated player list")
+                        PtDebugPrint("nb01UpdateHoodInfoImager.OnNotify():  Updated player list")
                     elif event[1][:6] == "Score=":
                         playername = event[1][6:]
                         score = int(event[3])
                         self.IUpdatePelletScores(playername, score)
-                        PtDebugPrint("nb01UpdateHoodInfoImager.OnNotify: Updated pellet scores")
+                        PtDebugPrint("nb01UpdateHoodInfoImager.OnNotify():  Updated pellet scores")

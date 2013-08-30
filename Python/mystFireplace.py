@@ -102,8 +102,10 @@ class mystFireplace(ptModifier):
         ptModifier.__init__(self)
         self.id = 5335
 
-        self.version = 3
-        PtDebugPrint("__init__MystFireplace v.%d" % (self.version))
+        version = 3
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: mystFireplace v{}".format(self.version))
 
     def OnServerInitComplete(self):
         ageSDL = PtGetAgeSDL()
@@ -130,7 +132,7 @@ class mystFireplace(ptModifier):
     def OnNotify(self, state, id, events):
         global IgnorePanelClick
 
-        PtDebugPrint("onnotify: id - %d" % (id))
+        PtDebugPrint("mystFireplace.OnNotify():  id - {}".format(id))
 
         if id == actButton.id and state:
             self.ExitPanelView(1)
@@ -244,7 +246,7 @@ class mystFireplace(ptModifier):
                 try:
                     id = panelName[-3:]
                 except:
-                    PtDebugPrint("mystFirePlace.OnPanelClick: Couldn't extract the panel id...not responding to click")
+                    PtDebugPrint("mystFireplace.OnPanelClick():  Couldn't extract the panel id...not responding to click")
                     return
 
                 if id in IgnorePanelClick:
@@ -266,7 +268,7 @@ class mystFireplace(ptModifier):
                     bstate = "press"
                     CheckedButtons.append(id)
 
-                print panelName, bstate
+                PtDebugPrint("mystFireplace.OnPanelClick():  panelName={}, Button state={}".format(panelName, bstate))
 
                 for rkey, rvalue in respMorphButtons.byObject.items():
                     parent = rvalue.getParentKey()
@@ -348,8 +350,8 @@ class mystFireplace(ptModifier):
         CheckedButtons.sort()
         solution.sort()
 
-        PtDebugPrint("CheckedButtons: %s" % (CheckedButtons))
-        PtDebugPrint("solution      : %s" % (solution))
+        PtDebugPrint("mystFireplace.CheckForSolution():  CheckedButtons: {}".format(CheckedButtons))
+        PtDebugPrint("mystFireplace.CheckForSolution():  -     solution: {}".format(solution))
 
         return CheckedButtons == solution
 

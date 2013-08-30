@@ -59,7 +59,10 @@ class xAgeSDLBoolRespond(ptResponder):
     def __init__(self):
         ptResponder.__init__(self)
         self.id = 5034
-        self.version = 2
+        version = 2
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: xAgeSDLBoolRespond v{}".format(self.version))
 
     def OnBackdoorMsg(self, target, param):
         if target == sdlName.value:
@@ -76,7 +79,7 @@ class xAgeSDLBoolRespond(ptResponder):
 
         ageSDL = PtGetAgeSDL()
         value = ageSDL[sdlName.value][0]
-        PtDebugPrint("xAgeSDLBoolRespond.OnSDLNotify():\tVARname:%s, SDLname:%s, value:%d, playerID:%d" % (VARname, SDLname, value, playerID), level=kDebugDumpLevel)
+        PtDebugPrint("xAgeSDLBoolRespond.OnSDLNotify():  VARname:{}, SDLname:{}, value:{}, playerID:{}".format(VARname, SDLname, value, playerID), level=kDebugDumpLevel)
 
         # Hack to make value work properly as an index in _Execute()
         # Values > 1 are occasionally returned
@@ -101,7 +104,7 @@ class xAgeSDLBoolRespond(ptResponder):
 
     def _Execute(self, value, ff, avatar=None):
         resps = ("FALSE", "TRUE")
-        PtDebugPrint("xAgeSDLBoolRespond._Execute():\tRunning %s responder on %s ff=%d" % (resps[int(value)], self.sceneobject.getName(), ff), level=kDebugDumpLevel)
+        PtDebugPrint("xAgeSDLBoolRespond._Execute():  Running {} responder on {} ff={}".format(resps[int(value)], self.sceneobject.getName(), ff), level=kDebugDumpLevel)
         if value:
             respTrue.run(self.key, avatar=avatar, fastforward=ff)
         else:
@@ -113,12 +116,12 @@ class xAgeSDLBoolRespond(ptResponder):
 
         # So, apparently, Cyan's artists like trailing whitespace...
         if sdlName.value.find(" ") != -1:
-            PtDebugPrint("xAgeSDLBoolRespond._Setup():\tWARNING: %s's SDL variable '%s' has whitespace. Removing!" % (self.sceneobject.getName(), sdlName.value))
+            PtDebugPrint("xAgeSDLBoolRespond._Setup():  WARNING: {}'s SDL variable '{}' has whitespace. Removing!".format(self.sceneobject.getName(), sdlName.value))
             sdlName.value = sdlName.value.replace(" ", "")
 
         ageSDL = PtGetAgeSDL()
         if not ageSDL:
-            PtDebugPrint("xAgeSDLBoolRespond._Initialize():\tAgeSDL is None. Initing %s to its default" % self.sceneobject.getName())
+            PtDebugPrint("xAgeSDLBoolRespond._Initialize():  AgeSDL is None. Initing {} to its default".format(self.sceneobject.getName()))
             self._Execute(defaultValue.value, initFastFwd.value)
             return
 
@@ -131,5 +134,5 @@ class xAgeSDLBoolRespond(ptResponder):
         try:
             self._Execute(ageSDL[sdlName.value][0], initFastFwd.value)
         except LookupError:
-            PtDebugPrint("xAgeSDLBoolRespond._Setup():\tVariable '%s' is invalid on object '%s'" % (sdlName.value, self.sceneobject.getName()))
+            PtDebugPrint("xAgeSDLBoolRespond._Setup():  ERROR: Variable '{}' is invalid on object '{}'".format(sdlName.value, self.sceneobject.getName()))
             self._Execute(defaultValue.value, initFastFwd.value)

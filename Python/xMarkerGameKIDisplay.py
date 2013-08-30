@@ -65,8 +65,8 @@ class xMarkerGameKIDisplay:
         # Set version info
         self.verMajor = 0
         self.verMinor = 1
-        self.ver = "%i.%i" % (self.verMajor, self.verMinor)
-        PtDebugPrint("__init__(): xMarkerGameKIDisplay v%s" % (self.ver))
+        self.ver = "{}.{}".format(self.verMajor, self.verMinor)
+        PtDebugPrint("__init__: xMarkerGameKIDisplay v{}".format(self.ver))
 
         # Load default marker game data
         self.gameData = MarkerGameData()
@@ -94,13 +94,13 @@ class xMarkerGameKIDisplay:
 
         # This is a hack, and I hope that nobody ever uses it unless they really know what they are doing!
         if cachedData is not None:
-            PtDebugPrint("DEBUG: xMarkerGameKIDisplay.__init__():\tLoading from cached data")
+            PtDebugPrint("xMarkerGameKIDisplay.__init__():  DEBUG: Loading from cached data")
             self.gameData.copy(cachedData)
             return
 
         # if we have a templateID then we must store it as it will never be xmitted
         if templateID != "":
-            PtDebugPrint("DEBUG: xMarkerGameKIDisplay.__init__():\tloading existing game templateID: %s" % (templateID))
+            PtDebugPrint("xMarkerGameKIDisplay.__init__():  DEBUG: loading existing game templateID: {}".format(templateID))
             self.gameData.data['svrGameTemplateID'] = templateID
             self.newGame = 0
 
@@ -118,13 +118,13 @@ class xMarkerGameKIDisplay:
     def registerTemplateCreated(self, msg):
         "Server sent a template created message"
         self.gameData.data['svrGameTemplateID'] = msg.templateID()
-        PtDebugPrint("DEBUG: xMarkerGameKIDisplay.registerTemplateCreated():\tReceived template created msg for template: %s" % (msg.templateID()))
+        PtDebugPrint("xMarkerGameKIDisplay.registerTemplateCreated():  DEBUG: Received template created msg for template: {}".format(msg.templateID()))
         self.SaveGameClientID(msg.getGameCli().gameID())
         self.NotifyGameReady()
 
     def registerPlayerJoin(self, msg):
         "Server reports a player has joined the game"
-        PtDebugPrint("DEBUG: xMarkerGameKIDisplay.registerPlayerJoin():\tReceived Player Joined Message for player: %s" % (msg.playerID()))
+        PtDebugPrint("xMarkerGameKIDisplay.registerPlayerJoin():  DEBUG: Received Player Joined Message for player: {}".format(msg.playerID()))
 
         if msg.playerID() == PtGetLocalClientID():
             # Store the Game Client ID
@@ -144,7 +144,7 @@ class xMarkerGameKIDisplay:
 
         self.gameData.data['markers'].append(marker)
         self.gameData.data['numMarkers'] += 1
-        PtDebugPrint("DEBUG: xMarkerGameKIDisplay():\tRegistered Marker: %s" % (marker))
+        PtDebugPrint("xMarkerGameKIDisplay.registerMarker():  DEBUG: Registered Marker: {}".format(marker))
 
         # Show the marker if necessary
         if self.showMarkers:
@@ -171,7 +171,7 @@ class xMarkerGameKIDisplay:
     def registerGameName(self, msg):
         "sever sent a game name change"
         self.gameData.data['svrGameName'] = msg.name()
-        PtDebugPrint("DEBUG: xMarkerGameKIDisplay.registerMarkerGameName():\tChange game name to: %s" % (msg.name()))
+        PtDebugPrint("xMarkerGameKIDisplay.registerGameName():  DEBUG: Change game name to: {}".format(msg.name()))
         # Store the Game Client ID
         self.SaveGameClientID(msg.getGameCli().gameID())
         self.NotifyGameReady()
@@ -179,7 +179,7 @@ class xMarkerGameKIDisplay:
     def registerGameType(self, msg):
         "server sent a game type message"
         self.gameData.data['svrGameTypeID'] = msg.gameType()
-        PtDebugPrint("DEBUG: xMarkerGameKIDisplay.registerGameType(): Received Game type Message for game type: %s" % (msg.gameType()))
+        PtDebugPrint("xMarkerGameKIDisplay.registerGameType():  DEBUG: Received Game type Message for game type: {}".format(msg.gameType()))
         # Store the Game Client ID
         self.SaveGameClientID(msg.getGameCli().gameID())
         self.NotifyGameReady()
@@ -199,7 +199,7 @@ class xMarkerGameKIDisplay:
                 del self.gameData.data['markers'][i]
                 self.selectedMarker = -1
                 self.gameData.data['numMarkers'] -= 1
-                PtDebugPrint("DEBUG: xMarkerGameKIDisplay.registerDeleteMarker():\tFound and deleted markerID: %s." % (markerID))
+                PtDebugPrint("xMarkerGameKIDisplay.registerDeleteMarker():  DEBUG: Found and deleted markerID: {}.".format(markerID))
                 break
             i += 1
 
@@ -225,7 +225,7 @@ class xMarkerGameKIDisplay:
             if marker['captured']:
                 marker['captured'] = 0
 
-        PtDebugPrint("DEBUG: xMarkerGameKIDisplay.registerResetGame():\tResetting KI Marker Display's game progress...")
+        PtDebugPrint("xMarkerGameKIDisplay.registerResetGame():  DEBUG: Resetting KI Marker Display's game progress...")
 
     #--------------------------------#
     #    Other External Functions    #
@@ -242,7 +242,7 @@ class xMarkerGameKIDisplay:
         "Sets the name of an existing game"
         server = GetGameClient(self.gameData.data['svrGameClientID'])
         server.changeGameName(name)
-        PtDebugPrint("DEBUG: xMarkerGameKIDisplay.setGameName():\tSending Game Name Change Request: %s" % (name))
+        PtDebugPrint("xMarkerGameKIDisplay.setGameName():  DEBUG: Sending Game Name Change Request: {}".format(name))
 
     def editMarkers(self):
         "Displays all the markers for editing purposes!"
@@ -250,7 +250,7 @@ class xMarkerGameKIDisplay:
         self.showMarkers = 1
         mrkrDisplay = ptMarkerMgr()
         mrkrDisplay.removeAllMarkers()
-        PtDebugPrint("DEBUG: xMarkerGameKIDisplay.editMarkers():\tEntering Edit Mode: Displaying all markers")
+        PtDebugPrint("xMarkerGameKIDisplay.editMarkers():  DEBUG: Entering Edit Mode: Displaying all markers")
 
         ageName = unicode(PtGetAgeInfo().getAgeFilename()).lower()
 
@@ -282,21 +282,21 @@ class xMarkerGameKIDisplay:
         "Adds a marker to this game!"
         server = GetGameClient(self.gameData.data['svrGameClientID'])
         server.addMarker(float(x), float(y), float(z), name, PtGetAgeInfo().getAgeFilename())
-        PtDebugPrint("DEBUG: xMarkerGameKIDisplay.addMarker():\tSending Add Marker Request")
+        PtDebugPrint("xMarkerGameKIDisplay.addMarker():  DEBUG: Sending Add Marker Request")
 
     def deleteSelectedMarker(self):
         "Deletes the selected marker only if we're in edit show marker mode"
         if not self.showMarkers or self.selectedMarker < 0:
-            PtDebugPrint("ERROR: xMarkerGameKIDisplay.deleteSelectedMarker():\tCould not delete the marker as there's no marker selected or we're not editing markers.")
+            PtDebugPrint("xMarkerGameKIDisplay.deleteSelectedMarker():  ERROR: Could not delete the marker as there's no marker selected or we're not editing markers.")
             return
 
         # Get the id of the selected marker....
         markerID = self.gameData.data['markers'][self.selectedMarker].data['id']
         if markerID is None or markerID < 0:
-            PtDebugPrint("ERROR: xMarkerGameKIDisplay.deleteSelectedMarker():\tCould not find the marker to delete!")
+            PtDebugPrint("xMarkerGameKIDisplay.deleteSelectedMarker():  ERROR: Could not find the marker to delete!")
             return
 
-        PtDebugPrint("DEBUG: xMarkerGameKIGameDisplay.deleteSelectedMarker():\tdeleting markerID: %s, with type: %s" % (markerID, type(markerID)))
+        PtDebugPrint("xMarkerGameKIGameDisplay.deleteSelectedMarker():  DEBUG: deleting markerID: {}, with type: {}".format(markerID, type(markerID)))
         # Finally delete the marker...
         server = GetGameClient(self.gameData.data['svrGameClientID'])
         server.deleteMarker(markerID)
@@ -304,10 +304,10 @@ class xMarkerGameKIDisplay:
     def setSelectedMarker(self, markerNum):
         "sets a marker as selected, if it exists"
         if not self.showMarkers:
-            PtDebugPrint("ERROR: xMarkerGameKIDisplay.setSelectedMarker():\tMarkers are not being edited, cannot select markers!")
+            PtDebugPrint("xMarkerGameKIDisplay.setSelectedMarker():  ERROR: Markers are not being edited, cannot select markers!")
             return
 
-        PtDebugPrint("DEBUG: xMarkerGameKIDisplay.setSelectedMarker():\tTrying to display markerNum: %s" % (markerNum))
+        PtDebugPrint("xMarkerGameKIDisplay.setSelectedMarker():  DEBUG: Trying to display markerNum: {}".format(markerNum))
         # Reset any displayed markers...
         mrkrDisplay = ptMarkerMgr()
         if self.selectedMarker > -1:
@@ -332,7 +332,7 @@ class xMarkerGameKIDisplay:
         "Sets the name of the selected marker"
         marker = self.getSelectedMarker()
         if marker is None:
-            PtDebugPrint("xMarkerGameKIDisplay.setNameOfSelectedMarker():\tCould not find selected marker aborting marker name change!")
+            PtDebugPrint("xMarkerGameKIDisplay.setNameOfSelectedMarker():  Could not find selected marker aborting marker name change!")
             return
         server = GetGameClient(self.gameData.data['svrGameClientID'])
         server.changeMarkerName(marker.data['id'], name)
@@ -356,7 +356,7 @@ class xMarkerGameKIDisplay:
         # This object should be deleted; otherwise our clientIDs will not match!
         if self.gameData.data['svrGameClientID'] == self.gameData.default['svrGameClientID']:
             self.gameData.data['svrGameClientID'] = id
-            PtDebugPrint("DEBUG: xMarkerGameKIDisplay.SaveGameClientID():\tRegistering game client ID: %s" % (id))
+            PtDebugPrint("xMarkerGameKIDisplay.SaveGameClientID():  DEBUG: Registering game client ID: {}".format(id))
 
     def NotifyGameReady(self):
         "If the game has been sucessfully created, send a KI message that the data is ready"
@@ -373,10 +373,10 @@ class xMarkerGameKIDisplay:
             return
 
         if self.newGame:
-            PtDebugPrint("DEBUG: xmarkerGameKIDisplay.NotifyGameReady():\tNotifying KI new game is ready!")
+            PtDebugPrint("xmarkerGameKIDisplay.NotifyGameReady():  DEBUG: Notifying KI new game is ready!")
             self.KI.FinishCreateMarkerGame(data['svrGameName'], data['svrGameTemplateID'])
         else:
-            PtDebugPrint("xMarkerGameKIDisplay.NotifyGameReady():\tGame Loaded sucessfully!")
+            PtDebugPrint("xMarkerGameKIDisplay.NotifyGameReady():  Game Loaded sucessfully!")
             self.KI.BigKIFinishDisplayMarkerGame()
 
         self.initialized = 1

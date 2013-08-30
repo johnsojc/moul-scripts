@@ -77,7 +77,10 @@ class nb01Easel(ptModifier):
     def __init__(self):
         ptModifier.__init__(self)
         self.id = 5027
-        self.version = 2
+        version = 2
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: nb01Easel v{}".format(self.version))
 
     def OnFirstUpdate(self):
         self.IWriteHoodName()
@@ -96,10 +99,10 @@ class nb01Easel(ptModifier):
         ageVault = ptAgeVault()
         try:
             ageInfoNode = ageVault.getAgeInfo()
-            hoodName = "%s %s" % (ageInfoNode.getAgeUserDefinedName(), ageInfoNode.getAgeInstanceName())
-            PtDebugPrint("nb01Easel:\tinscribing %s" % (hoodName))
+            hoodName = "{} {}".format(ageInfoNode.getAgeUserDefinedName(), ageInfoNode.getAgeInstanceName())
+            PtDebugPrint("nb01Easel.IWriteHoodName():  inscribing {}".format(hoodName))
         except:
-            PtDebugPrint("nb01Easel:\tERROR age vault or hood node failure")
+            PtDebugPrint("nb01Easel.IWriteHoodName():  ERROR: age vault or hood node failure")
             return
 
         hoodName = xLocTools.LocalizeAgeName(hoodName)

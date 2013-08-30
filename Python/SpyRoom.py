@@ -56,7 +56,10 @@ class SpyRoom(ptResponder):
     def __init__(self):
         ptResponder.__init__(self)
         self.id = 5331
-        self.version = 1
+        version = 1
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: SpyRoom v{}".format(self.version))
 
     def OnFirstUpdate(self):
         pass
@@ -73,7 +76,7 @@ class SpyRoom(ptResponder):
         # i know this isn't bevin but this is just in case they haven't gone to bevin yet
         entry = vault.findChronicleEntry("sjBevinVisted")
         if not entry:
-            PtDebugPrint("spyroom: did not find the chron var")
+            PtDebugPrint("SpyRoom.OnServerInitComplete():  did not find the chron var")
             vault.addChronicleEntry("sjBevinVisted", 0, str(int(time.time())))
         else:
-            PtDebugPrint("spyroom: found the chron var")
+            PtDebugPrint("SpyRoom.OnServerInitComplete():  found the chron var")

@@ -64,7 +64,10 @@ class ercaSDLIntShowHide(ptMultiModifier):
     def __init__(self):
         ptMultiModifier.__init__(self)
         self.id = 7032
-        self.version = 2
+        version = 2
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: ercaSDLIntShowHide v{}".format(self.version))
         self.enabledStateList = []
 
     def OnFirstUpdate(self):
@@ -81,10 +84,10 @@ class ercaSDLIntShowHide(ptMultiModifier):
                 for i in range(len(self.enabledStateList)):
                     self.enabledStateList[i] = int(self.enabledStateList[i].strip())
             except:
-                PtDebugPrint("ERROR: ercaSDLIntShowHide.OnFirstUpdate():\tERROR: couldn't process start state list")
+                PtDebugPrint("ercaSDLIntShowHide.OnServerInitComplete():  ERROR: couldn't process start state list")
                 pass
         else:
-            PtDebugPrint("ERROR: ercaSDLIntShowHide.OnFirstUpdate():\tERROR: missing SDL var name")
+            PtDebugPrint("ERROR: ercaSDLIntShowHide.OnServerInitComplete():  ERROR: missing SDL var name")
             pass
 
         if AgeStartedIn == PtGetAgeName():
@@ -94,23 +97,23 @@ class ercaSDLIntShowHide(ptMultiModifier):
                 try:
                     SDLvalue = ageSDL[stringVarName.value][0]
                 except:
-                    PtDebugPrint("ERROR: ercaSDLIntShowHide.OnServerInitComplete():\tERROR: age sdl read failed, SDLvalue = 0 by default. stringVarName = %s" % (stringVarName.value))
+                    PtDebugPrint("ercaSDLIntShowHide.OnServerInitComplete():  ERROR: age sdl read failed, SDLvalue = 0 by default. stringVarName = {}".format(stringVarName.value))
                     SDLvalue = 0
 
                 try:
                     if SDLvalue in self.enabledStateList:
-                        PtDebugPrint("DEBUG: ercaSDLIntShowHide.OnServerInitComplete: Attempting to disable drawing and collision on %s..." % self.sceneobject.getName())
+                        PtDebugPrint("ercaSDLIntShowHide.OnServerInitComplete():  DEBUG: Attempting to disable drawing and collision on {}...".format(self.sceneobject.getName()))
                         self.sceneobject.draw.disable()
                         self.sceneobject.physics.suppress(true)
                     else:
-                        PtDebugPrint("DEBUG: ercaSDLIntShowHide.OnServerInitComplete: Attempting to enable drawing and collision on %s..." % self.sceneobject.getName())
+                        PtDebugPrint("ercaSDLIntShowHide.OnServerInitComplete:  DEBUG: Attempting to enable drawing and collision on {}...".format(self.sceneobject.getName()))
                         self.sceneobject.draw.enable()
                         self.sceneobject.physics.suppress(false)
                 except:
-                    PtDebugPrint("ERROR: ercaSDLIntShowHide.OnServerInitComplete():\tERROR enabling/disabling object %s" % self.sceneobject.getName())
+                    PtDebugPrint("ercaSDLIntShowHide.OnServerInitComplete():  ERROR: ErrorR enabling/disabling object {}".format(self.sceneobject.getName()))
                     pass
             else:
-                PtDebugPrint("ERROR: ercaSDLIntShowHide.OnServerInitComplete():\tERROR: missing SDL var name")
+                PtDebugPrint("ercaSDLIntShowHide.OnServerInitComplete():  ERROR: missing SDL var name")
                 pass
 
     def OnSDLNotify(self, VARname, SDLname, playerID, tag):
@@ -126,12 +129,12 @@ class ercaSDLIntShowHide(ptMultiModifier):
                 self.EnableObject()
 
     def EnableObject(self):
-        PtDebugPrint("DEBUG: ercaSDLIntShowHide.EnableObject:  Attempting to enable drawing and collision on %s..." % self.sceneobject.getName())
+        PtDebugPrint("ercaSDLIntShowHide.EnableObject():  DEBUG: Attempting to enable drawing and collision on {}...".format(self.sceneobject.getName()))
         self.sceneobject.draw.enable()
         self.sceneobject.physics.suppress(false)
 
     def DisableObject(self):
-        PtDebugPrint("DEBUG: ercaSDLIntShowHide.DisableObject:  Attempting to disable drawing and collision on %s..." % self.sceneobject.getName())
+        PtDebugPrint("ercaSDLIntShowHide.DisableObject():  DEBUG: Attempting to disable drawing and collision on {}...".format(self.sceneobject.getName()))
         self.sceneobject.draw.disable()
         self.sceneobject.physics.suppress(true)
 

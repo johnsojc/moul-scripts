@@ -56,4 +56,7 @@ class GreatTreePub(ptResponder):
     def __init__(self):
         ptResponder.__init__(self)
         self.id = 5323
-        self.version = 1
+        version = 1
+        minor = 1
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: GreatTreePub v{}".format(self.version))

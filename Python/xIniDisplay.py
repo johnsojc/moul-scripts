@@ -47,6 +47,7 @@ This module contains the routines to read and write the Graphics.ini file
 import string
 import xIniHelper
 from Plasma import *
+from PlasmaTypes import *
 
 gIniFile = None
 gFilename = U"graphics.ini"
@@ -76,11 +77,11 @@ def ConstructFilenameAndPath():
             localNameAndPath = U"init/" + gFilename
             if PtFileExists(localNameAndPath):
                 gFilenameAndPath = localNameAndPath
-                print U"xIniDisplay::ConstructFilenameAndPath(): Using internal \"" + gFilenameAndPath + U"\" file"
+                PtDebugPrint(U"xIniDisplay.ConstructFilenameAndPath():  Using internal \"{}\" file".format(gFilenameAndPath))
                 return
         # otherwise, use the standard init path
         gFilenameAndPath = PtGetInitPath() + U"/" + gFilename
-        print U"xIniDisplay::ConstructFilenameAndPath(): Using user-level \"" + gFilenameAndPath + U"\" file"
+        PtDebugPrint(U"xIniDisplay::ConstructFilenameAndPath():  Using user-level \"{}\" file".format(gFilenameAndPath))
 
 
 def WriteIni():
@@ -134,7 +135,7 @@ def SetGraphicsOptions(width, heigth, colordepth, windowed, texquality, aaLevel,
             if entry:
                 entry.setValue(0, val)
             else:
-                gIniFile.addEntry("%s %s" % (CmdList[idx], val))
+                gIniFile.addEntry("{} {}".format(CmdList[idx], val))
 
 
 def GetGraphicsOptions():

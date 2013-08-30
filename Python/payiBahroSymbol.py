@@ -79,13 +79,14 @@ class payiBahroSymbol(ptResponder):
         ptResponder.__init__(self)
         self.id = 5251
         version = 1
-        self.version = version
-        PtDebugPrint("__init__payiBahroSymbol v.%d.0", (version))
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: payiBahroSymbol v{}".format(self.version))
 
     ###########################
     def OnServerInitComplete(self):
         timeIntoMasterAnim = PtGetAgeTimeOfDayPercent() * (DayFrameSize.value / 30.0)
-        PtDebugPrint("payiBahroSymbol.OnServerInitComplete: Anims skipping to %f seconds and playing at %f speed" % (timeIntoMasterAnim, kDayAnimationSpeed))
+        PtDebugPrint("payiBahroSymbol.OnServerInitComplete(): Anims skipping to {:f} seconds and playing at {:f} speed".format(timeIntoMasterAnim, kDayAnimationSpeed))
 
         animSkyDome.animation.skipToTime(timeIntoMasterAnim)
         animLightBoards.animation.skipToTime(timeIntoMasterAnim)

@@ -72,16 +72,15 @@ class MarkerGameManager:
     "Houses the logic and interface for Marker Games, intended to be inited by the KI (i.e. xKI)"
     def __init__(self, KI, existingGame=None):
         version = 1
-        subVersion = 3
-
-        self.version = "%s.%s" % (version, subVersion)
-        PtDebugPrint("__init__: Marker Game Manager version: v.%s" % (self.version))
+        minor = 3
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: MarkerGameManager: v{}".format(self.version))
 
         # Tye: We really don't want to have a handle on the KI, we want to pass messages to keep things compartmentalized...
         # But it's left here just in case there is no other way.
         # TODO: When finished coding see if this can be removed!
         self.key = KI.key  # We need to register the KI to receive messages, so this is necessary
-        PtDebugPrint("__init__: Registering Marker Game Manager with key: %s" % (self.key))
+        PtDebugPrint("MarkerGameManager.__init__():  Registering Marker Game Manager with key: {}".format(self.key))
         self.isNewGame = 0
         self.pendingReset = 0
 
@@ -98,13 +97,13 @@ class MarkerGameManager:
         if self.gameData.data['svrGameTemplateID'] != self.gameData.default['svrGameTemplateID']:
             # Start a CGZ game
             if self.gameData.data['svrGameTypeID'] == PtMarkerGameTypes.kMarkerGameCGZ:
-                PtDebugPrint("DEBUG: __init__: Player has existing Marker game, Loading game: %s" % (self.gameData.data['svrGameTemplateID']))
+                PtDebugPrint("MarkerGameManager.__init__():  DEBUG: Player has existing Marker game, Loading game: {}".format(self.gameData.data['svrGameTemplateID']))
                 self.createCGZMarkerGame(self.gameData.data['CGZGameNum'])
             # Start all other User-created marker games
             else:
-                PtDebugPrint("DEBUG: __init__: Loading User-Created Marker Game: %s" % (self.gameData.data['svrGameTemplateID']))
+                PtDebugPrint("MarkerGameManager.__init__():  DEBUG: Loading User-Created Marker Game: {}".format(self.gameData.data['svrGameTemplateID']))
                 if existingGame:
-                    PtDebugPrint("DEBUG: __init__: Game already loaded, loading markers and starting the game!")
+                    PtDebugPrint("MarkerGameManager.__init__():  DEBUG: Game already loaded, loading markers and starting the game!")
                     # we've already loaded the game, now, after we register the markers, we just start playing!
                     mrkrDisplay = ptMarkerMgr()
                     mrkrDisplay.removeAllMarkers()
@@ -139,7 +138,7 @@ class MarkerGameManager:
 
     def loadExistingUCMarkerGame(self):
         "initiates the client load of the user created marker states from the server"
-        PtDebugPrint("DEBUG: xMarkerGame.loadUCMarkerGame():\tLoading the User-Created Marker Game: %s" % (self.gameData.data['svrGameName']))
+        PtDebugPrint("xMarkerGame.loadExistingUCMarkerGame():  DEBUG: Loading the User-Created Marker Game: {}".format(self.gameData.data['svrGameName']))
         # To be safe, we should delete any existing markers in the marker manager display.  We'll load them later...
         mrkrDisplay = ptMarkerMgr()
         mrkrDisplay.removeAllMarkers()
@@ -158,7 +157,7 @@ class MarkerGameManager:
 
     def createCGZMarkerGame(self, gameNum):
         "Initiates the CGZ Marker Game creation process"
-        PtDebugPrint("DEBUG: xMarkerGame.createCGZMarkerGame():\tDispatching a new CGZ marker game #%s" % (gameNum))
+        PtDebugPrint("xMarkerGame.createCGZMarkerGame():  DEBUG: Dispatching a new CGZ marker game #{}".format(gameNum))
         #Get existing game....  We're starting a new game, we better get rid of the old one!
         existingGame = self.gameData.data['svrGameClientID']
         templateID = ""
@@ -171,9 +170,9 @@ class MarkerGameManager:
         mrkrDisplay = ptMarkerMgr()
         mrkrDisplay.removeAllMarkers()
 
-        PtDebugPrint("xMarkerGameManager.CreateCGZMarkerGame():\tCreating Marker Game Number: %i" % (gameNum))
+        PtDebugPrint("xMarkerGameManager.CreateCGZMarkerGame():  Creating Marker Game Number: {}".format(gameNum))
         if gameNum < 0 or gameNum > len(grtzMarkerGames.mgs):
-            PtDebugPrint("xMarkerGameManager.CreateCGZMarkerGame():\tCannot create game: Invalid Game Number: %s" % (gameNum))
+            PtDebugPrint("xMarkerGameManager.CreateCGZMarkerGame():  Cannot create game: Invalid Game Number: {}".format(gameNum))
             return
 
         # Save some important settings!
@@ -189,7 +188,7 @@ class MarkerGameManager:
         "Informs server of a captured marker event (note: actions take place in the callback from the server: registerMarkerCaptured)"
         server = GetGameClient(self.gameData.data['svrGameClientID'])
         if server is None:
-            PtDebugPrint("ERROR: xMarkerGameManager.captureMarker():\tCould not connect game client to mini-game server to capture marker!")
+            PtDebugPrint("xMarkerGameManager.captureMarker():  ERROR: Could not connect game client to mini-game server to capture marker!")
             return
         self.clientUpdatedMarker += 1
         server.captureMarker(markerID)
@@ -200,18 +199,18 @@ class MarkerGameManager:
         # check for End Game
         finishTime = 0.0
         if self.gameData.data['numMarkers'] == self.gameData.data['numCapturedMarkers'] and self.gameData.data['numMarkers'] > 0:
-            PtDebugPrint("DEBUG: xMarkerGameManager.stopCGZGame():\tGame Completed!  ---Checking for new best score---")
+            PtDebugPrint("xMarkerGameManager.stopCGZGame():  DEBUG: Game Completed!  ---Checking for new best score---")
             endTime = PtGetDniTime()
             startTime, bestTime = grtzMarkerGames.GetGameTime(grtzMarkerGames.GetCGZGameName(gameNum))
             finishTime = endTime - startTime
 
         # Update Score Display
-        PtDebugPrint("DEBUG: xMarkerGameManager.stopCGZGame(): Attempting to Register score: %s for game: %s" % (finishTime, gameNum))
+        PtDebugPrint("xMarkerGameManager.stopCGZGame():  DEBUG: Attempting to Register score: {} for game: {}".format(finishTime, gameNum))
         grtzMarkerGames.UpdateScore(self.gameData.data['CGZGameNum'], 0, finishTime)
 
         # Delete Game from the server
         try:
-            PtDebugPrint("DEBUG: xMarkerGameManager.stopCGZGame():\t----Dispatching stop CGZ Marker Game----")
+            PtDebugPrint("xMarkerGameManager.stopCGZGame():  DEBUG: ----Dispatching stop CGZ Marker Game----")
             server = GetGameClient(self.gameData.data['svrGameClientID'])
             server.deleteGame()
         except:
@@ -224,7 +223,7 @@ class MarkerGameManager:
     def stopGame(self):
         "stops an existing User-created marker game"
         if not self.gameLoaded():
-            PtDebugPrint("ERROR: xMarkerGameManager.stopGame():\tCould not stop the game as it was not loaded!")
+            PtDebugPrint("xMarkerGameManager.stopGame():  ERROR: Could not stop the game as it was not loaded!")
             return
 
         server = GetGameClient(self.gameData.data['svrGameClientID'])
@@ -233,7 +232,7 @@ class MarkerGameManager:
     def resetGame(self):
         "resets a user-created marker game"
         if not self.gameLoaded():
-            PtDebugPrint("ERROR: xMarkerGameManager.stopGame():\tCould not reset the game as it was not loaded!")
+            PtDebugPrint("xMarkerGameManager.resetGame():  ERROR: Could not reset the game as it was not loaded!")
             return
         # resets only happen when the game is paused, so we'll do that first and then we'll reset once finished
         self.pendingReset = 1
@@ -245,7 +244,7 @@ class MarkerGameManager:
     def deleteGame(self):
         "deletes an existing User created marker game"
         if not self.gameLoaded():
-            PtDebugPrint("ERROR: xMarkerGameManager.stopGame():\tCould not delete the game as it was not loaded!")
+            PtDebugPrint("xMarkerGameManager.deleteGame():  ERROR: Could not delete the game as it was not loaded!")
             return
         server = GetGameClient(self.gameData.data['svrGameClientID'])
         server.deleteGame()
@@ -255,7 +254,7 @@ class MarkerGameManager:
     #--------------------------------#
     def registerPlayerJoin(self, msg):
         "Server sent a register player join message, make sure to update our data structure"
-        PtDebugPrint("DEBUG: xMarkerGameManager.registerPlayerJoin():\tReceived Player Joined Message for player: %s" % (msg.playerID()))
+        PtDebugPrint("xMarkerGameManager.registerPlayerJoin():  DEBUG: Received Player Joined Message for player: {}".format(msg.playerID()))
         if msg.playerID() == PtGetLocalClientID():
             # Store the Game Client ID
             self.gameData.data['isPlayerJoined'] = 1
@@ -266,7 +265,7 @@ class MarkerGameManager:
     def registerTemplateCreated(self, msg):
         "Server sent a template created message"
         self.gameData.data['svrGameTemplateID'] = msg.templateID()
-        PtDebugPrint("DEBUG: xMarkerGameManager.registerTemplateCreated():\tReceived template created msg for template: %s" % (msg.templateID()))
+        PtDebugPrint("xMarkerGameManager.registerTemplateCreated():  DEBUG: Received template created msg for template: {}".format(msg.templateID()))
         # This message is only sent for brand new games (i.e. old games never send template registrations)
         # Make sure we store this data....
         self.isNewGame = 1
@@ -278,7 +277,7 @@ class MarkerGameManager:
     def registerGameType(self, msg):
         "sever sent a game type message"
         self.gameData.data['svrGameTypeID'] = msg.gameType()
-        PtDebugPrint("DEBUG: xMarkerGameManager.registerGameType(): Received Game type Message for game type: %s" % (msg.gameType()))
+        PtDebugPrint("xMarkerGameManager.registerGameType():  DEBUG: Received Game type Message for game type: {}".format(msg.gameType()))
         # Store the Game Client ID
         self.SaveGameClientID(msg.getGameCli().gameID())
         self.gameData.save()
@@ -310,12 +309,12 @@ class MarkerGameManager:
 
         self.gameData.data['markers'].append(marker)
         self.gameData.data['numMarkers'] += 1
-        PtDebugPrint("DEBUG: xMarkerGameManager():\tRegistered Marker: %s" % (marker))
+        PtDebugPrint("xMarkerGameManager.registerMarker():  DEBUG: Registered Marker: {}".format(marker))
 
         if msg.age().lower() != unicode(ageName).lower():
-            PtDebugPrint("****> Register Marker #%s: (%s,%s,%s), ageName = %s\t\thidden, wrong age" % (id, x, y, z, msg.age()))
+            PtDebugPrint("****> Register Marker #{}: ({},{},{}), ageName = {}  hidden, wrong age".format(id, x, y, z, msg.age()))
             return
-        PtDebugPrint("DEBUG: xMarkerGameManager():\tRegistered Marker #%s: (%s,%s,%s), ageName = %s" % (id, x, y, z, msg.age()))
+        PtDebugPrint("xMarkerGameManager.registerMarker():  DEBUG: Registered Marker #{}: ({},{},{}), ageName = {}".format(id, x, y, z, msg.age()))
 
         # Update the marker display manager
         mrkrDisplay = ptMarkerMgr()
@@ -338,13 +337,13 @@ class MarkerGameManager:
                     if self.clientUpdatedMarker:
                         self.clientUpdatedMarker -= 1
                         markers = grtzMarkerGames.mgs[gameNum][0][4]
-                        output = "Found marker: '%s'" % markers[markerID][0]
+                        output = "Found marker: '{}'".format(markers[markerID][0])
                         PtSendKIMessage(kKILocalChatStatusMsg, output)
                     # Hide the markers...
                     mrkrDisplay.captureQuestMarker(markerID, 1)
                     # End game check is in the Marker Scope GUI
                 except:
-                    PtDebugPrint("ERROR: xMarkerGameManager.captureMarker():\tCould not get data for CGZ marker captured message!")
+                    PtDebugPrint("xMarkerGameManager.registerMarkerCaptured():  ERROR: Could not get data for CGZ marker captured message!")
         else:
             mrkrDisplay.captureQuestMarker(markerID, 1)
             for marker in self.gameData.data['markers']:
@@ -353,7 +352,7 @@ class MarkerGameManager:
                     marker['captured'] = 1
                     if self.clientUpdatedMarker:
                         self.clientUpdatedMarker -= 1
-                        output = "Found marker: '%s'" % marker['name']
+                        output = "Found marker: '{}'".format(marker['name'])
                         PtSendKIMessage(kKILocalChatStatusMsg, output)
                         # check for completion of game...
                         if self.gameData.data['numCapturedMarkers'] >= self.gameData.data['numMarkers']:
@@ -368,7 +367,7 @@ class MarkerGameManager:
 
     def registerDeleteGame(self, msg):
         "received a delete game message from the server; make sure to update our internal data"
-        PtDebugPrint("DEBUG: xMarkerGameManager.registerDeleteGame():\t---Received Delete Game message, resetting game data---")
+        PtDebugPrint("xMarkerGameManager.registerDeleteGame():  DEBUG: ---Received Delete Game message, resetting game data---")
         # Reset game data
         self.gameData.initDefaultValues()
         self.gameData.save()
@@ -383,7 +382,7 @@ class MarkerGameManager:
 
         # Start any queued game
         if self.queuedGame > -1:
-            PtDebugPrint("DEBUG: xMarkerGameManager.registerDeleteGame():\t---Starting Queued game: %s---" % (self.queuedGame))
+            PtDebugPrint("xMarkerGameManager.registerDeleteGame():  DEBUG: ---Starting Queued game: {}---".format(self.queuedGame))
             # TODO: setup for user created marker games...
             self.createCGZMarkerGame(self.queuedGame)
             self.queuedGame = -1
@@ -393,7 +392,7 @@ class MarkerGameManager:
         #save the name
         self.gameData.data['svrGameName'] = msg.name()
         self.gameData.save()
-        PtDebugPrint("DEBUG: xMarkerGameManager.registerMarkerGameName():\tChange game name to: %s" % msg.name())
+        PtDebugPrint("xMarkerGameManager.registerGameName():  DEBUG: Change game name to: {}".format(msg.name()))
 
         #Store the Game Client ID
         self.SaveGameClientID(msg.getGameCli().gameID())
@@ -425,7 +424,7 @@ class MarkerGameManager:
         # Setup the KI display
         self.UpdateKIMarkerDisplay()
 
-        PtDebugPrint("DEBUG: xMarkerGameManager.registerResetGame():\tResetting game's current progress...")
+        PtDebugPrint("xMarkerGameManager.registerResetGame():  DEBUG: Resetting game's current progress...")
 
 #--------------------------------#
 #    Internal-Only Functions     #
@@ -437,11 +436,11 @@ class MarkerGameManager:
         # This object should be deleted; otherwise our clientIDs will not match!
         if self.gameData.data['svrGameClientID'] == self.gameData.default['svrGameClientID']:
             self.gameData.data['svrGameClientID'] = id
-            PtDebugPrint("DEBUG: xMarkerGameManager.SaveGameClientID():\tRegistering game client ID: %s" % id)
+            PtDebugPrint("xMarkerGameManager.SaveGameClientID():  DEBUG: Registering game client ID: {}".format(id))
 
     def PlayCGZMarkerGame(self, gameNum):
         "Prepares and starts a CGZ Marker Game"
-        PtDebugPrint("DEBUG: xMarkerGameManager.PlayCGZMarkerGame():\tServer finished creating CGZ marker game, adding markers and starting the game")
+        PtDebugPrint("xMarkerGameManager.PlayCGZMarkerGame():  DEBUG: Server finished creating CGZ marker game, adding markers and starting the game")
         # Save Important Marker Data
         markers = grtzMarkerGames.mgs[gameNum][0][4]
         self.gameData.data['numMarkers'] = len(markers)
@@ -449,16 +448,16 @@ class MarkerGameManager:
         self.gameData.save()
 
         # Add Markers....
-        PtDebugPrint("DEBUG: xMarkerGameManager.PlayCGZMarkerGame():\tAdding Markers for game #%s" % (gameNum))
+        PtDebugPrint("xMarkerGameManager.PlayCGZMarkerGame():  DEBUG: Adding Markers for game #{}".format(gameNum))
         server = GetGameClient(self.gameData.data['svrGameClientID'])
         if self.isNewGame == 1:
             index = 0
             for marker in markers:
                 server.addMarker(float(marker[1]), float(marker[2]), float(marker[3]), marker[0], marker[4])
-                PtDebugPrint("-----| Creating Marker #%s: (%s,%s,%s) ageName = %s" % (index, marker[1], marker[2], marker[3], marker[4]))
+                PtDebugPrint("-----| Creating Marker #{}: ({},{},{}) ageName = {}".format(index, marker[1], marker[2], marker[3], marker[4]))
                 index += 1
 
-        PtDebugPrint("DEBUG: xMarkerGameManager.PlayCGZMarkerGame():\tSending CGZ Start Game Message to the server")
+        PtDebugPrint("xMarkerGameManager.PlayCGZMarkerGame():  DEBUG: Sending CGZ Start Game Message to the server")
         # Start the game on the server
         server.startGame()
 
@@ -473,16 +472,16 @@ class MarkerGameManager:
                 # Make sure that we can start the game (i.e. all necessary messages have arrived)
                 # Make sure that the CGZ game is valid....
                 if self.gameData.data['CGZGameNum'] < 0 and self.gameData.data['CGZGameNum'] > len(grtzMarkerGames.mgs):
-                    PtDebugPrint("ERROR: xMarkerGameManager.registerPlayerJoin():\tCannot register player to an invalid CGZ game number: %s" % self.gameData.data['CGZGameNum'])
+                    PtDebugPrint("xMarkerGameManager.StartGame():  ERROR: Cannot register player to an invalid CGZ game number: {}".format(self.gameData.data['CGZGameNum']))
                     return
                 # Now we really can start the game!!!
-                PtDebugPrint("DEBUG: xMarkerGameManager.StartGame():\t----STARTING CGZ GAME----")
+                PtDebugPrint("xMarkerGameManager.StartGame():  DEBUG: ----STARTING CGZ GAME----")
                 self.PlayCGZMarkerGame(self.gameData.data['CGZGameNum'])
                 return
             else:
                 # all other user-created games
                 server = GetGameClient(self.gameData.data['svrGameClientID'])
-                PtDebugPrint("DEBUG: xMarkerGameManager.StartGame():\tSending Start Game Message to the server")
+                PtDebugPrint("xMarkerGameManager.StartGame():  DEBUG: Sending Start Game Message to the server")
                 # Start the game on the server
                 server.startGame()
 
@@ -508,7 +507,7 @@ class MarkerGameManager:
 
         #   Format = GZGame GottenColor:ToGetColor GottenNum:ToGetNum
         #       Note: GZGame is NOT the CGZ Game Num, so we'll send -1 so the KI will ignore it
-        msg = "%d %s:%s %d:%d" % (-1, gottenColor, toGetColor, numCapturedMarkers, numMarkers)
+        msg = "{} {}:{} {}:{}".format(-1, gottenColor, toGetColor, numCapturedMarkers, numMarkers)
         PtSendKIMessage(kGZFlashUpdate, msg)
 
     #--------------------------------#

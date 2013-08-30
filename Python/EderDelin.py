@@ -56,7 +56,10 @@ class EderDelin(ptResponder):
     def __init__(self):
         ptResponder.__init__(self)
         self.id = 5355
-        self.version = 1
+        version = 1
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: EderDelin v{}".format(self.version))
 
     def OnNotify(self, state, id, events):
         pass

@@ -73,13 +73,14 @@ class tldnLagoonBridge(ptResponder):
         self.id = 5235
 
         version = 2
-        self.version = version
-        PtDebugPrint("__init__tldnLagoonBridge v.%d.1" % (version))
+        minor = 1
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: tldnLagoonBridge v{}".format(self.version))
 
     def OnServerInitComplete(self):
         ageSDL = PtGetAgeSDL()
         if ageSDL is None:
-            PtDebugPrint("tldnLagoonBridge:\tERROR---Cannot find the Teledahn Age SDL")
+            PtDebugPrint("tldnLagoonBridge.OnServerInitComplet():  ERROR: Cannot find the Teledahn Age SDL")
 
         ageSDL.setNotify(self.key, "tldnLagoonBridgeStuck", 0.0)
         ageSDL.setNotify(self.key, "tldnLagoonBridgeRaised", 0.0)
@@ -93,7 +94,7 @@ class tldnLagoonBridge(ptResponder):
         tldnLagoonBridgeStuck = ageSDL["tldnLagoonBridgeStuck"][0]
         tldnLagoonBridgeRaised = ageSDL["tldnLagoonBridgeRaised"][0]
 
-        PtDebugPrint("tldnLagoonBridge: When I got here:")
+        PtDebugPrint("tldnLagoonBridge.OnServerInitComplet():  When I got here:")
 
         if tldnLagoonBridgeStuck == 1:
             PtDebugPrint("\tThe Lagoon Bridge is stuck.")
@@ -111,19 +112,19 @@ class tldnLagoonBridge(ptResponder):
         if not state:
             return
 
-        PtDebugPrint("tldnLagoonBridge.OnNotify:  state=%f id=%d events=" % (state, id), events)
+        PtDebugPrint("tldnLagoonBridge.OnNotify():  state={:f} id={} events={}".format(state, id, events))
 
         if id == actLever.id:
-            PtDebugPrint("The lever was clicked.")
+            PtDebugPrint("tldnLagoonBridge.OnNotify():  The lever was clicked.")
             respLever.run(self.key, events=events)
 
         elif id == respLever.id and self.sceneobject.isLocallyOwned():
-            PtDebugPrint("The lever was pulled by an avatar.")
+            PtDebugPrint("tldnLagoonBridge.OnNotify():  The lever was pulled by an avatar.")
 
             tldnLagoonBridgeStuck = ageSDL["tldnLagoonBridgeStuck"][0]
 
             if tldnLagoonBridgeStuck:
-                PtDebugPrint("The Lagoon Bridge is stuck, so pulling this lever did absolutely nothing.")
+                PtDebugPrint("tldnLagoonBridge.OnNotify():  The Lagoon Bridge is stuck, so pulling this lever did absolutely nothing.")
                 return
 
             else:
@@ -134,7 +135,7 @@ class tldnLagoonBridge(ptResponder):
                 ageSDL["tldnLagoonBridgeRaised"] = (newstate,)
 
         elif id == actJumpZone.id and PtWasLocallyNotified(self.key):
-            PtDebugPrint("I bumped the bridge.")
+            PtDebugPrint("tldnLagoonBridge.OnNotify():  I bumped the bridge.")
             ageSDL["tldnLagoonBridgeStuck"] = (0,)
 
     def OnSDLNotify(self, VARname, SDLname, playerID, tag):
@@ -144,11 +145,11 @@ class tldnLagoonBridge(ptResponder):
             tldnLagoonBridgeStuck = ageSDL["tldnLagoonBridgeStuck"][0]
 
             if tldnLagoonBridgeStuck == 0:
-                PtDebugPrint("tldnLagoonBridge.OnSDLNotify: The Lagoon bridge was just bumped.")
+                PtDebugPrint("tldnLagoonBridge.OnSDLNotify():  The Lagoon bridge was just bumped.")
                 respStucktoRaised.run(self.key)
                 return
             else:
-                PtDebugPrint("tldnLagoonBridge.OnSDLNotify: Hmmm... LagoonBridgeStuck = %d" % (tldnLagoonBridgeStuck))
+                PtDebugPrint("tldnLagoonBridge.OnSDLNotify():  Hmmm... LagoonBridgeStuck = {}".format(tldnLagoonBridgeStuck))
 
         elif VARname == "tldnLagoonBridgeRaised":
             tldnLagoonBridgeStuck = ageSDL["tldnLagoonBridgeStuck"][0]
@@ -159,7 +160,7 @@ class tldnLagoonBridge(ptResponder):
                 tldnLagoonBridgeRaised = ageSDL["tldnLagoonBridgeRaised"][0]
                 if tldnLagoonBridgeRaised == 1:
                     respLoweredtoRaised.run(self.key)
-                    PtDebugPrint("tldnLagoonBridge.OnSDLNotify: Raising Lagoon bridge.")
+                    PtDebugPrint("tldnLagoonBridge.OnSDLNotify():  Raising Lagoon bridge.")
                 elif tldnLagoonBridgeRaised == 0:
                     respRaisedtoLowered.run(self.key)
-                    PtDebugPrint("tldnLagoonBridge.OnSDLNotify: Lowering Lagoon bridge.")
+                    PtDebugPrint("tldnLagoonBridge.OnSDLNotify():  Lowering Lagoon bridge.")

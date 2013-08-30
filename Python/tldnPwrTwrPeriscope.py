@@ -112,8 +112,9 @@ class tldnPwrTwrPeriscope(ptResponder):
         ptResponder.__init__(self)
         self.id = 5003
         version = 4
-        self.version = version
-        PtDebugPrint("tldnPwrTwrPerscope v.%d.3" % (version))
+        minor = 3
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: tldnPwrTwrPerscope v{}".format(self.version))
 
     def OnFirstUpdate(self):
         global AgeStartedIn
@@ -141,14 +142,14 @@ class tldnPwrTwrPeriscope(ptResponder):
         boolOperated = self.SDL["boolOperated"][0]
         if boolOperated:
             if solo:
-                PtDebugPrint("tldnPwrTwrPeriscope.Load():\tboolOperated=%d but no one else here...correcting" % (boolOperated))
+                PtDebugPrint("tldnPwrTwrPeriscope.Load():  boolOperated={} but no one else here...correcting".format(boolOperated))
                 boolOperated = 0
                 self.SDL["boolOperated"] = (0,)
                 self.SDL["OperatorID"] = (-1,)
                 Activate.enable()
             else:
                 Activate.disable()
-                PtDebugPrint("tldnPwrTwrPeriscope.Load():\tboolOperated=%d, disabling periscope clickable" % (boolOperated))
+                PtDebugPrint("tldnPwrTwrPeriscope.Load():  boolOperated={}, disabling periscope clickable".format(boolOperated))
 
     def OnServerInitComplete(self):
         global boolTwrRaised
@@ -177,9 +178,9 @@ class tldnPwrTwrPeriscope(ptResponder):
                 pumpCount = ageSDL[kStringAgeSDLPumpCount][0]
                 if pumpCount == 3:
                     boolTwrRaised = true
-                PtDebugPrint("tldnPwrTwrPeriscope.OnServerInitComplete():\tageSDL[%s] = %d, TwrRaised = %d" % (kStringAgeSDLPumpCount, pumpCount, boolTwrRaised))
+                PtDebugPrint("tldnPwrTwrPeriscope.OnServerInitComplete():  ageSDL[{}] = {}, TwrRaised = {}".format(kStringAgeSDLPumpCount, pumpCount, boolTwrRaised))
             except:
-                PtDebugPrint("tldnPwrTwrPeriscope.OnServerInitComplete():\tERROR: age sdl read failed, defaulting tower lowered")
+                PtDebugPrint("tldnPwrTwrPeriscope.OnServerInitComplete():  ERROR: age sdl read failed, defaulting tower lowered")
             if boolTwrRaised:
                 actSun.enable()
             else:
@@ -189,16 +190,16 @@ class tldnPwrTwrPeriscope(ptResponder):
             boolPwrMain = false
             try:
                 boolPwrMain = ageSDL[kStringAgeSDLMainPowerOn][0]
-                PtDebugPrint("tldnPwrTwrPeriscope.OnServerInitComplete():\tPwrMain=%d" % (boolPwrMain))
+                PtDebugPrint("tldnPwrTwrPeriscope.OnServerInitComplete():  PwrMain={}".format(boolPwrMain))
             except:
-                PtDebugPrint("tldnPwrTwrPeriscope.OnServerInitComplete():\tERROR: age sdl read failed, defaulting main power off")
+                PtDebugPrint("tldnPwrTwrPeriscope.OnServerInitComplete():  ERROR: age sdl read failed, defaulting main power off")
 
             # initialize tower whatnots based on SDL state
             if not boolPwrMain:
                 respPowerOff.run(self.key, fastforward=true)
             # if PwrOn but tower not raised, correct
             if boolPwrMain and not boolTwrRaised:
-                PtDebugPrint("tldnPwrTwrPeriscope.OnServerInitComplete():\tturning off main power because tower not raised")
+                PtDebugPrint("tldnPwrTwrPeriscope.OnServerInitComplete():  turning off main power because tower not raised")
                 ageSDL.setTagString(kStringAgeSDLMainPowerOn, "ignore")
                 ageSDL[kStringAgeSDLMainPowerOn] = (0,)
                 boolPwrMain = 0
@@ -217,7 +218,7 @@ class tldnPwrTwrPeriscope(ptResponder):
         scopeSpdUp = self.SDL["scopeSpdUp"][0]
         boolScopeAtTop = self.SDL["scopeAtTop"][0]
         boolScopeAtBtm = self.SDL["scopeAtBtm"][0]
-        PtDebugPrint("tldnPwrTwrPeriscope.Load():\tscope values: left=%f,up=%f,top=%d,btm=%d" % (scopeSpdLeft, scopeSpdUp, boolScopeAtTop, boolScopeAtBtm))
+        PtDebugPrint("tldnPwrTwrPeriscope.OnServerInitComplete():  scope values: left={:f},up={:f},top={},btm={}".format(scopeSpdLeft, scopeSpdUp, boolScopeAtTop, boolScopeAtBtm))
 
     def AvatarPage(self, avObj, pageIn, lastOut):
         "reset scope accessibility if scope user quits or crashes"
@@ -225,15 +226,15 @@ class tldnPwrTwrPeriscope(ptResponder):
             return
 
         avID = PtGetClientIDFromAvatarKey(avObj.getKey())
-        PtDebugPrint("tldnPwrTwrPeriscope.AvatarPage(): Client ID %d paging out" % (avID))
-        PtDebugPrint("tldnPwrTwrPeriscope.AvatarPage(): Periscope operator is client id %d" % (self.SDL["OperatorID"][0]))
+        PtDebugPrint("tldnPwrTwrPeriscope.AvatarPage():  Client ID {} paging out".format(avID))
+        PtDebugPrint("tldnPwrTwrPeriscope.AvatarPage():  Periscope operator is client id {}".format(self.SDL["OperatorID"][0]))
 
         if avID == self.SDL["OperatorID"][0]:
             Activate.enable()
             self.SDL["OperatorID"] = (-1,)
             self.SDL["boolOperated"] = (0,)
-            PtDebugPrint("tldnPwrTwrPeriscope.AvatarPage(): periscope operator paged out, reenabled periscope.")
-            PtDebugPrint("tldnPwrTwrPeriscope.AvatarPage(): OperatorID=%d, boolOperated=%d" % (self.SDL["OperatorID"][0], self.SDL["boolOperated"][0]))
+            PtDebugPrint("tldnPwrTwrPeriscope.AvatarPage():  periscope operator paged out, reenabled periscope.")
+            PtDebugPrint("tldnPwrTwrPeriscope.AvatarPage():  OperatorID={}, boolOperated={}".format(self.SDL["OperatorID"][0], self.SDL["boolOperated"][0]))
         else:
             return
 
@@ -249,7 +250,7 @@ class tldnPwrTwrPeriscope(ptResponder):
 
         if AgeStartedIn == PtGetAgeName():
             ageSDL = PtGetAgeSDL()
-            PtDebugPrint("tldnPwrTwrPeriscope.OnSDLNotify():\t VARname:%s, SDLname:%s, tag:%s, value:%d, playerID:%d" % (VARname, SDLname, tag, ageSDL[VARname][0], playerID))
+            PtDebugPrint("tldnPwrTwrPeriscope.OnSDLNotify():  VARname:{}, SDLname:{}, tag:{}, value:{}, playerID:{}".format(VARname, SDLname, tag, ageSDL[VARname][0], playerID))
             if tag == "ignore":
                 return
 
@@ -268,7 +269,7 @@ class tldnPwrTwrPeriscope(ptResponder):
                     # tower raised/lowered state didn't change
                     return
 
-                PtDebugPrint("tldnPwrTwrPeriscope.OnSDLNotify:\ttower state changed: boolTwrRaised=%d" % (boolTwrRaised))
+                PtDebugPrint("tldnPwrTwrPeriscope.OnSDLNotify():  tower state changed: boolTwrRaised={}".format(boolTwrRaised))
 
                 # Disable clickable to enter the scope while the tower is in motion
                 Activate.disable()
@@ -297,7 +298,7 @@ class tldnPwrTwrPeriscope(ptResponder):
                         GUICbxBlocker.setChecked(kScopeBlocked)
                         GUIDialog.refreshAllControls()
                     if boolPwrMain and not boolTwrRaised:  # power on, tower being lowered
-                        PtDebugPrint("tldnPwrTwrPeriscope.OnSDLNotify():\tturning off main power because being lowered")
+                        PtDebugPrint("tldnPwrTwrPeriscope.OnSDLNotify():  turning off main power because being lowered")
                         ageSDL.setTagString(kStringAgeSDLMainPowerOn, "towerLowered")
                         ageSDL[kStringAgeSDLMainPowerOn] = (0,)
                 return
@@ -352,7 +353,7 @@ class tldnPwrTwrPeriscope(ptResponder):
         # Stop Scope at vertical boundaries #
         #####################################
         if state and id == actStopAtTop.id and scopeSpdUp > 0:
-            PtDebugPrint("PERISCOPE: got event - near top")
+            PtDebugPrint("tldnPwrTwrPeriscope.OnNotify():  PERISCOPE: got event - near top")
             animScopeUp.value.stop()
             boolScopeAtTop = 1
             self.SDL["scopeAtTop"] = (1,)
@@ -360,7 +361,7 @@ class tldnPwrTwrPeriscope(ptResponder):
             self.SDL["scopeSpdUp"] = (0,)
             return
         if state and id == actStopAtBtm.id and scopeSpdUp < 0:
-            PtDebugPrint("PERISCOPE: got event - near bottom")
+            PtDebugPrint("tldnPwrTwrPeriscope.OnNotify():  PERISCOPE: got event - near bottom")
             animScopeUp.value.stop()
             boolScopeAtBtm = 1
             self.SDL["scopeAtBtm"] = (1,)
@@ -378,11 +379,11 @@ class tldnPwrTwrPeriscope(ptResponder):
                     if event[0] == kCollisionEvent:
                         linedUp = event[1]  # enter = 1, exit = 0
                         if linedUp:  # sun now lined up with scope
-                            PtDebugPrint("tldnPwrTwrPeriscope.OnNotify():\tturning on main power because dish is lined up")
+                            PtDebugPrint("tldnPwrTwrPeriscope.OnNotify():  turning on main power because dish is lined up")
                             ageSDL.setTagString(kStringAgeSDLMainPowerOn, "towerAligned")
                             ageSDL[kStringAgeSDLMainPowerOn] = (1,)
                         else:
-                            PtDebugPrint("tldnPwrTwrPeriscope.OnNotify():\tturning off main power because dish is not lined up")
+                            PtDebugPrint("tldnPwrTwrPeriscope.OnNotify():  turning off main power because dish is not lined up")
                             ageSDL.setTagString(kStringAgeSDLMainPowerOn, "towerMisaligned")
                             ageSDL[kStringAgeSDLMainPowerOn] = (0,)
                         break
@@ -401,8 +402,8 @@ class tldnPwrTwrPeriscope(ptResponder):
                 PtSendKIMessage(kDisableKIandBB, 0)
                 avID = PtGetClientIDFromAvatarKey(LocalAvatar.getKey())
                 self.SDL["OperatorID"] = (avID,)
-                PtDebugPrint("tldnPwrTwrPeriscope.OnNotify:\twrote SDL - scope operator id = %d" % (avID))
-                PtDebugPrint("tldnPwrTwrPeriscope.OnNotify:\tSDL OperatorID = %d" % (self.SDL["OperatorID"]))
+                PtDebugPrint("tldnPwrTwrPeriscope.OnNotify:  wrote SDL - scope operator id = {}".format(avID))
+                PtDebugPrint("tldnPwrTwrPeriscope.OnNotify:  SDL OperatorID = {}".format(self.SDL["OperatorID"]))
                 GUIDialog = PtGetDialogFromString(Vignette.value)
                 GUICbxBlocker = ptGUIControlCheckBox(GUIDialog.getControlFromTag(kGUIBlocker))
                 if boolTwrRaised:
@@ -464,7 +465,7 @@ class tldnPwrTwrPeriscope(ptResponder):
 
         if btnID == kGUIUpBtn:
             if scopeSpdUp == scopeSpdUpMax or boolScopeAtTop:
-                PtDebugPrint("PERISCOPE: at top or max speed already")
+                PtDebugPrint("tldnPwrTwrPeriscope.OnGUINotify():  PERISCOPE: at top or max speed already")
                 return
             scopeSpdUp = scopeSpdUp + scopeSpdUpInc
             if scopeSpdUp == 0:
@@ -485,7 +486,7 @@ class tldnPwrTwrPeriscope(ptResponder):
 
         if btnID == kGUIDownBtn:
             if scopeSpdUp == -scopeSpdUpMax or boolScopeAtBtm:
-                PtDebugPrint("PERISCOPE: at bottom or max speed already")
+                PtDebugPrint("tldnPwrTwrPeriscope.OnGUINotify():  PERISCOPE: at bottom or max speed already")
                 return
 
             scopeSpdUp = scopeSpdUp - scopeSpdUpInc
@@ -517,7 +518,7 @@ class tldnPwrTwrPeriscope(ptResponder):
     def IEngageTelescope(self):
         "After the behavior gets our eyes in the telescope, engage ourselves with the camera"
         # Disable First Person Camera
-        PtDebugPrint("tldnPwrTwrPeriscope:\tFirst Person Camera disabled.")
+        PtDebugPrint("tldnPwrTwrPeriscope.IEngageTelescope():  First Person Camera disabled.")
         cam = ptCamera()
         cam.undoFirstPerson()
         cam.disableFirstPersonOverride()
@@ -531,7 +532,7 @@ class tldnPwrTwrPeriscope(ptResponder):
                 PtShowDialog(Vignette.value)
         # get control key events
         PtEnableControlKeyEvents(self.key)
-        PtDebugPrint("tldnPwrTwrPeriscope.IEngageTelescope():\tentering telescope...left=%f,up=%f,top=%d,btm=%d" % (scopeSpdLeft, scopeSpdUp, boolScopeAtTop, boolScopeAtBtm))
+        PtDebugPrint("tldnPwrTwrPeriscope.IEngageTelescope():  entering telescope...left={:f},up={:f},top={},btm={}".format(scopeSpdLeft, scopeSpdUp, boolScopeAtTop, boolScopeAtBtm))
 
     def IQuitTelescope(self):
         "Disengage and exit the telescope mode"
@@ -553,6 +554,6 @@ class tldnPwrTwrPeriscope(ptResponder):
         PtAtTimeCallback(self.key, 3, kTimerIDClearOperator)  # Put in this delay to avoid people entering the scope before they've fully exited it
 
         #Re-enable first person camera
-        PtDebugPrint("tldnPwrTwrPeriscope:\tFirst Person Camera re-enabled.")
+        PtDebugPrint("tldnPwrTwrPeriscope.IQuitTelescope():  First Person Camera re-enabled.")
         cam = ptCamera()
         cam.enableFirstPersonOverride()

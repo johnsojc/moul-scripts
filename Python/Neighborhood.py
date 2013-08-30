@@ -56,7 +56,10 @@ class Neighborhood(ptResponder):
     def __init__(self):
         ptResponder.__init__(self)
         self.id = 5014
-        self.version = 1
+        version = 1
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: Neighborhood v{}".format(self.version))
 
     def OnFirstUpdate(self):
         pass

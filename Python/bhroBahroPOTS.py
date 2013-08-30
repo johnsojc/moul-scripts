@@ -66,8 +66,10 @@ class bhroBahroPOTS(ptResponder):
     def __init__(self):
         ptResponder.__init__(self)
         self.id = 8816
-        self.version = 1
-        PtDebugPrint("bhroBahroPOTS: init  version = %d" % (self.version))
+        version = 1
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: bhroBahroPOTS v{}".format(self.version))
 
     def OnFirstUpdate(self):
         global gAgeStartedIn
@@ -78,40 +80,39 @@ class bhroBahroPOTS(ptResponder):
     def OnServerInitComplete(self):
         # if the age is not the one that I'm from then run the responder to make it back off
         ageFrom = PtGetPrevAgeName()
-        PtDebugPrint("bhroBahroPOTS.OnServerInitComplete: Came from %s, running opposite responder state" % (ageFrom))
+        PtDebugPrint("bhroBahroPOTS.OnServerInitComplete():  Came from {}, running opposite responder state".format(ageFrom))
         if ageFrom == "Ercana":
             respWedges.run(self.key, state="Ahnonay", fastforward=1)
         elif ageFrom == "Ahnonay":
             respWedges.run(self.key, state="Ercana", fastforward=1)
 
         psnlSDL = xPsnlVaultSDL()
-        PtDebugPrint(psnlSDL["psnlBahroWedge12"][0])
-        PtDebugPrint(psnlSDL["psnlBahroWedge13"][0])
+        PtDebugPrint("bhroBahroPOTS.OnServerInitComplete():  {}".format(psnlSDL["psnlBahroWedge12"][0]))
+        PtDebugPrint("bhroBahroPOTS.OnServerInitComplete():  {}".format(psnlSDL["psnlBahroWedge13"][0]))
 
         if psnlSDL["psnlBahroWedge12"][0]:
-            PtDebugPrint("bhroBahroPOTS.OnServerInitComplete: You have the Ercana wedge, no need to display it.")
+            PtDebugPrint("bhroBahroPOTS.OnServerInitComplete():  You have the Ercana wedge, no need to display it.")
             respErcanaRing.run(self.key, fastforward=1)
         if psnlSDL["psnlBahroWedge13"][0]:
-            PtDebugPrint("bhroBahroPOTS.OnServerInitComplete: You have the Ahnonay wedge, no need to display it.")
+            PtDebugPrint("bhroBahroPOTS.OnServerInitComplete():  You have the Ahnonay wedge, no need to display it.")
             respAhnonayRing.run(self.key, fastforward=1)
 
     def OnNotify(self, state, id, events):
-        #print "bhroBahroPOTS.OnNotify: state=%s id=%d events=" % (state, id), events
 
         if id == clkErcana.id and state:
-            PtDebugPrint("bhroBahroPOTS.OnNotify: clicked Ercana symbol")
+            PtDebugPrint("bhroBahroPOTS.OnNotify():  clicked Ercana symbol")
             respErcanaRing.run(self.key, avatar=PtFindAvatar(events))
             psnlSDL = xPsnlVaultSDL()
             sdlVal = psnlSDL["psnlBahroWedge12"][0]
             if not sdlVal:
-                PtDebugPrint("bhroBahroPOTS.OnNotify:  Turning wedge SDL of psnlBahroWedge12 to On")
+                PtDebugPrint("bhroBahroPOTS.OnNotify():  Turning wedge SDL of psnlBahroWedge12 to On")
                 psnlSDL["psnlBahroWedge12"] = (1,)
 
         elif id == clkAhnonay.id and state:
-            PtDebugPrint("bhroBahroPOTS.OnNotify: clicked Ahnonay symbol")
+            PtDebugPrint("bhroBahroPOTS.OnNotify():  clicked Ahnonay symbol")
             respAhnonayRing.run(self.key, avatar=PtFindAvatar(events))
             psnlSDL = xPsnlVaultSDL()
             sdlVal = psnlSDL["psnlBahroWedge13"][0]
             if not sdlVal:
-                PtDebugPrint("bhroBahroPOTS.OnNotify:  Turning wedge SDL of psnlBahroWedge13 to On")
+                PtDebugPrint("bhroBahroPOTS.OnNotify():  Turning wedge SDL of psnlBahroWedge13 to On")
                 psnlSDL["psnlBahroWedge13"] = (1,)

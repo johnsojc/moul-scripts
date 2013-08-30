@@ -136,8 +136,8 @@ class xOpeningSequence(ptModifier):
     def __init__(self):
         ptModifier.__init__(self)
         self.id = 194
-        self.version = MaxVersionNumber
-        PtDebugPrint("__xOpeningSequence: Max version %d - minor version %d" % (MaxVersionNumber, MinorVersionNumber))
+        self.version = "{}.{}".format(MaxVersionNumber, MinorVersionNumber)
+        PtDebugPrint("__init__: xOpeningSequence: v{}".format(self.version))
 
     def OnFirstUpdate(self):
         "First update, load our dialogs"
@@ -155,7 +155,7 @@ class xOpeningSequence(ptModifier):
             avatar.avatar.registerForBehaviorNotify(self.key)
             gIntroByTimer = 0
         except:
-            PtDebugPrint("xOpeningSequence failed to get local avatar")
+            PtDebugPrint("xOpeningSequence.OnFirstUpdate():  failed to get local avatar")
             gIntroByTimer = 1
             return
         # stop rendering the scene
@@ -171,7 +171,7 @@ class xOpeningSequence(ptModifier):
 
     def __del__(self):
         "the destructor - dialogs unload somewhere else... in IStartGame()"
-        PtDebugPrint("xOpeningSequence::destructor... we're gone!", level=kDebugDumpLevel)
+        PtDebugPrint("xOpeningSequence.__del__:  destructor... we're gone!", level=kDebugDumpLevel)
 
     def AvatarPage(self, sobj, unload, lastout):
         pass
@@ -181,7 +181,7 @@ class xOpeningSequence(ptModifier):
         global gOriginalAmbientVolume
         global gOriginalSFXVolume
         global gIntroMovie
-        PtDebugPrint("xOpeningSequence::OnGUINotify id=%d, event=%d control=" % (id, event), control, level=kDebugDumpLevel)
+        PtDebugPrint("xOpeningSequence.OnGUINotify():  id={}, event={} control={}".format(id, event, control), level=kDebugDumpLevel)
 ###############################################
 ##
 ##  IntroMovie dialog processing
@@ -222,7 +222,7 @@ class xOpeningSequence(ptModifier):
                     PtEnableRenderScene()
                     PtGUICursorOn()
                     OrientationDlg.dialog.show()
-                    PtDebugPrint("xOpeningSequence - no intro movie!!!", level=kDebugDumpLevel)
+                    PtDebugPrint("xOpeningSequence.OnGUINotify():  no intro movie!!!", level=kDebugDumpLevel)
             elif event == kAction or event == kValueChanged:
                 orientationID = control.getTagID()
                 if orientationID == kFirstHelpOkBtn:
@@ -231,7 +231,7 @@ class xOpeningSequence(ptModifier):
                 self.IStartHelp()
         elif id == FirstHelpDlg.id:
             if event == kDialogLoaded:
-                PtDebugPrint("xOpeningSequence - quiet sounds and show background", level=kDebugDumpLevel)
+                PtDebugPrint("xOpeningSequence.OnGUINotify():  quiet sounds and show background", level=kDebugDumpLevel)
                 # this SHOULD be in the max file, but since someone has the KI max file tied up, it will have to go here
                 # set the text localized strings
                 textField = ptGUIControlTextBox(FirstHelpDlg.dialog.getControlFromTag(kHelpTitle))
@@ -309,7 +309,7 @@ class xOpeningSequence(ptModifier):
 
     def OnBehaviorNotify(self, type, id, state):
         global playScene
-        PtDebugPrint("xOpeningSequence.OnBehaviorNotify(): %d" % (type))
+        PtDebugPrint("xOpeningSequence.OnBehaviorNotify():  {}".format(type))
         if type == PtBehaviorTypes.kBehaviorTypeLinkIn and not state:
             self.IStartMovie()
             avatar = PtGetLocalAvatar()
@@ -328,7 +328,7 @@ class xOpeningSequence(ptModifier):
             self.IUpdateSounds()
 
     def OnMovieEvent(self, movieName, reason):
-        PtDebugPrint("xOpeningSequence: movie done ", level=kDebugDumpLevel)
+        PtDebugPrint("xOpeningSequence.OnMovieEvent():  movie done ", level=kDebugDumpLevel)
         if gIntroMovie:
             self.IStartOrientation()
 
@@ -340,9 +340,9 @@ class xOpeningSequence(ptModifier):
                 # show the dialog
                 IntroMovieDlg.dialog.show()
                 gIntroMovie.resume()
-                PtDebugPrint("xOpeningSequence - playing movie", level=kDebugDumpLevel)
+                PtDebugPrint("xOpeningSequence.IStartMovie():  playing movie", level=kDebugDumpLevel)
             else:
-                PtDebugPrint("xOpeningSequence - movie already playing", level=kDebugDumpLevel)
+                PtDebugPrint("xOpeningSequence.IStartMovie():  movie already playing", level=kDebugDumpLevel)
             gIntroStarted = 1
 
     def IStartOrientation(self):

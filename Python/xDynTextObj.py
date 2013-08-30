@@ -65,7 +65,10 @@ class xDynTextObj(ptModifier):
     def __init__(self):
         ptModifier.__init__(self)
         self.id = 204
-        self.version = 1
+        version = 1
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: xDynTextObj v{}".format(self.version))
 
     def OnFirstUpdate(self):
         self.IWriteText()
@@ -75,7 +78,7 @@ class xDynTextObj(ptModifier):
         try:
             textObj = xDynTextDefs.xTextObjects[index]
         except KeyError:
-            PtDebugPrint("Missing "+index+" table entry")
+            PtDebugPrint("xDynTextObj.IWriteText():  Missing {} table entry".format(index))
             return
         if len(textObj) == 7:
             fontName, fontSize, fontColor, marginSize, spacing, locPath, justify = textObj
@@ -91,8 +94,8 @@ class xDynTextObj(ptModifier):
         textX = marginSize[1]
         textY = marginSize[0]
 
-        PtDebugPrint("Displaying text in the following rectangle: (%d,%d,%d,%d)" % (marginSize[1], marginSize[0], theMap.getWidth()-marginSize[3], theMap.getHeight()-marginSize[2]))
-        PtDebugPrint("Rendering \""+locPath+"\" on the target dynamic text object")
+        PtDebugPrint("xDynTextObj.IWriteText():  Displaying text in the following rectangle: ({},{},{},{})".format(marginSize[1], marginSize[0], theMap.getWidth()-marginSize[3], theMap.getHeight()-marginSize[2]))
+        PtDebugPrint("xDynTextObj.IWriteText():  Rendering \""+locPath+"\" on the target dynamic text object")
 
         theMap.netPropagate(false)  # we don't want our text appearing on other machines, since we are going to be localized
 

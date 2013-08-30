@@ -99,11 +99,14 @@ class grsnMainWallPython(ptResponder):
 
     def __init__(self):
         "construction"
-        PtDebugPrint("grsnMainWallPython::init begin")
+        # PtDebugPrint("grsnMainWallPython.__init__() begin")
         ptResponder.__init__(self)
         self.id = 52394
-        self.version = 1
-        PtDebugPrint("grsnMainWallPython::init end")
+        version = 1
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: grsnMainWallPython v{}".format(self.version))
+        # PtDebugPrint("grsnMainWallPython.__init__() end")
 """
     def OnServerInitComplete(self):
         global ReceiveInit

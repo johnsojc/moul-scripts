@@ -82,8 +82,10 @@ class xPotsSymbol(ptResponder):
     def __init__(self):
         ptResponder.__init__(self)
         self.id = 230
-        self.version = 1
-        PtDebugPrint("xPotsSymbol.__init__: v.%d" % (self.version))
+        version = 1
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: xPotsSymbol v{}".format(self.version))
 
     def OnFirstUpdate(self):
         global AgeStartedIn
@@ -97,13 +99,13 @@ class xPotsSymbol(ptResponder):
                 or not (type(sdlSaveCloth5.value) is str and sdlSaveCloth5.value != "")
                 or not (type(sdlSaveCloth6.value) is str and sdlSaveCloth6.value != "")
                 or not (type(sdlSaveCloth7.value) is str and sdlSaveCloth7.value != "")):
-            PtDebugPrint("ERROR: xPotsSymbol.OnFirstUpdate():\tERROR: missing a SDL var name")
+            PtDebugPrint("xPotsSymbol.OnFirstUpdate():  ERROR: missing an SDL var name")
             pass
 
         listSDL = [sdlSaveCloth1.value, sdlSaveCloth2.value, sdlSaveCloth3.value,
                    sdlSaveCloth4.value, sdlSaveCloth5.value, sdlSaveCloth6.value,
                    sdlSaveCloth7.value]
-        PtDebugPrint("xPotsSymbol.OnFirstUpdate(): listSDL = %s" % (listSDL))
+        PtDebugPrint("xPotsSymbol.OnFirstUpdate():  listSDL = {}".format(listSDL))
 
         if boolFirstUpdate.value:
             self.Initialize()
@@ -117,12 +119,12 @@ class xPotsSymbol(ptResponder):
             try:
                 ageSDL = PtGetAgeSDL()
                 for sc in listSDL:
-                    PtDebugPrint("xPotsSymbol.OnServerInitComplete():\t sdl: %s = %d" % (sc, ageSDL[sc][0]))
+                    PtDebugPrint("xPotsSymbol.Initialize():  sdl: {} = {}".format(sc, ageSDL[sc][0]))
                     ageSDL.setFlags(sc, 1, 1)
                     ageSDL.sendToClients(sc)
                     ageSDL.setNotify(self.key, sc, 0.0)
             except:
-                PtDebugPrint("ERROR: xPotsSymbol.OnServerInitComplete():\tERROR reading age SDL, ignoring script")
+                PtDebugPrint("xPotsSymbol.Initialize():  ERROR: Error reading age SDL, ignoring script")
                 return
 
             self.IUpdateIcon()
@@ -131,7 +133,7 @@ class xPotsSymbol(ptResponder):
         if AgeStartedIn == PtGetAgeName():
             ageSDL = PtGetAgeSDL()
             if VARname in listSDL:
-                PtDebugPrint("DEBUG: xPotsSymbol.OnSDLNotify():\t VARname:%s, SDLname:%s, value:%d" % (VARname, SDLname, ageSDL[VARname][0]))
+                PtDebugPrint("xPotsSymbol.OnSDLNotify():  DEBUG: VARname:{}, SDLname:{}, value:{}".format(VARname, SDLname, ageSDL[VARname][0]))
                 if ageSDL[VARname][0] == 1:
                     self.IUpdateIcon()
 
@@ -141,12 +143,12 @@ class xPotsSymbol(ptResponder):
         for sc in listSDL:
             if ageSDL[sc][0] == 1:
                 tallySC += 1
-        PtDebugPrint("xPotsSymbol.IUpdateIcon(): total # of SaveCloths hit = %d" % (tallySC))
+        PtDebugPrint("xPotsSymbol.IUpdateIcon():  total # of SaveCloths hit = {}".format(tallySC))
         if tallySC > 0:
             respIconStages.run(self.key, state=iconStates[tallySC-1], fastforward=ff)
-            PtDebugPrint("turning on POTS icon stage: ", iconStates[tallySC-1])
+            PtDebugPrint("xPotsSymbol.IUpdateIcon():  turning on POTS icon stage: {}".format(iconStates[tallySC-1]))
             if tallySC == len(listSDL):
-                PtDebugPrint("POTS icon is completed, will enable link to POTS cave")
+                PtDebugPrint("xPotsSymbol.IUpdateIcon():  POTS icon is completed, will enable link to POTS cave")
                 rgnIconLinker.enable()
 
     def OnNotify(self, state, id, events):

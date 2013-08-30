@@ -83,8 +83,9 @@ class xDialogToggle(ptModifier):
         ptModifier.__init__(self)
         self.id = 5104
         version = 1
-        self.version = version
-        PtDebugPrint("__init__xDialogToggle v.%d" % (version))
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: xDialogToggle v{}".format(self.version))
 
     def IGetAgeFilename(self):
         "returns the .age file name of the age"
@@ -118,7 +119,7 @@ class xDialogToggle(ptModifier):
 
     def OnControlKeyEvent(self, controlKey, activeFlag):
         "Control key events... anything we're interested in?"
-        PtDebugPrint("Got controlKey event %d and its activeFlage is %d" % (controlKey, activeFlag), level=kDebugDumpLevel)
+        PtDebugPrint("xDialogToggle.OnGUINotify():  Got controlKey event {} and its activeFlag is {}".format(controlKey, activeFlag), level=kDebugDumpLevel)
         if controlKey == PlasmaControlKeys.kKeyExitMode:
             self.IQuitDialog()
 
@@ -129,7 +130,7 @@ class xDialogToggle(ptModifier):
         PtLoadDialog(Vignette.value, self.key, self.IGetAgeFilename())
         if PtIsDialogLoaded(Vignette.value):
             PtShowDialog(Vignette.value)
-            PtDebugPrint("dialog: %s goes up" % (Vignette.value))
+            PtDebugPrint("xDialogToggle.OnGUINotify():  dialog: {} goes up".format(Vignette.value))
         # get control key events
         PtGetControlEvents(true, self.key)
 
@@ -139,9 +140,9 @@ class xDialogToggle(ptModifier):
         # exit every thing
         if Vignette.value:
             PtHideDialog(Vignette.value)
-            PtDebugPrint("Dialog: %s goes down" % (Vignette.value))
+            PtDebugPrint("xDialogToggle.OnGUINotify():  Dialog: {} goes down".format(Vignette.value))
         else:
-            PtDebugPrint("WTH!!!")
+            PtDebugPrint("xDialogToggle.OnGUINotify():  WTH!!!")
         # disable the Control key events
         PtGetControlEvents(false, self.key)
         # re-enable the dialog for someone else to use

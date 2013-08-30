@@ -70,9 +70,11 @@ class grsnNexusBookMachine(ptResponder):
 
     def __init__(self):
         ptResponder.__init__(self)
-        PtDebugPrint("book machine init")
         self.id = 53624
-        self.version = 2
+        version = 2
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: grsnNexusBookMachine v{}".format(self.version))
 
     def OnServerInitComplete(self):
         pass
@@ -97,7 +99,7 @@ class grsnNexusBookMachine(ptResponder):
         global waitingOnYBook
         global yellowLink
 
-        PtDebugPrint("id %d" % (id))
+        PtDebugPrint("grsnNexusBookMachine.OnNotify():  id {}".format(id))
 
         avatar = PtFindAvatar(events)
         local = PtGetLocalAvatar()
@@ -106,10 +108,10 @@ class grsnNexusBookMachine(ptResponder):
             return
 
         if (id == fakeLinkBehavior.id):
-            PtDebugPrint("notified of link behavior, yellow book %s" % (yellowLink))
+            PtDebugPrint("grsnNexusBookMachine.OnNotify():  notified of link behavior, yellow book {}".format(yellowLink))
             for event in events:
                 if (event[0] == kMultiStageEvent and event[1] == 0 and event[2] == kEnterStage):
-                    PtDebugPrint("started touching book, set warp out timer")
+                    PtDebugPrint("grsnNexusBookMachine.OnNotify():  started touching book, set warp out timer")
                     PtAtTimeCallback(self.key, 1.0, 0)
                     return
 
@@ -117,22 +119,22 @@ class grsnNexusBookMachine(ptResponder):
             return
 
         if (id == bookPurpleInPos.id):
-            PtDebugPrint("Purple book aligned")
+            PtDebugPrint("grsnNexusBookMachine.OnNotify():  Purple book aligned")
             bookPurpleOutResponder.run(self.key)
 
         if (id == bookYellowInPos.id):
-            PtDebugPrint("Yellow book aligned")
+            PtDebugPrint("grsnNexusBookMachine.OnNotify():  Yellow book aligned")
             bookYellowOutResponder.run(self.key)
 
         if (id == entryTrigger.id):
             PtWearMaintainerSuit(avatar.getKey(), false)
 
         if (id == bookPurpleClickable.id):
-            PtDebugPrint("touched purple team room book")
+            PtDebugPrint("grsnNexusBookMachine.OnNotify():  touched purple team room book")
             yellowLink = false
             avatar.avatar.runBehaviorSetNotify(fakeLinkBehavior.value, self.key, fakeLinkBehavior.netForce)
 
         if (id == bookYellowClickable.id):
-            PtDebugPrint("touched yellow team room book")
+            PtDebugPrint("grsnNexusBookMachine.OnNotify():  touched yellow team room book")
             yellowLink = true
             avatar.avatar.runBehaviorSetNotify(fakeLinkBehavior.value, self.key, fakeLinkBehavior.netForce)

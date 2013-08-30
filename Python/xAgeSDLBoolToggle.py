@@ -71,11 +71,14 @@ class xAgeSDLBoolToggle(ptResponder):
     def __init__(self):
         ptResponder.__init__(self)
         self.id = 5033
-        self.version = 1
+        version = 1
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: xAgeSDLBoolToggle v{}".format(self.version))
 
     def OnFirstUpdate(self):
         if not (type(stringVarName.value) is str and stringVarName.value != ""):
-            PtDebugPrint("ERROR: xAgeSDLBoolToggle.OnFirstUpdate():\tERROR: missing SDL var name")
+            PtDebugPrint("xAgeSDLBoolToggle.OnFirstUpdate():  ERROR: missing SDL var name")
 
     def OnServerInitComplete(self):
         global boolCurrentValue
@@ -88,10 +91,10 @@ class xAgeSDLBoolToggle(ptResponder):
             try:
                 boolCurrentValue = ageSDL[stringVarName.value][0]
             except:
-                PtDebugPrint("ERROR: xAgeSDLBoolToggle.OnServerInitComplete():\tERROR reading age SDL")
-            PtDebugPrint("DEBUG: xAgeSDLBoolToggle.OnServerInitComplete():\t%s = %d" % (stringVarName.value, boolCurrentValue))
+                PtDebugPrint("xAgeSDLBoolToggle.OnServerInitComplete():  ERROR: Errot reading age SDL")
+            PtDebugPrint("xAgeSDLBoolToggle.OnServerInitComplete():  DEBUG: {} = {}".format(stringVarName.value, boolCurrentValue))
         else:
-            PtDebugPrint("ERROR: xAgeSDLBoolToggle.OnServerInitComplete():\tERROR: missing SDL var name")
+            PtDebugPrint("xAgeSDLBoolToggle.OnServerInitComplete():  ERROR: missing SDL var name")
 
     def OnNotify(self, state, id, events):
         global boolCurrentValue
@@ -99,13 +102,13 @@ class xAgeSDLBoolToggle(ptResponder):
         # is this notify something I should act on?
         if id == actTrigger.id and state and PtFindAvatar(events) == PtGetLocalAvatar():
             if type(actTrigger.value) is list and len(actTrigger.value) > 0:
-                PtDebugPrint("DEBUG: xAgeSDLBoolToggle.OnNotify():\t local player requesting %s change via %s" % (stringVarName.value, actTrigger.value[0].getName()))
+                PtDebugPrint("xAgeSDLBoolToggle.OnNotify():  DEBUG: local player requesting {} change via {}".format(stringVarName.value, actTrigger.value[0].getName()))
         else:
             return
 
         # error check
         if type(stringVarName.value) is not str or stringVarName.value == "":
-            PtDebugPrint("ERROR: xAgeSDLBoolToggle.OnNotify():\tERROR: missing SDL var name")
+            PtDebugPrint("xAgeSDLBoolToggle.OnNotify():  ERROR: missing SDL var name")
             return
 
         ageSDL = PtGetAgeSDL()
@@ -118,7 +121,7 @@ class xAgeSDLBoolToggle(ptResponder):
             ageSDL.setTagString(stringVarName.value, stringInfo.value)
 
         ageSDL[stringVarName.value] = (boolCurrentValue,)
-        PtDebugPrint("DEBUG: xAgeSDLBoolToggle.OnNotify():\tset age SDL var %s to %d" % (stringVarName.value, boolCurrentValue))
+        PtDebugPrint("xAgeSDLBoolToggle.OnNotify():  DEBUG: set age SDL var {} to {}".format(stringVarName.value, boolCurrentValue))
 
     # in case someone other than me changes my var(s)
     def OnSDLNotify(self, VARname, SDLname, playerID, tag):
@@ -126,5 +129,5 @@ class xAgeSDLBoolToggle(ptResponder):
 
         ageSDL = PtGetAgeSDL()
         if VARname == stringVarName.value:
-            PtDebugPrint("DEBUG: xAgeSDLBoolToggle.OnSDLNotify():\t VARname:%s, SDLname:%s, tag:%s, value:%d" % (VARname, SDLname, tag, ageSDL[stringVarName.value][0]))
+            PtDebugPrint("xAgeSDLBoolToggle.OnSDLNotify():  DEBUG: VARname:{}, SDLname:{}, tag:{}, value:{}".format(VARname, SDLname, tag, ageSDL[stringVarName.value][0]))
             boolCurrentValue = ageSDL[stringVarName.value][0]

@@ -161,8 +161,9 @@ class tldnBucketBrain(ptResponder):
         self.id = 5006
 
         version = 18
-        self.version = version
-        PtDebugPrint("__init__tldnBucketBrain v.%s" % (version))
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: tldnBucketBrain v{}".format(self.version))
 
     def OnFirstUpdate(self):
         global AgeStartedIn
@@ -177,7 +178,7 @@ class tldnBucketBrain(ptResponder):
         ageSDL = PtGetAgeSDL()
 
         # Disable the buckets until we are ready to initialize them
-        PtDebugPrint("tldnBucketBrain.OnServerInitComplete():\tBucket enter/exit detectors DISABLED", level=kDebugDumpLevel)
+        PtDebugPrint("tldnBucketBrain.OnServerInitComplete():  Bucket enter/exit detectors DISABLED", level=kDebugDumpLevel)
         actBktEnter1.disable()
         actBktEnter2.disable()
         actBktExit.disable()
@@ -187,9 +188,9 @@ class tldnBucketBrain(ptResponder):
         leverPulledState = ageSDL[kStringAgeSDLLeverPulled][0]
         if leverPulledState:
             respExtSendLeverPull.run(self.key, fastforward=1)
-            PtDebugPrint("tldnBucketBrain.OnServerInitComplete():\tLever starting in the pulled state (on)", level=kDebugDumpLevel)
+            PtDebugPrint("tldnBucketBrain.OnServerInitComplete():  Lever starting in the pulled state (on)", level=kDebugDumpLevel)
         else:
-            PtDebugPrint("tldnBucketBrain.OnServerInitComplete():\tLever starting in the pushed state (off)", level=kDebugDumpLevel)
+            PtDebugPrint("tldnBucketBrain.OnServerInitComplete():  Lever starting in the pushed state (off)", level=kDebugDumpLevel)
 
         # Setup the buckets
         buckets = (objBucket1.value, objBucket2.value, objBucket3.value, objBucket4.value)
@@ -199,9 +200,9 @@ class tldnBucketBrain(ptResponder):
 
         if numPlayers == 0:
             # loading cause I just joined age and there's no one else here so...clear out any phantom riders
-            PtDebugPrint("tldnBucketBrain.OnServerInitComplete():\tRe-initializing age as I'm the only one here!", level=kDebugDumpLevel)
+            PtDebugPrint("tldnBucketBrain.OnServerInitComplete():  Re-initializing age as I'm the only one here!", level=kDebugDumpLevel)
             ageSDL[kStringAgeSDLRiders] = (-1, -1, -1, -1)
-            PtDebugPrint("Tye: Resetting avatar at entry!")
+            PtDebugPrint("tldnBucketBrain.OnServerInitComplete():  Tye: Resetting avatar at entry!")
             avaIDAtEntry = -1
 
             # If we're creating a brand new age we need to intialize this variable.  Since it's not done by default,
@@ -218,7 +219,7 @@ class tldnBucketBrain(ptResponder):
 
             # enable the bucket enter activators
             if bucketAtEntry > -1:
-                PtDebugPrint("tldnBucketBrain.OnServerInit():\tEnabling the bucket enter activators!", level=kDebugDumpLevel)
+                PtDebugPrint("tldnBucketBrain.OnServerInit():  Enabling the bucket enter activators!", level=kDebugDumpLevel)
                 actBktEnter1.enable()
                 actBktEnter2.enable()
 
@@ -243,7 +244,7 @@ class tldnBucketBrain(ptResponder):
             # assume all bucket riders are valid and let AvatarPage prune em
 
             riders = ageSDL[kStringAgeSDLRiders]
-            PtDebugPrint("tldnBucketBrain.OnServerInitComplete()\t Current bucket rider list: ", riders, level=kDebugDumpLevel)
+            PtDebugPrint("tldnBucketBrain.OnServerInitComplete():  Current bucket rider list: {}".format(riders), level=kDebugDumpLevel)
             index = 0
             for rider in riders:
                 if rider != -1:
@@ -262,7 +263,7 @@ class tldnBucketBrain(ptResponder):
             # Now we can setup the activators as necessary....
             if bucketAtEntry < 0:
                 # The bucket is not at the entry point!
-                PtDebugPrint("Tye: Resetting avatar at entry!")
+                PtDebugPrint("tldnBucketBrain.OnServerInitComplete():  Tye: Resetting avatar at entry!")
                 avaIDAtEntry = -1
 
                 # Normally we'd disable the enter activators, but for safety's sake, we disabled them earlier
@@ -271,10 +272,10 @@ class tldnBucketBrain(ptResponder):
             elif riders[bucketAtEntry] < 0:
                 # The bucket is empty and ready to accept a rider.
                 avaIDAtEntry = -1
-                PtDebugPrint("Tye: Resetting avatar at entry!")
+                PtDebugPrint("tldnBucketBrain.OnServerInitComplete():  Tye: Resetting avatar at entry!")
 
                 # Enable the enter activators
-                PtDebugPrint("tldnBucketBrain.OnServerInit():\tEnabling the bucket enter activators!", level=kDebugDumpLevel)
+                PtDebugPrint("tldnBucketBrain.OnServerInit():  Enabling the bucket enter activators!", level=kDebugDumpLevel)
                 actBktEnter1.enable()
                 actBktEnter2.enable()
 
@@ -361,15 +362,15 @@ class tldnBucketBrain(ptResponder):
         ageSDL = PtGetAgeSDL()
 
         avaID = PtGetClientIDFromAvatarKey(avaObj.getKey())
-        PtDebugPrint("tldnBucketBrain.AvatarPage():\tAvatar %s is trying to page out" % (avaID), level=kDebugDumpLevel)
+        PtDebugPrint("tldnBucketBrain.AvatarPage():  Avatar {} is trying to page out".format(avaID), level=kDebugDumpLevel)
 
         riders = ageSDL[kStringAgeSDLRiders]
         index = 0
         for rider in riders:
             if rider == avaID:
                 avaIDAtEntry = -1
-                PtDebugPrint("Tye: Resetting avatar at entry!")
-                PtDebugPrint("tldnBucketBrain.AvatarPage():\tbucket rider left age, pruning bucket rider list", level=kDebugDumpLevel)
+                PtDebugPrint("tldnBucketBrain.AvatarPage():  Tye: Resetting avatar at entry!")
+                PtDebugPrint("tldnBucketBrain.AvatarPage():  bucket rider left age, pruning bucket rider list", level=kDebugDumpLevel)
                 rider = -1
 
                 if PtGetClientIDFromAvatarKey(PtGetLocalAvatar().getKey()) == avaID:
@@ -416,14 +417,14 @@ class tldnBucketBrain(ptResponder):
         riders = None  # Need to release variable otherwise the SDL refuses to update (thus why I've moved it ouside of the 'for' loop)
         ageSDL.setIndex(kStringAgeSDLRiders, index, -1)
 
-        PtDebugPrint("tldnBucketBrain.AvatarPage():\tPruned rider: %s from bucket: %s" % (avaID, index), level=kDebugDumpLevel)
+        PtDebugPrint("tldnBucketBrain.AvatarPage():  Pruned rider: {} from bucket: {}".format(avaID, index), level=kDebugDumpLevel)
         return
 
     def OnSDLNotify(self, VARname, SDLname, playerID, tag):
         global scriptInitialized
         ageSDL = PtGetAgeSDL()
 
-        PtDebugPrint("****> RECEIVED: SDL UPDATE: var= %s  <****" % (VARname), level=kDebugDumpLevel)
+        PtDebugPrint("tldnBucketBrain.OnSDLNotify():  RECEIVED: SDL UPDATE: var= {}".format(VARname), level=kDebugDumpLevel)
 
         #------------------------------------------------
         #  Power On/Off Notification
@@ -432,13 +433,13 @@ class tldnBucketBrain(ptResponder):
             powerOn = ageSDL[kStringAgeSDLPowerOn][0]
 
             if powerOn and ageSDL[kStringAgeSDLLeverPulled][0]:
-                PtDebugPrint("tldnBucketBrain.OnSDLNotify():\t The power is turned on and will start the buckets", level=kDebugDumpLevel)
+                PtDebugPrint("tldnBucketBrain.OnSDLNotify():  The power is turned on and will start the buckets", level=kDebugDumpLevel)
                 self.UpdateBucketState(kBucketInputs.Power, ageSDL[kStringAgeSDLPowerOn][0])
             elif not powerOn:
-                PtDebugPrint("tldnBucketBrain.OnSDLNotify()\t The power has been turned off", level=kDebugDumpLevel)
+                PtDebugPrint("tldnBucketBrain.OnSDLNotify():  The power has been turned off", level=kDebugDumpLevel)
                 self.UpdateBucketState(kBucketInputs.Power, ageSDL[kStringAgeSDLPowerOn][0])
             else:
-                PtDebugPrint("tldnBucketBrain.OnSDLNotify()\t The power has been turned on, but awaiting the lever pull to start buckets", level=kDebugDumpLevel)
+                PtDebugPrint("tldnBucketBrain.OnSDLNotify():  The power has been turned on, but awaiting the lever pull to start buckets", level=kDebugDumpLevel)
             return
 
         #------------------------------------------------
@@ -447,7 +448,7 @@ class tldnBucketBrain(ptResponder):
         if VARname == kStringAgeSDLBucketState:
             curBucketState = ageSDL[kStringAgeSDLBucketState][0]
             fastforward = ageSDL[kStringAgeSDLBucketState][1]
-            PtDebugPrint("Debug: tldnBucketBrain.OnSDLNotify(): *****>Changed Bucket State to: %s, with FF = %s" % (kBucketStates.ToString(curBucketState), fastforward), level=kDebugDumpLevel)
+            PtDebugPrint("DEBUG: tldnBucketBrain.OnSDLNotify():  Changed Bucket State to: {}, with FF = {}".format(kBucketStates.ToString(curBucketState), fastforward), level=kDebugDumpLevel)
             self.RunBucketState(curBucketState, fastforward=fastforward)
 
             # Set WCP bucket LED
@@ -503,9 +504,9 @@ class tldnBucketBrain(ptResponder):
                                 return
                         index = index + 1
                 else:
-                    PtDebugPrint("ERROR: tldnBucketBrain.OnNotify():\t Encountered unknown camera event.", level=kErrorLevel)
+                    PtDebugPrint("tldnBucketBrain.OnNotify():  ERROR: Encountered unknown camera event.", level=kErrorLevel)
                     return
-            PtDebugPrint("DEBUG: tldnBucketBrain.OnNotify():\t No local avatars in the bucket that triggered the camera change.", level=kDebugDumpLevel)
+            PtDebugPrint("tldnBucketBrain.OnNotify():  DEBUG: No local avatars in the bucket that triggered the camera change.", level=kDebugDumpLevel)
             return
 
         #-----------------------------------#
@@ -519,13 +520,13 @@ class tldnBucketBrain(ptResponder):
         #This is the callback from the workroom control panel bucket mode switch...
         #Start the buckets NOW!
         if id == respWRCCGo.id:
-            PtDebugPrint("tldnBucketBrain.OnNotify():\tGot callback from workroom control panel bucket mode switch!  Trying to start buckets!", level=kDebugDumpLevel)
+            PtDebugPrint("tldnBucketBrain.OnNotify():  Got callback from workroom control panel bucket mode switch!  Trying to start buckets!", level=kDebugDumpLevel)
             # Don't process unless we are the age owner!
             if not SensorAtEntry.sceneobject.isLocallyOwned():
                 return
 
             if ageSDL[kStringAgeSDLPowerOn][0] == 0:
-                PtDebugPrint("tldnBucketBrain.OnNotify():\tCannot start the buckets from the workroom when the power is off!", level=kDebugDumpLevel)
+                PtDebugPrint("tldnBucketBrain.OnNotify():  Cannot start the buckets from the workroom when the power is off!", level=kDebugDumpLevel)
                 return
 
             # This switch doesn't actually fit into this state machine model very well
@@ -536,7 +537,7 @@ class tldnBucketBrain(ptResponder):
 
         # lever pull/push activator
         if id == actGo1.id:
-            PtDebugPrint("tldnBucketBrain.OnNotify():\tEncountered the lever pull/push", level=kDebugDumpLevel)
+            PtDebugPrint("tldnBucketBrain.OnNotify():  Encountered the lever pull/push", level=kDebugDumpLevel)
 
             leverPulled = ageSDL[kStringAgeSDLLeverPulled][0]
             if leverPulled:
@@ -581,7 +582,7 @@ class tldnBucketBrain(ptResponder):
             # This callback comes in even if we stop the timer so we need to ensure that
             # we're actually wanting to start the buckets.
             if not ageSDL[kStringAgeSDLLeverPulled][0]:
-                PtDebugPrint("tldnBucketBrain.OnNotify():\tSomeone pushed the lever back, ignoring Run Timer CB.", level=kDebugDumpLevel)
+                PtDebugPrint("tldnBucketBrain.OnNotify():  Someone pushed the lever back, ignoring Run Timer CB.", level=kDebugDumpLevel)
                 return
 
             self.UpdateBucketState(kBucketInputs.Timer)
@@ -596,7 +597,7 @@ class tldnBucketBrain(ptResponder):
             # This callback comes in even if we stop the timer so we need to ensure that
             # we're actually wanting to stop the buckets.
             if ageSDL[kStringAgeSDLLeverPulled][0] and ageSDL[kStringAgeSDLPowerOn][0]:
-                PtDebugPrint("tldnBucketBrain.OnNotify():\tPower is off or level is pulled, ignoring Stop Timer CB.", level=kDebugDumpLevel)
+                PtDebugPrint("tldnBucketBrain.OnNotify():  Power is off or level is pulled, ignoring Stop Timer CB.", level=kDebugDumpLevel)
                 return
 
             self.UpdateBucketState(kBucketInputs.StopCB)
@@ -637,9 +638,9 @@ class tldnBucketBrain(ptResponder):
                         avaIDAtEntry = -1
                 elif event[1] == 1:  # a bucket entered rngBucketSnsEntryPoint
                     if bucketAtEntry < 0:
-                        PtDebugPrint("ERROR: tldnBucketBrain.OnNotify():\tCannot enable a bucket that is not at the entry point!", level=kErrorLevel)
+                        PtDebugPrint("tldnBucketBrain.OnNotify():  ERROR: Cannot enable a bucket that is not at the entry point!", level=kErrorLevel)
                     elif ageSDL[kStringAgeSDLRiders][bucketAtEntry] < 1:
-                        PtDebugPrint("tldnBucketBrain.OnNotify():\tEncountered a bucket entering the loading point, the index is: %d" % (bucketAtEntry), level=kDebugDumpLevel)
+                        PtDebugPrint("tldnBucketBrain.OnNotify():  Encountered a bucket entering the loading point, the index is: {}".format(bucketAtEntry), level=kDebugDumpLevel)
                         # bucket@entry is vacant...
                         # We need to delay the activators until the bucket is at a complete stop
                         # So handle this in the timer.
@@ -659,21 +660,21 @@ class tldnBucketBrain(ptResponder):
             bucketState = ageSDL[kStringAgeSDLBucketState][0]
             boardStates = [kBucketStates.Stop, kBucketStates.QRun, kBucketStates.Dump, kBucketStates.DumpQStop]
             if not(bucketState in boardStates):
-                PtDebugPrint("DEBUG: tldnBucketBrain.OnNotify():\tCannot enter bucket during an improper state: %s" % (kBucketStates.ToString(bucketState)))
+                PtDebugPrint("tldnBucketBrain.OnNotify():  DEBUG: Cannot enter bucket during an improper state: {}".format(kBucketStates.ToString(bucketState)))
                 actBktEnter1.disable()
                 actBktEnter2.disable()
                 return
 
             # Can't enter an occupied bucket!
             if self.RiderInDockedBucket():
-                PtDebugPrint("DEBUG: tldnBucketBrain.OnNotify()\tCannot enter bucket while it is occupied", level=kDebugDumpLevel)
+                PtDebugPrint("tldnBucketBrain.OnNotify():  DEBUG: Cannot enter bucket while it is occupied", level=kDebugDumpLevel)
                 return
 
             # Setup avatar for callbacks
             avaIDAtEntry = PtGetClientIDFromAvatarKey(avatar.getKey())
 
             if ageSDL[kStringAgeSDLBucketState][0] == kBucketStates.Dump and avaIDAtDump == avaIDAtEntry:
-                PtDebugPrint("ERROR: tldnBucketBrain.OnNotify():\tPHYSICS ERROR--->the avatar being dumped cannot enter a bucket!!!", level=kErrorLevel)
+                PtDebugPrint("tldnBucketBrain.OnNotify():  PHYSICS ERROR: the avatar being dumped cannot enter a bucket!!!", level=kErrorLevel)
                 return
 
             # Disable all enter/exit activators until the avatar finishes the behavior
@@ -725,7 +726,7 @@ class tldnBucketBrain(ptResponder):
                 # This check is to ensure that QRun may be a vaild state if a rider is in the bucket
                 # (used or logic due to simplification)
                 if avaObj is None or bucketState != kBucketStates.QRun:
-                    PtDebugPrint("DEBUG: tldnBucketBrain.OnNotify():\tCannot exit a bucket during an improper state: %s" % (kBucketStates.ToString(bucketState)))
+                    PtDebugPrint("tldnBucketBrain.OnNotify():  DEBUG: Cannot exit a bucket during an improper state: {}".format(kBucketStates.ToString(bucketState)))
                     actBktExit.disable()
                     return
 
@@ -741,7 +742,7 @@ class tldnBucketBrain(ptResponder):
             # This error checking may not be necessary-->Why would a responder callback if a bucket was never at the entry point???
             bucketAtEntry = ageSDL[kStringAgeSDLBucketAtEntry][0]
             if bucketAtEntry < 0:
-                PtDebugPrint("ERROR: tldnBucketBrain.OnNotify():\tAn avatar is trying to exit bucket #%s that is not at the entry point: " % (bucketAtEntry), level=kErrorLevel)
+                PtDebugPrint("tldnBucketBrain.OnNotify():  ERROR: An avatar is trying to exit bucket #{} that is not at the entry point: ".format(bucketAtEntry), level=kErrorLevel)
                 return
 
             avaID = avaIDAtEntry
@@ -800,7 +801,7 @@ class tldnBucketBrain(ptResponder):
             if not SensorAtEntry.sceneobject.isLocallyOwned():
                 return
 
-            PtDebugPrint("tldnBucketBrain.OnNotify():\tBucket #%s reached the bucket dump dump point" % (bucketAtDump), level=kDebugDumpLevel)
+            PtDebugPrint("tldnBucketBrain.OnNotify():  Bucket #{} reached the bucket dump dump point".format(bucketAtDump), level=kDebugDumpLevel)
             ageSDL[kStringAgeSDLBucketAtDump] = (bucketAtDump,)
             self.UpdateBucketState(kBucketInputs.Dump)
 
@@ -813,7 +814,7 @@ class tldnBucketBrain(ptResponder):
                 avaKey = PtGetAvatarKeyFromClientID(avaIDAtDump)
                 avaObj = avaKey.getSceneObject()
             except:
-                PtDebugPrint("ERROR: tldnBucketBrain.OnNotify():\trespBktOpen-->There is no avatar in the bucket to dump!!", level=kErrorLevel)
+                PtDebugPrint("tldnBucketBrain.OnNotify():  ERROR: respBktOpen-->There is no avatar in the bucket to dump!!", level=kErrorLevel)
 
                 # We only want the age owner to remove the non-existant rider from the bucket!!!
                 if SensorAtEntry.sceneobject.isLocallyOwned():
@@ -834,7 +835,7 @@ class tldnBucketBrain(ptResponder):
         # Finally, this is the DumpCB...
         if id == respDumpAvatar.id:
             if avaIDAtDump < 0:
-                PtDebugPrint("ERROR: tldnBucketBrain.OnNotify():\trespDumpAvatar-->Avatar at dump point is less than zero!", level=kErrorLevel)
+                PtDebugPrint("tldnBucketBrain.OnNotify():  ERROR: respDumpAvatar-->Avatar at dump point is less than zero!", level=kErrorLevel)
                 return
 
             # Tye: note this is something that can be refactored....
@@ -863,7 +864,7 @@ class tldnBucketBrain(ptResponder):
             ageSDL.setIndexNow(kStringAgeSDLRiders, bucketAtDump, -1)
             ageSDL[kStringAgeSDLBucketAtDump] = (-1,)
             self.UpdateBucketState(kBucketInputs.DumpCB)
-            PtDebugPrint("tldnBucketBrain.OnNotify():\tRemoved rider from bucket #%d" % (bucketAtDump), level=kDebugDumpLevel)
+            PtDebugPrint("tldnBucketBrain.OnNotify():  Removed rider from bucket #{}" .format(bucketAtDump), level=kDebugDumpLevel)
 
         #-----------------------------------#
         #          Workroom Door            #
@@ -938,13 +939,13 @@ class tldnBucketBrain(ptResponder):
         avaID = PtGetClientIDFromAvatarKey(ava.getKey())
 
         if bucketAtEntry < 0 or avaID != ageSDL[kStringAgeSDLRiders][bucketAtEntry]:
-            PtDebugPrint("tldnBucketBrain.OnControlKeyEvent():\tIgnoring exit request as the bucket is not at the entry point", level=kDebugDumpLevel)
+            PtDebugPrint("tldnBucketBrain.OnControlKeyEvent():  Ignoring exit request as the bucket is not at the entry point", level=kDebugDumpLevel)
             return
 
         curBucketState = ageSDL[kStringAgeSDLBucketState][0]
 
         if curBucketState != kBucketStates.Boarded:
-            PtDebugPrint("tldnBucketBrain.OnControlKeyEvent()\tCannot exit buckets while they are not in the Boarded State", level=kDebugDumpLevel)
+            PtDebugPrint("tldnBucketBrain.OnControlKeyEvent()  Cannot exit buckets while they are not in the Boarded State", level=kDebugDumpLevel)
             return
 
         if controlKey == (PlasmaControlKeys.kKeyExitMode or controlKey == PlasmaControlKeys.kKeyMoveBackward or
@@ -977,7 +978,7 @@ class tldnBucketBrain(ptResponder):
         fastforward = 0  # fastforward to state
         error = 0  # error reporting
 
-        PtDebugPrint("tldnBucketBrain.UpdateBucketState():-->Incomming state change request: state (%s), parameter (%s), value (%s)" % (kBucketStates.ToString(curBucketState), kBucketInputs.ToString(param), val), level=kDebugDumpLevel)
+        PtDebugPrint("tldnBucketBrain.UpdateBucketState():  Incomming state change request: state ({}), parameter ({}), value ({})".format(kBucketStates.ToString(curBucketState), kBucketInputs.ToString(param), val), level=kDebugDumpLevel)
 
         ############[ Power ]#############
         if param == kBucketInputs.Power:
@@ -1181,16 +1182,16 @@ class tldnBucketBrain(ptResponder):
         ############[ UNRECOGNIZED INPUT ]#############
         else:
             # Need to cut out here; if we try to enter error reporting below, then we'll crash the script!
-            PtDebugPrint("ERROR: tldnBucketBrain.UpdateBucketState():-->Unknown input: %s" % (param), level=kErrorLevel)
+            PtDebugPrint("tldnBucketBrain.UpdateBucketState():  ERROR: Unknown input: {}".format(param), level=kErrorLevel)
             return
 
         # Propigate to all clients if an error did not occur
         # Tye: we could just prop to all clients irregardless of an error?!???
         if error:
-            PtDebugPrint("ERROR: tldnBucketBrain.UpdateBucketState():-->Unknown state (%s), parameter (%s), and value (%s) combo" % (kBucketStates.ToString(curBucketState), kBucketInputs.ToString(param), val), level=kErrorLevel)
+            PtDebugPrint("tldnBucketBrain.UpdateBucketState():  ERROR: Unknown state ({}), parameter ({}), and value ({}) combo".format(kBucketStates.ToString(curBucketState), kBucketInputs.ToString(param), val), level=kErrorLevel)
         else:
             #Push state to other clients..
-            PtDebugPrint("tldnBucketBrain.UpdateBucketState(): ----[ Updating EVERYONE\'s State to: %s ]----" % (kBucketStates.ToString(curBucketState)), level=kDebugDumpLevel)
+            PtDebugPrint("tldnBucketBrain.UpdateBucketState():  Updating EVERYONE\'s State to: {}".format(kBucketStates.ToString(curBucketState)), level=kDebugDumpLevel)
             ageSDL[kStringAgeSDLBucketState] = (curBucketState, fastforward)
 
     def RunBucketState(self, curBucketState, fastforward=0, param=0):
@@ -1313,7 +1314,7 @@ class tldnBucketBrain(ptResponder):
             self.EnterExitBucket()
             pass
         else:
-            PtDebugPrint("ERROR: tldnBucketBrain.RealizeBucketState():-->Received Unknown State: %s" % (curBucketState), level=kErrorLevel)
+            PtDebugPrint("tldnBucketBrain.RunBucketState():  ERROR: Received Unknown State: {}".format(curBucketState), level=kErrorLevel)
 
     def EnterExitBucket(self):
         "The action of an avatar entering/exiting a docked bucket"
@@ -1332,7 +1333,7 @@ class tldnBucketBrain(ptResponder):
             # Somone is trying to exit the bucket...
             # This is counter-intuitive as we set the data structure before performing the action
             # Thus if a avatar is not in the data structure, we need to remove him/her
-            PtDebugPrint("tldnBucketBrain.EnterExitBucket():\tAvatar Exiting bucket---Running AvatarExitBucket()!", level=kDebugDumpLevel)
+            PtDebugPrint("tldnBucketBrain.EnterExitBucket():  Avatar Exiting bucket---Running AvatarExitBucket()!", level=kDebugDumpLevel)
 
             # Make sure that we're not running while trying to exit the buckets...
             state = ageSDL[kStringAgeSDLBucketState][0]
@@ -1346,7 +1347,7 @@ class tldnBucketBrain(ptResponder):
                 avaKey = PtGetAvatarKeyFromClientID(avaID)
                 avaObj = avaKey.getSceneObject()
             except:
-                PtDebugPrint("ERROR: tldnBucketBrain.EnterExitBucket():\tCouldn't find the avatar exiting the bucket!!!", level=kErrorLevel)
+                PtDebugPrint("tldnBucketBrain.EnterExitBucket():  ERROR: Couldn't find the avatar exiting the bucket!!!", level=kErrorLevel)
                 return
 
             avaObj.draw.enable()
@@ -1359,7 +1360,7 @@ class tldnBucketBrain(ptResponder):
             avaKey = PtGetAvatarKeyFromClientID(avaID)
             avaObj = avaKey.getSceneObject()
         except:
-            PtDebugPrint("ERROR: tldnBucketBrain.EnterExitBucket():\tCouldn't find an avatar to add to the bucket!!!", level=kErrorLevel)
+            PtDebugPrint("tldnBucketBrain.EnterExitBucket():  ERROR: Couldn't find an avatar to add to the bucket!!!", level=kErrorLevel)
             return
 
         # Storing the avatar in the cache for later use!
@@ -1410,11 +1411,11 @@ class tldnBucketBrain(ptResponder):
         ageSDL = PtGetAgeSDL()
         bucketAtEntry = ageSDL[kStringAgeSDLBucketAtEntry][0]
         if bucketAtEntry < 0:
-            PtDebugPrint("ERROR: tldnBucketBrain.getAvatarFromBucketAtEntry():\tCannot retrieve the avatar from a bucket that's not at the entry point", level=kErrorLevel)
+            PtDebugPrint("tldnBucketBrain.getAvatarFromBucketAtEntry():  ERROR: Cannot retrieve the avatar from a bucket that's not at the entry point", level=kErrorLevel)
             return None
         avaID = ageSDL[kStringAgeSDLRiders][bucketAtEntry]
         if avaID < 1:
-            PtDebugPrint("ERROR: tldnBucketBrain.getAvatarFromBucketAtEntry():\t Cannot retrieve the avatar from an empty bucket!", level=kErrorLevel)
+            PtDebugPrint("tldnBucketBrain.getAvatarFromBucketAtEntry():  ERROR: Cannot retrieve the avatar from an empty bucket!", level=kErrorLevel)
             return None
         avaKey = PtGetAvatarKeyFromClientID(avaID)
         return avaKey.getSceneObject()

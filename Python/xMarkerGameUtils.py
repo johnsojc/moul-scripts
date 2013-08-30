@@ -63,7 +63,7 @@ def GetGameClient(gameID):
     gameClient = PtGetGameCli(gameID)
     if gameClient is not None and PtIsMarkerGame(gameClient.gameTypeID()):
         return gameClient.upcastToMarkerGame()
-    PtDebugPrint("xMarkerGameManager.GetGameClient():\tERROR: Cannot find marker game!")
+    PtDebugPrint("xMarkerGameManager.GetGameClient():  ERROR: Cannot find marker game!")
     return None
 
 
@@ -89,6 +89,7 @@ class MarkerData:
     "A class interface for housing marker data"
     def __init__(self):
         # Setup Default vars
+        PtDebugPrint("__init__: MarkerData")
         self.default = {}
         self.default['id'] = -1         # markerID
         self.default['age'] = None      # the age filename the marker is within
@@ -109,7 +110,7 @@ class MarkerData:
 
     def __str__(self):
         d = self.data
-        retStr = "Marker #%s: age = %s, (%s,%s,%s), description = %s, status: %s" % (d['id'], d['age'], d['x'], d['y'], d['z'], d['name'], self.capturedStatus())
+        retStr = "Marker #{}: age = {}, ({},{},{}), description = {}, status: {}".format(d['id'], d['age'], d['x'], d['y'], d['z'], d['name'], self.capturedStatus())
         return retStr
 
     def capturedStatus(self):
@@ -122,6 +123,7 @@ class MarkerData:
 class MarkerGameData:
     "A class interface for housing marker game data"
     def __init__(self):
+        PtDebugPrint("__init__: MarkerGameData")
         self.setup()
 
     def setup(self):
@@ -157,20 +159,20 @@ class MarkerGameData:
             for x in src.keys():
                 self.data[x] = src[x]
         except:
-            PtDebugPrint("ERROR: %s.copy():\tCould not copy from source" % (self.__class__.__name__))
+            PtDebugPrint("MarkerGameData.copy():  ERROR: Could not copy from source {}".format(self.__class__.__name__))
 
     def printData(self):
         PtDebugPrint("--------------[Start of Marker Game Data]---------------------")
         for x in self.data.keys():
             if x == 'markers':
-                PtDebugPrint("\tBEGIN Marker List:")
+                PtDebugPrint("\tMarkerGameData.printData():  BEGIN Marker List:")
                 markers = self.data[x]
                 for marker in markers:
-                    PtDebugPrint("\t\t%s" % (marker.__str__()))
+                    PtDebugPrint("\t\t{}".format(marker.__str__()))
                 PtDebugPrint("\tEND of Marker List")
             else:
-                PtDebugPrint("\t\tdata[%s] = %s" % (x, self.data[x]))
-        PtDebugPrint("--------------[END of Marker Game Data]---------------------")
+                PtDebugPrint("\t\tdata[{}] = {}".format(x, self.data[x]))
+        PtDebugPrint("---------------[END of Marker Game Data]----------------------")
 
 
 class chronicleMarkerGameData(MarkerGameData):
@@ -179,6 +181,7 @@ class chronicleMarkerGameData(MarkerGameData):
 
     def __init__(self, existingData=None):
         # Setup Default vars (this is done in the base class)
+        PtDebugPrint("__init__: chronicleMarkerGameData")
         self.setup()
 
         # Init the game data structure
@@ -229,12 +232,13 @@ class chronicleMarkerGameData(MarkerGameData):
         entry = vault.findChronicleEntry(self.kChronMarkerGameData)
 
         if entry is None or entry.chronicleGetValue() is None:
-            PtDebugPrint("chronicleMarkerGameData.printData():\t****ERROR****  Chronicle Entry does not exist, aborting print command")
+            PtDebugPrint("chronicleMarkerGameData.printData():  ERROR: Chronicle Entry does not exist, aborting print command")
             return
 
         temp = eval(entry.chronicleGetValue())
 
         PtDebugPrint("--------------[Start of CZG Marker Data Chronicle Entry]---------------------")
+        PtDebugPrint("\tchronicleMarkerGameData.printData()")
         for x in temp.keys():
-            PtDebugPrint("\t\tdata[%s] = %s" % (x, temp[x]))
+            PtDebugPrint("\t\tdata[{}] = {}".format(x, temp[x]))
         PtDebugPrint("--------------[END of CZG Marker Data Chronicle Entry]---------------------")

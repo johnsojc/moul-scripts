@@ -55,7 +55,10 @@ class AhnonayCathedral(ptResponder):
     def __init__(self):
         ptResponder.__init__(self)
         self.id = 5398
-        self.version = 1
+        version = 1
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__:  AhnonayCathedral v{}".format(self.version))
 
     def OnFirstUpdate(self):
         pass
@@ -82,7 +85,7 @@ class AhnonayCathedral(ptResponder):
                             owner = chron
                     break
         if owner is None and vault.amOwnerOfCurrentAge():
-            PtDebugPrint("I own this Cathedral, but I haven't set myself as Ahnonay owner yet.")
+            PtDebugPrint("AhnonayCathedral.OnServerInitComplete():  I own this Cathedral, but I haven't set myself as Ahnonay owner yet.")
             newNode = ptVaultChronicleNode(0)
             newNode.chronicleSetName("AhnonayOwner")
             newNode.chronicleSetValue(str(PtGetClientIDFromAvatarKey(PtGetLocalAvatar().getKey())))

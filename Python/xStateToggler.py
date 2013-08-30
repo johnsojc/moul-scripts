@@ -67,7 +67,10 @@ class xStateToggler(ptResponder):
     def __init__(self):
         ptResponder.__init__(self)
         self.id = 5015
-        self.version = 2
+        version = 2
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: xStateToggler v{}".format(self.version))
 
     # hack - remove when clickable state manipulation via responder is persistentified
     def OnFirstUpdate(self):
@@ -76,11 +79,11 @@ class xStateToggler(ptResponder):
     # hack - remove when clickable state manipulation via responder is persistentified
     def Load(self):
         if self.SDL["enabled"][0]:
-            PtDebugPrint("LOAD: enabling clickables")
+            PtDebugPrint("xStateToggler.Load():  enabling clickables")
             actClick1.enable()
             actClick2.enable()
         else:
-            PtDebugPrint("LOAD: disabling clickables")
+            PtDebugPrint("xStateToggler.Load():  disabling clickables")
             actClick1.disable()
             actClick2.disable()
 
@@ -107,14 +110,14 @@ class xStateToggler(ptResponder):
             return
 
         if varState:
-            PtDebugPrint("xStateToggler:%s running state true responder" % (stringName.value))
+            PtDebugPrint("xStateToggler.OnNotify():  {} running state true responder".format(stringName.value))
             respTrue.run(self.key)
             # hack - remove when clickable state manipulation via responder is persistentified
             actClick1.enable()
             actClick2.enable()
             self.SDL["enabled"] = (1,)
         else:
-            PtDebugPrint("xStateToggler:%s running state false responder" % (stringName.value))
+            PtDebugPrint("xStateToggler.OnNotify():  {} running state false responder".format(stringName.value))
             respFalse.run(self.key)
             # hack - remove when clickable state manipulation via responder is persistentified
             actClick1.disable()

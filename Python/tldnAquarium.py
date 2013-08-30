@@ -86,15 +86,17 @@ class tldnAquarium(ptResponder):
         ptResponder.__init__(self)
         self.id = 5204
         version = 3
-        self.version = version
+        minor = 0
+        self.version = "{},{}".format(version, minor)
+        PtDebugPrint("__init__: tldnAquarium v{}".format(self.version))
 
     ###########################
     def __del__(self):
         global gFirstPersonOverriden
 
-        PtDebugPrint("tldnAquarium. __del__")
+        PtDebugPrint("tldnAquarium. __del__()")
         if gFirstPersonOverriden:
-            PtDebugPrint("tldnAquarium: enable override again, before they leave")
+            PtDebugPrint("tldnAquarium. __del__():  enable override again, before they leave")
             ptCamera().enableFirstPersonOverride()
             gFirstPersonOverriden = 0
             PtGetLocalAvatar().avatar.unRegisterForBehaviorNotify(self.key)
@@ -103,9 +105,9 @@ class tldnAquarium(ptResponder):
     def BeginAgeUnLoad(self, avatar):
         global gFirstPersonOverriden
 
-        PtDebugPrint("tldnAquarium. age unload - last chance")
+        PtDebugPrint("tldnAquarium.BeginAgeUnLoad():  - last chance")
         if gFirstPersonOverriden:
-            PtDebugPrint("tldnAquarium: enable override again, before they leave")
+            PtDebugPrint("tldnAquarium.BeginAgeUnLoad():  enable override again, before they leave")
             ptCamera().enableFirstPersonOverride()
             gFirstPersonOverriden = 0
             PtGetLocalAvatar().avatar.unRegisterForBehaviorNotify(self.key)
@@ -115,9 +117,9 @@ class tldnAquarium(ptResponder):
         global gFirstPersonOverriden
 
         if type == PtBehaviorTypes.kBehaviorTypeLinkOut:
-            PtDebugPrint("tldnAquarium: OnBehaviorNotify", type, avatar, state)
+            PtDebugPrint("tldnAquarium.OnBehaviorNotify():  type={}, avatar={}, state={}".format(type, avatar, state))
             if gFirstPersonOverriden:
-                PtDebugPrint("tldnAquarium: enable override again, before they leave")
+                PtDebugPrint("tldnAquarium.OnBehaviorNotify():  enable override again, before they leave")
                 ptCamera().enableFirstPersonOverride()
                 gFirstPersonOverriden = 0
                 PtGetLocalAvatar().avatar.unRegisterForBehaviorNotify(self.key)
@@ -148,9 +150,9 @@ class tldnAquarium(ptResponder):
             except:
                 tankOpen = false
                 tankLightOn = false
-                PtDebugPrint("tldnAquarium.OnServerInitComplete(): ERROR: age sdl read failed, defaulting:")
+                PtDebugPrint("tldnAquarium.OnServerInitComplete():  ERROR: age sdl read failed, defaulting:")
 
-            PtDebugPrint("tldnAquarium.OnServerInitComplete(): %s = %d, %s = %d" % (kStringAgeSDLAquariumOpen, tankOpen, kStringAgeSDLAquariumLightOn, tankLightOn))
+            PtDebugPrint("tldnAquarium.OnServerInitComplete():  {} = {}, {} = {}".format(kStringAgeSDLAquariumOpen, tankOpen, kStringAgeSDLAquariumLightOn, tankLightOn))
 
             # init whatnots
             if tankLightOn:
@@ -174,7 +176,7 @@ class tldnAquarium(ptResponder):
 
         if gAgeStartedIn == PtGetAgeName():
             ageSDL = PtGetAgeSDL()
-            PtDebugPrint("tldnAquarium.OnSDLNotify(): VARname:%s, SDLname:%s, tag:%s, value:%d, playerID:%d" % (VARname, SDLname, tag, ageSDL[VARname][0], playerID))
+            PtDebugPrint("tldnAquarium.OnSDLNotify():  VARname:{}, SDLname:{}, tag:{}, value:{}, playerID:{}".format(VARname, SDLname, tag, ageSDL[VARname][0], playerID))
 
             if VARname == kStringAgeSDLAquariumLightOn:
                 if ageSDL[kStringAgeSDLAquariumLightOn][0]:
@@ -200,11 +202,11 @@ class tldnAquarium(ptResponder):
         global gAllowClick
 
         PtDebugPrint("-------------------------------------------------------------------------")
-        PtDebugPrint("tldnAquarium: OnNotify - id=%d state=%d events=" % (id, state), events)
+        PtDebugPrint("tldnAquarium.OnNotify():  id={} state={} events={}".format(id, state, events))
 
         if id == actBookClick.id:
             # only know about this activator to handle enabling/disabling it
-            PtDebugPrint("tldnAquarium: actBookClick state=%d events=" % (state), events)
+            PtDebugPrint("tldnAquarium.OnNotify():  actBookClick state={} events={}".format(state, events))
 
         elif id == rgnAquarium.id:
             for event in events:
@@ -212,29 +214,29 @@ class tldnAquarium(ptResponder):
                     try:
                         if event[2] == PtGetLocalAvatar():
                             if event[1] == 1:
-                                PtDebugPrint("tldnAquarium: enter region")
+                                PtDebugPrint("tldnAquarium.OnNotify():  enter region")
                                 ptCamera().undoFirstPerson()
                                 ptCamera().disableFirstPersonOverride()
                                 gFirstPersonOverriden = 1
                                 PtGetLocalAvatar().avatar.registerForBehaviorNotify(self.key)
                             else:
-                                PtDebugPrint("tldnAquarium: exit region")
+                                PtDebugPrint("tldnAquarium.OnNotify():  exit region")
                                 ptCamera().enableFirstPersonOverride()
                                 PtGetLocalAvatar().avatar.unRegisterForBehaviorNotify(self.key)
                                 gFirstPersonOverriden = 0
                         else:
-                            PtDebugPrint("tldnAquarium: region: not local avatar")
+                            PtDebugPrint("tldnAquarium.OnNotify():  region: not local avatar")
                     except NameError:
-                        PtDebugPrint("tldnAquarium: no more local avatar to see if in region")
+                        PtDebugPrint("tldnAquarium.OnNotify():  no more local avatar to see if in region")
 
         elif id == actButton.id:
             for event in events:
                 if event[0] == 2 and event[1] == 1:
                     # true as button pressed
                     if gMouseDown == 1:
-                        PtDebugPrint("tldnAquarium: The Tim factor! - two down presses... ignoring")
+                        PtDebugPrint("tldnAquarium.OnNotify():  The Tim factor! - two down presses... ignoring")
                     elif gAllowClick:
-                        PtDebugPrint("tldnAquarium: Button pressed")
+                        PtDebugPrint("tldnAquarium.OnNotify():  Button pressed")
                         gAllowClick = 0
                         gMouseDown = 1
                         gWasClicked = 0
@@ -244,7 +246,7 @@ class tldnAquarium(ptResponder):
                             self.IButtonPress()
                 elif event[0] == 2 and event[1] == 0:
                     # true as button released
-                    PtDebugPrint("tldnAquarium: Button Released")
+                    PtDebugPrint("tldnAquarium.OnNotify():  Button Released")
                     gMouseDown = 0
                     gLocalAvatar = PtFindAvatar(events)
                     if gWasClicked and gLocalAvatar == PtGetLocalAvatar():
@@ -254,27 +256,27 @@ class tldnAquarium(ptResponder):
             for event in events:
                 if event[0] == 10 and event[1] == 1 and event[2] == kAdvanceNextStage:
                     # true as multistage progresses from stage 1 (1 second "hold behavior" looping 3 times) to stage 2 (the same 1 second "hold behavior", but looping indefinitely)
-                    PtDebugPrint("tldnAquarium: Button held for 3 seconds")
+                    PtDebugPrint("tldnAquarium.OnNotify():  Button held for 3 seconds")
                     gHeldForThree = 1
                 elif event[0] == 10 and event[1] == 0 and event[2] == kAdvanceNextStage:
                     # checks to circumvent "click bug". True as avatar finishes "press" behavior. If mouse no longer down, then release
                     SFXbuttonpress.run(self.key)
                     gWasClicked = 1
                     if not gMouseDown:
-                        PtDebugPrint("tldnAquarium: Quick Click!")
+                        PtDebugPrint("tldnAquarium.OnNotify():  Quick Click!")
                         self.IButtonRelease()
                     else:
-                        PtDebugPrint("tldnAquarium: still holding... next stage")
+                        PtDebugPrint("tldnAquarium.OnNotify():  still holding... next stage")
                         Behavior.gotoStage(gLocalAvatar, 1)
 
         else:
-            PtDebugPrint("tldnAquarium: something else triggered a callback (id=%d)" % (id))
+            PtDebugPrint("tldnAquarium.OnNotify():  something else triggered a callback (id={})".format(id))
 
     ###########################
     def IButtonPress(self):
         global gLocalAvatar
 
-        PtDebugPrint("tldnAquarium: Play PRESS Oneshot")
+        PtDebugPrint("tldnAquarium.IButtonPress():  Play PRESS Oneshot")
         Behavior.run(gLocalAvatar)
 
     ###########################
@@ -286,7 +288,7 @@ class tldnAquarium(ptResponder):
 
         if gAgeStartedIn == PtGetAgeName():
             ageSDL = PtGetAgeSDL()
-            PtDebugPrint("tldnAquarium: Play RELEASE Oneshot")
+            PtDebugPrint("tldnAquarium.IButtonRelease():  Play RELEASE Oneshot")
             Behavior.gotoStage(gLocalAvatar, 3)
             SFXbuttonrelease.run(self.key)
             gAllowClick = 1
@@ -295,20 +297,20 @@ class tldnAquarium(ptResponder):
 
             # if button was held for more than 3 seconds, toggle sheath
             if gHeldForThree == 1:
-                PtDebugPrint("tldnAquarium: Button was held for 3 seconds")
+                PtDebugPrint("tldnAquarium.IButtonRelease():  Button was held for 3 seconds")
                 gHeldForThree == 0  # reset held flag
                 if ageSDL[kStringAgeSDLAquariumOpen][0]:
-                    PtDebugPrint("tldnAquarium: close aquarium")
+                    PtDebugPrint("tldnAquarium.IButtonRelease():  close aquarium")
                     ageSDL[kStringAgeSDLAquariumOpen] = (0,)
                 else:
-                    PtDebugPrint("tldnAquarium: open aquarium")
+                    PtDebugPrint("tldnAquarium.IButtonRelease():  open aquarium")
                     ageSDL[kStringAgeSDLAquariumOpen] = (1,)
 
             # if button not held for 3 seconds, toggle the light
             else:
                 if ageSDL[kStringAgeSDLAquariumLightOn][0]:
-                    PtDebugPrint("tldnAquarium: turn tank light off")
+                    PtDebugPrint("tldnAquarium.IButtonRelease():  turn tank light off")
                     ageSDL[kStringAgeSDLAquariumLightOn] = (0,)
                 else:
-                    PtDebugPrint("tldnAquarium: turn tank light on")
+                    PtDebugPrint("tldnAquarium.IButtonRelease():  turn tank light on")
                     ageSDL[kStringAgeSDLAquariumLightOn] = (1,)

@@ -65,11 +65,12 @@ class xRunResponder(ptResponder):
         self.id = 5117
 
         version = 1
-        self.version = version
-        PtDebugPrint("__init__xRunResponder v.%d" % (version))
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: xRunResponder v{}".format(self.version))
 
     def OnNotify(self, state, id, events):
 
         if state and id == message.id:
             resp.run(self.key)
-            PtDebugPrint("I just ran a responder. I'm cool.")
+            PtDebugPrint("xRunResponder.OnNotify():  I just ran a responder. I'm cool.")

@@ -65,7 +65,10 @@ class xChronicleCounter(ptResponder):
     def __init__(self):
         ptResponder.__init__(self)
         self.id = 5021
-        self.version = 1
+        version = 1
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: xChronicleCounter v{}".format(self.version))
 
     def OnFirstUpdate(self):
         pass
@@ -82,18 +85,18 @@ class xChronicleCounter(ptResponder):
 
         if id == act.id:
             if var.value is None:
-                PtDebugPrint("xChronicleCounter.py:\t-- ERROR: missing chronicle variable name, can't record --")
+                PtDebugPrint("xChronicleCounter.OnNotify():  ERROR: missing chronicle variable name, can't record")
                 return
 
             vault = ptVault()
             entry = vault.findChronicleEntry(var.value)
             if entry is None:
                 # not found... add current level chronicle
-                vault.addChronicleEntry(var.value, kChronicleVarType, "%d" % (kInitialValue))
-                PtDebugPrint("xChronicleCounter:\tentered new chronicle counter %s, count is %d" % (var.value, kInitialValue))
+                vault.addChronicleEntry(var.value, kChronicleVarType, "{}".format(kInitialValue))
+                PtDebugPrint("xChronicleCounter.OnNotify():  entered new chronicle counter {}, count is {}".format(var.value, kInitialValue))
             else:
                 count = string.atoi(entry.chronicleGetValue())
                 count = count + 1
-                entry.chronicleSetValue("%d" % (count))
+                entry.chronicleSetValue("{}".format(count))
                 entry.save()
-                PtDebugPrint("xChronicleCounter:\tyour current count for %s is %s" % (var.value, entry.chronicleGetValue()))
+                PtDebugPrint("xChronicleCounter.OnNotify():  your current count for {} is {}".format(var.value, entry.chronicleGetValue()))

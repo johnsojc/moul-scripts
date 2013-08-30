@@ -74,8 +74,9 @@ class tldnSlavePrisonPanels(ptResponder):
         ptResponder.__init__(self)
         self.id = 5238
         version = 2
-        self.version = version
-        PtDebugPrint("__init__tldnSlavePrisonPanels v.%d.1" % (version))
+        minor = 1
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: tldnSlavePrisonPanels v{}".format(self.version))
 
     def OnFirstUpdate(self):
         global AgeStartedIn
@@ -89,22 +90,22 @@ class tldnSlavePrisonPanels(ptResponder):
             ageSDL.setFlags(stringVarName.value, 1, 1)
             ageSDL.sendToClients(stringVarName.value)
         else:
-            PtDebugPrint("ERROR: tldnSlavePrisonPanels.OnFirstUpdate():\tERROR: missing SDL var name")
+            PtDebugPrint("tldnSlavePrisonPanels.OnServerInitComplete():  ERROR: missing SDL var name")
             pass
 
         try:
             boolCurrentValue = ageSDL[stringVarName.value][0]
         except:
-            PtDebugPrint("ERROR: tldnSlavePrisonPanels.OnServerInitComplete():\tERROR reading age SDL")
+            PtDebugPrint("tldnSlavePrisonPanels.OnServerInitComplete():  ERROR: Error reading age SDL")
             pass
 
-        PtDebugPrint("DEBUG: tldnSlavePrisonPanels.OnServerInitComplete():\t%s = %d" % (stringVarName.value, boolCurrentValue))
+        PtDebugPrint("tldnSlavePrisonPanels.OnServerInitComplete():  DEBUG: {} = {}".format(stringVarName.value, boolCurrentValue))
 
         if ageSDL[stringVarName.value][0]:
-            PtDebugPrint("tldnSlavePrisonPanels.OnServerInitComplete:\tLowering Paddle %s" % (self.sceneobject.getName()))
+            PtDebugPrint("tldnSlavePrisonPanels.OnServerInitComplete():  Lowering Paddle {}".format(self.sceneobject.getName()))
             respLeverDown.run(self.key, fastforward=1)
         else:
-            PtDebugPrint("tldnSlavePrisonPanels.OnServerInitComplete:\tRaising Paddle %s" % (self.sceneobject.getName()))
+            PtDebugPrint("tldnSlavePrisonPanels.OnServerInitComplete():  Raising Paddle {}".format(self.sceneobject.getName()))
             respLeverUp.run(self.key, fastforward=1)
 
     def OnNotify(self, state, id, events):
@@ -125,11 +126,11 @@ class tldnSlavePrisonPanels(ptResponder):
                 respLeverDown.run(self.key, events=events)
 
         elif id == respLeverUp.id and self.sceneobject.isLocallyOwned():
-            PtDebugPrint("tldnSlavePrisonPanels: Lever now completely up. Updating SDL %s to 0" % (stringVarName.value))
+            PtDebugPrint("tldnSlavePrisonPanels.OnNotify():  Lever now completely up. Updating SDL {} to 0".format(stringVarName.value))
             ageSDL[stringVarName.value] = (0,)
 
         elif id == respLeverDown.id and self.sceneobject.isLocallyOwned():
-            PtDebugPrint("tldnSlavePrisonPanels: Lever now completely down. Updating SDL %s to 1" % (stringVarName.value))
+            PtDebugPrint("tldnSlavePrisonPanels.OnNotify():  Lever now completely down. Updating SDL {} to 1".format(stringVarName.value))
             ageSDL[stringVarName.value] = (1,)
 
     # in case someone other than me changes my var(s)
@@ -139,5 +140,5 @@ class tldnSlavePrisonPanels(ptResponder):
         if AgeStartedIn == PtGetAgeName():
             ageSDL = PtGetAgeSDL()
             if VARname == stringVarName.value:
-                PtDebugPrint("DEBUG: tldnSlavePrisonPanels.OnSDLNotify():\t VARname:%s, SDLname:%s, tag:%s, value:%d" % (VARname, SDLname, tag, ageSDL[stringVarName.value][0]))
+                PtDebugPrint("tldnSlavePrisonPanels.OnNotify():  DEBUG: VARname:{}, SDLname:{}, tag:{}, value:{}".format(VARname, SDLname, tag, ageSDL[stringVarName.value][0]))
                 boolCurrentValue = ageSDL[stringVarName.value][0]

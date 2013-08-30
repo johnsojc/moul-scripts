@@ -81,7 +81,10 @@ class xDynaTextBoy(ptModifier):
     def __init__(self):
         ptModifier.__init__(self)
         self.id = 197
-        self.version = 1
+        version = 1
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: xDynaTextBoy v{}".format(self.version))
 
     def OnFirstUpdate(self):
         "On the first update, do some initialization"

@@ -140,15 +140,16 @@ class kdshPillarRoom(ptResponder):
         self.id = 5210
 
         version = 19
-        self.version = version
-        PtDebugPrint("__init__kdshPillarRoom v.%d.1" % (version))
+        minor = 1
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: kdshPillarRoom v{}".format(self.version))
 
     def OnServerInitComplete(self):
         global PillarRoomSolvedCheck
 
         ageSDL = PtGetAgeSDL()
         if ageSDL is None:
-            PtDebugPrint("kdshPillarRoom.OnFirstUpdate():\tERROR---missing SDL (%s)")
+            PtDebugPrint("kdshPillarRoom.OnServerInitComplete():  ERROR: missing SDL")
             return
 
         ageSDL.sendToClients("pheight01")
@@ -179,13 +180,13 @@ class kdshPillarRoom(ptResponder):
         ageSDL.setNotify(self.key, "PillarRoomSolved", 0.0)
         ageSDL.setNotify(self.key, "PillarsResetting", 0.0)
 
-        PtDebugPrint("kdshPillarRoom: When I got here:")
+        PtDebugPrint("kdshPillarRoom.OnServerInitComplete():  When I got here:")
         # initialize pillar whatnots based on SDL state
         pillar = 1
         for pillar in [1, 2, 3, 4]:
 
             currentheight = ageSDL["pheight0" + str(pillar)][0]
-            PtDebugPrint("\t pheight0%s = %s " % (pillar, currentheight))
+            PtDebugPrint("\tpheight0{} = {} ".format(pillar, currentheight))
 
             if currentheight > 0:
 
@@ -193,14 +194,14 @@ class kdshPillarRoom(ptResponder):
 
                 self.EnableAppropriateLadders(pillar)
 
-        PtDebugPrint("\t budget = %d" % (ageSDL["budget"][0]))
+        PtDebugPrint("\tbudget = {}".format(ageSDL["budget"][0]))
         CounterAnim.animation.skipToTime((8 - ageSDL["budget"][0]) * 10)
         if ageSDL["pheight01"][0] == 1 and ageSDL["pheight02"][0] == 4 and ageSDL["pheight03"][0] == 1 and ageSDL["pheight04"][0] == 2 and ageSDL["PillarRoomSolved"][0] != 1:  # true if puzzle correct
             # hopefully, this will make sure that the solution is set to solved in case they weren't
             PillarRoomSolvedCheck = 1
             ageSDL["PillarRoomSolved"] = (1,)
 
-        PtDebugPrint("\t PillarRoomSolved = %d" % (ageSDL["PillarRoomSolved"][0]))
+        PtDebugPrint("kdshPillarRoom.OnServerInitComplete():  PillarRoomSolved = {}".format(ageSDL["PillarRoomSolved"][0]))
         if ageSDL["PillarRoomSolved"][0] == 1:
             SolutionResp.run(self.key, fastforward=1)
 
@@ -220,16 +221,16 @@ class kdshPillarRoom(ptResponder):
 
         elif id in [6, 7, 8, 9] and OnlyOneOwner.sceneobject.isLocallyOwned():  # One of the four levers actually pulled by an avatar
             if Resetting:
-                PtDebugPrint("Lever pull ignored because the puzzle is still resetting.")
+                PtDebugPrint("kdshPillarRoom.OnNotify():  Lever pull ignored because the puzzle is still resetting.")
                 return
 
             if (self.PillarIsSafeToMove(id)):  # check to see if a climber is in the way of this pillar being rased
 
                 if ageSDL["budget"][0] == 0:  # true if 8 "raises" have already happened
-                    PtDebugPrint("Counterweight expired.\n")
+                    PtDebugPrint("kdshPillarRoom.OnNotify():  Counterweight expired.\n")
 
                 elif ageSDL["pheight0" + str(id-5)][0] == 4:  # True if that particular pillar has already been raised 4 times
-                    PtDebugPrint("Pillar0%d is already at maximum height." % (id-5))
+                    PtDebugPrint("kdshPillarRoom.OnNotify():  Pillar0{} is already at maximum height.".format(id-5))
 
                 else:
                     newheight = ageSDL["pheight0" + str(id-5)][0] + 1
@@ -237,7 +238,7 @@ class kdshPillarRoom(ptResponder):
 
                     newbudget = ageSDL["budget"][0] - 1
                     ageSDL["budget"] = (newbudget, )
-                    PtDebugPrint("%d pulls left" % (newbudget))
+                    PtDebugPrint("kdshPillarRoom.OnNotify():  {} pulls left".format(newbudget))
             else:
                 RedLight.run(self.key)
             return
@@ -247,7 +248,7 @@ class kdshPillarRoom(ptResponder):
                 return
 
             if PullsInProgress > 0:
-                PtDebugPrint("Can't reset now. PullsInProgress = %d" % (PullsInProgress))
+                PtDebugPrint("kdshPillarRoom.OnNotify():  Can't reset now. PullsInProgress = {}".format(PullsInProgress))
                 return
 
             safetoreset = true
@@ -256,11 +257,11 @@ class kdshPillarRoom(ptResponder):
                 if (self.PillarIsSafeToMove(pillarcheck)):
                     pass
                 else:
-                    PtDebugPrint("kdshPillar.OnNotify: A reset button was pushed, but Pillar %d can't reset now." % (pillarcheck-4))
+                    PtDebugPrint("kdshPillarRoom.OnNotify():  A reset button was pushed, but Pillar {} can't reset now.".format(pillarcheck-4))
                     safetoreset = false
 
             if safetoreset:
-                PtDebugPrint("kdshShadowPath Reset Button Pushed.")
+                PtDebugPrint("kdshPillarRoom.OnNotify():  kdshShadowPath Reset Button Pushed.")
                 self.ResetPuzzle()
             return
 
@@ -268,7 +269,7 @@ class kdshPillarRoom(ptResponder):
             return
 
         elif id >= 18 and id <= 28 and PtWasLocallyNotified(self.key):
-            PtDebugPrint("Ladderbox %s entered." % (id - 17))
+            PtDebugPrint("kdshPillarRoom.OnNotify():  Ladderbox {} entered.".format(id - 17))
 
             LocalAvatar = PtFindAvatar(events)
 
@@ -278,19 +279,19 @@ class kdshPillarRoom(ptResponder):
             return
 
         elif id == SolutionLadderBtm.id and PtWasLocallyNotified(self.key):
-            PtDebugPrint("Solution Ladder mounted from bottom.")
+            PtDebugPrint("kdshPillarRoom.OnNotify():  Solution Ladder mounted from bottom.")
             LocalAvatar = PtFindAvatar(events)
             MultiSolutionBtm.run(LocalAvatar)
             return
 
         elif id == SolutionLadderTop.id and PtWasLocallyNotified(self.key):
-            PtDebugPrint("Solution Ladder mounted from top.")
+            PtDebugPrint("kdshPillarRoom.OnNotify():  Solution Ladder mounted from top.")
             LocalAvatar = PtFindAvatar(events)
             MultiSolutionTop.run(LocalAvatar)
             return
 
         elif id == actResetBtn.id:
-            PtDebugPrint("kdshPillarRoom Reset Button clicked.")
+            PtDebugPrint("kdshPillarRoom.OnNotify():  kdshPillarRoom Reset Button clicked.")
             LocalAvatar = PtFindAvatar(events)
             respResetBtn.run(self.key, events=events)
             return
@@ -327,7 +328,7 @@ class kdshPillarRoom(ptResponder):
 
         elif VARname == "PillarsResetting":
             Resetting = ageSDL["PillarsResetting"][0]
-            PtDebugPrint("kdshPillarRoom.OnSDLNotify: Resetting = %d" % (Resetting))
+            PtDebugPrint("kdshPillarRoom.OnSDLNotify():  Resetting = {}".format(Resetting))
 
             if Resetting:
 
@@ -344,7 +345,7 @@ class kdshPillarRoom(ptResponder):
                     sumofpulls = sumofpulls + thisheight
                     if thisheight > highest:
                         highest = thisheight
-                PtDebugPrint("The highest pillar when you reset was %d notches high." % (highest))
+                PtDebugPrint("kdshPillarRoom.OnNotify():  The highest pillar when you reset was {} notches high.".format(highest))
 
                 if highest != 0:
                     PtAtTimeCallback(self.key, 5*highest, 6)  # disable everything until all the pillars are down
@@ -369,7 +370,7 @@ class kdshPillarRoom(ptResponder):
                         PillarAnim.byObject["pillar0" + str(count)].playRange(0, rangestart)
 
                     ageSDL["pheight0" + str(count)] = (0,)
-                    PtDebugPrint("Pillar0%d height is now: %d" % (count, ageSDL["pheight0"+str(count)][0]))
+                    PtDebugPrint("kdshPillarRoom.OnNotify():  Pillar0{} height is now: {}".format(count, ageSDL["pheight0"+str(count)][0]))
 
             return
 
@@ -394,13 +395,13 @@ class kdshPillarRoom(ptResponder):
             ageSDL["PillarsOccupied"] = (0,)
             ageSDL["PillarsResetting"] = (0,)
         else:
-            PtDebugPrint("kdshPillar.Load: I'm not alone in Kadish. Leaving Ladder SDLs as they previously were.")
+            PtDebugPrint("kdshPillarRoom.CleanUpLaddersIfImAlone():  I'm not alone in Kadish. Leaving Ladder SDLs as they previously were.")
 
     def PillarIsSafeToMove(self, id):
         ageSDL = PtGetAgeSDL()
 
         if ageSDL["PillarsOccupied"][0]:
-            PtDebugPrint("PillarIsSafeToMove: Can't do that now. Someone is on a pillar.")
+            PtDebugPrint("kdshPillarRoom.PillarIsSafeToMove():  Can't do that now. Someone is on a pillar.")
             return false
         else:
             return true
@@ -418,7 +419,7 @@ class kdshPillarRoom(ptResponder):
         exec code
 
         PtDebugPrint("\n##")
-        PtDebugPrint("Pillar0%d height is now: %d" % (id, ageSDL["pheight0" + str(id)][0]))
+        PtDebugPrint("kdshPillarRoom.RaiseAPillar():  Pillar0{} height is now: {}".format(id, ageSDL["pheight0" + str(id)][0]))
 
     def LowerCounterweight(self):
         global PullsInProgress
@@ -436,15 +437,15 @@ class kdshPillarRoom(ptResponder):
         ageSDL = PtGetAgeSDL()
 
         if ageSDL["pheight01"][0] == 1 and ageSDL["pheight02"][0] == 4 and ageSDL["pheight03"][0] == 1 and ageSDL["pheight04"][0] == 2:  # true if puzzle correct
-            PtDebugPrint("kdshPillarRoom: Puzzle solved. \n")
+            PtDebugPrint("kdshPillarRoom.CheckSolution():  Puzzle solved. \n")
             PtAtTimeCallback(self.key, 10, 5)  # 10 second delay before lowering solution rings
 
             # run the solution cam, but only for the person who pulled the final lever
             avatar = PtGetLocalAvatar()
             myID = PtGetClientIDFromAvatarKey(avatar.getKey())
-            PtDebugPrint("kdshPillarRoom.CheckSolution: pullerID=%d myID=%d" % (pullerID, myID))
+            PtDebugPrint("kdshPillarRoom.CheckSolution():  pullerID={} myID={}".format(pullerID, myID))
             if myID == pullerID:
-                PtDebugPrint("\tI pulled the final lever. Playing solution cam.")
+                PtDebugPrint("kdshPillarRoom.CheckSolution():  I pulled the final lever. Playing solution cam.")
 
                 # Disable First Person Camera
                 cam = ptCamera()
@@ -454,19 +455,19 @@ class kdshPillarRoom(ptResponder):
                 respSolutionCam.run(self.key)
 
             else:
-                PtDebugPrint("\tI did not pull the final lever.")
+                PtDebugPrint("kdshPillarRoom.CheckSolution():  I did not pull the final lever.")
 
     def ResetPuzzle(self):
         ageSDL = PtGetAgeSDL()
         budget = ageSDL["budget"][0]
-        PtDebugPrint("kdshPillarRoom.ResetPuzzle: budget = %d" % (budget))
+        PtDebugPrint("kdshPillarRoom.ResetPuzzle():  budget = {}".format(budget))
         if budget != 8:
 
             ageSDL["PillarsResetting"] = (1,)
             ageSDL["PillarRoomSolved"] = (0,)
-            PtDebugPrint("\tAt least one pillar has been raised. Resetting Pillar puzzle")
+            PtDebugPrint("kdshPillarRoom.ResetPuzzle():  At least one pillar has been raised. Resetting Pillar puzzle")
         else:
-            PtDebugPrint("Each of the four pillars was already down. Won't reset.")
+            PtDebugPrint("kdshPillarRoom.ResetPuzzle():  Each of the four pillars was already down. Won't reset.")
             return
 
     def OnTimer(self, id):
@@ -597,4 +598,4 @@ class kdshPillarRoom(ptResponder):
 
         else:  # special condition for pillar04
             if ageSDL["pheight04"][0] == 4:
-                PtDebugPrint("Pillar04 has reached the red herring door")
+                PtDebugPrint("kdshPillarRoom.EnableAppropriateLadders():  Pillar04 has reached the red herring door")

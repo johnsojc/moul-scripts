@@ -103,8 +103,10 @@ class clftYeeshaPage08(ptModifier):
     def __init__(self):
         ptModifier.__init__(self)
         self.id = 5312
-        self.version = 1
-        PtDebugPrint("__init__clftYeeshaPage08 v.%d" % (self.version))
+        version = 1
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: clftYeeshaPage08 v{}".format(self.version))
 
     def OnFirstUpdate(self):
         PtLoadDialog(DialogName, self.key)
@@ -146,7 +148,7 @@ class clftYeeshaPage08(ptModifier):
                     ptGUIControlButton(mydialog.getControlFromTag(kYeeshaPage08)).disable()
 
         elif event == kAction and btnID == kYeeshaPage08:
-            PtDebugPrint("DEBUG: clftYeeshaPage08.OnGUINotify():\tPicked up page")
+            PtDebugPrint("clftYeeshaPage08.OnGUINotify():  DEBUG: Picked up page")
 
             RespClose.run(self.key)
             isOpen = 0
@@ -154,11 +156,11 @@ class clftYeeshaPage08(ptModifier):
             self.SetStdGUIVisibility(1)
 
             if self.GotPage():
-                PtDebugPrint("DEBUG: clftYeeshaPage08.py: You've already found Yeesha Page #8. Move along. Move along.")
+                PtDebugPrint("clftYeeshaPage08.OnGUINotify():  DEBUG: You've already found Yeesha Page #8. Move along. Move along.")
                 return
             else:
-                PtDebugPrint("DEBUG: clftYeeshaPage08.py: Yeesha Page #8 is new to you.")
-                PtDebugPrint("DEBUG: clftYeeshaPage08.py: Trying to update the value of the SDL variable %s to 1" % ("YeeshaPage8"))
+                PtDebugPrint("clftYeeshaPage08.OnGUINotify():  DEBUG: Yeesha Page #8 is new to you.")
+                PtDebugPrint("clftYeeshaPage08.OnGUINotify():  DEBUG: Trying to update the value of the SDL variable {} to 1".format("YeeshaPage8"))
                 vault = ptVault()
                 if vault:  # is the Vault online?
                     psnlSDL = vault.getPsnlAgeSDL()
@@ -182,17 +184,17 @@ class clftYeeshaPage08(ptModifier):
             psnlSDL = vault.getPsnlAgeSDL()
             if psnlSDL:
                 YeeshaPageVar = psnlSDL.findVar("YeeshaPage8")
-                PtDebugPrint("DEBUG: clftYeeshaPage08.py: The previous value of the SDL variable %s is %s" % ("YeeshaPage8", YeeshaPageVar.getInt()))
+                PtDebugPrint("clftYeeshaPage08.GotPage():  DEBUG: The previous value of the SDL variable {} is {}".format("YeeshaPage8", YeeshaPageVar.getInt()))
                 if YeeshaPageVar.getInt() != 0:
-                    PtDebugPrint("DEBUG: clftYeeshaPage08.py: You've already found Yeesha Page #8. Move along. Move along.")
+                    PtDebugPrint("clftYeeshaPage08.GotPage():  DEBUG: You've already found Yeesha Page #8. Move along. Move along.")
                     return 1
                 else:
                     return 0
             else:
-                PtDebugPrint("ERROR: clftYeeshaPage08: Error trying to access the Chronicle psnlSDL. psnlSDL = %s" % (psnlSDL))
+                PtDebugPrint("clftYeeshaPage08.GotPage():  ERROR: Error trying to access the Chronicle psnlSDL. psnlSDL = {}".format(psnlSDL))
                 return 0
         else:
-            PtDebugPrint("ERROR: clftYeeshaPage08: Error trying to access the Vault. Can't access YeeshaPageChanges chronicle.")
+            PtDebugPrint("clftYeeshaPage08.GotPage():  ERROR: Error trying to access the Vault. Can't access YeeshaPageChanges chronicle.")
             return 0
 
     def SetStdGUIVisibility(self, visible):

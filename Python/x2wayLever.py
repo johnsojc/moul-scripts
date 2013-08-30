@@ -67,12 +67,13 @@ class x2wayLever(ptResponder):
         self.id = 5004
 
         version = 1
-        self.version = version
-        PtDebugPrint("__init__x2wayLever v.%d" % (version))
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: x2wayLever v{}".format(self.version))
 
     def OnFirstUpdate(self):
         if self.SDL is None:
-            PtDebugPrint("x2wayLever.OnFirstUpdate():\tERROR---missing SDL (%s)" % (varstring.value))
+            PtDebugPrint("x2wayLever.OnFirstUpdate():  ERROR: missing SDL ({})".format(varstring.value))
             return
 
         self.SDL.setDefault("LvrPos", (0,))  # local only: set default lever position, Load() will correct if necessary
@@ -87,7 +88,7 @@ class x2wayLever(ptResponder):
         else:  # lever in position no.2
             actTo1.enable()
             actTo2.disable()
-        PtDebugPrint("x2wayLever.Load():\tself.SDL[LvrPos]=%d (%s)" % (self.SDL["LvrPos"][0], varstring.value))
+        PtDebugPrint("x2wayLever.Load():  self.SDL[LvrPos]={} ({})".format(self.SDL["LvrPos"][0], varstring.value))
 
     def OnNotify(self, state, id, events):
 
@@ -104,12 +105,12 @@ class x2wayLever(ptResponder):
             elif id == respTo2.id or id == respTo1.id:
                 leverPos = -(leverPos-1)
                 self.SDL["LvrPos"] = (leverPos,)
-                PtDebugPrint("x2wayLever.OnNotify:\tsending notify: '%s' moving to position %d" % (varstring.value, leverPos+1))
+                PtDebugPrint("x2wayLever.OnNotify():  sending notify: '{}' moving to position {}".format(varstring.value, leverPos+1))
                 note = ptNotify(self.key)
                 note.setActivate(1.0)
                 note.addVarNumber(varstring.value, leverPos)
                 note.send()
-                PtDebugPrint("x2wayLever.OnNotify():\tself.SDL[LvrPos]=%d (%s)" % (self.SDL["LvrPos"][0], varstring.value))
+                PtDebugPrint("x2wayLever.OnNotify():  self.SDL[LvrPos]={} ({})".format(self.SDL["LvrPos"][0], varstring.value))
             else:
-                PtDebugPrint("x2wayLever.OnNotify:\tERROR: unanticipated message source.")
+                PtDebugPrint("x2wayLever.OnNotify():  ERROR: unanticipated message source.")
             return

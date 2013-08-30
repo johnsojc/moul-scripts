@@ -78,11 +78,14 @@ class xAgeSDLIntChange(ptResponder):
     def __init__(self):
         ptResponder.__init__(self)
         self.id = 5038
-        self.version = 1
+        version = 1
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: xAgeSDLIntChange v{}".format(self.version))
 
     def OnFirstUpdate(self):
         if not (type(stringVarName.value) is str and stringVarName.value != ""):
-            PtDebugPrint("ERROR: xAgeSDLIntChange.OnFirstUpdate():\tERROR: missing SDL var name in max file")
+            PtDebugPrint("xAgeSDLIntChange.OnFirstUpdate():  ERROR: missing SDL var name in max file")
             pass
 
     def OnServerInitComplete(self):
@@ -96,11 +99,11 @@ class xAgeSDLIntChange(ptResponder):
             try:
                 intCurrentValue = ageSDL[stringVarName.value][0]
             except:
-                PtDebugPrint("ERROR: xAgeSDLIntChange.OnServerInitComplete():\tERROR reading age SDL")
+                PtDebugPrint("xAgeSDLIntChange.OnServerInitComplete():  ERROR: Error reading age SDL")
                 pass
-            PtDebugPrint("DEBUG: xAgeSDLIntChange.OnServerInitComplete():\t%s = %d" % (stringVarName.value, intCurrentValue))
+            PtDebugPrint("xAgeSDLIntChange.OnServerInitComplete():  DEBUG: {} = {}".format(stringVarName.value, intCurrentValue))
         else:
-            PtDebugPrint("ERROR: xAgeSDLIntChange.OnServerInitComplete():\tERROR: missing SDL var name")
+            PtDebugPrint("xAgeSDLIntChange.OnServerInitComplete():  ERROR: missing SDL var name")
             pass
 
     def OnNotify(self, state, id, events):
@@ -113,12 +116,12 @@ class xAgeSDLIntChange(ptResponder):
             return
         else:
             if type(actTrigger.value) is list and len(actTrigger.value) > 0:
-                PtDebugPrint("DEBUG: xAgeSDLIntChange.OnNotify():\t local player requesting %s change via %s" % (stringVarName.value, actTrigger.value[0].getName()))
+                PtDebugPrint("xAgeSDLIntChange.OnNotify():  DEBUG: local player requesting {} change via {}".format(stringVarName.value, actTrigger.value[0].getName()))
                 pass
 
         # error check
         if type(stringVarName.value) is not str or stringVarName.value == "":
-            PtDebugPrint("ERROR: xAgeSDLIntChange.OnNotify():\tERROR: missing SDL var name")
+            PtDebugPrint("xAgeSDLIntChange.OnNotify():  ERROR: missing SDL var name")
             return
 
         ageSDL = PtGetAgeSDL()
@@ -144,7 +147,7 @@ class xAgeSDLIntChange(ptResponder):
 
         ageSDL.setTagString(stringVarName.value, stringInfo.value)
         ageSDL[stringVarName.value] = (intCurrentValue,)
-        PtDebugPrint("DEBUG: xAgeSDLIntChange.OnNotify():\t%s age SDL var %s to %d" % (stringOp, stringVarName.value, intCurrentValue))
+        PtDebugPrint("xAgeSDLIntChange.OnNotify():  DEBUG: {} age SDL var {} to {}".format(stringOp, stringVarName.value, intCurrentValue))
 
     # in case someone other than me changes my var(s)
     def OnSDLNotify(self, VARname, SDLname, playerID, tag):
@@ -152,5 +155,5 @@ class xAgeSDLIntChange(ptResponder):
 
         ageSDL = PtGetAgeSDL()
         if VARname == stringVarName.value:
-            PtDebugPrint("DEBUG: xAgeSDLIntChange.OnSDLNotify():\t VARname:%s, SDLname:%s, tag:%s, value:%d" % (VARname, SDLname, tag, ageSDL[stringVarName.value][0]))
+            PtDebugPrint("xAgeSDLIntChange.OnSDLNotify():  DEBUG: VARname:{}, SDLname:{}, tag:{}, value:{}".format(VARname, SDLname, tag, ageSDL[stringVarName.value][0]))
             intCurrentValue = ageSDL[stringVarName.value][0]

@@ -63,7 +63,10 @@ class GiraCave1(ptResponder):
     def __init__(self):
         ptResponder.__init__(self)
         self.id = 5360224
-        self.version = 1
+        version = 1
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: GiraCave1 v{}".format(self.version))
 
     def OnServerInitComplete(self):
         if type(sdlSolved.value) is str and sdlSolved.value != "":
@@ -71,7 +74,7 @@ class GiraCave1(ptResponder):
             self.ageSDL.setFlags(sdlSolved.value, 1, 1)
             self.ageSDL.sendToClients(sdlSolved.value)
         else:
-            PtDebugPrint("GiraCave.OnFirstUpdate():\tERROR: missing SDL var in max file")
+            PtDebugPrint("GiraCave.OnServerInitComplete():  ERROR: missing SDL var in max file")
 
     def OnNotify(self, state, id, events):
 

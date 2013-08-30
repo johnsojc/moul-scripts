@@ -86,11 +86,14 @@ class grsnWallImagerDisplayN(ptResponder):
 
     def __init__(self):
         "construction"
-        PtDebugPrint("grsnWallImagerDisplayN::init begin")
+        #PtDebugPrint("grsnWallImagerDisplayN::init begin")
         ptResponder.__init__(self)
         self.id = 52398
-        self.version = 1
-        PtDebugPrint("grsnWallImagerDisplayN::init end")
+        version = 1
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: grsnWallImagerDisplayN v{}".format(self.version))
+        #PtDebugPrint("grsnWallImagerDisplayN::init end")
 """
     def OnServerInitComplete(self):
         global ReceiveInit

@@ -498,7 +498,7 @@ def CanShowClothingItem(clothingItem):
 
     #if we're a visitor, don't allow paid clothing items
     if IsVisitorPlayer and not clothingItem.free:
-        PtDebugPrint("The following item is not allowed to free players: %s" % clothingItem.name)
+        PtDebugPrint("xAvatarCustomization.CanShowClothingItem():  The following item is not allowed to free players: {}".format(clothingItem.name))
         return false
 
     # make sure we're not supposed to hide the item
@@ -508,13 +508,13 @@ def CanShowClothingItem(clothingItem):
                 if CanShowSeasonal(clothingItem):
                     return true
                 else:
-                    PtDebugPrint("CanShowClothingItem(): Hiding item "+clothingItem.name+" because it is seasonal")
+                    PtDebugPrint("xAvatarCustomization.CanShowClothingItem():  Hiding item {} because it is seasonal".format(clothingItem.name))
             else:
-                PtDebugPrint("CanShowClothingItem(): Hiding item "+clothingItem.name+" because it is a multiplayer-only option")
+                PtDebugPrint("xAvatarCustomization.CanShowClothingItem():  Hiding item {} because it is a multiplayer-only option".format(clothingItem.name))
         else:
-            PtDebugPrint("CanShowClothingItem(): Hiding item "+clothingItem.name+" because it is optional and isn't in your closet")
+            PtDebugPrint("xAvatarCustomization.CanShowClothingItem():  Hiding item {} because it is optional and isn't in your closet".format(clothingItem.name))
     else:
-        PtDebugPrint("CanShowClothingItem(): Hiding item "+clothingItem.name+" because it is an internal-only option")
+        PtDebugPrint("xAvatarCustomization.CanShowClothingItem():  Hiding item {} because it is an internal-only option".format(clothingItem.name))
     return false
 
 
@@ -613,9 +613,10 @@ class xAvatarCustomization(ptModifier):
 
         ptModifier.__init__(self)
         self.id = 198
-        self.version = 23
+        version = 23
         minorVersion = 2
-        PtDebugPrint("__init__xAvatarCustomization v. %d.%d" % (self.version, minorVersion))
+        self.version = "{}.{}".format(version, minorVersion)
+        PtDebugPrint("__init__: xAvatarCustomization v{}".format(self.version))
         self.morphsLoaded = 0
         self.numTries = 0
         self.dirty = 0  # have we changed the clothing since a reset?
@@ -955,7 +956,7 @@ class xAvatarCustomization(ptModifier):
                     if btnID == kLinkBackBtnID:
                         # they want to go back...
                         if not ptNetLinkingMgr().isEnabled():
-                            PtDebugPrint("OnGuiNotify():\tAborting linkout attempt because the linking managar isn't ready")
+                            PtDebugPrint("xAvatarCustomization.OnGuiNotify():  Aborting linkout attempt because the linking managar isn't ready")
                             return  # don't attempt to link out if we can't do so
                         avatar = PtGetLocalAvatar()
 
@@ -1023,7 +1024,7 @@ class xAvatarCustomization(ptModifier):
                         listboxDict[listboxID].UpdateListbox()
 
                     elif btnID == kAvatarResetID:
-                        PtDebugPrint("Confirming reset...")
+                        PtDebugPrint("xAvatarCustomization.OnGuiNotify():  Confirming reset...")
                         PtYesNoDialog(self.key, PtGetLocalizedString("ACA.GUI.ResetConfirm"))
 
                     elif btnID == kAvatarReadID:
@@ -1047,7 +1048,7 @@ class xAvatarCustomization(ptModifier):
                                 PtChangeAvatar("Female")
 
                     elif btnID == kAvatarCameraID:
-                        PtDebugPrint("ACA: Taking a picture!")
+                        PtDebugPrint("xAvatarCustomization.OnGuiNotify():  ACA: Taking a picture!")
                         picCam = ptCamera()
                         picCam.setAspectRatio(1)
                         AvCustGUI.dialog.hide()
@@ -1083,10 +1084,10 @@ class xAvatarCustomization(ptModifier):
         avatar = PtGetLocalAvatar()
         currentgender = avatar.avatar.getAvatarClothingGroup()
         if currentgender == 1:
-            PtDebugPrint("Female Screenshot")
+            PtDebugPrint("xAvatarCustomization.OnScreenCaptureDone():  Female Screenshot")
             TestMap.textmap.drawImageClipped(0, 0, image, 55, 250, 512, 512, 0)
         else:
-            PtDebugPrint("Male Screenshot")
+            PtDebugPrint("xAvatarCustomization.OnScreenCaptureDone():  Male Screenshot")
             TestMap.textmap.drawImageClipped(0, 0, image, 55, 80, 512, 512, 0)
 
         TestMap.textmap.flush()
@@ -1095,7 +1096,7 @@ class xAvatarCustomization(ptModifier):
     def IResetAvatar(self):
         "Resets our avatar to the defaults"
         # reset our clothing
-        PtDebugPrint("Resetting avatar...")
+        PtDebugPrint("xAvatarCustomization.IResetAvatar():  Resetting avatar...")
         avatar = PtGetLocalAvatar()
 
         # remove all accessories that aren't in our accessory list
@@ -1232,7 +1233,7 @@ class xAvatarCustomization(ptModifier):
     def ISaveSeasonalToCloset(self):
         for item in WornList:
             if item.seasonal and not ItemInWardrobe(item):
-                PtDebugPrint("Adding seasonal item "+item.name+" to your closet since you are wearing it")
+                PtDebugPrint("xAvatarCustomization.ISaveSeasonalToCloset():  Adding seasonal item {} to your closet since you are wearing it".format(item.name))
                 avatar = PtGetLocalAvatar()
                 avatar.avatar.addWardrobeClothingItem(item.name, ptColor().white(), ptColor().white())
 
@@ -1265,7 +1266,7 @@ class xAvatarCustomization(ptModifier):
         InAvatarCloset = 0  # assume never been here before, until proven otherwise
         if entry is not None:
             InAvatarCloset = 1
-        PtDebugPrint("AvaCusta: InAvatarCloset is %d" % (InAvatarCloset))
+        PtDebugPrint("xAvatarCustomization.IIInitFirst():  InAvatarCloset is {}".format(InAvatarCloset))
 
         entry = vault.findChronicleEntry("GiveYeeshaReward")
         if entry is not None:
@@ -1279,10 +1280,10 @@ class xAvatarCustomization(ptModifier):
             clothingList = avatar.avatar.getWardrobeClothingList()
 
             if clothingName not in clothingList:
-                PtDebugPrint("adding Yeesha reward clothing %s to wardrobe" % (clothingName))
+                PtDebugPrint("xAvatarCustomization.IIInitFirst():  adding Yeesha reward clothing {} to wardrobe".format(clothingName))
                 avatar.avatar.addWardrobeClothingItem(clothingName, ptColor().white(), ptColor().black())
             else:
-                PtDebugPrint("player already has Yeesha reward clothing, doing nothing")
+                PtDebugPrint("xAvatarCustomization.IIInitFirst():  player already has Yeesha reward clothing, doing nothing")
             folder = vault.getChronicleFolder()
 
             if folder is not None:
@@ -1340,11 +1341,11 @@ class xAvatarCustomization(ptModifier):
             newImage = TestMap.textmap.getImage()
             basePath = PtGetUserPath() + U"\\Avatars\\"
             if not PtCreateDir(basePath):
-                PtDebugPrint(U"xAvatarCustomization::OnTimer(): Unable to create \"" + basePath + "\" directory. Avatar pic is NOT saved.")
+                PtDebugPrint(U"xAvatarCustomization::OnTimer():  Unable to create \"{}\" directory. Avatar pic is NOT saved.".format(basePath))
                 return
 
             filename = basePath + unicode(PtGetLocalPlayer().getPlayerID()) + U".jpg"
-            PtDebugPrint(U"xAvatarCustomization::OnTimer(): Saving avatar pic to \"" + filename + U"\"")
+            PtDebugPrint(U"xAvatarCustomization::OnTimer():  Saving avatar pic to \"{}\"".format(filename))
             newImage.saveAsJPEG(filename, 90)
 
     def IUpdateAllControls(self):
@@ -1575,7 +1576,7 @@ class xAvatarCustomization(ptModifier):
         avatar = PtGetLocalAvatar()
         gender = avatar.avatar.getAvatarClothingGroup()
 
-        #Limit visitors to not make any physical adjustments
+        # Limit visitors to not make any physical adjustments
         if IsVisitorPlayer and knobID != kWeightKnob:
             if gender == kFemaleClothingGroup:
                 resetVal = avatar.avatar.getMorph("FFace", knobID)
@@ -1586,7 +1587,7 @@ class xAvatarCustomization(ptModifier):
             PtShowDialog(xVisitorUtils.kVisitorNagDialog)
             return
 
-        #Save state
+        # Save state
         if gender == kFemaleClothingGroup:
             avatar.avatar.setMorph("FFace", knobID-kMorphSliderOffset, morphVal)
         else:
@@ -1764,7 +1765,7 @@ class xAvatarCustomization(ptModifier):
                 morphKnob.setValue(self.IMorphToSlider(morphVal))
 
             except:
-                PtDebugPrint("Some error occurred while setting morph slider #" + str(morphID) + ", morphs probably haven't loaded yet")
+                PtDebugPrint("xAvatarCustomization.ISetStandardControls():  Some error occurred while setting morph slider #{}, morphs probably haven't loaded yet".format(morphID))
                 morphKnob.setValue(self.IMorphToSlider(0.0))  # set it to the default
                 allMorphsLoaded = 0
                 pass
@@ -1781,7 +1782,7 @@ class xAvatarCustomization(ptModifier):
                 morphKnob.setValue(self.ITexMorphToSlider(morphVal))
 
             except:
-                PtDebugPrint("Some error occurred while setting tex morph slider #" + str(texMorphID) + ", probably haven't loaded yet")
+                PtDebugPrint("xAvatarCustomization.ISetStandardControls():  Some error occurred while setting tex morph slider #{}, probably haven't loaded yet".format(texMorphID))
                 allMorphsLoaded = 0
                 pass
 
@@ -2043,7 +2044,7 @@ class ClothingItem:
                         elif rs == "feet":
                             self.groupwith = kRightFootClothingItem
                         else:
-                            PtDebugPrint("AvaCusta: Unknown ClothingType %s" % (rs))
+                            PtDebugPrint("xAvatarCutomization.ClothingItem():  Unknown ClothingType {}".format(rs))
 
                     elif ls == "accessorytype":
                         self.accessoryType = 0
@@ -2057,7 +2058,7 @@ class ClothingItem:
                         elif rs == "no":
                             self.inCloset = 0
                         else:
-                            PtDebugPrint("AvaCusta: Unknown inCloset type of %s on clothing item %s" % (rs, self.name))
+                            PtDebugPrint("xAvatarCutomization.ClothingItem():  Unknown inCloset type of {} on clothing item {}".format(rs, self.name))
 
                     elif ls == "inclosetcolor1":
                         rs = string.lower(rs)
@@ -2066,7 +2067,7 @@ class ClothingItem:
                         elif rs == "no":
                             self.inClosetColor1 = 0
                         else:
-                            PtDebugPrint("AvaCusta: Unknown inClosetColor1 type of %s on clothing item %s" % (rs, self.name))
+                            PtDebugPrint("xAvatarCutomization.ClothingItem():  Unknown inClosetColor1 type of {} on clothing item {}".format(rs, self.name))
 
                     elif ls == "inclosetcolor2":
                         rs = string.lower(rs)
@@ -2075,7 +2076,7 @@ class ClothingItem:
                         elif rs == "no":
                             self.inClosetColor2 = 0
                         else:
-                            PtDebugPrint("AvaCusta: Unknown inClosetColor2 type of %s on clothing item %s" % (rs, self.name))
+                            PtDebugPrint("xAvatarCutomization.ClothingItem():  Unknown inClosetColor2 type of {} on clothing item {}".format(rs, self.name))
 
                     elif ls == "nonstandard":
                         self.nonStandardItem = 1
@@ -2212,15 +2213,15 @@ class ClothingItem:
                                         self.seasonTime.append([monthRange, dayRange, yearRange])
 
                         except:
-                            PtDebugPrint("AvaCusta: Malformed date string (%s) on clothing %s" % (rs, self.name))
+                            PtDebugPrint("xAvatarCutomization.ClothingItem():  Malformed date string ({}) on clothing {}".format(rs, self.name))
                             self.seasonal = 0
 
                     else:
                         if ls != "":
-                            PtDebugPrint("AvaCusta: Unknown keyword type (%s) on clothing %s" % (ls, self.name))
+                            PtDebugPrint("xAvatarCutomization.ClothingItem():  Unknown keyword type ({}) on clothing {}".format(ls, self.name))
 
         except (TypeError, LookupError):
-            PtDebugPrint("AvaCusta: some kind of error on clothing " + str(clothing))
+            PtDebugPrint("xAvatarCutomization.ClothingItem():  some kind of error on clothing {}".format(clothing))
 
 
 class TextureGroup:
@@ -2346,7 +2347,7 @@ class ClothingCloset:
                     else:
                         group.accessories.insert(0, accCI)
                 else:
-                    PtDebugPrint("AvaCusta: no group set for accessory %s" % (accCI.name))
+                    PtDebugPrint("xAvatarCutomization.ClothingCloset.__init__():  no group set for accessory {}".format(accCI.name))
 
     def __getitem__(self, key):
         try:

@@ -70,8 +70,10 @@ class bhroBahroBlueSpiral(ptResponder):
     def __init__(self):
         ptResponder.__init__(self)
         self.id = 8813
-        self.version = 1
-        PtDebugPrint("bhroBahroBlueSpiral: init  version = %d" % (self.version))
+        version = 1
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: bhroBahroBlueSpiral v{}".format(self.version))
 
     ###########################
     def __del__(self):
@@ -88,7 +90,7 @@ class bhroBahroBlueSpiral(ptResponder):
     def OnServerInitComplete(self):
         # if the age is not the one that I'm from then run the responder to make it back off
         ageFrom = PtGetPrevAgeName()
-        PtDebugPrint("bhroBahroBlueSpiral.OnServerInitComplete: Came from %s, running opposite responder state" % (ageFrom))
+        PtDebugPrint("bhroBahroBlueSpiral.OnServerInitComplete():  Came from {}, running opposite responder state".format(ageFrom))
         if ageFrom == "EderTsogal":
             respWedges.run(self.key, state="Delin", fastforward=1)
 
@@ -105,19 +107,19 @@ class bhroBahroBlueSpiral(ptResponder):
     def OnNotify(self, state, id, events):
 
         if id == clkBSTsogal.id and not state:
-            PtDebugPrint("bhroBahroBlueSpiral.OnNotify: clicked Tsogal Spiral")
+            PtDebugPrint("bhroBahroBlueSpiral.OnNotify():  clicked Tsogal Spiral")
             respRings.run(self.key, state="Tsogal", avatar=PtFindAvatar(events))
             psnlSDL = xPsnlVaultSDL()
             sdlVal = psnlSDL["psnlBahroWedge06"][0]
             if not sdlVal:
-                PtDebugPrint("bhroBahroBlueSpiral.OnNotify:  Tturning wedge SDL of psnlBahroWedge06 to On")
+                PtDebugPrint("bhroBahroBlueSpiral.OnNotify():  Tturning wedge SDL of psnlBahroWedge06 to On")
                 psnlSDL["psnlBahroWedge06"] = (1,)
 
         elif id == clkBSDelin.id and not state:
-            PtDebugPrint("bhroBahroBlueSpiral.OnNotify: clicked Delin Spiral")
+            PtDebugPrint("bhroBahroBlueSpiral.OnNotify():  clicked Delin Spiral")
             respRings.run(self.key, state="Delin", avatar=PtFindAvatar(events))
             psnlSDL = xPsnlVaultSDL()
             sdlVal = psnlSDL["psnlBahroWedge05"][0]
             if not sdlVal:
-                PtDebugPrint("bhroBahroBlueSpiral.OnNotify:  Tturning wedge SDL of psnlBahroWedge05 to On")
+                PtDebugPrint("bhroBahroBlueSpiral.OnNotify():  Tturning wedge SDL of psnlBahroWedge05 to On")
                 psnlSDL["psnlBahroWedge05"] = (1,)

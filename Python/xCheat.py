@@ -56,11 +56,11 @@ def ListYeeshaPages(args):
         if psnlSDL:
             for sdlvar, page in xLinkingBookDefs.xYeeshaPages:
                 FoundValue = psnlSDL.findVar(sdlvar)
-                PtDebugPrint("%s is %d" % (sdlvar, FoundValue.getInt()))
+                PtDebugPrint("xCheat.ListYeeshaPages():  {} is {}".format(sdlvar, FoundValue.getInt()))
         else:
-            PtDebugPrint("Could not find personal age SDL")
+            PtDebugPrint("xCheat.ListYeeshaPages():  Could not find personal age SDL")
     else:
-        PtDebugPrint("Could not find vault")
+        PtDebugPrint("xCheat.ListYeeshaPages():  Could not find vault")
 
 
 def GetAllYeeshaPages(args):
@@ -72,19 +72,19 @@ def GetAllYeeshaPages(args):
         if psnlSDL:
             if args == "0":
                 newval = 0
-                PtDebugPrint("xCheat.GetYeeshaPage(): removing all Yeesha pages...")
+                PtDebugPrint("xCheat.GetAllYeeshaPages():  removing all Yeesha pages...")
             else:
                 newval = 1
-                PtDebugPrint("xCheat.GetYeeshaPage(): adding all Yeesha pages...")
+                PtDebugPrint("xCheat.GetAllYeeshaPages():  adding all Yeesha pages...")
 
             for sdlvar, page in xLinkingBookDefs.xYeeshaPages:
                 FoundValue = psnlSDL.findVar(sdlvar)
                 FoundValue.setInt(newval)
             vault.updatePsnlAgeSDL(psnlSDL)
         else:
-            PtDebugPrint("Could not find personal age SDL")
+            PtDebugPrint("xCheat.GetAllYeeshaPages():  Could not find personal age SDL")
     else:
-        PtDebugPrint("Could not find vault")
+        PtDebugPrint("xCheat.GetAllYeeshaPages():  Could not find vault")
 
 
 def GetYeeshaPage(args):
@@ -94,7 +94,7 @@ def GetYeeshaPage(args):
     if vault:  # is the Vault online?
         psnlSDL = vault.getPsnlAgeSDL()
         if args is None or args == "":
-            PtDebugPrint("xCheat.GetYeeshaPage(): ERROR.  Must provide a Yeesha Page number.")
+            PtDebugPrint("xCheat.GetYeeshaPage():  ERROR: Must provide a Yeesha Page number.")
             return
 
         thispage = "YeeshaPage" + args
@@ -104,13 +104,13 @@ def GetYeeshaPage(args):
                     FoundValue = psnlSDL.findVar(sdlvar)
                     FoundValue.setInt(1)
                     vault.updatePsnlAgeSDL(psnlSDL)
-                    PtDebugPrint("xCheat.GetYeeshaPage(): Done. Have added: %s" % (sdlvar))
+                    PtDebugPrint("xCheat.GetYeeshaPage():  Done. Have added: {}".format(sdlvar))
                     return
-            PtDebugPrint("xCheat.GetYeeshaPage(): ERROR.  Could not find Yeesha page: %s" % (thispage))
+            PtDebugPrint("xCheat.GetYeeshaPage():  ERROR: Could not find Yeesha page: {}".format(thispage))
         else:
-            PtDebugPrint("xCheat.GetYeeshaPage(): ERROR.  Could not find personal age SDL")
+            PtDebugPrint("xCheat.GetYeeshaPage():  ERROR: Could not find personal age SDL")
     else:
-        PtDebugPrint("xCheat.GetYeeshaPage(): ERROR.  Could not find vault")
+        PtDebugPrint("xCheat.GetYeeshaPage():  ERROR: Could not find vault")
 
 
 def GetAgeJourneyCloths(args):
@@ -198,7 +198,7 @@ def GenerateCleftSolution(args):
             ageVal = str(solutionlist[v])
             newnode.chronicleSetValue("1," + ageVal + "," + str(v + 1))
             entry.addNode(newnode)
-            PtDebugPrint("%s solution is %s" % (agelist[v], ageVal))
+            PtDebugPrint("xCheat.GenerateCleftSolution():  {} solution is {}".format(agelist[v], ageVal))
 
 
 def ResetEnding(args):
@@ -227,9 +227,9 @@ def SndWhatIsLogTrack(args):
 def SndIsLogMode(args):
     import xSndLogTracks
     if xSndLogTracks.IsLogMode():
-        PtDebugPrint("yes")
+        PtDebugPrint("xCheat.SndIsLogMode():  yes")
     else:
-        PtDebugPrint("not yet")
+        PtDebugPrint("xCheat.SndIsLogMode():  not yet")
 
 
 def SndSetLogMode(args):
@@ -321,8 +321,8 @@ def GZGetMarkers(args):
                     newgotten = markerGottenNumber + markersToGet
                     if newgotten > markerToGetNumber:
                         newgotten = markerToGetNumber
-                    PtDebugPrint("Updating markers gotten to %d from %d" % (newgotten, markerToGetNumber))
-                    upstring = "%d %s:%s %d:%d" % (markerGame, markerGottenColor, markerToGetColor, newgotten, markerToGetNumber)
+                    PtDebugPrint("xCheat.GZGetMarkers():  Updating markers gotten to {} from {}".format(newgotten, markerToGetNumber))
+                    upstring = "{} {}:{} {}:{}".format(markerGame, markerGottenColor, markerToGetColor, newgotten, markerToGetNumber)
                     entry.chronicleSetValue(upstring)
                     entry.save()
                     # just pick some marker to have gotten
@@ -338,19 +338,19 @@ def GZGetMarkers(args):
                                     markers = markers[:markerIdx] + PlasmaKITypes.kGZMarkerCaptured + markers[-(len(markers)-(markerIdx+1)):]
                                 else:
                                     markers = markers[:markerIdx] + PlasmaKITypes.kGZMarkerCaptured
-                                PtDebugPrint("Update marker #%d - out string is '%s'" % (markerIdx+1, markers))
+                                PtDebugPrint("xCheat.GZGetMarkers():  Update marker #{} - out string is '{}'".format(markerIdx+1, markers))
                                 entry.chronicleSetValue(markers)
                                 entry.save()
                     # update the
                     Plasma.PtSendKIMessage(PlasmaKITypes.kGZUpdated, 0)
                     return
                 except ValueError:
-                    PtDebugPrint("xKI:GZ - error trying to read GZGames Chronicle '%s'" % (gameString))
+                    PtDebugPrint("xCheat.GZGetMarkers():  error trying to read GZGames Chronicle '{}'".format(gameString))
             else:
-                PtDebugPrint("xKI:GZ - error GZGames string formation error (len=%d)" % (len(gargs)))
+                PtDebugPrint("xCheat.GZGetMarkers():  error GZGames string formation error (len={})".format(len(gargs)))
         else:
             # if there is none, then error
-            PtDebugPrint("Error - there is no GZMarker game going!")
+            PtDebugPrint("xCheat.GZGetMarkers():  Error - there is no GZMarker game going!")
 
 
 def GiveMeMarkerTag(args):
@@ -461,7 +461,7 @@ def ShowHiddenFolder(args):
                     break
     if jfolder:
         # need to try to find the game
-        PtDebugPrint("Hidden folder contents:")
+        PtDebugPrint("xCheat.ShowHiddenFolder():  Hidden folder contents:")
         folderRefs = jfolder.getChildNodeRefList()
         for jref in folderRefs:
             jnode = jref.getChild()
@@ -469,9 +469,9 @@ def ShowHiddenFolder(args):
             # is it a marker folder list?
             if jnode is not None:
                 # is it named the right one?
-                PtDebugPrint("markerFolder - ", jnode.folderGetName())
+                PtDebugPrint("xCheat.ShowHiddenFolder():  markerFolder - {}".format(jnode.folderGetName()))
     else:
-        PtDebugPrint("There is no Hidden folder")
+        PtDebugPrint("xCheat.ShowHiddenFolder():  There is no Hidden folder")
 
 
 def RemoveHiddenContent(args):
@@ -492,10 +492,10 @@ def RemoveHiddenContent(args):
                     jfolder = agefolder
                     break
     if jfolder:
-        PtDebugPrint("Removing content")
+        PtDebugPrint("xCheat.RemoveHiddenContent():  Removing content")
         jfolder.removeAllNodes()
     else:
-        PtDebugPrint("There is no Hidden folder")
+        PtDebugPrint("xCheat.RemoveHiddenContent():  There is no Hidden folder")
 
 
 #=======================================================
@@ -508,14 +508,14 @@ def RemoveHiddenContent(args):
 def _DumpEm(f, markerfolder, mfNumber):
     lines = 0
     tab = ""
-    PtDebugPrint("  -dumping %s" % (markerfolder.getFolderName()))
+    PtDebugPrint("xCheat._DumpEm():  -dumping {}".format(markerfolder.getFolderName()))
     f.write("#\n")
-    f.write("# %s\n" % (markerfolder.getFolderName()))
-    f.write("MG%02d = [ " % (mfNumber))
-    f.write("%d, " % (markerfolder.getOwnerID()))
-    f.write('"%s", ' % (markerfolder.getOwnerName()))
-    f.write("%d, " % (markerfolder.getGameType()))
-    f.write("%d ,\\\n" % (markerfolder.getRoundLength()))
+    f.write("# {}\n".format(markerfolder.getFolderName()))
+    f.write("MG{:02d} = [ ".format(mfNumber))
+    f.write("{}, ".format(markerfolder.getOwnerID()))
+    f.write('"{}", '.format(markerfolder.getOwnerName()))
+    f.write("{}, ".format(markerfolder.getGameType()))
+    f.write("{} ,\\\n".format(markerfolder.getRoundLength()))
     f.write("  [\\\n")
     lines += 4
     # loop through all the markers
@@ -525,16 +525,16 @@ def _DumpEm(f, markerfolder, mfNumber):
         marker = markerRef.getChild()
         marker = marker.upcastToMarkerNode()
         if marker is not None:
-            f.write('    [ "%s", ' % (marker.markerGetText()))
+            f.write('    [ "{}", '.format(marker.markerGetText()))
             pos = marker.markerGetPosition()
-            f.write("%g, %g, %g, " % (pos.getX(), pos.getY(), (pos.getZ())))
-            f.write('"%s", ' % (marker.markerGetAge()))
-            f.write("%d, %d, %d ],\\\n" % (marker.markerGetTorans(), marker.markerGetHSpans(), marker.markerGetVSpans()))
+            f.write("{:g}, {:g}, {:g}, ".format(pos.getX(), pos.getY(), (pos.getZ())))
+            f.write('"{}", '.format(marker.markerGetAge()))
+            f.write("{}, {}, {} ],\\\n".format(marker.markerGetTorans(), marker.markerGetHSpans(), marker.markerGetVSpans()))
             lines += 1
             numMarkers += 1
     f.write("  ]\\\n]\n")
     lines += 2
-    PtDebugPrint("      with %d markers" % (numMarkers))
+    PtDebugPrint("xCheat._DumpEm():  with {} markers".format(numMarkers))
     return lines
 
 
@@ -543,7 +543,7 @@ def DumpMarkers(args):
     import Plasma
     arglist = args.split()
     if len(arglist) < 2:
-        PtDebugPrint('ERROR - not enough arguments - DumpMarkers "filename foldername [markername]")')
+        PtDebugPrint('xCheat.DumpMarkers():  ERROR: not enough arguments - DumpMarkers "filename foldername [markername]")')
         return
     filename = arglist[0]
     dfile = open(filename, 'w+')
@@ -588,17 +588,17 @@ def DumpMarkers(args):
                         lines += _DumpEm(dfile, jentry, totalmfs+1)
                         totalmfs += 1
         else:
-            PtDebugPrint("Could not find folder")
+            PtDebugPrint("xCheat.DumpMarkers():  Could not find folder")
     else:
-        PtDebugPrint("Master age journal folders could not be found")
+        PtDebugPrint("xCheat.DumpMarkers():  Master age journal folders could not be found")
 
     sess = "s"
     if totalmfs == 1:
         sess = ""
-    PtDebugPrint("==Wrote %d markerfolder%s. %d lines total==" % (totalmfs, sess, lines))
+    PtDebugPrint("xCheat.DumpMarkers():  ==Wrote {} markerfolder{}. {} lines total==".format(totalmfs, sess, lines))
     dfile.write("mgs = [")
     for mg in range(totalmfs):
-        dfile.write("(MG%02d,'MG%02d')," % (mg+1, mg+1))
+        dfile.write("(MG{:02d},'MG{:02d'),".format(mg+1, mg+1))
     dfile.write("]\n")
     dfile.close()
 
@@ -609,13 +609,13 @@ def ImportGames(args):
     import PlasmaVaultConstants
     arglist = args.split()
     if len(arglist) < 2:
-        PtDebugPrint('ERROR - not enough arguments - ImportMarkers "filename foldername")')
+        PtDebugPrint('xCheat.ImportGames():  ERROR: not enough arguments - ImportMarkers "filename foldername")')
         return
     filename = arglist[0]
     try:
         dfile = open(filename+'.py', 'r')
     except IOError:
-        PtDebugPrint("ERROR - file %d could not be found" % (filename+'.py'))
+        PtDebugPrint("xCheat.ImportGames():  ERROR: file {} could not be found".format(filename+'.py'))
         return
     dfile.close()
     argresidual = args[len(filename)+1:]
@@ -635,8 +635,8 @@ def ImportGames(args):
                     jfolder = agefolder
                     argresidual = argresidual[len(agefolder.folderGetName())+1:]
     if jfolder:
-        exec("import %s" % (filename))
-        exec("mgs = %s.mgs" % (filename))
+        exec("import {}".format(filename))
+        exec("mgs = {}.mgs".format(filename))
         for mg in mgs:
             nMarkerFolder = Plasma.ptVaultMarkerListNode(PlasmaVaultConstants.PtVaultNodePermissionFlags.kDefaultPermissions)
             nMarkerFolder.folderSetName(mg[1])
@@ -653,13 +653,13 @@ def ImportMarkers(args):
     import PlasmaVaultConstants
     arglist = args.split()
     if len(arglist) < 2:
-        PtDebugPrint('ERROR - not enough arguments - ImportMarkers "filename foldername")')
+        PtDebugPrint('xCheat.ImportMarkers():  ERROR: not enough arguments - ImportMarkers "filename foldername")')
         return
     filename = arglist[0]
     try:
         dfile = open(filename+'.py', 'r')
     except IOError:
-        PtDebugPrint("ERROR - file %d could not be found" % (filename+'.py'))
+        PtDebugPrint("xCheat.ImportMarkers():  ERROR: file {} could not be found".format(filename+'.py'))
         return
     dfile.close()
     argresidual = args[len(filename)+1:]
@@ -679,8 +679,8 @@ def ImportMarkers(args):
                     jfolder = agefolder
                     argresidual = argresidual[len(agefolder.folderGetName())+1:]
     if jfolder:
-        exec("import %s" % (filename))
-        exec("mgs = %s.mgs" % (filename))
+        exec("import {}".format(filename))
+        exec("mgs = {}.mgs".format(filename))
         for mg in mgs:
             # need to try to find the game to stick these in
             jfolderRefs = jfolder.getChildNodeRefList()
@@ -706,7 +706,7 @@ def GetChildInfo(args):
     import Plasma
     vault = Plasma.ptVault()
     hoodGUID = vault.getLinkToMyNeighborhood().getAgeInfo().getAgeInstanceGuid()
-    PtDebugPrint("hoodGUID: %s" % (hoodGUID))
+    PtDebugPrint("xCheat.GetChildInfo():  hoodGUID: {}".format(hoodGUID))
 
     parentname = None
     agevault = Plasma.ptAgeVault()
@@ -714,21 +714,21 @@ def GetChildInfo(args):
     parent = ageinfo.getParentAgeLink()
     if parent is None:
         agename = ageinfo.getAgeFilename()
-        PtDebugPrint("not a child age.  age = %s" % (agename))
+        PtDebugPrint("xCheat.GetChildInfo():  not a child age.  age = {}".format(agename))
         return
 
     parentinfo = parent.getAgeInfo()
     parentname = parentinfo.getAgeFilename()
     parentGUID = parentinfo.getAgeInstanceGuid()
-    PtDebugPrint("parentGUID: %s" % (parentGUID))
+    PtDebugPrint("xCheat.GetChildInfo():  parentGUID: {}".format(parentGUID))
 
     if parentname == "Neighborhood":
         if hoodGUID == parentGUID:
-            PtDebugPrint("child of hood:  yes")
+            PtDebugPrint("xCheat.GetChildInfo():  child of hood:  yes")
         else:
-            PtDebugPrint("child of hood:  different")
+            PtDebugPrint("xCheat.GetChildInfo():  child of hood:  different")
     else:
-        pPtDebugPrint("child of hood:  no")
+        pPtDebugPrint("xCheat.GetChildInfo():  child of hood:  no")
 
 
 def GetSDL(varName):
@@ -740,14 +740,14 @@ def GetSDL(varName):
     import Plasma
 
     if not varName:
-        PtDebugPrint("xCheat.GetSDL(): GetSDL takes one argument: SDL variable name is required.\n Use 'all' to list all variables for the current Age.")
+        PtDebugPrint("xCheat.GetSDL():  GetSDL takes one argument: SDL variable name is required.\n Use 'all' to list all variables for the current Age.")
         return
 
     ageName = Plasma.PtGetAgeName()
     try:
         ageSDL = Plasma.PtGetAgeSDL()
     except:
-        PtDebugPrint("xCheat.GetSDL(): Unable to retrieve SDL for '{}'.".format(ageName))
+        PtDebugPrint("xCheat.GetSDL():  Unable to retrieve SDL for '{}'.".format(ageName))
         return
 
     varList = []
@@ -764,7 +764,7 @@ def GetSDL(varName):
                     varList = varRecord.getVarList()
 
         if not varList:
-            PtDebugPrint("xCheat.GetSDL(): Couldn't retrieve SDL list.")
+            PtDebugPrint("xCheat.GetSDL():  Couldn't retrieve SDL list.")
             return
 
         maxlen = len(max(varList, key=len))
@@ -774,17 +774,17 @@ def GetSDL(varName):
                     val = ""
                 else:
                     val = ageSDL[var][0]
-                PtDebugPrint("xCheat.GetSDL(): {:>{width}}  =  {}".format(var, val, width=maxlen))
+                PtDebugPrint("xCheat.GetSDL():  {:>{width}}  =  {}".format(var, val, width=maxlen))
             except:
-                PtDebugPrint("xCheat.GetSDL(): Error retrieving value for '{}'.".format(var))
+                PtDebugPrint("xCheat.GetSDL():  Error retrieving value for '{}'.".format(var))
     else:
         try:
             if len(ageSDL[varName]) == 0:
                 PtDebugPrint("xCheat.GetSDL():  SDL variable '{}' is not set.".format(varName))
             else:
-                PtDebugPrint("xCheat.GetSDL(): {}  =  {}".format(varName, ageSDL[varName][0]))
+                PtDebugPrint("xCheat.GetSDL():  {}  =  {}".format(varName, ageSDL[varName][0]))
         except:
-            PtDebugPrint("xCheat.GetSDL(): SDL variable '{}' not found.".format(varName))
+            PtDebugPrint("xCheat.GetSDL():  SDL variable '{}' not found.".format(varName))
             return
 
 
@@ -796,35 +796,35 @@ def SetSDL(varNameAndVal):
     import Plasma
 
     if not varNameAndVal:
-        PtDebugPrint("xCheat.SetSDL(): SetSDL takes two arguments: SDL variable name and new value are required.")
+        PtDebugPrint("xCheat.SetSDL():  SetSDL takes two arguments: SDL variable name and new value are required.")
         return
 
     varNameAndValList = varNameAndVal.split("_")
     if (len(varNameAndValList) < 2) or varNameAndValList[1] == "":
-        PtDebugPrint("xCheat.SetSDL(): No new value specified.")
+        PtDebugPrint("xCheat.SetSDL():  No new value specified.")
         return
     varName = varNameAndValList[0]
     try:
         newval = int(varNameAndValList[1])
     except ValueError:
-        PtDebugPrint("xCheat.SetSDL(): Can't use '{}'. Only numerical SDL values are supported.".format(varNameAndValList[1]))
+        PtDebugPrint("xCheat.SetSDL():  Can't use '{}'. Only numerical SDL values are supported.".format(varNameAndValList[1]))
         return
 
     ageName = Plasma.PtGetAgeName()
     try:
         ageSDL = Plasma.PtGetAgeSDL()
     except:
-        PtDebugPrint("xCheat.SetSDL(): Unable to retrieve SDL for '{}'.".format(ageName))
+        PtDebugPrint("xCheat.SetSDL():  Unable to retrieve SDL for '{}'.".format(ageName))
         return
 
     try:
         oldval = ageSDL[varName][0]
     except KeyError:
-        PtDebugPrint("xCheat.SetSDL(): SDL variable '{}' not found.".format(varName))
+        PtDebugPrint("xCheat.SetSDL():  SDL variable '{}' not found.".format(varName))
         return
 
     if newval == oldval:
-        PtDebugPrint("xCheat.SetSDL(): Not changing value, '{}' is already {}.".format(varName, newval))
+        PtDebugPrint("xCheat.SetSDL():  Not changing value, '{}' is already {}.".format(varName, newval))
         return
 
     if ageName == "Personal":
@@ -838,7 +838,7 @@ def SetSDL(varNameAndVal):
         ageSDL.sendToClients(varName)
         ageSDL[varName] = (newval,)
 
-    PtDebugPrint("xCheat.SetSDL(): Setting '{}' to {} (was {}).".format(varName, newval, oldval))
+    PtDebugPrint("xCheat.SetSDL():  Setting '{}' to {} (was {}).".format(varName, newval, oldval))
 
 
 def InstaPellets(args):
@@ -848,11 +848,11 @@ def InstaPellets(args):
     if ageName == "Ercana":
         sdl = Plasma.PtGetAgeSDL()
         if args == "":
-            PtDebugPrint("xCheat.InstantPellets: ERROR.  Must specify a recipe value as argument.")
+            PtDebugPrint("xCheat.InstantPellets:  ERROR: Must specify a recipe value as argument.")
         else:
             PelletsPresent = sdl["ercaPelletMachine"][0]
             if PelletsPresent:
-                PtDebugPrint("xCheat.InstantPellets: ERROR.  Must flush current pellets before using this cheat.")
+                PtDebugPrint("xCheat.InstantPellets:  ERROR: Must flush current pellets before using this cheat.")
             else:
                 iarg = string.atoi(args)
                 if iarg == 0:
@@ -860,7 +860,7 @@ def InstaPellets(args):
                 recipeSDL = (iarg + 300)
                 if recipeSDL < 1:
                     recipeSDL = 1
-                PtDebugPrint("xCheat.InstantPellets: 5 pellets now created with Recipe of %d." % (iarg))
+                PtDebugPrint("xCheat.InstantPellets:  5 pellets now created with Recipe of {}.".format(iarg))
                 sdl["ercaPellet1"] = (recipeSDL,)
                 sdl["ercaPellet2"] = (recipeSDL,)
                 sdl["ercaPellet3"] = (recipeSDL,)
@@ -886,12 +886,12 @@ def CheckRecipe(args):
                 break
         if testVal:
             recipe = (recipeSDL - 300)
-            PtDebugPrint("xCheat.CheckRecipe: Recipe of current pellet(s) = %d." % (recipe))
+            PtDebugPrint("xCheat.CheckRecipe:  Recipe of current pellet(s) = {}.".format(recipe))
         else:
-            PtDebugPrint("xCheat.CheckRecipe: No pellets currently exist, therefore no recipe.")
+            PtDebugPrint("xCheat.CheckRecipe:  No pellets currently exist, therefore no recipe.")
 
 
 def GetPlayerID(self):
     import Plasma
     playerID = Plasma.PtGetLocalPlayer().getPlayerID()
-    PtDebugPrint("playerID = %d" % (playerID))
+    PtDebugPrint("xCheat.GetPlayerID():  playerID = {}".format(playerID))

@@ -96,8 +96,10 @@ class islmMemorialImager(ptModifier):
         ptModifier.__init__(self)
         Instance = self
         self.id = 5105
-        self.version = 1
-        PtDebugPrint("islmMemorialImager: init  version=%d.%d" % (self.version, 3))
+        version = 1
+        minor = 3
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: islmMemorialImager v{}".format(self.version))
 
     ############################
     def OnServerInitComplete(self):
@@ -237,19 +239,19 @@ class islmMemorialImager(ptModifier):
         inboxChildList = inbox.getChildNodeRefList()
 
         for child in inboxChildList:
-            PtDebugPrint("islmMemorialImager: looking at node " + str(child), level=kDebugDumpLevel)
+            PtDebugPrint("islmMemorialImager.UpdateMarqueeMessage():  looking at node {}".format(child), level=kDebugDumpLevel)
             node = child.getChild()
             folderNode = node.upcastToFolderNode()
             if folderNode is not None:
-                PtDebugPrint("islmMemorialImager: node is named %s" % (folderNode.getFolderName()), level=kDebugDumpLevel)
+                PtDebugPrint("islmMemorialImager.UpdateMarqueeMessage():  node is named {}".format(folderNode.getFolderName()), level=kDebugDumpLevel)
                 if folderNode.getFolderName() == "MemorialImager":
                     folderNodeChildList = folderNode.getChildNodeRefList()
                     for folderChild in folderNodeChildList:
-                        PtDebugPrint("islmMemorialImager: looking at child node " + str(folderChild), level=kDebugDumpLevel)
+                        PtDebugPrint("islmMemorialImager.UpdateMarqueeMessage():  looking at child node {}".format(folderChild), level=kDebugDumpLevel)
                         childNode = folderChild.getChild()
                         textNode = childNode.upcastToTextNoteNode()
                         if textNode is not None:
-                            PtDebugPrint("islmMemorialImager: child node is named %s" % (textNode.getTitle()), level=kDebugDumpLevel)
+                            PtDebugPrint("islmMemorialImager.UpdateMarqueeMessage():  child node is named {}".format(textNode.getTitle()), level=kDebugDumpLevel)
                             if textNode.getTitle() == "MemorialImager":
                                 if textNode.getText() == "":
                                     if kMessage == "":
@@ -266,7 +268,7 @@ class islmMemorialImager(ptModifier):
                                     if oldmessage == "":
                                         kLastUpdate = PtGetDniTime()
                                         self.setTimerCallback(kUpdateTime)
-                                PtDebugPrint("islmMemorialImager: Marquee contents are '%s'" % (kMessage), level=kDebugDumpLevel)
+                                PtDebugPrint("islmMemorialImager.UpdateMarqueeMessage():  Marquee contents are '{}'".format(kMessage), level=kDebugDumpLevel)
                                 return
         self.setTimerCallback(30)
 
@@ -305,7 +307,7 @@ class islmMemorialImager(ptModifier):
             i = i - 1
 
             if not len(testmessage):
-                PtDebugPrint("islmMemorialImager: Message Length = 0")
+                PtDebugPrint("islmMemorialImager.getMaxChars():  Message Length = 0")
                 kMessage = ""
                 return
             testmessage = testmessage[0:len(testmessage) - 1]

@@ -142,7 +142,10 @@ class ercaHrvstr(ptResponder):
     def __init__(self):
         ptResponder.__init__(self)
         self.id = 7025
-        self.version = 8
+        version = 8
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: ercaHrvstr v{}".format(self.version))
 
     def OnFirstUpdate(self):
         pass
@@ -199,63 +202,63 @@ class ercaHrvstr(ptResponder):
         try:
             boolPwr = ageSDL[SDLHrvstrPwr.value][0]
         except:
-            PtDebugPrint("ERROR: ercaHrvstr.OnServerInitComplete():\tERROR reading age SDL")
+            PtDebugPrint("ercaHrvstr.OnServerInitComplete():  ERROR: Errot reading age SDL")
             boolPwr = 1
-        PtDebugPrint("DEBUG: ercaHrvstr.OnServerInitComplete():\t%s = %d" % (SDLHrvstrPwr.value, boolPwr))
+        PtDebugPrint("DEBUG: ercaHrvstr.OnServerInitComplete():  {} = {}".format(SDLHrvstrPwr.value, boolPwr))
         try:
             boolRev = ageSDL[SDLHrvstrRev.value][0]
         except:
-            PtDebugPrint("ERROR: ercaHrvstr.OnServerInitComplete():\tERROR reading age SDL")
+            PtDebugPrint("ercaHrvstr.OnServerInitComplete():  ERROR: Errot reading age SDL")
             boolRev = 0
-        PtDebugPrint("DEBUG: ercaHrvstr.OnServerInitComplete():\t%s = %d" % (SDLHrvstrRev.value, boolRev))
+        PtDebugPrint("ercaHrvstr.OnServerInitComplete():  DEBUG: {} = {}".format(SDLHrvstrRev.value, boolRev))
         try:
             bytePos = ageSDL[SDLHrvstrPos.value][0]
         except:
-            PtDebugPrint("ERROR: ercaHrvstr.OnServerInitComplete():\tERROR reading age SDL")
+            PtDebugPrint("ercaHrvstr.OnServerInitComplete():  ERROR: Errot reading age SDL")
             bytePos = 0
-        PtDebugPrint("DEBUG: ercaHrvstr.OnServerInitComplete():\t%s = %d" % (SDLHrvstrPos.value, bytePos))
+        PtDebugPrint("ercaHrvstr.OnServerInitComplete():  DEBUG: {} = {}".format(SDLHrvstrPos.value, bytePos))
         try:
             boolDrvLev = ageSDL[SDLHrvstrDrvLev.value][0]
         except:
-            PtDebugPrint("ERROR: ercaHrvstr.OnServerInitComplete():\tERROR reading age SDL")
+            PtDebugPrint("ercaHrvstr.OnServerInitComplete():  ERROR: Errot reading age SDL")
             boolDrvLev = 0
-        PtDebugPrint("DEBUG: ercaHrvstr.OnServerInitComplete():\t%s = %d" % (SDLHrvstrDrvLev.value, boolDrvLev))
+        PtDebugPrint("ercaHrvstr.OnServerInitComplete():  DEBUG: {} = {}".format(SDLHrvstrDrvLev.value, boolDrvLev))
         try:
             boolWngOk = ageSDL[SDLHrvstrWngOk.value][0]
         except:
-            PtDebugPrint("ERROR: ercaHrvstr.OnServerInitComplete():\tERROR reading age SDL")
+            PtDebugPrint("ercaHrvstr.OnServerInitComplete():  ERROR: Errot reading age SDL")
             boolWngOk = 0
-        PtDebugPrint("DEBUG: ercaHrvstr.OnServerInitComplete():\t%s = %d" % (SDLHrvstrWngOk.value, boolWngOk))
+        PtDebugPrint("ercaHrvstr.OnServerInitComplete():  DEBUG: {} = {}".format(SDLHrvstrWngOk.value, boolWngOk))
         try:
             boolWngLev = ageSDL[SDLHrvstrWngLev.value][0]
         except:
-            PtDebugPrint("ERROR: ercaHrvstr.OnServerInitComplete():\tERROR reading age SDL")
+            PtDebugPrint("ercaHrvstr.OnServerInitComplete():  ERROR: Errot reading age SDL")
             boolWngLev = 0
-        PtDebugPrint("DEBUG: ercaHrvstr.OnServerInitComplete():\t%s = %d" % (SDLHrvstrWngLev.value, boolWngLev))
+        PtDebugPrint("ercaHrvstr.OnServerInitComplete():  DEBUG: {} = {}".format(SDLHrvstrWngLev.value, boolWngLev))
         try:
             byteCarPos = ageSDL[SDLCarPos.value][0]
         except:
-            PtDebugPrint("ERROR: ercaHrvstr.OnServerInitComplete():\tERROR reading age SDL")
+            PtDebugPrint("ercaHrvstr.OnServerInitComplete():  ERROR: Errot reading age SDL")
             byteCarPos = 0
-        PtDebugPrint("DEBUG: ercaHrvstr.OnServerInitComplete():\t%s = %d" % (SDLCarPos.value, byteCarPos))
+        PtDebugPrint("ercaHrvstr.OnServerInitComplete():  DEBUG: {} = {}".format(SDLCarPos.value, byteCarPos))
         try:
             boolCarLev = ageSDL[SDLCarLev.value][0]
         except:
-            PtDebugPrint("ERROR: ercaHrvstr.OnServerInitComplete():\tERROR reading age SDL")
+            PtDebugPrint("ercaHrvstr.OnServerInitComplete():  ERROR: Errot reading age SDL")
             boolCarLev = 0
-        PtDebugPrint("DEBUG: ercaHrvstr.OnServerInitComplete():\t%s = %d" % (SDLCarLev.value, boolCarLev))
+        PtDebugPrint("ercaHrvstr.OnServerInitComplete():  DEBUG: {} = {}".format(SDLCarLev.value, boolCarLev))
         try:
             boolMoving = ageSDL[SDLHrvstrMoving.value][0]
         except:
-            PtDebugPrint("ERROR: ercaHrvstr.OnServerInitComplete():\tERROR reading age SDL")
+            PtDebugPrint("ercaHrvstr.OnServerInitComplete():  ERROR: Errot reading age SDL")
             boolMoving = 0
-        PtDebugPrint("DEBUG: ercaHrvstr.OnServerInitComplete():\t%s = %d" % (SDLHrvstrMoving.value, boolMoving))
+        PtDebugPrint("ercaHrvstr.OnServerInitComplete():  DEBUG: {} = {}".format(SDLHrvstrMoving.value, boolMoving))
         try:
             boolGate = ageSDL[SDLDockGate.value][0]
         except:
-            PtDebugPrint("ERROR: ercaHrvstr.OnServerInitComplete():\tERROR reading age SDL")
+            PtDebugPrint("ercaHrvstr.OnServerInitComplete():  ERROR: Errot reading age SDL")
             boolGate = 0
-        PtDebugPrint("DEBUG: ercaHrvstr.OnServerInitComplete():\t%s = %d" % (SDLDockGate.value, boolGate))
+        PtDebugPrint("ercaHrvstr.OnServerInitComplete():  DEBUG: {} = {}".format(SDLDockGate.value, boolGate))
 
         if boolRev:
             RespRevKnobDwn.run(self.key, fastforward=1)
@@ -357,7 +360,7 @@ class ercaHrvstr(ptResponder):
 
         if VARname == SDLHrvstrRev.value:
             boolRev = ageSDL[SDLHrvstrRev.value][0]
-            PtDebugPrint("boolRev now equals %d" % (boolRev))
+            PtDebugPrint("ercaHrvstr.OnSDLNotify():  boolRev now equals {}".format(boolRev))
             if not self.sceneobject.isLocallyOwned():
                 return
             if callHrvstr:
@@ -379,7 +382,7 @@ class ercaHrvstr(ptResponder):
                 if boolRev == 1:
                     ageSDL[SDLHrvstrPwr.value] = (0,)
             elif bytePos == 2:
-                PtDebugPrint("SDLHrvstrPos set to 2")
+                PtDebugPrint("ercaHrvstr.OnSDLNotify():  SDLHrvstrPos set to 2")
             elif bytePos == 4:
                 ageSDL[SDLHrvstrDrvLev.value] = (0,)
                 if boolRev == 0:
@@ -392,23 +395,23 @@ class ercaHrvstr(ptResponder):
             boolDrvLev = ageSDL[SDLHrvstrDrvLev.value][0]
             if boolDrvLev:
                 if callHrvstr:
-                    PtDebugPrint("onSDLnotify for drvlev, if callHrvstr true will DriveHrvstr")
+                    PtDebugPrint("ercaHrvstr.OnSDLNotify():  for drvlev, if callHrvstr true will DriveHrvstr")
                     self.DriveHrvstr()
                 else:
-                    PtDebugPrint("onSDLnotify for drvlev, says callHrvstr is false and will runRespLadderGoUp")
+                    PtDebugPrint("ercaHrvstr.OnSDLNotify():  for drvlev, says callHrvstr is false and will runRespLadderGoUp")
                     if bytePos == 0 and byteCarPos == 0:
                         RespRampsGoUp.run(self.key)
                     elif bytePos == 4 and byteCarPos == 1:
                         RespRampsGoUp.run(self.key)
                     RespLadderGoUp.run(self.key)
                     if TopLadder:
-                        PtDebugPrint("I'm getting kicked from top ladder multistage")
+                        PtDebugPrint("ercaHrvstr.OnSDLNotify():  I'm getting kicked from top ladder multistage")
                         MltStgLadderTop.gotoStage(LocalAvatar, -1)
                     if BtmLadder:
-                        PtDebugPrint("I'm getting kicked from bottom ladder multistage")
+                        PtDebugPrint("ercaHrvstr.OnSDLNotify():  I'm getting kicked from bottom ladder multistage")
                         MltStgLadderBtm.gotoStage(LocalAvatar, -1)
             else:
-                PtDebugPrint("SDL for lever set to 0, did this happen?")
+                PtDebugPrint("ercaHrvstr.OnSDLNotify():  SDL for lever set to 0, did this happen?")
                 self.DriveHrvstr()
 
         if VARname == SDLHrvstrWngOk.value:
@@ -454,31 +457,31 @@ class ercaHrvstr(ptResponder):
         ageSDL = PtGetAgeSDL()
 
         if (id == ActRevKnob.id and state):
-            PtDebugPrint("ActRevKnob callback")
+            PtDebugPrint("ercaHrvstr.OnNotify():  ActRevKnob callback")
             if boolRev:
                 if boolMoving:
-                    PtDebugPrint("insert stuck/down oneshot here")
+                    PtDebugPrint("ercaHrvstr.OnNotify():  insert stuck/down oneshot here")
                 else:
-                    PtDebugPrint("DEBUG: ercaHrvstr.OnNotify:\tRev knob moving up.")
+                    PtDebugPrint("ercaHrvstr.OnNotify():  DEBUG: Rev knob moving up.")
                     RespRevKnobUp.run(self.key, avatar=PtFindAvatar(events))
             else:
                 if boolMoving:
-                    PtDebugPrint("insert stuck/up oneshot here")
+                    PtDebugPrint("ercaHrvstr.OnNotify():  insert stuck/up oneshot here")
                 else:
-                    PtDebugPrint("DEBUG: ercaHrvstr.OnNotify:\tRev knob moving down.")
+                    PtDebugPrint("ercaHrvstr.OnNotify():  DEBUG: Rev knob moving down.")
                     RespRevKnobDwn.run(self.key, avatar=PtFindAvatar(events))
 
         if (id == RespRevKnobUp.id) and self.sceneobject.isLocallyOwned():
-            PtDebugPrint("RespRevKnobDwn callback")
+            PtDebugPrint("ercaHrvstr.OnNotify():  RespRevKnobDwn callback")
             ageSDL[SDLHrvstrRev.value] = (0,)
 
         if (id == RespRevKnobDwn.id) and self.sceneobject.isLocallyOwned():
-            PtDebugPrint("RespRevKnobDwn callback")
+            PtDebugPrint("ercaHrvstr.OnNotify():  RespRevKnobDwn callback")
             ageSDL[SDLHrvstrRev.value] = (1,)
 
         if (id == RespRevKnobAutoUp.id) and self.sceneobject.isLocallyOwned():
             if callHrvstr:
-                PtDebugPrint("in RespRevKnobAutoUp, will set SDL for rev to 0")
+                PtDebugPrint("ercaHrvstr.OnNotify():  in RespRevKnobAutoUp, will set SDL for rev to 0")
                 ageSDL[SDLHrvstrRev.value] = (0,)
 
         if (id == ActDrvLev.id and state):
@@ -487,15 +490,15 @@ class ercaHrvstr(ptResponder):
                     if carDocking:
                         RespDrvLevOff.run(self.key, avatar=PtFindAvatar(events))
                     else:
-                        PtDebugPrint("DEBUG: ercaHrvstr.OnNotify:\tDrv lev is moving up.")
+                        PtDebugPrint("ercaHrvstr.OnNotify():  DEBUG: Drv lev is moving up.")
                         RespDrvLevUp.run(self.key, avatar=PtFindAvatar(events))
                 else:
-                    PtDebugPrint("DEBUG: ercaHrvstr.OnNotify:\tDrv lev is moving down.")
+                    PtDebugPrint("ercaHrvstr.OnNotify():  DEBUG: Drv lev is moving down.")
                     ActLadderTop.disable()
                     ActLadderBtm.disable()
                     RespDrvLevDwn.run(self.key, avatar=PtFindAvatar(events))
             else:
-                PtDebugPrint("DEBUG: ercaHrvstr.OnNotify:\tDrv lev has no power.")
+                PtDebugPrint("ercaHrvstr.OnNotify():  DEBUG: Drv lev has no power.")
                 RespDrvLevOff.run(self.key, avatar=PtFindAvatar(events))
 
         if (id == RespDrvLevUp.id) and self.sceneobject.isLocallyOwned():
@@ -503,7 +506,7 @@ class ercaHrvstr(ptResponder):
 
         if (id == RespDrvLevAutoUp.id) and self.sceneobject.isLocallyOwned():
             if callHrvstr:
-                PtDebugPrint("in RespDrvLevAutoUp, will set SDL for drvlev to 0")
+                PtDebugPrint("ercaHrvstr.OnNotify():  in RespDrvLevAutoUp, will set SDL for drvlev to 0")
                 ageSDL[SDLHrvstrDrvLev.value] = (0,)
 
         if (id == RespDrvLevDwn.id) and self.sceneobject.isLocallyOwned():
@@ -512,18 +515,18 @@ class ercaHrvstr(ptResponder):
         if (id == ActHrvstrAtStart.id and state) and self.sceneobject.isLocallyOwned():
             if boolRev:
                 ageSDL[SDLHrvstrPos.value] = (0,)
-                PtDebugPrint("Anim event to set SDLHrvstrPos to 0, is this happening?")
+                PtDebugPrint("ercaHrvstr.OnNotify():  Anim event to set SDLHrvstrPos to 0, is this happening?")
 
         if (id == ActHrvstrNearStart.id and state) and self.sceneobject.isLocallyOwned():
-            PtDebugPrint("blah")
+            PtDebugPrint("ercaHrvstr.OnNotify():  ActHrvstrNearStart")
 
         if (id == ActHrvstrNearEnd.id and state) and self.sceneobject.isLocallyOwned():
-            PtDebugPrint("blah")
+            PtDebugPrint("ercaHrvstr.OnNotify():  ActHrvstrNearEnd")
 
         if (id == ActHrvstrAtEnd.id and state) and self.sceneobject.isLocallyOwned():
             if not boolRev:
                 ageSDL[SDLHrvstrPos.value] = (4,)
-                PtDebugPrint("Anim event to set SDLHrvstrPos to 4, is this happening?")
+                PtDebugPrint("ercaHrvstr.OnNotify():  Anim event to set SDLHrvstrPos to 4, is this happening?")
 
         if (id == RespLadderGoUp.id):
             self.DriveHrvstr()
@@ -540,13 +543,13 @@ class ercaHrvstr(ptResponder):
         if (id == ActWngLev.id and state):
             if boolPwr and boolWngOk:
                 if boolWngLev:
-                    PtDebugPrint("DEBUG: ercaHrvstr.OnNotify:\tWngs lev is moving up.")
+                    PtDebugPrint("ercaHrvstr.OnNotify():  DEBUG: Wngs lev is moving up.")
                     RespWngLevUp.run(self.key, avatar=PtFindAvatar(events))
                 else:
-                    PtDebugPrint("DEBUG: ercaHrvstr.OnNotify:\tWngs lev is moving down.")
+                    PtDebugPrint("ercaHrvstr.OnNotify():  DEBUG: Wngs lev is moving down.")
                     RespWngLevDwn.run(self.key, avatar=PtFindAvatar(events))
             else:
-                PtDebugPrint("DEBUG: ercaHrvstr.OnNotify:\tWng lev has no power or not OK to use now.")
+                PtDebugPrint("ercaHrvstr.OnNotify():  DEBUG: Wng lev has no power or not OK to use now.")
                 RespWngLevOff.run(self.key, avatar=PtFindAvatar(events))
 
         if (id == RespWngLevUp.id) and self.sceneobject.isLocallyOwned():
@@ -557,14 +560,14 @@ class ercaHrvstr(ptResponder):
 
         if (id == ActCarLev.id and state):
             if bytePos != 4:
-                PtDebugPrint("DEBUG: ercaHrvstr.OnNotify:\tCar lever can't be used now.")
+                PtDebugPrint("ercaHrvstr.OnNotify():  DEBUG: Car lever can't be used now.")
                 RespCarLevOff.run(self.key, avatar=PtFindAvatar(events))
             elif byteCarPos == 1:
-                PtDebugPrint("DEBUG: ercaHrvstr.OnNotify:\tCar moving up.")
+                PtDebugPrint("ercaHrvstr.OnNotify():  DEBUG: Car moving up.")
                 RespCarGoUp.run(self.key, avatar=PtFindAvatar(events))
                 ageSDL[SDLCarPos.value] = (2,)
             elif byteCarPos == 3:
-                PtDebugPrint("DEBUG: ercaHrvstr.OnNotify:\tCar moving down.")
+                PtDebugPrint("ercaHrvstr.OnNotify():  DEBUG: Car moving down.")
                 RespCarGoDwn.run(self.key, avatar=PtFindAvatar(events))
                 carDocking = 1
                 ageSDL[SDLCarPos.value] = (4,)
@@ -600,7 +603,7 @@ class ercaHrvstr(ptResponder):
             if byteCarPos == 3 and bytePos != 4:
                 callHrvstr = 1
                 if boolMoving:
-                    PtDebugPrint("in RespCallHrvstrBtnDown, will now run lev auto up")
+                    PtDebugPrint("ercaHrvstr.OnNotify():  in RespCallHrvstrBtnDown, will now run lev auto up")
                     RespDrvLevAutoUp.run(self.key)
                 else:
                     RespCallHrvstr.run(self.key)
@@ -614,19 +617,19 @@ class ercaHrvstr(ptResponder):
 
         if (id == RespCallHrvstr.id):
             if boolRev:
-                PtDebugPrint("in RespCallHrvstr, boolRev is true so will run RespRevKnobAutoUp")
+                PtDebugPrint("ercaHrvstr.OnNotify():  in RespCallHrvstr, boolRev is true so will run RespRevKnobAutoUp")
                 RespRevKnobAutoUp.run(self.key)
             else:
-                print "in RespCallHrvstr, will set drvlev SDL to true"
+                PtDebugPrint("ercaHrvstr.OnNotify():  in RespCallHrvstr, will set drvlev SDL to true")
                 if self.sceneobject.isLocallyOwned():
                     ageSDL[SDLHrvstrDrvLev.value] = (1,)
 
         if (id == RespHrvstrStop.id):
-            PtDebugPrint("resp hrvstr stop, did this happen?")
+            PtDebugPrint("ercaHrvstr.OnNotify():  resp hrvstr stop, did this happen?")
             if self.sceneobject.isLocallyOwned():
                 ageSDL[SDLHrvstrMoving.value] = (0,)
             if callHrvstr:
-                PtDebugPrint("will run RespCallHrvstr, if callHrvstr in RespHrvstrStop notify")
+                PtDebugPrint("ercaHrvstr.OnNotify():  will run RespCallHrvstr, if callHrvstr in RespHrvstrStop notify")
                 RespCallHrvstr.run(self.key)
 
         if (id == RespCallCarUp.id) and self.sceneobject.isLocallyOwned():
@@ -636,24 +639,24 @@ class ercaHrvstr(ptResponder):
 
         if (id == ActLadderTop.id and state):
             if LocalAvatar == PtFindAvatar(events):
-                PtDebugPrint("TopLadder = 1")
+                PtDebugPrint("ercaHrvstr.OnNotify():  TopLadder = 1")
                 TopLadder = 1
                 MltStgLadderTop.run(avatar=PtFindAvatar(events))
 
         if (id == ActLadderBtm.id and state):
             if LocalAvatar == PtFindAvatar(events):
-                PtDebugPrint("BtmLadder = 1")
+                PtDebugPrint("ercaHrvstr.OnNotify():  BtmLadder = 1")
                 BtmLadder = 1
                 MltStgLadderBtm.run(avatar=PtFindAvatar(events))
 
         if (id == MltStgLadderTop.id):
             if LocalAvatar == PtFindAvatar(events):
-                PtDebugPrint("TopLadder = 0")
+                PtDebugPrint("ercaHrvstr.OnNotify():  TopLadder = 0")
                 TopLadder = 0
 
         if (id == MltStgLadderBtm.id):
             if LocalAvatar == PtFindAvatar(events):
-                PtDebugPrint("BtmLadder = 0")
+                PtDebugPrint("ercaHrvstr.OnNotify():  BtmLadder = 0")
                 BtmLadder = 0
 
     def DriveHrvstr(self):
@@ -673,23 +676,23 @@ class ercaHrvstr(ptResponder):
         if boolDrvLev:
             if boolPwr:
                 if boolRev:
-                    PtDebugPrint("in DriveHrvstr, will now run RespHrvstrGoRev")
+                    PtDebugPrint("ercaHrvstr.DriveHrvstr():  in DriveHrvstr, will now run RespHrvstrGoRev")
                     RespHrvstrGoRev.run(self.key)
                     if self.sceneobject.isLocallyOwned():
                         ageSDL[SDLHrvstrMoving.value] = (1,)
                     if byteCarPos == 0 or byteCarPos == 1:
                         RespCarGoRev.run(self.key)
                 else:
-                    PtDebugPrint("in DriveHrvstr, will now run RespHrvstrGoFwd")
+                    PtDebugPrint("ercaHrvstr.DriveHrvstr():  in DriveHrvstr, will now run RespHrvstrGoFwd")
                     RespHrvstrGoFwd.run(self.key)
                     if self.sceneobject.isLocallyOwned():
                         ageSDL[SDLHrvstrMoving.value] = (1,)
                     if byteCarPos == 0 or byteCarPos == 1:
                         RespCarGoFwd.run(self.key)
             else:
-                PtDebugPrint("DEBUG: ercaHrvstr.DriveHrvstr:\tThis shouldn't be possible.")
+                PtDebugPrint("ercaHrvstr.DriveHrvstr():  DEBUG: This shouldn't be possible.")
         else:
-            PtDebugPrint("DriveHrvstr, boolDrvLev is 0, is this happening?")
+            PtDebugPrint("ercaHrvstr.DriveHrvstr():  boolDrvLev is 0, is this happening?")
             if bytePos == 0 or bytePos == 4:
                 if callHrvstr:
                     RespCallHrvstrBtnUp.run(self.key)
@@ -722,7 +725,7 @@ class ercaHrvstr(ptResponder):
             else:
                 RespWngGoUp.run(self.key)
         else:
-            PtDebugPrint("DEBUG: ercaHrvstr.HrvstrWings:\tThis shouldn't be possible.")
+            PtDebugPrint("ercaHrvstr.DriveHrvstr():  DEBUG: This shouldn't be possible.")
 
     def OnTimer(self, id):
-        PtDebugPrint("ercaHrvstr.OnTimer")
+        PtDebugPrint("ercaHrvstr.OnTimer()")

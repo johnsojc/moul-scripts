@@ -108,7 +108,10 @@ class xTakableClothing(ptModifier):
     def __init__(self):
         ptModifier.__init__(self)
         self.id = 211
-        self.version = 3
+        version = 3
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: xTakableClothing v{}".format(self.version))
 
     def OnFirstUpdate(self):
         global AgeStartedIn
@@ -120,13 +123,13 @@ class xTakableClothing(ptModifier):
         self.useChance = true
         self.shown = false
         if not (type(stringVarName.value) is str and stringVarName.value != ""):
-            PtDebugPrint("ERROR: xTakableClothing.OnFirstUpdate():\tERROR: missing SDL var name on %s" % self.sceneobject.getName())
+            PtDebugPrint("xTakableClothing.OnFirstUpdate():  ERROR: missing SDL var name on {}".formatself.sceneobject.getName())
         if not (type(stringFClothingName.value) is str and stringFClothingName.value != ""):
-            PtDebugPrint("ERROR: xTakableClothing.OnFirstUpdate():\tERROR: missing female clothing name on %s" % self.sceneobject.getName())
+            PtDebugPrint("xTakableClothing.OnFirstUpdate():  ERROR: missing female clothing name on {}".format(self.sceneobject.getName()))
         if not (type(stringMClothingName.value) is str and stringMClothingName.value != ""):
-            PtDebugPrint("ERROR: xTakableClothing.OnFirstUpdate():\tERROR: missing male clothing name on %s" % self.sceneobject.getName())
+            PtDebugPrint("xTakableClothing.OnFirstUpdate():  ERROR: missing male clothing name on {}".format(self.sceneobject.getName()))
         if not (type(stringChanceSDLName.value) is str and stringChanceSDLName.value != ""):
-            PtDebugPrint("DEBUG: xTakableClothing.OnFirstUpdate(): Chance SDL var name is empty, so we will not use chance rolls for showing %s" % self.sceneobject.getName())
+            PtDebugPrint("xTakableClothing.OnFirstUpdate():  ERROR: Chance SDL var name is empty, so we will not use chance rolls for showing {}".format(self.sceneobject.getName()))
             self.useChance = false
         allFClothing = stringFClothingName.value.split(";")
         for i in range(len(allFClothing)):
@@ -156,21 +159,21 @@ class xTakableClothing(ptModifier):
                     else:
                         PtAtTimeCallback(self.key, 1, kDisableClothingTimer)
                 except:
-                    PtDebugPrint("ERROR: xTakableClothing.OnServerInitComplete():\tERROR accessing ageSDL on %s so we're disabling" % self.sceneobject.getName())
+                    PtDebugPrint("xTakableClothing.Initialize():  ERROR: Error accessing ageSDL on {} so we're disabling".format(self.sceneobject.getName()))
                     PtAtTimeCallback(self.key, 1, kDisableClothingTimer)
                     pass
             else:
-                PtDebugPrint("ERROR: xTakableClothing.OnServerInitComplete():\tERROR: missing SDL var name on %s so we're disabling" % self.sceneobject.getName())
+                PtDebugPrint("xTakableClothing.Initialize():  ERROR: missing SDL var name on {} so we're disabling".format(self.sceneobject.getName()))
                 PtAtTimeCallback(self.key, 1, kDisableClothingTimer)
                 pass
 
             if self.useChance and not self.shown:  # only attempt to show if it's currently hidden
                 try:
                     self.chanceAppearing = int(ageSDL[stringChanceSDLName.value][0])
-                    PtDebugPrint("DEBUG: xTakableClothing.OnServerInitComplete(): Chance of %s appearing is %d percent" % (self.sceneobject.getName(), self.chanceAppearing))
+                    PtDebugPrint("xTakableClothing.Initialize():  DEBUG: Chance of {} appearing is {} percent".format(self.sceneobject.getName(), self.chanceAppearing))
                     PtAtTimeCallback(self.key, 1.5, kRollDiceTimer)  # make sure this fires after our initial hide/show code runs
                 except:
-                    PtDebugPrint("ERROR: xTakableClothing.OnServerInitComplete():\tERROR missing SDL var %s so we will not use chance rolls on %s" % (stringChanceSDLName.value, self.sceneobject.getName()))
+                    PtDebugPrint("xTakableClothing.Initialize():  ERROR: missing SDL var {} so we will not use chance rolls on {}".format(stringChanceSDLName.value, self.sceneobject.getName()))
                     self.useChance = false
                     self.chanceAppearing = 0
             else:
@@ -191,7 +194,7 @@ class xTakableClothing(ptModifier):
         # we need to roll dice to show the object
         elif id == kRollDiceTimer:
             rint = xRandom.randint(1, 100)
-            PtDebugPrint("DEBUG: xTakableClothing.OnTimer(): Rolled a %d against a DC of %d on %s, success on <=" % (rint, self.chanceAppearing, self.sceneobject.getName()))
+            PtDebugPrint("xTakableClothing.OnTimer():  DEBUG: Rolled a {} against a DC of {} on {}, success on <=".format(rint, self.chanceAppearing, self.sceneobject.getName()))
             if rint <= self.chanceAppearing:
                 ageSDL = PtGetAgeSDL()  # show the object
                 ageSDL[stringVarName.value] = (boolShowOnTrue.value, )
@@ -210,7 +213,7 @@ class xTakableClothing(ptModifier):
             else:
                 self.IDisableClothing()
         except:
-            PtDebugPrint("ERROR: xTakableClothing.OnSDLNotify():\tERROR reading age SDL on %s so we're disabling" % self.sceneobject.getName())
+            PtDebugPrint("xTakableClothing.OnSDLNotify():  ERROR: Error reading age SDL on {} so we're disabling".format(self.sceneobject.getName()))
             self.IDisableClothing()
             pass
 
@@ -235,11 +238,11 @@ class xTakableClothing(ptModifier):
             name = item[0]
             type = item[1]
             if type == kHairClothingItem:
-                PtDebugPrint("DEBUG: xTakableClothing.IGetHairColor():  Found current hair item: " + name)
+                PtDebugPrint("xTakableClothing.IGetHairColor():  DEBUG: Found current hair item: {}".format(name))
                 color = avatar.avatar.getTintClothingItem(name, 1)
-                PtDebugPrint("DEBUG: xTakableClothing.IGetHairColor():  Hair color (r,g,b) = (%d,%d,%d)" % (color.getRed(), color.getGreen(), color.getBlue()))
+                PtDebugPrint("xTakableClothing.IGetHairColor():  DEBUG: Hair color (r,g,b) = ({},{},{})".format(color.getRed(), color.getGreen(), color.getBlue()))
                 return color
-        PtDebugPrint("ERROR: xTakableClothing.IGetHairColor():  Couldn't find the currently worn hair item, defaulting to white")
+        PtDebugPrint("xTakableClothing.IGetHairColor():  ERROR: Couldn't find the currently worn hair item, defaulting to white")
         return ptColor().white()
 
     def IGetTint(self, oneOrTwo):
@@ -255,7 +258,7 @@ class xTakableClothing(ptModifier):
         red = float(red)/float(255)
         green = float(green)/float(255.0)
         blue = float(blue)/float(255.0)
-        PtDebugPrint("Tint "+str(oneOrTwo) + " is ("+str(red) + "," + str(green) + "," + str(blue) + ")")
+        PtDebugPrint("xTakableClothing.IGetTint():  Tint {} is ({},{},{})".format(oneOrTwo, red, green, blue))
         return ptColor(red, green, blue, 1)
 
     def IGetItem(self, name):
@@ -291,19 +294,19 @@ class xTakableClothing(ptModifier):
 
     def IRemoveOtherGuildShirt(self):
         playerCNode = ptVault().getAvatarClosetFolder()
-        PtDebugPrint("xTakableClothing: getAvatarClosetFolder Type = " + str(playerCNode.getType()))
-        PtDebugPrint("xTakableClothing: getAvatarClosetFolder Child Node Count = " + str(playerCNode.getChildNodeCount()))
+        PtDebugPrint("xTakableClothing.IRemoveOtherGuildShirt():  getAvatarClosetFolder Type = {}".format(playerCNode.getType()))
+        PtDebugPrint("xTakableClothing.IRemoveOtherGuildShirt():  getAvatarClosetFolder Child Node Count = {}".format(playerCNode.getChildNodeCount()))
         if playerCNode.getChildNodeCount() > 0:
             playerCNodeList = playerCNode.getChildNodeRefList()
             for folderChild in playerCNodeList:
-                PtDebugPrint("xTakableClothing: looking at child node " + str(folderChild), level=kDebugDumpLevel)
+                PtDebugPrint("xTakableClothing.IRemoveOtherGuildShirt():  looking at child node {}".format(folderChild), level=kDebugDumpLevel)
                 childNode = folderChild.getChild()
                 if childNode is not None:
-                    PtDebugPrint("xTakableClothing: Child Node Node ID")
+                    PtDebugPrint("xTakableClothing.IRemoveOtherGuildShirt():  Child Node Node ID")
                     SDLNode = childNode.upcastToSDLNode()
                     if SDLNode is not None:
                         rec = SDLNode.getStateDataRecord()
-                        PtDebugPrint("xTakableClothing: getStateDataRecord().getName(): " + str(rec.getName()))
+                        PtDebugPrint("xTakableClothing.IRemoveOtherGuildShirt():  getStateDataRecord().getName(): {}".format(rec.getName()))
                         SDLVarList = rec.getVarList()
                         for var in SDLVarList:
                             varnode = rec.findVar(var)
@@ -311,13 +314,13 @@ class xTakableClothing(ptModifier):
                                 if varnode.getType() == 4:
                                     varKey = varnode.getKey()
                                     varName = varKey.getName()
-                                    PtDebugPrint("xTakableClothing: VarNode.getName(): ", varName)
+                                    PtDebugPrint("xTakableClothing.IRemoveOtherGuildShirt():  VarNode.getName(): {}".format(varName))
                                     if varName.find('Torso_GuildBlue') != -1 or varName.find('Torso_GuildGreen') != -1 or varName.find('Torso_GuildRed') != -1 or varName.find('Torso_GuildYellow') != -1 or varName.find('Torso_GuildWhite') != -1:
                                         PtDebugPrint("xTakableClothing: Found Other Guild Shirt. Deleting Old Guild Shirt.")
                                         if playerCNode.removeNode(childNode):
-                                            PtDebugPrint("xTakableClothing: Delete was a success.")
+                                            PtDebugPrint("xTakableClothing.IRemoveOtherGuildShirt():  Delete was a success.")
                                         else:
-                                            PtDebugPrint("xTakableClothing: Delete failed.")
+                                            PtDebugPrint("xTakableClothing.IRemoveOtherGuildShirt():  Delete failed.")
                                         return
 
     def IRemoveWornSet(self, setName):
@@ -325,9 +328,9 @@ class xTakableClothing(ptModifier):
         if setName == "":
             return
         if setName in removedSets:
-            PtDebugPrint("xTakableClothing: Set " + setName+" already removed, skipping")
+            PtDebugPrint("xTakableClothing.IRemoveWornSet():  Set {} already removed, skipping".format(setName))
             return
-        PtDebugPrint("xTakableClothing: Removing worn set " + setName)
+        PtDebugPrint("xTakableClothing.IRemoveWornSet():  Removing worn set {}".format(setName))
         removedSets.append(setName)  # add this set to our list of removed sets
         avatar = PtGetLocalAvatar()
         worn = avatar.avatar.getAvatarClothingList()
@@ -351,7 +354,7 @@ class xTakableClothing(ptModifier):
             return
 
         if not PtWasLocallyNotified(self.key):
-            PtDebugPrint("DEBUG: xTakableClothing.OnNotify(): Message didn't come from our player, ignoring")
+            PtDebugPrint("xTakableClothing.OnNotify():  DEBUG: Message didn't come from our player, ignoring")
             return
 
         if id == actClickable.id:
@@ -367,7 +370,7 @@ class xTakableClothing(ptModifier):
                 color1 = self.IGetTint(1)
                 color2 = self.IGetTint(2)
                 if boolHasHairColor.value:
-                    PtDebugPrint("DEBUG: xTakableClothing.OnNotify():  Using existing hair color since this is a hair item")
+                    PtDebugPrint("xTakableClothing.OnNotify():  DEBUG: Using existing hair color since this is a hair item")
                     color1 = hairColor
                 if not boolStayVisible.value:
                     ageSDL = PtGetAgeSDL()
@@ -377,7 +380,7 @@ class xTakableClothing(ptModifier):
                     self.IRemoveOtherGuildShirt()
                     psnlSDL = xPsnlVaultSDL()
                     psnlSDL["guildAlliance"] = (guildSDLValues[base],)
-                    PtDebugPrint("xTakableClothing: Guild set to:", guildSDLValues[base])
+                    PtDebugPrint("xTakableClothing.OnNotify():  Guild set to: {}".format(guildSDLValues[base]))
                 avatar.avatar.addWardrobeClothingItem(base, ptColor().white(), ptColor().white())
                 acclist = avatar.avatar.getClosetClothingList(kAccessoryClothingItem)
                 accnamelist = []
@@ -394,7 +397,7 @@ class xTakableClothing(ptModifier):
                         for aitem in accnamelist:
                             if aitem in wornnamelist and aitem != name:
                                 avatar.avatar.removeClothingItem(aitem)
-                    PtDebugPrint("DEBUG: xTakableClothing.OnNotify():  Wearing " + name)
+                    PtDebugPrint("xTakableClothing.OnNotify():  DEBUG: Wearing {}".format(name))
                     avatar.avatar.netForce(1)
                     avatar.avatar.wearClothingItem(name, 0)
                     avatar.avatar.tintClothingItem(name, color1, 0)
@@ -412,25 +415,26 @@ class xTakableClothing(ptModifier):
                         #END-->Hard Hat color fix
                     avatar.avatar.saveClothing()
             else:
-                PtDebugPrint("DEBUG: xTakableClothing.OnNotify():  You already have "+base+" so I'm not going to give it to you again")
+                PtDebugPrint("xTakableClothing.OnNotify():  DEBUG: You already have {} so I'm not going to give it to you again".format(base))
 
     def IEnableClothing(self):
         if self.IItemInCloset():
             # no need to disable a clickable if it's a guild shirt, and it'd be a pain to reenable later...
             if not "Guild" in stringFClothingName.value:
-                PtDebugPrint("DEBUG: xTakableClothing.IEnableClothing():  Disabling clickable on %s because we already have it..." % self.sceneobject.getName())
+                PtDebugPrint("xTakableClothing.IEnableClothing():  DEBUG: Disabling clickable on {} because we already have it...".format(self.sceneobject.getName()))
                 actClickable.disable()  # don't let them take it again if they already have it
         else:
-            PtDebugPrint("DEBUG: xTakableClothing.IEnableClothing():  Enabling clickable on %s..." % self.sceneobject.getName())
+            PtDebugPrint("xTakableClothing.IEnableClothing():  DEBUG: Enabling clickable on {}...".format(self.sceneobject.getName()))
             actClickable.enable()
 
     def IDisableClothing(self):
-        PtDebugPrint("DEBUG: xTakableClothing.IDisableClothing():  Disabling clickable on %s..." % self.sceneobject.getName())
+        PtDebugPrint("xTakableClothing.IDisableClothing():  DEBUG: Disabling clickable on {}...".format(self.sceneobject.getName()))
         actClickable.disable()
 
 
 class ClothingItem:
     def __init__(self, clothing):
+        PtDebugPrint("__init__: xTakableClothing.py: ClothingItem")
         global clothingSets
         self.name = ""
         self.type = 0
@@ -480,7 +484,7 @@ class ClothingItem:
                         elif rs == "feet":
                             self.groupwith = kRightFootClothingItem
                         else:
-                            PtDebugPrint("xTakableClothing: Unknown ClothingType %s" % (rs))
+                            PtDebugPrint("xTakableClothing.py: ClothingItem.__init__():  Unknown ClothingType {}".format(rs))
                     elif ls == "accessorytype":
                         self.accessoryType = 0
                     elif ls == "accessory":
@@ -499,4 +503,4 @@ class ClothingItem:
                     else:
                         pass
         except (TypeError, LookupError):
-            PtDebugPrint("xTakableClothing: some kind of error on clothing " + str(clothing))
+            PtDebugPrint("xTakableClothing.py: ClothingItem.__init__():  some kind of error on clothing {}".format(clothing))

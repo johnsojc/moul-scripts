@@ -65,39 +65,40 @@ class tldnShroomieGate(ptResponder):
         self.id = 5042
 
         version = 1
-        self.version = version
-        PtDebugPrint("__init__tldnShroomieGate v.%d" % (version))
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: tldnShroomieGate v{}".format(self.version))
 
     def OnNotify(self, state, id, events):
         if id == clkLever.id and state:
-            PtDebugPrint("tldnShroomieGate:\t---Someone Pulled the Lever")
+            PtDebugPrint("tldnShroomieGate.OnNotify():  Someone Pulled the Lever")
             respLeverPull.run(self.key, avatar=PtFindAvatar(events))
 
         elif id == respLeverPull.id:
             ageSDL = PtGetAgeSDL()
-            PtDebugPrint("tldnShroomieGate:\t---Shroomie Gate Up SDL: %d" % (ageSDL["tldnShroomieGateUp"][0]))
+            PtDebugPrint("tldnShroomieGate.OnNotify():  Shroomie Gate Up SDL: {}".format(ageSDL["tldnShroomieGateUp"][0]))
             if ageSDL["tldnShroomieGatePowerOn"][0] and self.sceneobject.isLocallyOwned():
                 if ageSDL["tldnShroomieGateUp"][0]:
                     respGateDown.run(self.key)
-                    PtDebugPrint("tldnShroomieGate:\t---Shroomie Gate Going Down")
+                    PtDebugPrint("tldnShroomieGate.OnNotify():  Shroomie Gate Going Down")
                 else:
                     respGateUp.run(self.key)
-                    PtDebugPrint("tldnShroomieGate:\t---Shroomie Gate Going Up")
+                    PtDebugPrint("tldnShroomieGate.OnNotify():  Shroomie Gate Going Up")
             ageSDL["tldnShroomieGateUp"] = (not ageSDL["tldnShroomieGateUp"][0],)
 
     def OnServerInitComplete(self):
         try:
             ageSDL = PtGetAgeSDL()
         except:
-            PtDebugPrint("tldnShroomieGate:\tERROR---Cannot find the Teledahn Age SDL")
+            PtDebugPrint("tldnShroomieGate.OnServerInitComplete():  ERROR: Cannot find the Teledahn Age SDL")
 
         ageSDL.sendToClients("tldnShroomieGateUp")
         ageSDL.setFlags("tldnShroomieGateUp", 1, 1)
         ageSDL.setNotify(self.key, "tldnShroomieGateUp", 0.0)
 
         if ageSDL["tldnShroomieGateUp"][0]:
-            PtDebugPrint("tldnShroomieGate:\tInit---Shroomie Gate Up")
+            PtDebugPrint("tldnShroomieGate.OnServerInitComplete():  Init---Shroomie Gate Up")
             respGateUp.run(self.key, fastforward=1)
         else:
-            PtDebugPrint("tldnShroomieGate:\tInit---Shroomie Gate Down")
+            PtDebugPrint("tldnShroomieGate.OnServerInitComplete():  Init---Shroomie Gate Down")
             respGateDown.run(self.key, fastforward=1)

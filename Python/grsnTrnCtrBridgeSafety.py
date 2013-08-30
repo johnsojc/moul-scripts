@@ -62,7 +62,10 @@ class grsnTrnCtrBridgeSafety(ptResponder):
     def __init__(self):
         ptResponder.__init__(self)
         self.id = 3278
-        self.version = 1
+        version = 1
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: grsnTrnCtrBridgeSafety v{}".format(self.version))
 
     def OnNotify(self, state, id, events):
         global inRegion1
@@ -75,7 +78,7 @@ class grsnTrnCtrBridgeSafety(ptResponder):
         if (id == triggerRgn1.id):
             for event in events:
                 if (event[0] == 1):
-                    PtDebugPrint("in region 1 %d" % (event[1]))
+                    PtDebugPrint("grsnTrnCtrBridgeSafety.OnNotify():  in region 1 {}".format(event[1]))
                     inRegion1 = event[1]
                     return
 
@@ -83,6 +86,6 @@ class grsnTrnCtrBridgeSafety(ptResponder):
             if inRegion1:
                 for event in events:
                     if (event[0] == 1 and event[1] == 1):
-                        PtDebugPrint("in both regions - warp up")
+                        PtDebugPrint("grsnTrnCtrBridgeSafety.OnNotify():  in both regions - warp up")
                         PtGetLocalAvatar().physics.warpObj(arrivePt.value.getKey())
                         return

@@ -56,8 +56,10 @@ class grsnElevRespTrigger(ptResponder):
     def __init__(self):
         ptResponder.__init__(self)
         self.id = 50224
-        self.version = 1
-        PtDebugPrint("Initialized: grsnElevRespTrigger", 4)
+        version = 1
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: grsnElevRespTrigger v{}".format(self.version), 4)
 
     def OnNotify(self, state, id, events):
         if id == trigger.id:

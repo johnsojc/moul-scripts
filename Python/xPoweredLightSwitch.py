@@ -68,12 +68,13 @@ class xPoweredLightSwitch(ptResponder):
         self.id = 5203
 
         version = 2
-        self.version = version
-        PtDebugPrint("__init__xPoweredLightSwitch v.%d" % (version))
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: xPoweredLightSwitch v{}".format(self.version))
 
     def OnServerInitComplete(self):
         if self.SDL is None:
-            PtDebugPrint("xPoweredLightSwitch.OnServerInitComplete():\tERROR---missing SDL (%s)" % (varstring.value))
+            PtDebugPrint("xPoweredLightSwitch.OnServerInitComplete():  ERROR: missing SDL ({})".format(varstring.value))
             return
         self.SDL.setDefault("source", (0,))
         self.SDL.setDefault("switch", (0,))
@@ -89,9 +90,9 @@ class xPoweredLightSwitch(ptResponder):
                             elif event[3] == 0:  # source has become deactivated
                                 self.SDL["source"] = (0,)
                             else:  # unexpected value
-                                PtDebugPrint("xPoweredLightSwitch.OnNotify:\t'%s' ERROR---got bogus msg - source = %d" % (varstring.value, self.SDL["source"][0]))
+                                PtDebugPrint("xPoweredLightSwitch.OnNotify():  ERROR: '{}' got bogus msg - source = {}".format(varstring.value, self.SDL["source"][0]))
 
-                        PtDebugPrint("xPoweredLightSwitch.OnNotify:\t'%s' got msg - source = %d" % (varstring.value, self.SDL["source"][0]))
+                        PtDebugPrint("xPoweredLightSwitch.OnNotify():  '{}' got msg - source = {}".format(varstring.value, self.SDL["source"][0]))
 
                         if self.SDL["source"][0] == 1 and self.SDL["switch"][0] == 1:  # if switch was already on and power now turns ON
                             respOn.run(self.key, events=events)
@@ -104,9 +105,9 @@ class xPoweredLightSwitch(ptResponder):
                 elif self.SDL["switch"][0] == 0:  # switch has become deactivated
                     self. SDL["switch"] = (1,)
                 else:  # unexpected value
-                    PtDebugPrint("xPoweredLightSwitch.OnNotify:\t'%s' ERROR---got bogus msg - switch = %d" % (varstring.value, self.SDL["switch"][0]))
+                    PtDebugPrint("xPoweredLightSwitch.OnNotify():  ERROR: '{}' got bogus msg - switch = {}".format(varstring.value, self.SDL["switch"][0]))
 
-                PtDebugPrint("xPoweredLightSwitch.OnNotify:\t'%s' got msg - switch = %d" % (varstring.value, self.SDL["switch"][0]))
+                PtDebugPrint("xPoweredLightSwitch.OnNotify():  '{}' got msg - switch = {}".format(varstring.value, self.SDL["switch"][0]))
 
                 if self.SDL["switch"][0] == 1 and self.SDL["source"][0] == 1:  # if source was already on and switch now turns ON
                     respOn.run(self.key, events=events)
@@ -114,7 +115,7 @@ class xPoweredLightSwitch(ptResponder):
                     respOff.run(self.key, events=events)
 
         if id == respOn.id:
-            PtDebugPrint("xPoweredLightSwitch.OnNotify:\tsending msg '%s' clicked, pulled or otherwise activated." % (varstring.value))
+            PtDebugPrint("xPoweredLightSwitch.OnNotify():  sending msg '{}' clicked, pulled or otherwise activated.".format(varstring.value))
             note = ptNotify(self.key)
             note.setActivate(1.0)
             note.addVarNumber(varstring.value, 1.0)

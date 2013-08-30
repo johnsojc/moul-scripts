@@ -69,13 +69,14 @@ class xAgeSDLVarSet(ptResponder):
         ptModifier.__init__(self)
         self.id = 5303
         version = 2
-        self.version = version
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
         self.enabledStateDict = {}
-        PtDebugPrint("__init__xAgeSDLVarSet v.%d" % (version))
+        PtDebugPrint("__init__: xAgeSDLVarSet v{}".format(version))
 
     def OnFirstUpdate(self):
         if not (type(stringSDLVarName.value) is str and stringSDLVarName.value != ""):
-            PtDebugPrint("ERROR: xAgeSDLVarSet.OnFirstUpdate():\tERROR: missing SDL var name in max file")
+            PtDebugPrint("xAgeSDLVarSet.OnFirstUpdate():  ERROR: missing SDL var name in max file")
             pass
 
     def OnServerInitComplete(self):
@@ -84,7 +85,7 @@ class xAgeSDLVarSet(ptResponder):
         ageSDL.setFlags(stringSDLVarToSet.value, 1, 1)
         ageSDL.sendToClients(stringSDLVarToSet.value)
 
-        PtDebugPrint("DEBUG: xAgeSDLVarSet.OnServerInitComplete:\tOn %s" % (stringSDLVarName.value))
+        PtDebugPrint("xAgeSDLVarSet.OnServerInitComplete():  DEBUG: On {}".format(stringSDLVarName.value))
 
         # Parse out the state, value pairs and add them to the dictionary
         try:
@@ -96,34 +97,34 @@ class xAgeSDLVarSet(ptResponder):
                 vals = tup.split(",")
                 self.enabledStateDict[int(vals[0])] = int(vals[1])
         except:
-            PtDebugPrint("ERROR: xAgeSDLVarSet.OnServerInitComplete():\tERROR: couldn't process start state list")
+            PtDebugPrint("xAgeSDLVarSet.OnServerInitComplete():  ERROR: couldn't process start state list")
             pass
 
-        PtDebugPrint("DEBUG: xAgeSDLVarSet.OnServerInitComplete:\tSetting notify on %s" % (stringSDLVarName.value))
+        PtDebugPrint("xAgeSDLVarSet.OnServerInitComplete():  DEBUG: Setting notify on {}".format(stringSDLVarName.value))
 
         ageSDL.setNotify(self.key, stringSDLVarName.value, 0.0)
 
         try:
             SDLvalue = ageSDL[stringSDLVarName.value][0]
         except:
-            PtDebugPrint("ERROR: xAgeSDLVarSet.OnServerInitComplete():\tERROR: age sdl read failed, SDLvalue = %d by default. stringSDLVarName = %s" % (intDefault.value, stringSDLVarName.value))
+            PtDebugPrint("xAgeSDLVarSet.OnServerInitComplete():  ERROR: age sdl read failed, SDLvalue = {} by default. stringSDLVarName = {}".format(intDefault.value, stringSDLVarName.value))
             SDLvalue = intDefault.value
 
-        PtDebugPrint("DEBUG: xAgeSDLVarSet.OnServerInitComplete:\tCurrent SDL value = %d" % (SDLvalue))
+        PtDebugPrint("xAgeSDLVarSet.OnServerInitComplete():  DEBUG: Current SDL value = {}".format(SDLvalue))
 
         # Check if the current SDL value represents a state in the dictionary and set the other SDL value to the value in the dictionary (yay for values!)
         if int(SDLvalue) in self.enabledStateDict:
             ageSDL[stringSDLVarToSet.value] = (self.enabledStateDict[int(SDLvalue)],)
             if stringSDLVarToSet is not None and stringSDLVarToSet.value != "":
                 ageSDL.setTagString(stringSDLVarToSet.value, stringTag.value)
-            PtDebugPrint("DEBUG: xAgeSDLVarSet.OnServerInitComplete:\t%s setting %s to %d" % (stringSDLVarName.value, stringSDLVarToSet.value, self.enabledStateDict[int(SDLvalue)]))
+            PtDebugPrint("xAgeSDLVarSet.OnServerInitComplete():  DEBUG: {} setting {} to {}".format(stringSDLVarName.value, stringSDLVarToSet.value, self.enabledStateDict[int(SDLvalue)]))
 
     def OnSDLNotify(self, VARname, SDLname, PlayerID, tag):
         if VARname != stringSDLVarName.value:
             return
 
         ageSDL = PtGetAgeSDL()
-        PtDebugPrint("DEBUG: xAgeSDLVarSet.OnSDLNotify received: %s" % (VARname))
+        PtDebugPrint("xAgeSDLVarSet.OnSDLNotify():  DEBUG: received {}".format(VARname))
 
         SDLvalue = ageSDL[stringSDLVarName.value][0]
 
@@ -132,4 +133,4 @@ class xAgeSDLVarSet(ptResponder):
             ageSDL[stringSDLVarToSet.value] = (self.enabledStateDict[int(SDLvalue)],)
             if stringSDLVarToSet is not None and stringSDLVarToSet.value != "":
                 ageSDL.setTagString(stringSDLVarToSet.value, stringTag.value)
-            PtDebugPrint("DEBUG: xAgeSDLVarSet.OnServerInitComplete:\t%s setting %s to %d, tag string: %s" % (stringSDLVarName.value, stringSDLVarToSet.value, self.enabledStateDict[int(SDLvalue)], stringTag.value))
+            PtDebugPrint("xAgeSDLVarSet.OnSDLNotify():  DEBUG: {} setting {} to {}, tag string: {}".format(stringSDLVarName.value, stringSDLVarToSet.value, self.enabledStateDict[int(SDLvalue)], stringTag.value))

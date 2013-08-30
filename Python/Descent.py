@@ -57,7 +57,10 @@ class Descent(ptResponder):
     def __init__(self):
         ptResponder.__init__(self)
         self.id = 5325
-        self.version = 1
+        version = 1
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: Descent v{}".format(self.version))
 
     def OnServerInitComplete(self):
         self.ICityBookLink()
@@ -71,11 +74,11 @@ class Descent(ptResponder):
                 cityBookSP = ptSpawnPointInfo("dsntShaftFall", "LinkInPointShaftFall")
                 link.addSpawnPoint(cityBookSP)
                 link.save()
-                PtDebugPrint("Descent - setting the spawnpoint for the city book - OnVaultNotify", level=kDebugDumpLevel)
+                PtDebugPrint("Descent.OnVaultNotify():  setting the spawnpoint for the city book", level=kDebugDumpLevel)
             else:
-                PtDebugPrint("Descent - registering age '%s' (why is this not Descent?)" % (name))
+                PtDebugPrint("Descent.OnVaultNotify():  registering age '{}' (why is this not Descent?)".format(name))
         else:
-            PtDebugPrint("Descent:OnVaultNotify - not what we want - type=%d" % (type), level=kDebugDumpLevel)
+            PtDebugPrint("Descent.OnVaultNotify():  not what we want - type={}".format(type), level=kDebugDumpLevel)
 
     def ICityBookLink(self):
         vault = ptVault()
@@ -89,7 +92,7 @@ class Descent(ptResponder):
                 cityBookSP = ptSpawnPointInfo("dsntShaftFall", "LinkInPointShaftFall")
                 link.addSpawnPoint(cityBookSP)
                 link.save()
-                PtDebugPrint("Descent:OnServerInitComplete - setting the spawnpoint for the city book", level=kDebugDumpLevel)
+                PtDebugPrint("Descent.ICityBookLink():  setting the spawnpoint for the city book", level=kDebugDumpLevel)
                 return
-        PtDebugPrint("Descent:OnServerInitComplete - error - Descent is not there... hopefully OnVaultNotify catches it")
+        PtDebugPrint("Descent.ICityBookLink():  ERROR: Descent is not there... hopefully OnVaultNotify catches it")
         return

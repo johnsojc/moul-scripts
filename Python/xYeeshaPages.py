@@ -111,8 +111,9 @@ class xYeeshaPages(ptModifier):
         ptModifier.__init__(self)
         self.id = 5225
         version = 6
-        self.version = version
-        PtDebugPrint("__init__xYeeshaPages v.%d" % (version))
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: xYeeshaPages v{}".format(self.version))
 
     def OnFirstUpdate(self):
         PtLoadDialog(DialogName, self.key)
@@ -149,7 +150,7 @@ class xYeeshaPages(ptModifier):
             btnID = control.getTagID()
 
         if event == 2 and btnID in YeeshaPageIDList:
-            PtDebugPrint("xYeeshaPages.OnGUINotify():\tPicked up page number: ", PageNumber.value)
+            PtDebugPrint("xYeeshaPages.OnGUINotify():  Picked up page number: {}".format(PageNumber.value))
             PtHideDialog(DialogName)
 
             vault = ptVault()
@@ -159,16 +160,16 @@ class xYeeshaPages(ptModifier):
                 if psnlSDL:
                     YeeshaPageVar = psnlSDL.findVar("YeeshaPage" + str(PageNumber.value))
 
-                    PtDebugPrint("xYeeshaPages.py: The previous value of the SDL variable %s is %s" % ("YeeshaPage" + str(PageNumber.value), YeeshaPageVar.getInt()))
+                    PtDebugPrint("xYeeshaPages.OnGUINotify():  The previous value of the SDL variable {} is {}".format("YeeshaPage" + str(PageNumber.value), YeeshaPageVar.getInt()))
 
                     if YeeshaPageVar.getInt() != 0:
-                        PtDebugPrint("xYeeshaPages.py: You've already found Yeesha Page #%s. Move along. Move along." % (PageNumber.value))
+                        PtDebugPrint("xYeeshaPages.OnGUINotify():  You've already found Yeesha Page #{}. Move along. Move along.".format(PageNumber.value))
                         return
 
                     else:
-                        PtDebugPrint("xYeeshaPages.py: Yeesha Page #%s is new to you." % (PageNumber.value))
+                        PtDebugPrint("xYeeshaPages.OnGUINotify():  Yeesha Page #{} is new to you.".format(PageNumber.value))
 
-                        PtDebugPrint("xYeeshaPages.py: Trying to update the value of the SDL variable %s to 1" % ("YeeshaPage" + str(PageNumber.value)))
+                        PtDebugPrint("xYeeshaPages.OnGUINotify():  Trying to update the value of the SDL variable {} to 1".format("YeeshaPage" + str(PageNumber.value)))
                         YeeshaPageVar.setInt(4)
                         vault.updatePsnlAgeSDL(psnlSDL)
 
@@ -182,13 +183,13 @@ class xYeeshaPages(ptModifier):
                             ageSDL["clftIsCleftDone"] = (1,)
                             vault = ptVault()
                             vault.addChronicleEntry("CleftSolved", 1, "yes")
-                            PtDebugPrint("Chronicle updated with variable 'CleftSolved'.", level=kDebugDumpLevel)
+                            PtDebugPrint("xYeeshaPages.OnGUINotify():  Chronicle updated with variable 'CleftSolved'.", level=kDebugDumpLevel)
 
                 else:
-                    PtDebugPrint("xYeeshaPages: Error trying to access the Chronicle psnlSDL. psnlSDL = %s" % (psnlSDL))
+                    PtDebugPrint("xYeeshaPages.OnGUINotify():  Error trying to access the Chronicle psnlSDL. psnlSDL = {}".format(psnlSDL))
 
             else:
-                PtDebugPrint("xYeeshaPages: Error trying to access the Vault. Can't access YeeshaPageChanges chronicle.")
+                PtDebugPrint("xYeeshaPages.OnGUINotify():  Error trying to access the Vault. Can't access YeeshaPageChanges chronicle.")
 
         elif event == 2 and btnID == kYeeshaPageCancel:
             PtHideDialog(DialogName)
@@ -197,7 +198,7 @@ class xYeeshaPages(ptModifier):
         global DialogName
         mydialog = PtGetDialogFromString(DialogName)
 
-        #first hide them all
+        # first hide them all
         ptGUIControlButton(mydialog.getControlFromTag(kYeeshaPage01)).hide()
         ptGUIControlButton(mydialog.getControlFromTag(kYeeshaPage02)).hide()
         ptGUIControlButton(mydialog.getControlFromTag(kYeeshaPage03)).hide()
@@ -223,7 +224,7 @@ class xYeeshaPages(ptModifier):
         ptGUIControlButton(mydialog.getControlFromTag(kYeeshaPage24)).hide()
         ptGUIControlButton(mydialog.getControlFromTag(kYeeshaPage25)).hide()
 
-        #now draw correct panel
+        # now draw correct panel
         if (PageNumber.value) == 1:
             ptGUIControlButton(mydialog.getControlFromTag(kYeeshaPage01)).show()
         elif (PageNumber.value) == 2:
@@ -274,5 +275,5 @@ class xYeeshaPages(ptModifier):
             ptGUIControlButton(mydialog.getControlFromTag(kYeeshaPage25)).show()
 
         else:
-            PtDebugPrint("xYeeshaPages.IDrawLinkPanel():\tERROR: couldn't find page named ", PageNumber.value)
+            PtDebugPrint("xYeeshaPages.IDrawLinkPanel():  ERROR: couldn't find page named {}".format(PageNumber.value))
         return

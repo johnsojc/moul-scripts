@@ -71,14 +71,15 @@ class krelPodium(ptResponder):
         self.id = 5245
 
         version = 2
-        self.version = version
-        PtDebugPrint("__init__krelPodium v.%d.0" % (version))
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: krelPodium v{}".format(self.version))
 
     def OnServerInitComplete(self):
         try:
             ageSDL = PtGetAgeSDL()
         except:
-            print "krelPodium:\tERROR---Cannot find the Kirel Age SDL"
+            PtDebugPrint("krelPodium.OnServerInitComplete():  ERROR: Cannot find the Kirel Age SDL")
             ageSDL["nb01CmnRmSpeech"] = (0, )
 
         ageSDL.setNotify(self.key, "nb01CmnRmSpeech", 0.0)
@@ -90,7 +91,7 @@ class krelPodium(ptResponder):
     def OnNotify(self, state, id, events):
         ageSDL = PtGetAgeSDL()
 
-        PtDebugPrint("krelPodium.OnNotify:  state=%f id=%d events=%s" % (state, id, events))
+        PtDebugPrint("krelPodium.OnNotify():  state={:f} id={} events={}".format(state, id, events))
 
         if not state:
             return
@@ -104,16 +105,16 @@ class krelPodium(ptResponder):
             nb01CmnRmSpeech = ageSDL["nb01CmnRmSpeech"][0]
 
             if nb01CmnRmSpeech == 0:  # No speech was playing
-                PtDebugPrint("krelPodium: No speech was previously playing. Playing speech #1.")
+                PtDebugPrint("krelPodium.OnNotify():  No speech was previously playing. Playing speech #1.")
                 respSpeech01.run(self.key)
                 ageSDL["nb01CmnRmSpeech"] = (1,)
 
             else:
-                PtDebugPrint("krelPodium: Speech #1 was stopped manually by the avatar.")
+                PtDebugPrint("krelPodium.OnNotify():  Speech #1 was stopped manually by the avatar.")
                 respSilence.run(self.key)
                 ageSDL["nb01CmnRmSpeech"] = (0,)
 
         elif id == respSpeech01.id:
-            PtDebugPrint("krelPodium: Speech #1 was stopped automatically after it finished playing.")
+            PtDebugPrint("krelPodium.OnNotify():  Speech #1 was stopped automatically after it finished playing.")
             respSilence.run(self.key)
             ageSDL["nb01CmnRmSpeech"] = (0,)

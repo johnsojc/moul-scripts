@@ -121,8 +121,9 @@ class nglnFogTweener(ptMultiModifier):
         ptMultiModifier.__init__(self)
         self.id = 5243
         version = 3
-        self.version = version
-        PtDebugPrint("__init__nglnFogTweener v.%d" % (version))
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: nglnFogTweener v{}".format(self.version))
 
         self.SunriseRGBList = []
         self.SunriseDensityList = []
@@ -203,8 +204,8 @@ class nglnFogTweener(ptMultiModifier):
         MidnightE = string.atof(self.MidnightDensityList[1])
         MidnightD = string.atof(self.MidnightDensityList[2])
 
-        PtDebugPrint("nglnFogTweener.OnFirstUpdate: SunriseRGB=(%s,%s,%s), NoonRGB=(%s,%s,%s), SunsetRGB=(%s,%s,%s), MidnightRGB=(%s,%s,%s) " % (SunriseR, SunriseG, SunriseB, NoonR, NoonG, NoonB, SunsetR, SunsetG, SunsetB, MidnightR, MidnightG, MidnightB))
-        PtDebugPrint("nglnFogTweener.OnFirstUpdate: SunriseDensity=(%s,%s,%s), NoonDensity=(%s,%s,%s), SunsetDensity=(%s,%s,%s), MidnightDensity=(%s,%s,%s) " % (SunriseS, SunriseE, SunriseD, NoonS, NoonE, NoonD, SunsetS, SunsetE, SunsetD, MidnightS, MidnightE, MidnightD))
+        PtDebugPrint("nglnFogTweener.OnFirstUpdate():  SunriseRGB=({},{},{}), NoonRGB=({},{},{}), SunsetRGB=({},{},{}), MidnightRGB=({},{},{})".format(SunriseR, SunriseG, SunriseB, NoonR, NoonG, NoonB, SunsetR, SunsetG, SunsetB, MidnightR, MidnightG, MidnightB))
+        PtDebugPrint("nglnFogTweener.OnFirstUpdate():  SunriseDensity=({},{},{}), NoonDensity=({},{},{}), SunsetDensity=({},{},{}), MidnightDensity=({},{},{})".format(SunriseS, SunriseE, SunriseD, NoonS, NoonE, NoonD, SunsetS, SunsetE, SunsetD, MidnightS, MidnightE, MidnightD))
 
     def OnServerInitComplete(self):
         ageSDL = PtGetAgeSDL()
@@ -235,7 +236,7 @@ class nglnFogTweener(ptMultiModifier):
 
         AgeTimeOfDayPercent = PtGetAgeTimeOfDayPercent()
 
-        PtDebugPrint("nglnFogTweener: The day is %.2f%% through its complete cycle." % (AgeTimeOfDayPercent*100))
+        PtDebugPrint("nglnFogTweener.CalculateNewFogValues():  The day is {:.2f}% through its complete cycle.".format(AgeTimeOfDayPercent*100))
         if AgeTimeOfDayPercent > kSunrisePct and AgeTimeOfDayPercent < kNoonPct:
             StartR = SunriseR
             EndR = NoonR
@@ -252,7 +253,7 @@ class nglnFogTweener(ptMultiModifier):
 
             TweenPct = (AgeTimeOfDayPercent - kSunrisePct) / (kNoonPct - kSunrisePct)
 
-            PtDebugPrint("\tIt's after Sunrise and before Noon. (%.2f%% through this quadrant)" % (TweenPct*100))
+            PtDebugPrint("\tIt's after Sunrise and before Noon. ({:.2f}% through this quadrant)".format(TweenPct*100))
 
         elif AgeTimeOfDayPercent > kNoonPct and AgeTimeOfDayPercent < kSunsetPct:
             StartR = NoonR
@@ -270,7 +271,7 @@ class nglnFogTweener(ptMultiModifier):
             EndD = SunsetD
 
             TweenPct = (AgeTimeOfDayPercent - kNoonPct) / (kSunsetPct - kNoonPct)
-            PtDebugPrint("\tIt's after Noon and before Sunset. (%.2f%% this quadrant)" % (TweenPct*100))
+            PtDebugPrint("\tIt's after Noon and before Sunset. ({:.2f}% this quadrant)".format(TweenPct*100))
 
         elif AgeTimeOfDayPercent > kSunsetPct and AgeTimeOfDayPercent < kMidnightPct:
             StartR = SunsetR
@@ -288,7 +289,7 @@ class nglnFogTweener(ptMultiModifier):
             EndD = MidnightD
 
             TweenPct = (AgeTimeOfDayPercent - kSunsetPct) / (kMidnightPct - kSunsetPct)
-            PtDebugPrint("\tIt's after Sunset and before Midnight. (%.2f%% this quadrant)" % (TweenPct*100))
+            PtDebugPrint("\tIt's after Sunset and before Midnight. ({:.2f}% this quadrant)".format(TweenPct*100))
 
         elif AgeTimeOfDayPercent > kMidnightPct and AgeTimeOfDayPercent < 1:
             StartR = MidnightR
@@ -306,16 +307,16 @@ class nglnFogTweener(ptMultiModifier):
             EndD = SunriseD
 
             TweenPct = (AgeTimeOfDayPercent - kMidnightPct) / (1 - kMidnightPct)
-            PtDebugPrint("\tIt's after Midnight and before Sunrise. (%.2f%% this quadrant)" % (TweenPct*100))
+            PtDebugPrint("\tIt's after Midnight and before Sunrise. ({:.2f}% this quadrant)".format(TweenPct*100))
 
         else:
-            PtDebugPrint("ERROR: I can't tell what time it is.")
+            PtDebugPrint("nglnFogTweener.CalculateNewFogValues():  ERROR: I can't tell what time it is.")
 
         self.UpdateFog(StartR, EndR, StartG, EndG, StartB, EndB, StartS, EndS, StartE, EndE, StartD, EndD, TweenPct)
 
     def UpdateFog(self, StartR, EndR, StartG, EndG, StartB, EndB, StartS, EndS, StartE, EndE, StartD, EndD, TweenPct):
-        PtDebugPrint("UpdateFog: StartR=%s, EndR=%s, StartG=%s, EndG=%s, StartB=%s, EndB=%s" % (StartR, EndR, StartG, EndG, StartB, EndB))
-        PtDebugPrint("UpdateFog: StartS=%s, EndS=%s, StartE=%s, EndE=%s, StartD=%s, EndD=%s" % (StartS, EndS, StartE, EndE, StartD, EndD))
+        PtDebugPrint("nglnFogTweener.UpdateFog():  StartR={}, EndR={}, StartG={}, EndG={}, StartB={}, EndB={}".format(StartR, EndR, StartG, EndG, StartB, EndB))
+        PtDebugPrint("nglnFogTweener.UpdateFog():  StartS={}, EndS={}, StartE={}, EndE={}, StartD={}, EndD={}".format(StartS, EndS, StartE, EndE, StartD, EndD))
 
         NewR = StartR + ((EndR - StartR) * TweenPct)
         NewG = StartG + ((EndG - StartG) * TweenPct)
@@ -325,8 +326,8 @@ class nglnFogTweener(ptMultiModifier):
         NewE = StartE + ((EndE - StartE) * TweenPct)
         NewD = StartD + ((EndD - StartD) * TweenPct)
 
-        PtDebugPrint("UpdateFog: The new fog RGB is (%.3f, %.3f, %.3f)" % (NewR, NewG, NewB))
-        PtDebugPrint("UpdateFog: The new fog Density is (%.3f, %.3f, %.3f)" % (NewS, NewE, NewD))
+        PtDebugPrint("nglnFogTweener.UpdateFog():  The new fog RGB is ({:.3f}, {:.3f}, {:.3f})".format(NewR, NewG, NewB))
+        PtDebugPrint("nglnFogTweener.UpdateFog():  The new fog Density is ({:.3f}, {:.3f}, {:.3f})".format(NewS, NewE, NewD))
 
         newfogcolor = ptColor(red=NewR, green=NewG, blue=NewB)
 

@@ -56,9 +56,11 @@ class airstream(ptResponder):
         # run parent class init
         ptResponder.__init__(self)
         self.id = 50439
-        self.version = 1
+        version = 1
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
 
-        PtDebugPrint("__init__airstream v.")
+        PtDebugPrint("__init__: airstream v{}".format(self.version))
 
     def OnNotify(self, state, id, events):
 

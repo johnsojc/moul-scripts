@@ -72,7 +72,9 @@ class tldnHatchLadderBottom(ptModifier):
         ptModifier.__init__(self)
         self.id = 7000
         version = 6
-        self.version = version
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: tldnHatchLadderBottom v{}".format(self.version))
 
     def OnFirstUpdate(self):
         global AgeStartedIn
@@ -99,8 +101,8 @@ class tldnHatchLadderBottom(ptModifier):
             except:
                 hatchOpen = false
                 hatchLocked = true
-                PtDebugPrint("tldnHatchLadderBottom.OnServerInitComplete():\tERROR: age sdl read failed, defaulting:")
-            PtDebugPrint("tldnHatchLadderBottom.OnServerInitComplete():\t%s=%d, %s=%d" % (kStringAgeSDLHatchOpen, hatchOpen, kStringAgeSDLHatchLocked, hatchLocked))
+                PtDebugPrint("tldnHatchLadderBottom.OnServerInitComplete():  ERROR: age sdl read failed, defaulting:")
+            PtDebugPrint("tldnHatchLadderBottom.OnServerInitComplete():  {}={}, {}={}".format(kStringAgeSDLHatchOpen, hatchOpen, kStringAgeSDLHatchLocked, hatchLocked))
 
     def OnSDLNotify(self, VARname, SDLname, playerID, tag):
         global hatchLocked
@@ -108,7 +110,7 @@ class tldnHatchLadderBottom(ptModifier):
 
         if AgeStartedIn == PtGetAgeName():
             ageSDL = PtGetAgeSDL()
-            PtDebugPrint("tldnHatchLadderBottom.OnSDLNotify():\t VARname:%s, SDLname:%s, tag:%s, value:%d, playerID:%d" % (VARname, SDLname, tag, ageSDL[VARname][0], playerID))
+            PtDebugPrint("tldnHatchLadderBottom.OnSDLNotify():  VARname:{}, SDLname:{}, tag:{}, value:{}, playerID:{}".format(VARname, SDLname, tag, ageSDL[VARname][0], playerID))
 
             if VARname == kStringAgeSDLHatchLocked:
                 hatchLocked = ageSDL[kStringAgeSDLHatchLocked][0]
@@ -133,15 +135,15 @@ class tldnHatchLadderBottom(ptModifier):
                 if PtFindAvatar(events) == LocalAvatar:
                     if event[2] == kAdvanceNextStage:
                         stageNum = event[1]
-                        PtDebugPrint("Got stage advance callback from stage %d" % (stageNum))
+                        PtDebugPrint("tldnHatchLadderBottom.OnNotify():  Got stage advance callback from stage {}".format(stageNum))
                         if stageNum == 1:
-                            PtDebugPrint("In stage 2, negotiating hatch.")
+                            PtDebugPrint("tldnHatchLadderBottom.OnNotify():  In stage 2, negotiating hatch.")
                             self.INegotiateHatch()
                         elif stageNum == 2:
                             # after the "it's locked" anim, return to the climb...
                             Climber.gotoStage(LocalAvatar, 1, 0, 0)
                         elif stageNum == 2 or stageNum == 3 or stageNum == 5:
-                            PtDebugPrint("Got through hatch: finishing & removing brain.")
+                            PtDebugPrint("tldnHatchLadderBottom.OnNotify():  Got through hatch: finishing & removing brain.")
                             Climber.gotoStage(LocalAvatar, -1)
 
     def INegotiateHatch(self):
@@ -149,7 +151,7 @@ class tldnHatchLadderBottom(ptModifier):
         global hatchOpen
         global hatchLocked
 
-        PtDebugPrint("Negotiating hatch")
+        PtDebugPrint("tldnHatchLadderBottom.INegotiateHatch():  Negotiating hatch")
         if hatchOpen:
             self.IHatchOpen()
         else:
@@ -161,14 +163,14 @@ class tldnHatchLadderBottom(ptModifier):
     def IHatchLocked(self):
         "Hatch is locked; show the frustrated animation and return to previous stage"
         global LocalAvatar
-        PtDebugPrint("Hatch is locked; Sending gotoStage(2)")
+        PtDebugPrint("tldnHatchLadderBottom.IHatchLocked():  Hatch is locked; Sending gotoStage(2)")
         respHatchOps.run(self.key, state='lockedbelow')
         Climber.gotoStage(LocalAvatar, 2, 0, 1)
 
     def IHatchUnlocked(self):
         "Hatch is unlocked; open it and pass through."
         global LocalAvatar
-        PtDebugPrint("Hatch is unlocked; Sending gotoStage(3)")
+        PtDebugPrint("tldnHatchLadderBottom.IHatchUnlocked():  Hatch is unlocked; Sending gotoStage(3)")
         respHatchOps.run(self.key, state='openbelow')
         Climber.gotoStage(LocalAvatar, 3, 0, 0)
         hatchOpen = 1
@@ -179,5 +181,5 @@ class tldnHatchLadderBottom(ptModifier):
     def IHatchOpen(self):
         "Hatch is open; just climb through."
         global LocalAvatar
-        PtDebugPrint("Hatch is open; Sending gotoStage(4)")
+        PtDebugPrint("tldnHatchLadderBottom.IHatchOpen():  Hatch is open; Sending gotoStage(4)")
         Climber.gotoStage(LocalAvatar, 4, 0, 0)

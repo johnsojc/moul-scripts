@@ -83,7 +83,10 @@ class psnlMyCloset(ptModifier):
     def __init__(self):
         ptModifier.__init__(self)
         self.id = 5016
-        self.version = 6
+        version = 6
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: psnlMyCloset v{}".format(self.version))
 
     def __del__(self):
         pass
@@ -112,27 +115,27 @@ class psnlMyCloset(ptModifier):
             vault = ptVault()
             if vault.amOwnerOfCurrentAge():
                 boolAmOwner = true
-                PtDebugPrint("psnlCloset.OnServerInitComplete():\tWelcome Home!")
+                PtDebugPrint("psnlCloset.OnServerInitComplete():  Welcome Home!")
                 try:
                     closetClosed = ageSDL[kSDLClosetClosed][0]
                 except:
-                    PtDebugPrint("psnlCloset.OnServerInitComplete():\tERROR reading SDL from vault, defaulting to closed (fastforward)")
+                    PtDebugPrint("psnlCloset.OnServerInitComplete():  ERROR: Error reading SDL from vault, defaulting to closed (fastforward)")
                     self.ICloseCloset(1)
                 if not closetClosed:
                     # just close the door for now!
-                    PtDebugPrint("psnlCloset.OnServerInitComplete():\tCloset is open, so setting a timer to close it")
+                    PtDebugPrint("psnlCloset.OnServerInitComplete():  Closet is open, so setting a timer to close it")
                     self.IOpenCloset(1)  # fast forward it open (in case it starts closed for some reason)
                     PtAtTimeCallback(self.key, 2, kCloseClosetTimer)  # we will close it in two seconds
                 else:
-                    PtDebugPrint("psnlCloset.OnServerInitComplete():\tCloset is closed, making sure the geometry matches")
+                    PtDebugPrint("psnlCloset.OnServerInitComplete():  Closet is closed, making sure the geometry matches")
                     self.ICloseCloset(1)  # make sure the object is actually closed
             else:  # not the owner: disable clickables, set correct closet door state
-                PtDebugPrint("psnlCloset.OnServerInitComplete():\tWelcome Visitor")
+                PtDebugPrint("psnlCloset.OnServerInitComplete():  Welcome Visitor")
                 PtAtTimeCallback(self.key, 1, kVisitorDisableTimer)  # we will disable the clickables in a second, since disabling them now doesn't work
                 try:
                     closetClosed = ageSDL[kSDLClosetClosed][0]
                 except:
-                    PtDebugPrint("psnlCloset.OnServerInitComplete():\tERROR reading SDL from vault, defaulting closed")
+                    PtDebugPrint("psnlCloset.OnServerInitComplete():  ERROR: Error reading SDL from vault, defaulting closed")
                     closetClosed = true
                 if not closetClosed:  # assume closet is in use by owner
                     self.IOpenCloset(1)  # fastforward the closet open
@@ -165,11 +168,11 @@ class psnlMyCloset(ptModifier):
         if VARname == kSDLClosetClosed:
             if AgeStartedIn == PtGetAgeName():
                 ageSDL = PtGetAgeSDL()
-                PtDebugPrint("psnlClosetDoor.OnSDLNotify():\t VARname:%s, SDLname:%s, tag:%s, value:%d, playerID:%d" % (VARname, SDLname, tag, ageSDL[VARname][0], playerID))
+                PtDebugPrint("psnlClosetDoor.OnSDLNotify():  VARname:{}, SDLname:{}, tag:{}, value:{}, playerID:{}".format(VARname, SDLname, tag, ageSDL[VARname][0], playerID))
             if tag == "ignore":
                 return
             else:
-                PtDebugPrint("psnlClosetDoor.OnSDLNotify():\ttag not ignore, ignoring anyway :P")
+                PtDebugPrint("psnlClosetDoor.OnSDLNotify():  tag not ignore, ignoring anyway :P")
                 return
 
     def OnNotify(self, state, id, events):

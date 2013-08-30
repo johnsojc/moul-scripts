@@ -61,8 +61,10 @@ class Personal(ptResponder):
     def __init__(self):
         ptResponder.__init__(self)
         self.id = 5022
-        self.version = 5
-        PtDebugPrint("Personal: __init__ version %d.%d" % (self.version, 1), level=kWarningLevel)
+        version = 5
+        minor = 1
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: Personal v{}".format(self.version), level=kWarningLevel)
 
     def gotPublicAgeList(self, ages):
         # got a list of cities, now we save our var!
@@ -73,7 +75,7 @@ class Personal(ptResponder):
             if guid > highestGuid:
                 highestGuid = guid
 
-        PtDebugPrint("Personal.gotPublicAgeList(): Using city GUID %s" % (str(highestGuid)))
+        PtDebugPrint("Personal.gotPublicAgeList():  Using city GUID {}".format(highestGuid))
         vault = ptVault()
         l = ptAgeInfoStruct()
         l.setAgeFilename('city')
@@ -116,19 +118,19 @@ class Personal(ptResponder):
                     # we don't have it yet, so make it! (the callback will make it for us)
                     PtGetPublicAgeList('city', self)
             else:
-                PtDebugPrint("hmm. city link has no age info node")
+                PtDebugPrint("Personal.OnFirstUpdate():  hmm. city link has no age info node")
         else:
-            PtDebugPrint("hmm. player has no city link")
+            PtDebugPrint("Personal.OnFirstUpdate():  hmm. player has no city link")
 
         pass
 
     def OnServerInitComplete(self):
         ageSDL = PtGetAgeSDL()
-        PtDebugPrint("Personal.OnServerInitComplete(): Grabbing first week clothing item boolean")
+        PtDebugPrint("Personal.OnServerInitComplete():  Grabbing first week clothing item boolean")
         try:
             firstWeekClothing = ageSDL["FirstWeekClothing"][0]
         except:
-            PtDebugPrint("Unable to get the first week clothing item bool, not going to add it just to be safe")
+            PtDebugPrint("Personal.OnServerInitComplete():  Unable to get the first week clothing item bool, not going to add it just to be safe")
             firstWeekClothing = 0
 
         avatar = PtGetLocalAvatar()
@@ -140,25 +142,25 @@ class Personal(ptResponder):
                 clothingName = "MReward_Beta"
             clothingList = avatar.avatar.getWardrobeClothingList()
             if clothingName not in clothingList:
-                PtDebugPrint("Adding %s clothing item to your closet! Aren't you lucky?" % (clothingName))
+                PtDebugPrint("Personal.OnServerInitComplete():  Adding {} clothing item to your closet! Aren't you lucky?".format(clothingName))
                 avatar.avatar.addWardrobeClothingItem(clothingName, ptColor().white(), ptColor().white())
             else:
-                PtDebugPrint("You already have %s so I'm not going to add it again." % (clothingName))
+                PtDebugPrint("Personal.OnServerInitComplete():  You already have {} so I'm not going to add it again.".format(clothingName))
         else:
-            PtDebugPrint("I guess you're too late, you don't get the first week clothing item")
+            PtDebugPrint("Personal.OnServerInitComplete():  I guess you're too late, you don't get the first week clothing item")
 
-        PtDebugPrint("Personal.OnServerInitComplete(): Checking to see if we need to add reward clothing to your closet")
+        PtDebugPrint("Personal.OnServerInitComplete():  Checking to see if we need to add reward clothing to your closet")
         try:
             rewardList = ageSDL["RewardClothing"][0]
         except:
-            PtDebugPrint("Unable to grab the reward clothing list from SDL, not going to add anything")
+            PtDebugPrint("Personal.OnServerInitComplete():  Unable to grab the reward clothing list from SDL, not going to add anything")
             rewardList = ""
 
-        PtDebugPrint("Personal.OnServerInitComplete(): Checking to see if we need to add global reward clothing to your closet")
+        PtDebugPrint("Personal.OnServerInitComplete():  Checking to see if we need to add global reward clothing to your closet")
         try:
             globalRewardList = ageSDL["GlobalRewardClothing"][0]
         except:
-            PtDebugPrint("Unable to grab the global reward clothing list from SDL, not going to add anything")
+            PtDebugPrint("Personal.OnServerInitComplete():  Unable to grab the global reward clothing list from SDL, not going to add anything")
             globalRewardList = ""
 
         nameSuffixList = []
@@ -175,14 +177,14 @@ class Personal(ptResponder):
             clothingName = genderPrefix + suffix
             clothingList = avatar.avatar.getWardrobeClothingList()
             if clothingName not in clothingList:
-                PtDebugPrint("Adding %s to your closet" % (clothingName))
+                PtDebugPrint("Personal.OnServerInitComplete():  Adding {} to your closet".format(clothingName))
                 avatar.avatar.addWardrobeClothingItem(clothingName, ptColor().white(), ptColor().white())
             else:
-                PtDebugPrint("You already have %s so I'm not going to add it again." % (clothingName))
+                PtDebugPrint("Personal.OnServerInitComplete():  You already have {} so I'm not going to add it again.".format(clothingName))
         if rewardList != "":
             ageSDL["RewardClothing"] = ("", )
         else:
-            PtDebugPrint("Reward clothing list empty, not adding any clothing")
+            PtDebugPrint("Personal.OnServerInitComplete():  Reward clothing list empty, not adding any clothing")
 
     def Load(self):
         pass

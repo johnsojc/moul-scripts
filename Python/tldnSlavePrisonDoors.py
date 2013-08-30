@@ -135,21 +135,23 @@ class tldnSlavePrisonDoors(ptResponder):
     def __init__(self):
         ptResponder.__init__(self)
         self.id = 4000
-        self.version = 2
-        PtDebugPrint("tldnSlavePrisonDoors.__init__: version %d,%d" % (self.version, 2), level=kWarningLevel)
+        version = 2
+        minor = 2
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: tldnSlavePrisonDoors v{}".format(self.version), level=kWarningLevel)
 
     def OnFirstUpdate(self):
         global AgeStartedIn
         AgeStartedIn = PtGetAgeName()
 
     def OnServerInitComplete(self):
-        PtDebugPrint("tldnSlavePrisonDoors.OnServerInitComplete:", level=kDebugDumpLevel)
+        PtDebugPrint("tldnSlavePrisonDoors.OnServerInitComplete{}:", level=kDebugDumpLevel)
         if AgeStartedIn == PtGetAgeName():
             ageSDL = PtGetAgeSDL()
             # look at the SDL for the plates if we are NOT the first person in the Age
             players = PtGetPlayerList()
             if len(players) > 0:
-                PtDebugPrint("   - and the number of players is %d, so get plate states from SDL" % (len(players)), level=kDebugDumpLevel)
+                PtDebugPrint("\t- and the number of players is {}, so get plate states from SDL".format(len(players)), level=kDebugDumpLevel)
                 for platesdl, actid in PlateSDLs:
                     boolCurrentValue = ageSDL[platesdl][0]
                     if boolCurrentValue:
@@ -163,7 +165,7 @@ class tldnSlavePrisonDoors(ptResponder):
 
     # in case someone other than me changes my var(s)
     def OnSDLNotify(self, VARname, SDLname, playerID, tag):
-        PtDebugPrint("tldnSlavePrisonDoors.OnSDLNotify:", level=kDebugDumpLevel)
+        PtDebugPrint("tldnSlavePrisonDoors.OnSDLNotify():", level=kDebugDumpLevel)
         # is it a var we care about?
         foundSDL = 0
         for PadSDL in respToPadSDL.keys():
@@ -176,11 +178,11 @@ class tldnSlavePrisonDoors(ptResponder):
         self.IEvalPlateAndPaddles()
 
     def OnNotify(self, state, id, events):
-        PtDebugPrint("tldnSlavePrisonDoors.OnNotify:", level=kDebugDumpLevel)
+        PtDebugPrint("tldnSlavePrisonDoors.OnNotify():", level=kDebugDumpLevel)
         # make sure its one of the activators we know about
         if id in activatorToResp:
             for event in events:
-                PtDebugPrint("event = ", event)
+                PtDebugPrint("\tevent = {}".format(event))
             # evaluate plates to paddles and set doors accordingly
             self.IEvalPlateAndPaddles(activator=id)
             ageSDL = PtGetAgeSDL()
@@ -217,7 +219,7 @@ class tldnSlavePrisonDoors(ptResponder):
                 paddle = ageSDL[PadSDL][0]
             except LookupError:
                 theyMatch = 0
-                PtDebugPrint("tldnSlavePrisonDoors.IEvalPlateAndPaddles: error on SDL %s" % (PadSDL), level=kErrorLevel)
+                PtDebugPrint("tldnSlavePrisonDoors.IEvalPlateAndPaddles():  error on SDL {}".format(PadSDL), level=kErrorLevel)
                 break
             # paddle == 0 is down, paddle == 1 is up
 
@@ -234,7 +236,7 @@ class tldnSlavePrisonDoors(ptResponder):
                         plate = 0
                 except LookupError:
                     theyMatch = 0
-                    PtDebugPrint("tldnSlavePrisonDoors.IEvalPlateAndPaddles: error on SDL %s" % (padSDLToplateSDL[PadSDL]), level=kErrorLevel)
+                    PtDebugPrint("tldnSlavePrisonDoors.IEvalPlateAndPaddles():  error on SDL {}".format(padSDLToplateSDL[PadSDL]), level=kErrorLevel)
                     break
             else:
                 # otherwise look at the responder states
@@ -257,7 +259,7 @@ class tldnSlavePrisonDoors(ptResponder):
                         else:
                             plate = 0
             if plate == -1:
-                PtDebugPrint("tldnSlavePrisonDoors.IEvalPlateAndPaddles: can't find responder for SDLvar %s" % (PadSDL), level=kErrorLevel)
+                PtDebugPrint("tldnSlavePrisonDoors.IEvalPlateAndPaddles():  can't find responder for SDLvar {}".format(PadSDL), level=kErrorLevel)
                 theyMatch = 0
                 break
 
@@ -268,7 +270,7 @@ class tldnSlavePrisonDoors(ptResponder):
 
         if theyMatch:
             # raise the inner doors and shut the outer door
-            PtDebugPrint("tldnSlavePrisonDoors.IEvalPlateAndPaddles: inner doors up, outer down", level=kDebugDumpLevel)
+            PtDebugPrint("tldnSlavePrisonDoors.IEvalPlateAndPaddles():  inner doors up, outer down", level=kDebugDumpLevel)
             if fastforward or respInnerDoor1.getState() != "up":
                 respInnerDoor1.run(self.key, state="up", fastforward=fastforward)
             if fastforward or respInnerDoor2.getState() != "up":
@@ -277,11 +279,11 @@ class tldnSlavePrisonDoors(ptResponder):
                 respOuterDoor.run(self.key, state="down", fastforward=fastforward)
 
             ageSDL["tldnSlaveCaveSecretDoorOpen"] = (1,)
-            PtDebugPrint("tldnSlavePrisonDoors: The exp1 secret panel should now be open.")
+            PtDebugPrint("tldnSlavePrisonDoors.IEvalPlateAndPaddles():  The exp1 secret panel should now be open.")
 
         else:
             # raise the outer doors and shut the inner doors
-            PtDebugPrint("tldnSlavePrisonDoors.IEvalPlateAndPaddles: inner doors down, outer up", level=kDebugDumpLevel)
+            PtDebugPrint("tldnSlavePrisonDoors.IEvalPlateAndPaddles():  inner doors down, outer up", level=kDebugDumpLevel)
             if fastforward or respInnerDoor1.getState() != "down":
                 respInnerDoor1.run(self.key, state="down", fastforward=fastforward)
             if fastforward or respInnerDoor2.getState() != "down":
@@ -290,7 +292,7 @@ class tldnSlavePrisonDoors(ptResponder):
                 respOuterDoor.run(self.key, state="up", fastforward=fastforward)
 
             ageSDL["tldnSlaveCaveSecretDoorOpen"] = (0,)
-            print "tldnSlavePrisonDoors: The exp1 secret panel should now be closed."
+            PtDebugPrint("tldnSlavePrisonDoors.IEvalPlateAndPaddles():  The exp1 secret panel should now be closed.")
 
     def OnBackdoorMsg(self, target, param):
         if target == "spyroombook":

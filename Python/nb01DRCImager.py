@@ -62,7 +62,7 @@ AgeStartedIn = None
 
 def doneSettingDeviceInbox(node, nodeRef, resultCode):
     "once inbox has been set, turns the imager on."
-    PtDebugPrint("nb01DRCImager: doneSettingDeviceInbox result code = %d" % (resultCode))
+    PtDebugPrint("nb01DRCImager.doneSettingDeviceInbox():  result code = {}".format(resultCode))
 
     # Update the inbox reference in the class
     nb01DRCImager.Instance.ChangeInbox()
@@ -71,7 +71,7 @@ def doneSettingDeviceInbox(node, nodeRef, resultCode):
 
 def doneAddingDevice(node, nodeRef, resultCode):
     "initializes new imager device with default inbox folder."
-    PtDebugPrint("nb01DRCImager: doneAddingDevice, result code = %d" % (resultCode))
+    PtDebugPrint("nb01DRCImager.doneAddingDevice():  result code = {}".format(resultCode))
 
 
 #====================================
@@ -81,8 +81,10 @@ class nb01DRCImager(ptModifier):
     def __init__(self):
         ptModifier.__init__(self)
         self.id = 5305
-        self.version = 2
-        PtDebugPrint("nb01DRCImager: init  version=%d" % (self.version))
+        version = 2
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: nb01DRCImager v{}".format(self.version))
         self.current_state = 0
         self.current_image = 0
         self.number_of_images = 0
@@ -90,13 +92,13 @@ class nb01DRCImager(ptModifier):
         nb01DRCImager.Instance = self
 
     def ChangeInbox(self):
-        PtDebugPrint("nb01DRCImager.ChangeInbox: Attempting to get the inbox")
+        PtDebugPrint("nb01DRCImager.ChangeInbox():  Attempting to get the inbox")
         self.inbox = ptAgeVault().getDeviceInbox("DRCImager")
 
     def SetImage(self, id):
 
         if self.inbox is not None:
-            PtDebugPrint("nb01DRCImager.SetImage: inbox %s id = %d" % (self.inbox.folderGetName(), self.inbox.getID()))
+            PtDebugPrint("nb01DRCImager.SetImage():  inbox {} id = {}".format(self.inbox.folderGetName(), self.inbox.getID()))
 
             if self.number_of_images > 0:
                 fcontents = self.inbox.getChildNodeRefList()
@@ -104,12 +106,12 @@ class nb01DRCImager(ptModifier):
                     image = element.getChild()
                     if image.getID() == id:
                         image = image.upcastToImageNode()
-                        PtDebugPrint("nb01DRCImager: now showing image %s" % (image.imageGetTitle()))
+                        PtDebugPrint("nb01DRCImager.SetImage():  now showing image {}".format(image.imageGetTitle()))
                         try:
                             ImagerMap.textmap.drawImage(0, 0, image.imageGetImage(), 0)
                             ImagerMap.textmap.flush()
                         except:
-                            PtDebugPrint("nb01DRCImager: couldn't draw image...")
+                            PtDebugPrint("nb01DRCImager.SetImage():  couldn't draw image...")
                             pass
                         return
 
@@ -124,13 +126,13 @@ class nb01DRCImager(ptModifier):
 
             self.current_state = ageSDL["nb01DRCImagerState"][0]
 
-            PtDebugPrint("nb01DRCImager.OnServerInitComplete: Adding device")
+            PtDebugPrint("nb01DRCImager.OnServerInitComplete():  Adding device")
             ptAgeVault().addDevice("DRCImager", doneAddingDevice)
-            PtDebugPrint("nb01DRCImager.OnServerInitComplete: Setting device inbox - %s" % ("DRCImagerState%d" % self.current_state))
-            ptAgeVault().setDeviceInbox("DRCImager", "DRCImagerState%d" % self.current_state, doneSettingDeviceInbox)
+            PtDebugPrint("nb01DRCImager.OnServerInitComplete():  Setting device inbox - DRCImagerState{}".format(self.current_state))
+            ptAgeVault().setDeviceInbox("DRCImager", "DRCImagerState{}".format(self.current_state), doneSettingDeviceInbox)
 
     def OnTimer(self, id):
-        PtDebugPrint("nb01DRCImager.OnTimer executing")
+        PtDebugPrint("nb01DRCImager.OnTimer():  executing")
 
         if id == self.current_state:
 
@@ -154,14 +156,14 @@ class nb01DRCImager(ptModifier):
                     selfnotify.netPropagate(1)
                     selfnotify.netForce(1)
                     selfnotify.setActivate(1.0)
-                    sname = "dispID=%d" % (nextID)
+                    sname = "dispID={}".format(nextID)
                     selfnotify.addVarNumber(sname, 1.0)
                     selfnotify.send()
 
                     PtAtTimeCallback(self.key, ImagerTime.value, self.current_state)
 
     def OnNotify(self, state, id, events):
-        PtDebugPrint("nb01DRCImager.OnNotify executing")
+        PtDebugPrint("nb01DRCImager.OnNotify():  executing")
         for event in events:
             if event[0] == kVariableEvent:
                 if event[1][:7] == "dispID=":
@@ -177,9 +179,9 @@ class nb01DRCImager(ptModifier):
             if VARname == "nb01DRCImagerState":
                 self.current_state = ageSDL["nb01DRCImagerState"][0]
 
-                PtDebugPrint("nb01DRCImager.OnSDLNotify():\t VARname:%s, SDLname:%s, tag:%s, value:%d" % (VARname, SDLname, tag, self.current_state))
+                PtDebugPrint("nb01DRCImager.OnSDLNotify():  VARname:{}, SDLname:{}, tag:{}, value:{}".format(VARname, SDLname, tag, self.current_state))
 
                 ImagerMap.textmap.clearToColor(ptColor(0, 0, 0, 0))
                 ImagerMap.textmap.flush()
 
-                ptAgeVault().setDeviceInbox("DRCImager", "DRCImagerState%d" % self.current_state, doneSettingDeviceInbox)
+                ptAgeVault().setDeviceInbox("DRCImager", "DRCImagerState{}".format(self.current_state), doneSettingDeviceInbox)

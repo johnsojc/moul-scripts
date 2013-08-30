@@ -64,8 +64,9 @@ class islmGZBeamBrain(ptResponder):
         self.id = 5246
 
         version = 2
-        self.version = version
-        PtDebugPrint("__init__islmGZBeamBrain v.%d.3" % (version))
+        minor = 3
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: islmGZBeamBrain v{}".format(self.version))
 
     def OnServerInitComplete(self):
         global boolGZBeamVis
@@ -77,30 +78,30 @@ class islmGZBeamBrain(ptResponder):
             ageSDL.setNotify(self.key, "islmGZBeamVis", 0.0)
             boolGZBeamVis = ageSDL["islmGZBeamVis"][0]
         except:
-            PtDebugPrint("islmGZBeamBrain.OnServerInitComplete:  ERROR!  Can't find the boolGZBeamVis sdl, doing nothing.")
+            PtDebugPrint("islmGZBeamBrain.OnServerInitComplete():  ERROR: Can't find the boolGZBeamVis sdl, doing nothing.")
             return
 
         if boolGZBeamVis:
-            PtDebugPrint("islmGZBeamBrain.OnServerInitComplete: The Great Zero beam IS active.")
+            PtDebugPrint("islmGZBeamBrain.OnServerInitComplete():  The Great Zero beam IS active.")
             self.TurnBeamOn()
         else:
-            PtDebugPrint("islmGZBeamBrain.OnServerInitComplete: The Great Zero beam is NOT active.")
+            PtDebugPrint("islmGZBeamBrain.OnServerInitComplete():  The Great Zero beam is NOT active.")
             self.TurnBeamOff()
 
     def TurnBeamOn(self):
-        PtDebugPrint("islmGZBeamBrain.RotateBeam: Trying to turn the beam ON.")
+        PtDebugPrint("islmGZBeamBrain.TurnBeamOn():  Trying to turn the beam ON.")
         Beamlight.sceneobject.draw.enable()
         respRotateBeam.run(self.key)
 
     def TurnBeamOff(self):
-        PtDebugPrint("islmGZBeamBrain.RotateBeam: Trying to turn the beam OFF.")
+        PtDebugPrint("islmGZBeamBrain.TurnBeamOff():  Trying to turn the beam OFF.")
         Beamlight.sceneobject.draw.disable()
 
     def OnNotify(self, state, id, events):
         pass
 
     def OnSDLNotify(self, VARname, SDLname, playerID, tag):
-        PtDebugPrint("islmGZBeamBrain.OnSDLNotify(): VARname = %s" % (VARname))
+        PtDebugPrint("islmGZBeamBrain.OnSDLNotify():  VARname = {}".format(VARname))
         global boolGZBeamVis
 
         if VARname == "islmGZBeamVis":

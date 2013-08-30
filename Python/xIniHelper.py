@@ -45,6 +45,7 @@ This module contains the routines to read and write an .ini file
 """
 
 from Plasma import *
+from PlasmaTypes import *
 
 import os
 
@@ -89,7 +90,7 @@ class iniEntry:
                         self.values.append(accStr)
             else:
                 self.type = kComment
-                self.comment = "# <Uknown command> '%s'" % line
+                self.comment = "# <Uknown command> '{}'".format(line)
 
     def __repr__(self):
         if self.type == kBlankLine:
@@ -134,7 +135,7 @@ class iniFile:
                     self.entries.append(iniEntry(l))
                 f.close()
             except:
-                PtDebugPrint("[INI processing] Error while reading %s" % (filename))
+                PtDebugPrint("[INI processing] Error while reading {}".format(filename))
 
     def __repr__(self):
         line = ""

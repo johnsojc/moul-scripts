@@ -74,11 +74,14 @@ class grsn1stFloorClimb(ptResponder):
 
     def __init__(self):
         "construction"
-        PtDebugPrint("grsn1stFloorClimb::init begin")
+        #PtDebugPrint("grsn1stFloorClimb::init begin")
         ptResponder.__init__(self)
         self.id = 50112
-        self.version = 4
-        PtDebugPrint("grsn1stFloorClimb::init end")
+        version = 4
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: grsn1stFloorClimb v{}".format(self.version))
+        #PtDebugPrint("grsn1stFloorClimb::init end")
 
     def OnFirstUpdate(self):
         self.SDL.setDefault("intSDLClimber", (-1, ))
@@ -89,60 +92,60 @@ class grsn1stFloorClimb(ptResponder):
         descendTrigger.enable()
 
     def OnNotify(self, state, id, events):
-        PtDebugPrint("********************************")
+        PtDebugPrint("****grsn1stFloorClimb.OnNotify():****")
         for event in events:
 
-            PtDebugPrint("event[0] %s" % (repr(event[0])))
-            PtDebugPrint("event[1] %s" % (repr(event[1])))
-            PtDebugPrint("event[2] %s" % (repr(event[2])))
+            PtDebugPrint("\tevent[0] {!r}".format(event[0]))
+            PtDebugPrint("\tevent[1] {!r}".format(event[1]))
+            PtDebugPrint("\tevent[2] {!r}".format(event[2]))
 
             climber = PtFindAvatar(events)
             climberID = PtGetClientIDFromAvatarKey(climber.getKey())
-            PtDebugPrint("climber ID = %s" % (repr(climberID)))
+            PtDebugPrint("\tclimber ID = {!r}".format(climberID))
             currentClimber = self.SDL["intSDLClimber"][0]
             currentDescender = self.SDL["intSDLDescender"][0]
-            PtDebugPrint("current climber = %s" % (repr(currentClimber)))
-            PtDebugPrint("current descender = %s" % (repr(currentClimber)))
+            PtDebugPrint("\tcurrent climber = {!r}".format(currentClimber))
+            PtDebugPrint("\tcurrent descender = {!r}".format(currentClimber))
 
             # execute climb behaviors
 
             if id == climbBehavior.id:
                 if event[0] == kMultiStageEvent and event[1] == 0 and event[2] == kEnterStage:
                     climbSoundAnim.animation.play()
-                    PtDebugPrint("starting to climb")
+                    PtDebugPrint("grsn1stFloorClimb.OnNotify():  starting to climb")
                     return
                 if event[0] == kMultiStageEvent and event[1] == 0 and event[2] == kAdvanceNextStage:
-                    PtDebugPrint("finshed climb")
+                    PtDebugPrint("grsn1stFloorClimb.OnNotify():  finshed climb")
                     return
 
             if id == descendBehavior.id:
                 if event[0] == kMultiStageEvent and event[1] == 0 and event[2] == kEnterStage:
                     descendSoundAnim.animation.play()
-                    PtDebugPrint("starting to descend")
+                    PtDebugPrint("grsn1stFloorClimb.OnNotify():  starting to descend")
                     return
                 if event[0] == kMultiStageEvent and event[1] == 0 and event[2] == kAdvanceNextStage:
                     # temporary hack here
                     climber.physics.warp(ptPoint3(116.787, -478.983, -263.936))
                     # end temporary hack
-                    PtDebugPrint("finshed descent")
+                    PtDebugPrint("grsn1stFloorClimb.OnNotify():  finshed descent")
                     return
 
             # initiate climbing or descending
 
             if id == climbTrigger.id and event[0] == 1 and event[1] == 1:  # someone is entering
                 if self.SDL["intSDLClimber"][0] == -1 and self.SDL["intSDLDescender"][0] == -1:  # nobody currently climbing up/down
-                    PtDebugPrint("initiated climbing avatar # %s" % (repr(climberID)))
+                    PtDebugPrint("grsn1stFloorClimb.OnNotify():  initiated climbing avatar # {!r}".format(climberID))
                     self.SDL["intSDLClimber"] = (climberID,)
                     climbBehavior.run(climber)
                 return
 
             if id == descendTrigger.id and event[0] == 1 and event[1] == 1:  # someone is entering
                 if self.SDL["intSDLClimber"][0] == -1 and self.SDL["intSDLDescender"][0] == -1:  # no one currently climbing / descending
-                    PtDebugPrint("initiated descent")
+                    PtDebugPrint("grsn1stFloorClimb.OnNotify():  initiated descent")
                     self.SDL["intSDLDescender"] = (climberID,)
 
                     test = self.SDL["intSDLDescender"][0]
-                    PtDebugPrint("just set descender to %s" % (repr(test)))
+                    PtDebugPrint("grsn1stFloorClimb.OnNotify():  just set descender to {!r}".format(test))
 
                     descendBehavior.run(climber)
                 return
@@ -151,12 +154,12 @@ class grsn1stFloorClimb(ptResponder):
 
             if id == climbTopReset.id and event[0] == 1 and event[1] == 0:  # someone is exiting
                 if self.SDL["intSDLClimber"][0] == climberID and self.SDL["intSDLDescender"][0] == -1:  # it's our recent climber
-                    PtDebugPrint("reset climb / descend regions")
+                    PtDebugPrint("grsn1stFloorClimb.OnNotify():  reset climb / descend regions")
                     self.SDL["intSDLClimber"] = (-1,)
                 return
 
             if id == climbBottomReset.id and event[0] == 1 and event[1] == 0:  # someone is exiting
                 if self.SDL["intSDLClimber"][0] == -1 and self.SDL["intSDLDescender"][0] == climberID:  # it's our recent descender
-                    PtDebugPrint("reset climb / descend regions")
+                    PtDebugPrint("grsn1stFloorClimb.OnNotify():  reset climb / descend regions")
                     self.SDL["intSDLDescender"] = (-1,)
                 return

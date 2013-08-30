@@ -111,20 +111,22 @@ class xSimpleImager(ptModifier):
         ptModifier.__init__(self)
         Instance = self
         self.id = 196
-        self.version = 3
-        PtDebugPrint("xSimpleImager: init  version=%d.%d" % (self.version, 2), level=kWarningLevel)
+        version = 3
+        minor = 2
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: xSimpleImager v{}".format(self.version))
 
     def vaultOperationStarted(self, context):
-        PtDebugPrint("xSimpleImager: vaultOperationStarted(%s)" % (context), level=kDebugDumpLevel)
+        PtDebugPrint("xSimpleImager.vaultOperationStarted():  ({})".format(context), level=kDebugDumpLevel)
 
     def vaultOperationComplete(self, context, args, resultCode):
-        PtDebugPrint("xSimpleImager: vaultOperationComplete(%s,%s)" % (context, resultCode), level=kDebugDumpLevel)
+        PtDebugPrint("xSimpleImager.vaultOperationComplete():  ({},{})".format(context, resultCode), level=kDebugDumpLevel)
         if context == kAddingDevice:
-            PtDebugPrint("\tkAddingDevice", level=kDebugDumpLevel)
+            PtDebugPrint("xSimpleImager.vaultOperationComplete():  kAddingDevice", level=kDebugDumpLevel)
             if resultCode >= 0:
                 node = args[0].upcastToTextNoteNode()
                 if node:
-                    PtDebugPrint("\tAdded device: %s" % (ImagerName.value), level=kDebugDumpLevel)
+                    PtDebugPrint("xSimpleImager.vaultOperationComplete():  Added device: {}".format(ImagerName.value), level=kDebugDumpLevel)
                     name = ""
                     if type(ImagerInboxVariable.value) is str and ImagerInboxVariable.value != "":
                         ageSDL = PtGetAgeSDL()
@@ -135,14 +137,14 @@ class xSimpleImager(ptModifier):
                             name = node.noteGetTitle()
                     else:
                         name = node.noteGetTitle()
-                    PtDebugPrint("\tSetting device inbox: %s" % (name), level=kDebugDumpLevel)
+                    PtDebugPrint("xSimpleImager.vaultOperationComplete():  Setting device inbox: {}".format(name), level=kDebugDumpLevel)
                     node.setDeviceInbox(name, self, kSettingDeviceInbox)
                 else:
-                    PtDebugPrint("xSimpleImager:ERROR! device node not found", level=kErrorLevel)
+                    PtDebugPrint("xSimpleImager.vaultOperationComplete():  ERROR! device node not found", level=kErrorLevel)
 
         elif context == kSettingDeviceInbox:
             # "once inbox has been set, turns the imager on."
-            PtDebugPrint("\tkSettingDeviceInbox", level=kDebugDumpLevel)
+            PtDebugPrint("xSimpleImager.vaultOperationComplete():  SettingDeviceInbox", level=kDebugDumpLevel)
             global kFlipImagesTimerStates
             global kFlipImagesTimerCurrent
             global CurrentContentIdx
@@ -163,10 +165,10 @@ class xSimpleImager(ptModifier):
         global AgeStartedIn
         AgeStartedIn = PtGetAgeName()
         if ImagerMap.textmap is None:
-            PtDebugPrint("xSimpleImager:ERROR! simpleImager[%s]: Dynamic textmap is broken!" % (ImagerName.value), level=kErrorLevel)
+            PtDebugPrint("xSimpleImager.OnFirstUpdate():  ERROR: simpleImager[{}]: Dynamic textmap is broken!".format(ImagerName.value), level=kErrorLevel)
             return
         if ImagerObject.sceneobject is None:
-            PtDebugPrint("xSimpleImager:ERROR! simpleImager[%s]: ImagerObject not specified!" % (ImagerName.value), level=kErrorLevel)
+            PtDebugPrint("xSimpleImager.OnFirstUpdate():  ERROR: simpleImager[{}]: ImagerObject not specified!".format(ImagerName.value), level=kErrorLevel)
             return
         # initialize age devices
         if type(ImagerName.value) is str and ImagerName.value != "":
@@ -174,7 +176,7 @@ class xSimpleImager(ptModifier):
             # will only add if not already there.
             ageVault.addDevice(ImagerName.value, self, kAddingDevice)
         else:
-            PtDebugPrint("xSimpleImager: There was no imager name!", level=kErrorLevel)
+            PtDebugPrint("xSimpleImager.OnFirstUpdate():  There was no imager name!", level=kErrorLevel)
 
     def OnServerInitComplete(self):
         if AgeStartedIn == PtGetAgeName():
@@ -188,7 +190,7 @@ class xSimpleImager(ptModifier):
                 try:
                     inbox = ageSDL[ImagerInboxVariable.value][0]
                 except:
-                    PtDebugPrint("xSimpleImager: Problem reading the inbox from SDL")
+                    PtDebugPrint("xSimpleImager.OnServerInitComplete():  Problem reading the inbox from SDL")
 
                 if inbox == "":
                     ageVault.setDeviceInbox(ImagerName.value, ImagerName.value, self, kSettingDeviceInbox)
@@ -206,10 +208,10 @@ class xSimpleImager(ptModifier):
         entry = vault.findChronicleEntry(kChronicleCensorLevel)
         if entry is None:
             # not found... add current level chronicle
-            vault.addChronicleEntry(kChronicleCensorLevel, kChronicleCensorLevelType, "%d" % (theCensorLevel))
+            vault.addChronicleEntry(kChronicleCensorLevel, kChronicleCensorLevelType, "{:d}".format(theCensorLevel))
         else:
             theCensorLevel = string.atoi(entry.chronicleGetValue())
-        PtDebugPrint("xSimpleImager: the censor level is %d" % (theCensorLevel), level=kWarningLevel)
+        PtDebugPrint("xSimpleImager.IDetermineCensorLevel():  the censor level is {}".format(theCensorLevel), level=kWarningLevel)
 
     def OnTimer(self, id):
         "Timer event, for the fade stuff"
@@ -227,11 +229,11 @@ class xSimpleImager(ptModifier):
 
     def OnVaultEvent(self, event, tupdata):
         "An AgeKI event received"
-        PtDebugPrint("xSimpleImager.OnVaultEvent[", ImagerName.value, "]: event = ", event, " tupdata = ", tupdata, level=kDebugDumpLevel)
+        PtDebugPrint("xSimpleImager.OnVaultEvent():  [{}]: event = {} tupdata = {}".format(ImagerName.value, event, tupdata), level=kDebugDumpLevel)
 
         # Sometimes, we randomly get None... O.o
         if tupdata[0] is None:
-            PtDebugPrint("xSimpleImager.OnVaultEvent: nil ptVaultNode", level=kErrorLevel)
+            PtDebugPrint("xSimpleImager.OnVaultEvent():  nil ptVaultNode", level=kErrorLevel)
             return None
 
         # Cyan's servers sometimes spam us with updates to the public city AgeInfo node
@@ -241,11 +243,11 @@ class xSimpleImager(ptModifier):
         elif isinstance(tupdata[0], ptVaultNodeRef):
             type = tupdata[0].getChild().getType()
         else:
-            PtDebugPrint("xSimpleImager.OnVaultEvent: tupdata[0] has unhandled object type", level=kWarningLevel)
+            PtDebugPrint("xSimpleImager.OnVaultEvent():  tupdata[0] has unhandled object type", level=kWarningLevel)
             return None
 
         if not (type == PtVaultNodeTypes.kImageNode or type == PtVaultNodeTypes.kTextNoteNode):
-            PtDebugPrint("xSimpleImager.OnVaultEvent: ... but we don't care!", level=kDebugDumpLevel)
+            PtDebugPrint("xSimpleImager.OnVaultEvent():  ... but we don't care!", level=kDebugDumpLevel)
             return None
 
         # make sure that the bigKI dialog is loaded before trying to update it
@@ -256,17 +258,17 @@ class xSimpleImager(ptModifier):
             # tupdata is ()
             pass
         elif event == PtVaultCallbackTypes.kVaultNodeAdded:
-            PtDebugPrint("xSimpleImager: kVaultNodeAdded event (id=%d, type=%d)" % (tupdata[0].getID(), tupdata[0].getType()), level=kDebugDumpLevel)
+            PtDebugPrint("xSimpleImager.OnVaultEvent():  kVaultNodeAdded event (id={}, type={})".format(tupdata[0].getID(), tupdata[0].getType()), level=kDebugDumpLevel)
             # tupdata is ( ptVaultNode )
             self.IRefreshImagerFolder()
             self.IRefreshImagerElement(tupdata[0])
         elif event == PtVaultCallbackTypes.kVaultNodeSaved:
-            PtDebugPrint("xSimpleImager: kVaultNodeSaved event (id=%d, type=%d)" % (tupdata[0].getID(), tupdata[0].getType()), level=kDebugDumpLevel)
+            PtDebugPrint("xSimpleImager.OnVaultEvent():  kVaultNodeSaved event (id={}, type={})".format(tupdata[0].getID(), tupdata[0].getType()), level=kDebugDumpLevel)
             # tupdata is ( ptVaultNode )
             self.IRefreshImagerFolder()
             self.IRefreshImagerElement(tupdata[0])
         elif event == PtVaultCallbackTypes.kVaultNodeRefAdded:
-            PtDebugPrint("xSimpleImager: kVaultNodeRefAdded event (childID=%d, parentID=%d)" % (tupdata[0].getChildID(), tupdata[0].getParentID()), level=kDebugDumpLevel)
+            PtDebugPrint("xSimpleImager.OnVaultEvent():  kVaultNodeRefAdded event (childID={}, parentID={})".format(tupdata[0].getChildID(), tupdata[0].getParentID()), level=kDebugDumpLevel)
             # tupdata is ( ptVaultNodeRef )
             self.IRefreshImagerFolder()
             self.IRefreshImagerContent(tupdata[0])
@@ -274,7 +276,7 @@ class xSimpleImager(ptModifier):
             # tupdata is ( ptVaultNodeRef )
             pass
         elif event == PtVaultCallbackTypes.kVaultNodeRefRemoved:
-            PtDebugPrint("xSimpleImager: kVaultNodeRefRemoved event (childID,parentID) ", tupdata, level=kDebugDumpLevel)
+            PtDebugPrint("xSimpleImager.OnVaultEvent():  kVaultNodeRefRemoved event (childID,parentID) {}".format(tupdata), level=kDebugDumpLevel)
             # tupdata is ( childID, parentID )
             self.IRefreshImagerFolder()
             pass
@@ -305,14 +307,14 @@ class xSimpleImager(ptModifier):
                                 else:
                                     messagetoki = ImagerName.value
                                 if event[1]:
-                                    PtDebugPrint("xSimpleImager: add imager %s" % (ImagerName.value), level=kDebugDumpLevel)
+                                    PtDebugPrint("xSimpleImager.OnNotify():  add imager {}".format(ImagerName.value), level=kDebugDumpLevel)
                                     PtSendKIMessage(kAddPlayerDevice, messagetoki)
                                     RegionMembers = RegionMembers + 1
                                     if (RegionMembers == 1):
                                         ImagerButtonResp.run(self.key, state='buttonOn')
 
                                 else:
-                                    PtDebugPrint("xSimpleImager: remove imager %s" % (ImagerName.value), level=kDebugDumpLevel)
+                                    PtDebugPrint("xSimpleImager.OnNotify():  remove imager {}".format(ImagerName.value), level=kDebugDumpLevel)
                                     PtSendKIMessage(kRemovePlayerDevice, messagetoki)
                                     RegionMembers = RegionMembers - 1
                                     if (RegionMembers == -1):
@@ -363,7 +365,7 @@ class xSimpleImager(ptModifier):
                                 selfnotify.netPropagate(1)
                                 selfnotify.netForce(1)
                                 selfnotify.setActivate(1.0)
-                                sname = "Uploaded=%d" % (nodeId)
+                                sname = "Uploaded={:d}".format(nodeId)
                                 selfnotify.addVarNumber(sname, 1.0)
                                 selfnotify.send()
 
@@ -382,7 +384,7 @@ class xSimpleImager(ptModifier):
                     # time to get rid of one... find oldest
                     # for now... just get rid of the first one in the list
                     relem = ImagerContents[0].getChild()
-                    PtDebugPrint("xSimpleImager[%s]: removing element %d" % (ImagerName.value, relem.getID()), level=kDebugDumpLevel)
+                    PtDebugPrint("xSimpleImager.IRefreshImagerFolder():  [{}]: removing element {}".format(ImagerName.value, relem.getID()), level=kDebugDumpLevel)
                     folder.removeNode(relem)
             # if we went from none to some, then display one now
             if prevsize == 0 and len(ImagerContents):
@@ -444,7 +446,7 @@ class xSimpleImager(ptModifier):
             selfnotify.netPropagate(1)
             selfnotify.netForce(1)
             selfnotify.setActivate(1.0)
-            sname = "dispID=%d" % (nextID)
+            sname = "dispID={:d}".format(nextID)
             selfnotify.addVarNumber(sname, 1.0)
             selfnotify.send()
         else:
@@ -467,14 +469,14 @@ class xSimpleImager(ptModifier):
                         elemType = element.getType()
                         if elemType == PtVaultNodeTypes.kImageNode:
                             element = element.upcastToImageNode()
-                            PtDebugPrint("simpleImager: now showing image %s" % (element.imageGetTitle()), level=kDebugDumpLevel)
+                            PtDebugPrint("xSimpleImager.IShowCurrentContent():  now showing image {}".format(element.imageGetTitle()), level=kDebugDumpLevel)
                             ImagerMap.textmap.drawImage(0, 0, element.imageGetImage(), 0)
                             ImagerMap.textmap.flush()
                         elif elemType == PtVaultNodeTypes.kTextNoteNode:
                             element = element.upcastToTextNoteNode()
                             textbody = element.noteGetText()
                             if textbody == "cleardaImager":
-                                PtDebugPrint("xSimpleImager[%s]: clearing the imager of images" % (ImagerName.value), level=kWarningLevel)
+                                PtDebugPrint("xSimpleImager.IShowCurrentContent():  [{}]: clearing the imager of images".format(ImagerName.value), level=kWarningLevel)
                                 folder.removeAllNodes()
                             else:
                                 self.IDetermineCensorLevel()
@@ -490,22 +492,22 @@ class xSimpleImager(ptModifier):
                                     textsubject = element.noteGetTitle()
                                 except:
                                     textsubject = "Imager Transmission"
-                                PtDebugPrint("simpleImager: now showing textnote %s" % (textsubject), level=kDebugDumpLevel)
+                                PtDebugPrint("xSimpleImager.IShowCurrentContent():  now showing textnote {}".format(textsubject), level=kDebugDumpLevel)
                                 message = PtGetLocalizedString("Neighborhood.Messages.Imager", [textfrom, textsubject, textbody])
                                 message = xCensor.xCensor(message, theCensorLevel)
                                 ImagerMap.textmap.drawTextW(kTextXStart, kTextYStart, message)
                                 ImagerMap.textmap.flush()
                         else:
-                            PtDebugPrint("xSimpleImager[%s]: Can't display element type %d" % (ImagerName.value, elemType), level=kWarningLevel)
+                            PtDebugPrint("xSimpleImager.IShowCurrentContent():  [{}]: Can't display element type {}".format(ImagerName.value, elemType), level=kWarningLevel)
                             pass
                         return
             else:
-                PtDebugPrint("xSimpleImager[%s]: Inbox for imager is None" % (ImagerName.value), level=kWarningLevel)
+                PtDebugPrint("xSimpleImager.IShowCurrentContent():  [{}]: Inbox for imager is None".format(ImagerName.value), level=kWarningLevel)
         else:
             # undisplaying all images... to be done later...
             ImagerMap.textmap.clearToColor(ptColor(0, 0, 0, 0))
             ImagerMap.textmap.flush()
-            PtDebugPrint("xSimpleImager[%s]: no current element id to display" % (ImagerName.value), level=kDebugDumpLevel)
+            PtDebugPrint("xSimpleImager.IShowCurrentContent():  [{}]: no current element id to display".format(ImagerName.value), level=kDebugDumpLevel)
 
     def OnSDLNotify(self, VARname, SDLname, playerID, tag):
         if VARname != ImagerInboxVariable.value:
@@ -523,6 +525,6 @@ class xSimpleImager(ptModifier):
 
     def OnBackdoorMsg(self, target, param):
         if target == "imager" and param == "refresh" and ImagerName.value == "D'ni  Imager Right":
-            PtDebugPrint("Manual refresh requested", level=kWarningLevel)
+            PtDebugPrint("xSimpleImager.OnBackdoorMsg():  Manual refresh requested", level=kWarningLevel)
             CurrentDisplayedElementID = 12459
             self.IShowCurrentContent()

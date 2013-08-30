@@ -90,8 +90,10 @@ class psnlCalendarStones(ptResponder):
     def __init__(self):
         ptResponder.__init__(self)
         self.id = 5082
-        self.version = 1
-        PtDebugPrint("__init__psnlCalendarStones v. %d" % (self.version))
+        version = 1
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: psnlCalendarStones v{}".format(self.version))
 
     def OnFirstUpdate(self):
         pass
@@ -100,7 +102,7 @@ class psnlCalendarStones(ptResponder):
         global fireworks
         ageSDL = ptAgeVault().getAgeSDL()
         if not ageSDL:
-            PtDebugPrint("psnlCalendarStones.OnServerInitComplete():\tAgeVaultSDL nil. Bad things have happened!")
+            PtDebugPrint("psnlCalendarStones.OnServerInitComplete():  AgeVaultSDL nil. Bad things have happened!")
             respCalStoneFire.run(self.key, state="off", fastforward=1)
             return
 
@@ -117,7 +119,7 @@ class psnlCalendarStones(ptResponder):
                     SDLVar = ageSDL.findVar("YeeshaPage20")
                     CurrentValue = SDLVar.getInt()
                 except:
-                    PtDebugPrint("psnlCalendarStones.OnServerInitComplete():\tERROR reading age SDLVar for YeeshaPage20. Assuming value = 0")
+                    PtDebugPrint("psnlCalendarStones.OnServerInitComplete():  ERROR: Error reading age SDLVar for YeeshaPage20. Assuming value = 0")
                     CurrentValue = 0
                 if CurrentValue in [0, 2, 4]:
                     PtDebugPrint("psnlCalendarStones.OnServerInitComplete():  don't have YeeshaPage20 on, no FIRE for you!")
@@ -188,23 +190,23 @@ class psnlCalendarStones(ptResponder):
         timer = float(param)
         if target == "fireworks1":
             respFireworksLaunch1.run(self.key)
-            PtDebugPrint("launch rocket 1")
+            PtDebugPrint("psnlCalendarStones.OnBackdoorMsg():  launch rocket 1")
             PtAtTimeCallback(self.key, timer, 2)
         elif target == "fireworks2":
             respFireworksLaunch2.run(self.key)
-            PtDebugPrint("launch rocket 2")
+            PtDebugPrint("psnlCalendarStones.OnBackdoorMsg():  launch rocket 2")
             PtAtTimeCallback(self.key, timer, 4)
         elif target == "fireworks3":
             respFireworksLaunch3.run(self.key)
-            PtDebugPrint("launch rocket 3")
+            PtDebugPrint("psnlCalendarStones.OnBackdoorMsg():  launch rocket 3")
             PtAtTimeCallback(self.key, timer, 6)
         elif target == "fireworksall":
             respFireworksLaunch1.run(self.key)
-            PtDebugPrint("launch rocket 1")
+            PtDebugPrint("psnlCalendarStones.OnBackdoorMsg():  launch rocket 1")
             PtAtTimeCallback(self.key, timer, 2)
             respFireworksLaunch2.run(self.key)
-            PtDebugPrint("launch rocket 2")
+            PtDebugPrint("psnlCalendarStones.OnBackdoorMsg():  launch rocket 2")
             PtAtTimeCallback(self.key, timer, 4)
             respFireworksLaunch3.run(self.key)
-            PtDebugPrint("launch rocket 3")
+            PtDebugPrint("psnlCalendarStones.OnBackdoorMsg():  launch rocket 3")
             PtAtTimeCallback(self.key, timer, 6)

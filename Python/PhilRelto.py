@@ -57,8 +57,10 @@ class PhilRelto(ptResponder):
     def __init__(self):
         ptResponder.__init__(self)
         self.id = 5328
-        self.version = 1
-        PtDebugPrint("PhilRelto: __init__ version %d.%d" % (self.version, 1), level=kWarningLevel)
+        version = 1
+        minor = 1
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: PhilRelto v{}".format(self.version), level=kWarningLevel)
 
     def OnServerInitComplete(self):
         pass

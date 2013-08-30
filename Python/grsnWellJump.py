@@ -65,15 +65,18 @@ class grsnWellJump(ptResponder):
 
     def __init__(self):
         "construction"
-        PtDebugPrint("grsnWellJump::init begin")
+        #PtDebugPrint("grsnWellJump::init begin")
         ptResponder.__init__(self)
         self.id = 50118
-        self.version = 1
-        PtDebugPrint("grsnWellJump::init end")
+        version = 1
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: grsnWellJump v{}".format(self.version))
+        #PtDebugPrint("grsnWellJump::init end")
 
     def OnNotify(self, state, id, events):
 
         if state:
             if id == rockPillarCamTrigger.id:
-                PtDebugPrint("triggered camera change")
+                PtDebugPrint("grsnWellJump.OnNotify():  triggered camera change")
                 return

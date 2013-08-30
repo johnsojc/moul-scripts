@@ -108,7 +108,7 @@ class mymod(ptModifier):
         global openb
         global door
         global theobject
-        PtDebugPrint("mymod: Notify event state=%f,id=%d,events=" % (state, id), events)
+        PtDebugPrint("mymod.OnNotify():  Notify event state={:f},id={},events={}".format(state, id, events))
         # is this our activator notifying us?
         if state and id == activator.id:
             # first have the player do a little dance
@@ -137,10 +137,10 @@ class mymod(ptModifier):
 
     def OnTimer(self, id):
         "Timer event: should only be to update the marquee"
-        # PtDebugPrint("mymod: timer event id=%d" % (id))
+        # PtDebugPrint("mymod.OnTimer():  timer event id={}".format(id))
         #  if this the marquee update?
         if id == kMarqueeTimerId:
-            # PtDebugPrint("mymod: marquee timer hit")
+            # PtDebugPrint("mymod.OnTimer():  marquee timer hit")
             #  first erase the last thing we put up
             marquee_map.textmap.fillRect(0, 0, 128, 128, black)
             marquee_map.textmap.drawText(0, 0, self._scrollingtext)
@@ -155,7 +155,7 @@ class mymod(ptModifier):
 
     def Save(self, savefile):
         "Save variables that we need to be persistent"
-        PtDebugPrint("Save variables")
+        PtDebugPrint("mymod.Save():  Save variables")
         cPickle.dump(self.svMyNumber, savefile)
         cPickle.dump(openb.value, savefile)
         # this will recursively go through all the elements of the list and pickle each item
@@ -164,7 +164,7 @@ class mymod(ptModifier):
 
     def Load(self, loadfile):
         "Load the persistent variables"
-        PtDebugPrint("Load variables")
+        PtDebugPrint("mymod.Load():  Load variables")
         self.svMyNumber = cPickle.load(loadfile)
         openb.value = cPickle.load(loadfile)
         # this will recreate a list of myHelper objects
@@ -172,9 +172,9 @@ class mymod(ptModifier):
 
     def OnPageLoad(self, what, who):
         if what == kLoaded:
-            PtDebugPrint("%s is finished loading" % (who))
+            PtDebugPrint("mymod.OnPageLoad():  {} is finished loading".format(who))
         elif what == kUnloaded:
-            print "%s is finished unloading" % (who)
+            PtDebugPrint("mymod.OnPageLoad():  {} is finished unloading".format(who))
 
 
 #====================================

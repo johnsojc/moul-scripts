@@ -77,7 +77,10 @@ class xCalendarStar(ptResponder):
     def __init__(self):
         ptResponder.__init__(self)
         self.id = 225
-        self.version = 1
+        version = 1
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: xCalendarStar v{}".format(self.version))
 
     def OnFirstUpdate(self):
         global AgeStartedIn
@@ -85,7 +88,7 @@ class xCalendarStar(ptResponder):
 
         AgeStartedIn = PtGetAgeName()
         if not (type(sdlCalStar.value) is str and sdlCalStar.value != ""):
-            PtDebugPrint("ERROR: xCalendarStar.OnFirstUpdate():\tERROR: missing SDL var name")
+            PtDebugPrint("xCalendarStar.OnFirstUpdate():  ERROR: missing SDL var name")
             pass
 
         if boolFirstUpdate.value:
@@ -94,9 +97,9 @@ class xCalendarStar(ptResponder):
                 try:
                     boolCalStar = psnlSDL[sdlCalStar.value][0]
                 except:
-                    PtDebugPrint("ERROR: xCalendarStar.OnFirstUpdate():\tERROR reading age SDL")
+                    PtDebugPrint("xCalendarStar.OnFirstUpdate():  ERROR: Error reading age SDL")
                     pass
-                PtDebugPrint("DEBUG: xCalendarStar.OnFirstUpdate():\t%s = %d" % (sdlCalStar.value, boolCalStar))
+                PtDebugPrint("xCalendarStar.OnFirstUpdate():  DEBUG: {} = {}".format(sdlCalStar.value, boolCalStar))
 
     def OnServerInitComplete(self):
         global boolCalStar
@@ -107,25 +110,25 @@ class xCalendarStar(ptResponder):
                 try:
                     boolCalStar = psnlSDL[sdlCalStar.value][0]
                 except:
-                    PtDebugPrint("ERROR: xCalendarStar.OnServerInitComplete():\tERROR reading age SDL")
+                    PtDebugPrint("xCalendarStar.OnServerInitComplete():  ERROR: Error reading age SDL")
                     pass
-                PtDebugPrint("DEBUG: xCalendarStar.OnServerInitComplete():\t%s = %d" % (sdlCalStar.value, boolCalStar))
+                PtDebugPrint("xCalendarStar.OnServerInitComplete():  DEBUG: {} = {}".format(sdlCalStar.value, boolCalStar))
 
     def OnNotify(self, state, id, events):
-        PtDebugPrint("xCalendarStar.OnNotify(): state = %d, id = %d" % (state, id))
+        PtDebugPrint("xCalendarStar.OnNotify():  state = {}, id = {}".format(state, id))
         global boolCalStar
 
         if not state or id != rgnCalStar.id:
             return
 
         if PtFindAvatar(events) != PtGetLocalAvatar():
-            PtDebugPrint("DEBUG: xCalendarStar.OnNotify():\t received notify from non-local player, ignoring...")
+            PtDebugPrint("xCalendarStar.OnNotify():  DEBUG: received notify from non-local player, ignoring...")
             return
         else:
-            PtDebugPrint("DEBUG: xCalendarStar.OnNotify():\t local player requesting %s change via %s" % (sdlCalStar.value, rgnCalStar.value[0].getName()))
+            PtDebugPrint("xCalendarStar.OnNotify():  DEBUG: local player requesting {} change via {}".format(sdlCalStar.value, rgnCalStar.value[0].getName()))
 
         if not self.GotPage():
-            PtDebugPrint("xCalendarStar.OnNotify(): do NOT have YeeshaPage20 (the Calendar Pinnacle) yet")
+            PtDebugPrint("xCalendarStar.OnNotify():  do NOT have YeeshaPage20 (the Calendar Pinnacle) yet")
             return
         else:
             PtDebugPrint("xCalendarStar.OnNotify():  have YeeshaPage20 (the Calendar Pinnacle)")
@@ -133,13 +136,13 @@ class xCalendarStar(ptResponder):
             if AgeStartedIn == PtGetAgeName():
                 psnlSDL = xPsnlVaultSDL()
             if not boolCalStar:
-                PtDebugPrint("xCalendarStar.OnNotify(): getting star's stone: %s" % (sdlCalStar.value))
+                PtDebugPrint("xCalendarStar.OnNotify():  getting star's stone: {}".format(sdlCalStar.value))
                 psnlSDL[sdlCalStar.value] = (1,)
                 respCalStar.run(self.key)
                 boolCalStar = 1
                 PtSendKIMessageInt(kStartBookAlert, 0)
             else:
-                PtDebugPrint("xCalendarStar.OnNotify(): already have the stone: %s" % (sdlCalStar.value))
+                PtDebugPrint("xCalendarStar.OnNotify():  already have the stone: {}".format(sdlCalStar.value))
 
     def GotPage(self):
         vault = ptVault()
@@ -150,7 +153,7 @@ class xCalendarStar(ptResponder):
                 ypageSDL = psnlSDL.findVar("YeeshaPage20")
                 if ypageSDL:
                     size, state = divmod(ypageSDL.getInt(), 10)
-                    PtDebugPrint("YeeshaPage20 = %d" % (state))
+                    PtDebugPrint("xCalendarStar.OnNotify():  YeeshaPage20 = {}".format(state))
                     if state:
                         return 1
             return 0

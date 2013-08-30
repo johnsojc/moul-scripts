@@ -84,7 +84,10 @@ class tldnPTPumpCount(ptResponder):
     def __init__(self):
         ptResponder.__init__(self)
         self.id = 5236
-        self.version = 1
+        version = 1
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: tldnPTPumpCount v{}".format(self.version))
 
     def OnFirstUpdate(self):
         global AgeStartedIn
@@ -99,18 +102,18 @@ class tldnPTPumpCount(ptResponder):
                 ageSDL.setFlags(stringVarName.value, 1, 1)
                 ageSDL.sendToClients(stringVarName.value)
             else:
-                PtDebugPrint("ERROR: tldnPTPumpCount.OnFirstUpdate():\tERROR: missing SDL var name in max file")
+                PtDebugPrint("tldnPTPumpCount.OnServerInitComplete():  ERROR: missing SDL var name in max file")
                 pass
             if type(stringVarName.value) is str and stringVarName.value != "":
                 ageSDL.setNotify(self.key, stringVarName.value, 0.0)
                 try:
                     intCurrentValue = ageSDL[stringVarName.value][0]
                 except:
-                    PtDebugPrint("ERROR: tldnPTPumpCount.OnServerInitComplete():\tERROR reading age SDL")
+                    PtDebugPrint("tldnPTPumpCount.OnServerInitComplete():  ERROR: Error reading age SDL")
                     pass
-                PtDebugPrint("DEBUG: tldnPTPumpCount.OnServerInitComplete():\t%s = %d" % (stringVarName.value, intCurrentValue))
+                PtDebugPrint("tldnPTPumpCount.OnServerInitComplete():  DEBUG: {} = {}".format(stringVarName.value, intCurrentValue))
             else:
-                PtDebugPrint("ERROR: tldnPTPumpCount.OnServerInitComplete():\tERROR: missing SDL var name")
+                PtDebugPrint("tldnPTPumpCount.OnServerInitComplete():  ERROR: missing SDL var name")
                 pass
 
     def OnNotify(self, state, id, events):
@@ -123,12 +126,12 @@ class tldnPTPumpCount(ptResponder):
             return
         else:
             if type(actTrigger.value) is list and len(actTrigger.value) > 0:
-                PtDebugPrint("DEBUG: tldnPTPumpCount.OnNotify():\t local player requesting %s change via %s" % (stringVarName.value, actTrigger.value[0].getName()))
+                PtDebugPrint("tldnPTPumpCount.OnNotify():  DEBUG: local player requesting {} change via {}".format(stringVarName.value, actTrigger.value[0].getName()))
                 pass
 
         # error check
         if type(stringVarName.value) is not str or stringVarName.value == "":
-            PtDebugPrint("ERROR: tldnPTPumpCount.OnNotify():\tERROR: missing SDL var name")
+            PtDebugPrint("tldnPTPumpCount.OnNotify():  ERROR: missing SDL var name")
             return
 
         if AgeStartedIn == PtGetAgeName():
@@ -170,7 +173,7 @@ class tldnPTPumpCount(ptResponder):
 
             ageSDL.setTagString(stringVarName.value, stringInfo.value)
             ageSDL[stringVarName.value] = (intCurrentValue,)
-            PtDebugPrint("DEBUG: tldnPTPumpCount.OnNotify():\t%s age SDL var %s to %d" % (stringOp, stringVarName.value, intCurrentValue))
+            PtDebugPrint("tldnPTPumpCount.OnNotify():  DEBUG: {} age SDL var {} to {}".format(stringOp, stringVarName.value, intCurrentValue))
 
     # in case someone other than me changes my var(s)
     def OnSDLNotify(self, VARname, SDLname, playerID, tag):
@@ -179,7 +182,7 @@ class tldnPTPumpCount(ptResponder):
         if AgeStartedIn == PtGetAgeName():
             ageSDL = PtGetAgeSDL()
             if VARname == stringVarName.value:
-                PtDebugPrint("DEBUG: tldnPTPumpCount.OnSDLNotify():\t VARname:%s, SDLname:%s, tag:%s, value:%d" % (VARname, SDLname, tag, ageSDL[stringVarName.value][0]))
+                PtDebugPrint("tldnPTPumpCount.OnSDLNotify():  DEBUG: VARname:{}, SDLname:{}, tag:{}, value:{}".format(VARname, SDLname, tag, ageSDL[stringVarName.value][0]))
                 intCurrentValue = ageSDL[stringVarName.value][0]
 
     def OnTimer(self, timer):

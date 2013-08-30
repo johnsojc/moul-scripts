@@ -113,8 +113,10 @@ class xJourneyClothsGen2(ptModifier):
     def __init__(self):
         ptModifier.__init__(self)
         self.id = 5308
-        self.version = 8
-        PtDebugPrint("DEBUG: xJourneyClothsGen2.__init__: v.%d" % (self.version))
+        version = 8
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: xJourneyClothsGen2 v{}".format(self.version))
 
     def OnFirstUpdate(self):
         xRandom.seed()
@@ -124,7 +126,7 @@ class xJourneyClothsGen2(ptModifier):
         entry = vault.findChronicleEntry("JourneyClothProgress")
 
         if entry is None:
-            PtDebugPrint("DEBUG: xJourneyClothsGen2.OnFirstUpdate: Did not find JourneyClothProgress chronicle...creating")
+            PtDebugPrint("xJourneyClothsGen2.OnFirstUpdate():  DEBUG: Did not find JourneyClothProgress chronicle...creating")
             vault.addChronicleEntry("JourneyClothProgress", 0, "")
 
     def OnServerInitComplete(self):
@@ -135,24 +137,24 @@ class xJourneyClothsGen2(ptModifier):
         spTitle = spawnPoint.getTitle()
         spName = spawnPoint.getName()
 
-        PtDebugPrint("spawned into %s, this JC handles %s" % (spName, soSpawnpoint.value.getName()))
+        PtDebugPrint("xJourneyClothsGen2.OnServerInitComplete():  spawned into {}, this JC handles {}".format(spName, soSpawnpoint.value.getName()))
         if spTitle.endswith("SavePoint") and spName == soSpawnpoint.value.getName():
-            PtDebugPrint("restoring camera stack for save point %s %s" % (spTitle, spName))
+            PtDebugPrint("xJourneyClothsGen2.OnServerInitComplete():  restoring camera stack for save point {} {}".format(spTitle, spName))
 
             # Restore camera stack
             camstack = spawnPoint.getCameraStack()
-            PtDebugPrint("camera stack: %s" % (camstack))
+            PtDebugPrint("xJourneyClothsGen2.OnServerInitComplete():  camera stack: {}".format(camstack))
             if camstack != "":
                 PtClearCameraStack()
                 camlist = camstack.split(CAM_DIVIDER)
 
                 age = PtGetAgeName()
                 for x in camlist:
-                    PtDebugPrint("adding camera: |%s|" % (str(x)))
+                    PtDebugPrint("xJourneyClothsGen2.OnServerInitComplete():  adding camera: |" + str(x) + "|")
                     try:
                         PtRebuildCameraStack(x, age)
                     except:
-                        PtDebugPrint("ERROR: xJourneyClothsGen2.OnServerInitComplete: problem rebuilding camera stack...continuing")
+                        PtDebugPrint("xJourneyClothsGen2.OnServerInitComplete():  ERROR: problem rebuilding camera stack...continuing")
             # Done restoring camera stack
 
     def OnNotify(self, state, id, events):
@@ -164,7 +166,7 @@ class xJourneyClothsGen2(ptModifier):
 
         if id == Activator.id:
             if ClothInUse:
-                PtDebugPrint("Journey Cloth %s has not yet reset." % (ClothLetter.value))
+                PtDebugPrint("xJourneyClothsGen2.OnNotify():  Journey Cloth {} has not yet reset.".format(ClothLetter.value))
                 return
             ClothInUse = 1
             Activator.disable()
@@ -178,7 +180,7 @@ class xJourneyClothsGen2(ptModifier):
             agelink = vault.getOwnedAgeLink(ainfo)
 
             if vault.amOwnerOfCurrentAge() and PtWasLocallyNotified(self.key):
-                PtDebugPrint("DEBUG: xJourneyClothsGen2.OnNotify: am owner of current age, getting save point")
+                PtDebugPrint("xJourneyClothsGen2.OnNotify():  DEBUG: am owner of current age, getting save point")
                 try:
                 # Save the camera stack
                     camstack = ""
@@ -186,7 +188,7 @@ class xJourneyClothsGen2(ptModifier):
                     for x in range(numcams):
                         camstack += (PtGetCameraNumber(x+1) + CAM_DIVIDER)
                     camstack = camstack[:-1]
-                    PtDebugPrint("camera stack: %s" % (camstack))
+                    PtDebugPrint("xJourneyClothsGen2.OnNotify():  camera stack: {}".format(camstack))
 
                     # camera stack is now being saved as a spawn point on the owned age link
                     savepoint = None
@@ -211,12 +213,12 @@ class xJourneyClothsGen2(ptModifier):
                     # Done saving the camera stack
 
                 except:
-                    PtDebugPrint("ERROR: xJourneyClothsGen2.OnNotify: error occurred doing the whole save point thing")
+                    PtDebugPrint("xJourneyClothsGen2.OnNotify():  ERROR: error occurred doing the whole save point thing")
 
             PtAtTimeCallback(self.key, 1, TimerID.AddSavePoint)
 
         else:
-            PtDebugPrint("ERROR: xJourneyClothsGen2.OnNotify: Error trying to access the Vault. Can't access JourneyClothProgress chronicle.")
+            PtDebugPrint("xJourneyClothsGen2.OnNotify():  ERROR: Error trying to access the Vault. Can't access JourneyClothProgress chronicle.")
 
     def AddNodeWithCurrentValue(self, node):
         newNode = ptVaultChronicleNode(0)
@@ -240,10 +242,10 @@ class xJourneyClothsGen2(ptModifier):
         return None
 
     def IPlayHandAnim(self, length):
-        PtDebugPrint("You've found %s JourneyCloths" % (length))
+        PtDebugPrint("xJourneyClothsGen2.IPlayHandAnim():  You've found {} JourneyCloths".format(length))
 
         if length < 0 or length > 7:
-            PtDebugPrint("xJourneyCloths.HandGlow: ERROR: Unexpected length value received. No hand glow.")
+            PtDebugPrint("xJourneyClothsGen2.IPlayHandAnim():  ERROR: Unexpected length value received. No hand glow.")
 
         if length == 1:
             HandAnim01.run(self.key)
@@ -274,11 +276,11 @@ class xJourneyClothsGen2(ptModifier):
             HandGlowFullAudio.run(self.key)
 
         else:
-            PtDebugPrint("xJourneyCloths.HandGlow: ERROR: Unexpected length value received. No hand glow.")
+            PtDebugPrint("xJourneyClothsGen2.IPlayHandAnim():  ERROR: Unexpected length value received. No hand glow.")
 
     def RandomBahroSounds(self):
         whichsound = xRandom.random.randint(1, 4)
-        PtDebugPrint("whichsound = %d" % (whichsound))
+        PtDebugPrint("xJourneyClothsGen2.RandomBahroSounds():  whichsound = {}".format(whichsound))
 
         if whichsound == 1:
             PlayBahro01.run(self.key)
@@ -296,7 +298,7 @@ class xJourneyClothsGen2(ptModifier):
 
         if wingflap > 1:
             whichflap = whichsound
-            PtDebugPrint("whichflap = %d" % (whichflap))
+            PtDebugPrint("xJourneyClothsGen2.RandomBahroSounds():  whichflap = {}".format(whichflap))
 
             if whichflap == 1:
                 BahroWing01.run(self.key)
@@ -311,56 +313,56 @@ class xJourneyClothsGen2(ptModifier):
                 BahroWing04.run(self.key)
 
         else:
-            PtDebugPrint("no wingflap is heard.")
+            PtDebugPrint("xJourneyClothsGen2.RandomBahroSounds():  no wingflap is heard.")
 
     def OnTimer(self, id):
         global ClothInUse
         if id == TimerID.AddJCProgress:
-            PtDebugPrint("DEBUG: xJourneyClothsGen2.OnTimer:\tJourneyCloth %s has reset." % (ClothLetter.value))
+            PtDebugPrint("xJourneyClothsGen2.OnTimer():  DEBUG: JourneyCloth {} has reset.".format(ClothLetter.value))
             ClothInUse = 0
             Activator.enable()
 
         elif id == TimerID.AddSavePoint:
-            PtDebugPrint("###")
+            PtDebugPrint("xJourneyClothsGen2.OnTimer():  ###")
             # every client sets the following timer locally
             PtAtTimeCallback(self.key, 11, TimerID.AddJCProgress)
 
             if not PtWasLocallyNotified(self.key):
-                PtDebugPrint("Somebody touched JourneyCloth %s" % (ClothLetter.value))
+                PtDebugPrint("xJourneyClothsGen2.OnTimer():  Somebody touched JourneyCloth {}".format(ClothLetter.value))
                 return
 
-            PtDebugPrint("You clicked on cloth %s" % (ClothLetter.value))
+            PtDebugPrint("xJourneyClothsGen2.OnTimer():  You clicked on cloth {}".format(ClothLetter.value))
             vault = ptVault()
             if vault:  # is the Vault online?
 
                 entry = vault.findChronicleEntry("JourneyClothProgress")
                 if entry is None:  # is this the player's first Journey Cloth?
-                    PtDebugPrint("No JourneyClothProgress chronicle entry found, I'll add it.")
-                    PtDebugPrint("You're going to have to press the button again.")
+                    PtDebugPrint("xJourneyClothsGen2.OnTimer():  No JourneyClothProgress chronicle entry found, I'll add it.")
+                    PtDebugPrint("xJourneyClothsGen2.OnTimer():  You're going to have to press the button again.")
                     vault.addChronicleEntry("JourneyClothProgress", 0, "")
 
                 else:
                     currentAgeChron = self.GetCurrentAgeChronicle(entry)
 
                     if currentAgeChron is None:
-                        PtDebugPrint("You haven't found a JC in this age before, adding it now")
+                        PtDebugPrint("xJourneyClothsGen2.OnTimer():  You haven't found a JC in this age before, adding it now")
 
                         currentAgeChron = self.AddNodeWithCurrentValue(entry)
                         FoundJCs = ClothLetter.value
                         self.RandomBahroSounds()
                     else:
                         FoundJCs = currentAgeChron.chronicleGetValue()
-                        PtDebugPrint("previously found JCs: %s" % (FoundJCs))
+                        PtDebugPrint("xJourneyClothsGen2.OnTimer():  previously found JCs: {}".format(FoundJCs))
                         if ClothLetter.value in FoundJCs:
-                            PtDebugPrint("You've already found this cloth.")
+                            PtDebugPrint("xJourneyClothsGen2.OnTimer():  You've already found this cloth.")
 
                         else:
-                            PtDebugPrint("This is a new cloth to you")
+                            PtDebugPrint("xJourneyClothsGen2.OnTimer():  This is a new cloth to you")
 
                             FoundJCs = FoundJCs + ClothLetter.value
-                            PtDebugPrint("trying to update JourneyClothProgress to %s" % (FoundJCs))
+                            PtDebugPrint("xJourneyClothsGen2.OnTimer():  trying to update JourneyClothProgress to {}".format(FoundJCs))
 
-                            currentAgeChron.chronicleSetValue("%s" % (FoundJCs))
+                            currentAgeChron.chronicleSetValue("{}".format(FoundJCs))
                             currentAgeChron.save()
 
                             self.RandomBahroSounds()

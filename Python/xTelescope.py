@@ -77,8 +77,8 @@ class xTelescope(ptModifier):
 
         version = 4
         minorVersion = 2
-        self.version = version
-        PtDebugPrint("__init__xTelescope v%d.%d" % (version, minorVersion))
+        self.version = "{}.{}".format(version, minorVersion)
+        PtDebugPrint("__init__: xTelescope v{}".format(self.version))
 
     def OnFirstUpdate(self):
         self.SDL.setDefault("boolOperated", (0,))
@@ -96,14 +96,14 @@ class xTelescope(ptModifier):
         boolOperated = self.SDL["boolOperated"][0]
         if boolOperated:
             if solo:
-                PtDebugPrint("xTelescope.Load():\tboolOperated=%d but no one else here...correcting" % boolOperated, level=kDebugDumpLevel)
+                PtDebugPrint("xTelescope.Load():  boolOperated={} but no one else here...correcting".format(boolOperated), level=kDebugDumpLevel)
                 boolOperated = 0
                 self.SDL["boolOperated"] = (0,)
                 self.SDL["OperatorID"] = (-1,)
                 Activate.enable()
             else:
                 Activate.disable()
-                PtDebugPrint("xTelescope.Load():\tboolOperated=%d, disabling telescope clickable" % boolOperated, level=kDebugDumpLevel)
+                PtDebugPrint("xTelescope.Load():  boolOperated={}, disabling telescope clickable".format(boolOperated), level=kDebugDumpLevel)
 
     def AvatarPage(self, avObj, pageIn, lastOut):
         "reset scope accessibility if scope user quits or crashes"
@@ -117,7 +117,7 @@ class xTelescope(ptModifier):
             Activate.enable()
             self.SDL["OperatorID"] = (-1,)
             self.SDL["boolOperated"] = (0,)
-            PtDebugPrint("xTelescope.AvatarPage(): telescope operator paged out, reenabled telescope.", level=kDebugDumpLevel)
+            PtDebugPrint("xTelescope.AvatarPage():  telescope operator paged out, reenabled telescope.", level=kDebugDumpLevel)
         else:
             return
 
@@ -129,7 +129,7 @@ class xTelescope(ptModifier):
         "Activated... start telescope"
         global LocalAvatar
         global boolScopeOperator
-        PtDebugPrint("xTelescope:OnNotify  state=%f id=%d events=" % (state, id), events, level=kDebugDumpLevel)
+        PtDebugPrint("xTelescope:OnNotify():  state={:f} id={} events={}".format(state, id, events), level=kDebugDumpLevel)
         if state and id == Activate.id and PtWasLocallyNotified(self.key):
             LocalAvatar = PtFindAvatar(events)
             self.IStartTelescope()
@@ -143,7 +143,7 @@ class xTelescope(ptModifier):
 
     def OnGUINotify(self, id, control, event):
         "Notifications from the vignette"
-        PtDebugPrint("GUI Notify id=%d, event=%d control=" % (id, event), control, level=kDebugDumpLevel)
+        PtDebugPrint("xTelescope:OnGUINotify():  id={}, event={} control={}".format(id, event, control), level=kDebugDumpLevel)
         if event == kDialogLoaded:
             # if the dialog was just loaded then show it
             control.show()
@@ -165,7 +165,7 @@ class xTelescope(ptModifier):
         self.SDL["boolOperated"] = (1,)
         avID = PtGetClientIDFromAvatarKey(LocalAvatar.getKey())
         self.SDL["OperatorID"] = (avID,)
-        PtDebugPrint("xTelescope.OnNotify:\twrote SDL - scope operator id = ", avID, level=kDebugDumpLevel)
+        PtDebugPrint("xTelescope.IStartTelescope():  wrote SDL - scope operator id = {}".format(avID), level=kDebugDumpLevel)
         # start the behavior
         Behavior.run(LocalAvatar)
 
@@ -216,10 +216,10 @@ class xTelescope(ptModifier):
         cam = ptCamera()
         cam.enableFirstPersonOverride()
         PtAtTimeCallback(self.key, 3, 1)  # wait for player to finish exit one-shot, then reenable clickable
-        PtDebugPrint("xTelescope.IQuitTelescope:\tdelaying clickable reenable", level=kDebugDumpLevel)
+        PtDebugPrint("xTelescope.IQuitTelescope:  delaying clickable reenable", level=kDebugDumpLevel)
 
     def OnTimer(self, id):
         if id == 1:
             Activate.enable()
-            PtDebugPrint("xTelescope.OnTimer:\tclickable reenabled", level=kDebugDumpLevel)
+            PtDebugPrint("xTelescope.OnTimer:  clickable reenabled", level=kDebugDumpLevel)
             PtSendKIMessage(kEnableKIandBB, 0)

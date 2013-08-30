@@ -81,8 +81,9 @@ class nglnTreeMonkey(ptResponder):
         ptResponder.__init__(self)
         self.id = 5241
         version = 3
-        self.version = version
-        PtDebugPrint("__init__nglnTreeMonkey v.%d.0" % (version))
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: nglnTreeMonkey v{}".format(self.version))
         random.seed()
 
     ###########################
@@ -90,7 +91,7 @@ class nglnTreeMonkey(ptResponder):
         try:
             ageSDL = PtGetAgeSDL()
         except:
-            PtDebugPrint("nglnTreeMonkey:\tERROR---Cannot find the Negilahn Age SDL")
+            PtDebugPrint("nglnTreeMonkey.OnServerInitComplete():  ERROR: Cannot find the Negilahn Age SDL")
             self.InitNewSDLVars()
 
         ageSDL.sendToClients("MonkeyLastUpdated")
@@ -104,10 +105,10 @@ class nglnTreeMonkey(ptResponder):
         lastDay = int(ageSDL["MonkeyLastUpdated"][0] / kDayLengthInSeconds)
 
         if (thisDay - lastDay) > 0:
-            PtDebugPrint("nglnTreeMonkey: It's been at least a day since the last update, running new numbers now.")
+            PtDebugPrint("nglnTreeMonkey.OnServerInitComplete():  It's been at least a day since the last update, running new numbers now.")
             self.InitNewSDLVars()
         else:
-            PtDebugPrint("nglnTreeMonkey: It's been less than a day since the last update, doing nothing")
+            PtDebugPrint("nglnTreeMonkey.OnServerInitComplete():  It's been less than a day since the last update, doing nothing")
             self.SetMonkeyTimers()
 
         if not len(PtGetPlayerList()):
@@ -121,41 +122,41 @@ class nglnTreeMonkey(ptResponder):
     ###########################
     def OnNotify(self, state, id, events):
         global stackList
-        PtDebugPrint("nglnTreeMonkey.OnNotify:  state=%f id=%d events=" % (state, id), events)
+        PtDebugPrint("nglnTreeMonkey.OnNotify():  state={:f} id={} events={}".format(state, id, events))
 
         if id == (-1):
-            PtDebugPrint("Need to store event: %s" % (events[0][1]))
+            PtDebugPrint("nglnTreeMonkey.OnNotify():  Need to store event: {}".format(events[0][1]))
             stackList.append(events[0][1])
-            PtDebugPrint("New list is: %s" % (str(stackList)))
+            PtDebugPrint("nglnTreeMonkey.OnNotify():  New list is: {}".format(stackList))
             if len(stackList) == 1:
-                PtDebugPrint("List is only one command long, so I'm playing it")
+                PtDebugPrint("nglnTreeMonkey.OnNotify():  List is only one command long, so I'm playing it")
                 code = stackList[0]
-                PtDebugPrint("Playing command: %s" % (code))
+                PtDebugPrint("nglnTreeMonkey.OnNotify():  - Playing command: {}".format(code))
                 self.ExecCode(code)
 
         elif id == respMonkeyAct.id and self.sceneobject.isLocallyOwned():
-            PtDebugPrint("Callback was from responder, and I own the age, so Logic Time")
+            PtDebugPrint("nglnTreeMonkey.OnNotify():  Callback was from responder, and I own the age, so Logic Time")
             old = stackList.pop(0)
-            PtDebugPrint("Popping off: %s" % (old))
+            PtDebugPrint("\tPopping off: {}".format(old))
             self.RandomBehavior()
 
         elif id == respMonkeyOff.id and self.sceneobject.isLocallyOwned():
-            PtDebugPrint("Callback was from 'Off' responder")
+            PtDebugPrint("nglnTreeMonkey.OnNotify():  Callback was from 'Off' responder")
             old = stackList.pop(0)
-            PtDebugPrint("Popping off: %s" % (old))
+            PtDebugPrint("\tPopping off: {}".format(old))
 
         elif (id == respMonkeyAct.id or id == respMonkeyOff.id) and not self.sceneobject.isLocallyOwned():
-            PtDebugPrint("Callback was from responder, and I DON'T own the age, so I'll try playing the next item in list")
+            PtDebugPrint("nglnTreeMonkey.OnNotify():  Callback was from responder, and I DON'T own the age, so I'll try playing the next item in list")
             old = stackList.pop(0)
-            PtDebugPrint("Popping off: %s" % (old))
+            PtDebugPrint("\tPopping off: {}".format(old))
             if len(stackList):
-                PtDebugPrint("List has at least one item ready to play")
+                PtDebugPrint("\tList has at least one item ready to play")
                 code = stackList[0]
-                PtDebugPrint("Playing command: %s" % (code))
+                PtDebugPrint("\tPlaying command: {}".format(code))
                 self.ExecCode(code)
 
         else:
-            PtDebugPrint("Callback from something else?")
+            PtDebugPrint("nglnTreeMonkey.OnNotify():  Callback from something else?")
 
     ###########################
     def RandomBehavior(self):
@@ -171,13 +172,13 @@ class nglnTreeMonkey(ptResponder):
                 if MonkeyState == "Off":
                     self.SendNote("respMonkeyOff")
                 else:
-                    respString = ("respMonkeyAct;%s" % (MonkeyState))
+                    respString = ("respMonkeyAct;{}".format(MonkeyState))
                     self.SendNote(respString)
 
-                PtDebugPrint("nglnTreeMonkey: Attempting Tree Monkey Anim: %s" % (MonkeyState))
+                PtDebugPrint("nglnTreeMonkey.RandomBehavior():  Attempting Tree Monkey Anim: {}".format(MonkeyState))
                 if LightsOn:
                     respMonkeySfx.run(self.key, state=str(MonkeyState))
-                    PtDebugPrint("nglnTreeMonkey: Attempting Tree Monkey SFX: %s" % (MonkeyState))
+                    PtDebugPrint("nglnTreeMonkey.RandomBehavior():  Attempting Tree Monkey SFX: {}".format(MonkeyState))
                 return
 
             Cumulative = eval("Cumulative + " + MonkeyState + "Pct")
@@ -202,11 +203,11 @@ class nglnTreeMonkey(ptResponder):
         whichtree = random.randint(0, 2)
         respSpawnPt.run(self.key, state=str(whichtree))
         self.SendNote("respMonkeyAct;Up")
-        PtDebugPrint("nglnTreeMonkey: Tree Monkey is climbing Tree: %d" % (whichtree))
+        PtDebugPrint("nglnTreeMonkey.MonkeyAppears():  Tree Monkey is climbing Tree: {}".format(whichtree))
 
     ###########################
     def OnTimer(self, TimerID):
-        PtDebugPrint("nglnTreeMonkey.OnTimer: callback id=%d" % (TimerID))
+        PtDebugPrint("nglnTreeMonkey.OnTimer():  callback id={}".format(TimerID))
         if self.sceneobject.isLocallyOwned():
             if TimerID == 1:
                 self.MonkeyAppears()
@@ -228,20 +229,20 @@ class nglnTreeMonkey(ptResponder):
         # something roughly in that timeframe.
         randnum = float(random.randint(0, 318))
         firstTime = int((randnum / 1000.0) * kDayLengthInSeconds) + beginningOfToday
-        PtDebugPrint("nglnTreeMonkey: Generated a valid spawn time: %d" % (firstTime))
+        PtDebugPrint("nglnTreeMonkey.InitNewSDLVars():  Generated a valid spawn time: {}".format(firstTime))
         spawnTimes = [firstTime]
 
         while type(spawnTimes[-1]) == type(long(1)):
             randnum = random.randint(kMinimumTimeBetweenSpawns, kMaximumTimeBetweenSpawns)
             newTime = spawnTimes[-1] + randnum
             if newTime < endOfToday:
-                PtDebugPrint("nglnTreeMonkey: Generated a valid spawn time: %d" % (newTime))
+                PtDebugPrint("nglnTreeMonkey.InitNewSDLVars():  Generated a valid spawn time: {}".format(newTime))
                 spawnTimes.append(newTime)
             else:
-                PtDebugPrint("nglnTreeMonkey: Generated a spawn time after dusk, exiting loop: %d" % (newTime))
+                PtDebugPrint("nglnTreeMonkey.InitNewSDLVars():  Generated a spawn time after dusk, exiting loop: {}".format(newTime))
                 break
         else:
-            PtDebugPrint("nglnTreeMonkey:ERROR---Tried to add a spawn time that's not a number: ", spawnTimes)
+            PtDebugPrint("nglnTreeMonkey.InitNewSDLVars():  ERROR: Tried to add a spawn time that's not a number: {}".format(spawnTimes))
             spawnTimes = [0]
 
         while len(spawnTimes) < 20:
@@ -257,24 +258,24 @@ class nglnTreeMonkey(ptResponder):
             for timer in ageSDL["MonkeySpawnTimes"]:
                 if timer:
                     timeTillSpawn = timer - PtGetDniTime()
-                    PtDebugPrint("timer: %d    time: %d    timeTillSpawn: %d" % (timer, PtGetDniTime(), timeTillSpawn))
+                    PtDebugPrint("nglnTreeMonkey.SetMonkeyTimers():  {}    time: {}    timeTillSpawn: {}".format(timer, PtGetDniTime(), timeTillSpawn))
                     if timeTillSpawn > 0:
-                        PtDebugPrint("nglnTreeMonkey: Setting timer for %d seconds" % (timeTillSpawn))
+                        PtDebugPrint("nglnTreeMonkey.SetMonkeyTimers():  Setting timer for {} seconds".format(timeTillSpawn))
                         PtAtTimeCallback(self.key, timeTillSpawn, 1)
 
             # precision error FTW!
             timeLeftToday = kDayLengthInSeconds - int(PtGetAgeTimeOfDayPercent() * kDayLengthInSeconds)
             timeLeftToday += 1  # because we want it to go off right AFTER the day flips
-            PtDebugPrint("nglnTreeMonkey: Setting EndOfDay timer for %d seconds" % (timeLeftToday))
+            PtDebugPrint("nglnTreeMonkey.SetMonkeyTimers():  Setting EndOfDay timer for {} seconds".format(timeLeftToday))
             PtAtTimeCallback(self.key, timeLeftToday, 2)
         else:
-            PtDebugPrint("nglnTreeMonkey: Timer array was empty!")
+            PtDebugPrint("nglnTreeMonkey.SetMonkeyTimers():  Timer array was empty!")
 
     ###########################
     def OnBackdoorMsg(self, target, param):
         if target == "monkey":
             if self.sceneobject.isLocallyOwned():
-                PtDebugPrint("nglnTreeMonkey.OnBackdoorMsg: Work!")
+                PtDebugPrint("nglnTreeMonkey.OnBackdoorMsg():  Work!")
                 if param == "up":
                     self.SendNote("respMonkeyAct;Up")
                 elif param == "tree":
@@ -289,8 +290,8 @@ class nglnTreeMonkey(ptResponder):
                 ecMonkeyState = chunks[1]
                 respMonkeyAct.run(self.key, state=ecMonkeyState)
             except:
-                PtDebugPrint("nglnTreeMonkey.ExecCode(): ERROR! Invalid code '%s'." % (code))
+                PtDebugPrint("nglnTreeMonkey.ExecCode():  ERROR: Invalid code '{}'.".format(code))
                 stackList.pop(0)
         else:
-            PtDebugPrint("nglnTreeMonkey.ExecCode(): ERROR! Invalid code '%s'." % (code))
+            PtDebugPrint("nglnTreeMonkey.ExecCode():  ERROR: Invalid code '{}'.".format(code))
             stackList.pop(0)

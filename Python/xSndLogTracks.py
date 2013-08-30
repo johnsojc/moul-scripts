@@ -72,12 +72,12 @@ def LogTrack(currentState, nextState):
                 entry.chronicleSetValue(nextState)
                 entry.save()
                 updated = 1
-                PtDebugPrint("updated to %s" % (nextState))
+                PtDebugPrint("xSndLogTracks.LogTrack():  updated to {}".format(nextState))
             else:
-                PtDebugPrint("no track")
+                PtDebugPrint("xSndLogTracks.LogTrack():  no track")
         if not updated:
             # ha, ha ...start over
-            PtDebugPrint("not updated")
+            PtDebugPrint("xSndLogTracks.LogTrack():  not updated")
     return updated
 
 
@@ -122,9 +122,9 @@ def WhatIsLog():
     vault = ptVault()
     entry = vault.findChronicleEntry(kLogTrackVarname)
     if entry is not None:
-        PtDebugPrint(entry.chronicleGetValue())
+        PtDebugPrint("xSndLogTracks.WhatIsLog():  name = {}".format(entry.chronicleGetValue()))
     else:
-        PtDebugPrint("not initialized")
+        PtDebugPrint("xSndLogTracks.WhatIsLog():  not initialized")
 
 
 def GetTrack():

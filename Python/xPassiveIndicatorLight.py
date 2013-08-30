@@ -67,12 +67,13 @@ class xPassiveIndicatorLight(ptResponder):
         self.id = 5202
 
         version = 2
-        self.version = version
-        PtDebugPrint("__init__xPassiveIndicatorLight v.%d" % (version))
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: xPassiveIndicatorLight v{}".format(self.version))
 
     def OnServerInitComoplete(self):
         if self.SDL is None:
-            PtDebugPrint("xPassiveIndicatorLight.OnServerInitComplete():\tERROR---missing SDL (%s)" % (varstring.value))
+            PtDebugPrint("xPassiveIndicatorLight.OnServerInitComplete():  ERROR: missing SDL ({})".format(varstring.value))
             return
         self.SDL.setDefault("enabled", (0,))
 
@@ -91,6 +92,6 @@ class xPassiveIndicatorLight(ptResponder):
                             respOff.run(self.key, events=events)
 
                         else:  # unexpected value
-                            PtDebugPrint("xPassiveIndicatorLight.OnNotify:\t'%s' ERROR---got bogus msg - power = %d" % (varstring.value, self.SDL["enabled"][0]))
+                            PtDebugPrint("xPassiveIndicatorLight.OnNotify():  '{}' ERROR---got bogus msg - power = {}".format(varstring.value, self.SDL["enabled"][0]))
                             return
-                        PtDebugPrint("xPassiveIndicatorLight.OnNotify:\t'%s' got msg - power = %d" % (varstring.value, self.SDL["enabled"][0]))
+                        PtDebugPrint("xPassiveIndicatorLight.OnNotify():  '{}' got msg - power = {}".format(varstring.value, self.SDL["enabled"][0]))

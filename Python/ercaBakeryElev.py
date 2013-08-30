@@ -91,7 +91,10 @@ class ercaBakeryElev(ptResponder):
     def __init__(self):
         ptResponder.__init__(self)
         self.id = 7029
-        self.version = 4
+        version = 4
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: ercaBakeryElev v{}".format(self.version))
 
     def OnFirstUpdate(self):
         pass
@@ -135,49 +138,49 @@ class ercaBakeryElev(ptResponder):
         try:
             boolPlat1 = ageSDL[SDLPlatform1.value][0]
         except:
-            PtDebugPrint("ERROR: ercaBakeryElev.OnServerInitComplete():\tERROR reading SDL name for pool empty")
+            PtDebugPrint("ercaBakeryElev.OnServerInitComplete():  ERROR: Error reading SDL name for pool empty")
             boolPlat1 = 0
-        PtDebugPrint("DEBUG: ercaBakeryElev.OnServerInitComplete():\t%s = %d" % (SDLPlatform1.value, ageSDL[SDLPlatform1.value][0]))
+        PtDebugPrint("DEBUG: ercaBakeryElev.OnServerInitComplete():  {} = {}".format(SDLPlatform1.value, ageSDL[SDLPlatform1.value][0]))
         try:
             boolPlat2 = ageSDL[SDLPlatform2.value][0]
         except:
-            PtDebugPrint("ERROR: ercaBakeryElev.OnServerInitComplete():\tERROR reading SDL name for pool empty")
+            PtDebugPrint("ercaBakeryElev.OnServerInitComplete():  ERROR: Error reading SDL name for pool empty")
             boolPlat2 = 0
-        PtDebugPrint("DEBUG: ercaBakeryElev.OnServerInitComplete():\t%s = %d" % (SDLPlatform2.value, ageSDL[SDLPlatform2.value][0]))
+        PtDebugPrint("DEBUG: ercaBakeryElev.OnServerInitComplete():  {} = {}".format(SDLPlatform2.value, ageSDL[SDLPlatform2.value][0]))
         try:
             boolPlat3 = ageSDL[SDLPlatform3.value][0]
         except:
-            PtDebugPrint("ERROR: ercaBakeryElev.OnServerInitComplete():\tERROR reading SDL name for pool empty")
+            PtDebugPrint("ercaBakeryElev.OnServerInitComplete():  ERROR: Error reading SDL name for pool empty")
             boolPlat3 = 0
-        PtDebugPrint("DEBUG: ercaBakeryElev.OnServerInitComplete():\t%s = %d" % (SDLPlatform3.value, ageSDL[SDLPlatform3.value][0]))
+        PtDebugPrint("ercaBakeryElev.OnServerInitComplete():  DEBUG: {} = {}".format(SDLPlatform3.value, ageSDL[SDLPlatform3.value][0]))
         try:
             boolPlat4 = ageSDL[SDLPlatform4.value][0]
         except:
-            PtDebugPrint("ERROR: ercaBakeryElev.OnServerInitComplete():\tERROR reading SDL name for pool empty")
+            PtDebugPrint("ercaBakeryElev.OnServerInitComplete():  ERROR: Error reading SDL name for pool empty")
             boolPlat4 = 0
-        PtDebugPrint("DEBUG: ercaBakeryElev.OnServerInitComplete():\t%s = %d" % (SDLPlatform4.value, ageSDL[SDLPlatform4.value][0]))
+        PtDebugPrint("ercaBakeryElev.OnServerInitComplete():  DEBUG: {} = {}".format(SDLPlatform4.value, ageSDL[SDLPlatform4.value][0]))
         try:
             boolElevPos = ageSDL[SDLElevPos.value][0]
         except:
-            PtDebugPrint("ERROR: ercaBakeryElev.OnServerInitComplete():\tERROR reading SDL name for pool empty")
+            PtDebugPrint("ercaBakeryElev.OnServerInitComplete():  ERROR: Error reading SDL name for pool empty")
             boolElevPos = 0
-        PtDebugPrint("DEBUG: ercaBakeryElev.OnServerInitComplete():\t%s = %d" % (SDLElevPos.value, ageSDL[SDLElevPos.value][0]))
+        PtDebugPrint("ercaBakeryElev.OnServerInitComplete():  DEBUG: {} = {}".format(SDLElevPos.value, ageSDL[SDLElevPos.value][0]))
         try:
             boolPwr = ageSDL[SDLPower.value][0]
         except:
-            PtDebugPrint("ERROR: ercaBakeryElev.OnServerInitComplete():\tERROR reading SDL name for pool empty")
+            PtDebugPrint("ercaBakeryElev.OnServerInitComplete():  ERROR: Error reading SDL name for pool empty")
             boolPwr = 0
-        PtDebugPrint("DEBUG: ercaBakeryElev.OnServerInitComplete():\t%s = %d" % (SDLPower.value, ageSDL[SDLPower.value][0]))
+        PtDebugPrint("ercaBakeryElev.OnServerInitComplete():  DEBUG: {} = {}".format(SDLPower.value, ageSDL[SDLPower.value][0]))
         try:
             boolElevBusy = ageSDL[SDLElevBusy.value][0]
         except:
-            PtDebugPrint("ERROR: ercaBakeryElev.OnServerInitComplete():\tERROR reading SDL name for pool empty")
+            PtDebugPrint("ercaBakeryElev.OnServerInitComplete():  ERROR: Error reading SDL name for pool empty")
             boolElevBusy = 0
-        PtDebugPrint("DEBUG: ercaBakeryElev.OnServerInitComplete():\t%s = %d" % (SDLElevBusy.value, ageSDL[SDLElevBusy.value][0]))
+        PtDebugPrint("ercaBakeryElev.OnServerInitComplete():  DEBUG: {} = {}".format(SDLElevBusy.value, ageSDL[SDLElevBusy.value][0]))
 
         # Fix for elevator getting stuck permanently if a player has previously linked or crashed while it was busy
         if boolElevBusy and self.sceneobject.isLocallyOwned():
-            PtDebugPrint("DEBUG: ercaBakeryElev.OnServerInitComplete():\tElevator busy but I am alone! Resetting...")
+            PtDebugPrint("ercaBakeryElev.OnServerInitComplete():  DEBUG: Elevator busy but I am alone! Resetting...")
             ageSDL[SDLElevBusy.value] = (0,)
             boolElevBusy = 0
 
@@ -203,7 +206,7 @@ class ercaBakeryElev(ptResponder):
         global boolElevBusy
         global AutoDown
         ageSDL = PtGetAgeSDL()
-        PtDebugPrint("ercaBakeryElev.OnSDLNotify():\t VARname: %s, SDLname: %s, tag: %s, value: %d, playerID: %d" % (VARname, SDLname, tag, ageSDL[VARname][0], playerID))
+        PtDebugPrint("ercaBakeryElev.OnSDLNotify():  VARname: {}, SDLname: {}, tag: {}, value: {}, playerID: {}".format(VARname, SDLname, tag, ageSDL[VARname][0], playerID))
 
         if VARname == SDLPlatform1.value:
             boolPlat1 = ageSDL[SDLPlatform1.value][0]
@@ -247,7 +250,7 @@ class ercaBakeryElev(ptResponder):
                     RespElevClk.run(self.key, avatar=objAvatar)
 
     def OnNotify(self, state, id, events):
-        PtDebugPrint("ercaBakeryElev:OnNotify  state=%d id=%d events=" % (state, id), events, level=kDebugDumpLevel)
+        PtDebugPrint("ercaBakeryElev:OnNotify():  state={} id={} events={}".format(state, id, events), level=kDebugDumpLevel)
         global boolPlat1
         global boolPlat2
         global boolPlat3
@@ -259,14 +262,14 @@ class ercaBakeryElev(ptResponder):
         ageSDL = PtGetAgeSDL()
 
         if (id == ActElevBtn.id and state and LocalAvatar == PtFindAvatar(events)):
-            PtDebugPrint("ActElevBtn callback")
+            PtDebugPrint("ercaBakeryElev.OnSDLNotify():  ActElevBtn callback")
             ageSDL[SDLElevBusy.value] = (1,)
 
         if (id == RespElevClk.id):
-            PtDebugPrint("RespElevClk callback")
+            PtDebugPrint("ercaBakeryElev.OnSDLNotify():  RespElevClk callback")
             if boolElevPos:
                 if self.sceneobject.isLocallyOwned():
-                    PtDebugPrint("owner")
+                    PtDebugPrint("ercaBakeryElev.OnSDLNotify():  owner")
                     ageSDL[SDLElevPos.value] = (0,)
                 else:
                     pass
@@ -276,13 +279,13 @@ class ercaBakeryElev(ptResponder):
                     RespElevOps.run(self.key, state="jam")
                 else:
                     if self.sceneobject.isLocallyOwned():
-                        PtDebugPrint("owner")
+                        PtDebugPrint("ercaBakeryElev.OnSDLNotify():  owner")
                         ageSDL[SDLElevPos.value] = (1,)
 
         if (id == RespElevOps.id):
-            PtDebugPrint("RespElevOps callback")
+            PtDebugPrint("ercaBakeryElev.OnSDLNotify():  RespElevOps callback")
             if self.sceneobject.isLocallyOwned():
-                PtDebugPrint("owner")
+                PtDebugPrint("ercaBakeryElev.OnSDLNotify():  owner")
                 ageSDL[SDLElevBusy.value] = (0,)
             if boolPwr:
                 RespElevPwr.run(self.key, state="on")
@@ -298,9 +301,9 @@ class ercaBakeryElev(ptResponder):
                 RespBkryPwrOn.run(self.key, avatar=objAvatar)
 
         if (id == RespBkryPwrOff.id) and self.sceneobject.isLocallyOwned():
-            PtDebugPrint("owner")
+            PtDebugPrint("ercaBakeryElev.OnSDLNotify():  owner")
             ageSDL[SDLPower.value] = (0,)
 
         if (id == RespBkryPwrOn.id) and self.sceneobject.isLocallyOwned():
-            PtDebugPrint("owner")
+            PtDebugPrint("ercaBakeryElev.OnSDLNotify():  owner")
             ageSDL[SDLPower.value] = (1,)

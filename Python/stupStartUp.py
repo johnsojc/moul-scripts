@@ -60,8 +60,10 @@ class stupStartUp(ptResponder):
     def __init__(self):
         ptResponder.__init__(self)
         self.id = 5339
-        self.version = 1
-        PtDebugPrint("stupStartUp: init  version = %d" % (self.version))
+        version = 1
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: stupStartUp: v{}".format(self.version))
 
     def OnFirstUpdate(self):
         PtLoadDialog("GUIDialog04a")
@@ -98,13 +100,13 @@ class stupStartUp(ptResponder):
         playerList = PtGetAccountPlayerList()
 
         if PtIsSubscriptionActive():
-            PtDebugPrint("stupStartUp: Paying customer")
+            PtDebugPrint("stupStartUp.OnServerInitComplete():  Paying customer")
             if playerList[0] or len(playerList) > 1:
                 PtShowDialog("GUIDialog04b")
             else:
                 PtShowDialog("GUIDialog06")
         else:
-            PtDebugPrint("stupStartUp: Visitor")
+            PtDebugPrint("stupStartUp.OnServerInitComplete():  Visitor")
             if playerList[0] or len(playerList) > 1:
                 PtShowDialog("GUIDialog04a")
             else:

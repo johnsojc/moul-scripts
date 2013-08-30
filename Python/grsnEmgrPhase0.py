@@ -66,8 +66,9 @@ class grsnEmgrPhase0(ptResponder):
         self.id = 5213
 
         version = 1
-        self.version = version
-        print "__init__grsnEmgrPhase0 v.", version
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: grsnEmgrPhase0 v{}".format(self.version))
 
     def OnFirstUpdate(self):
         global AgeStartedIn
@@ -77,7 +78,7 @@ class grsnEmgrPhase0(ptResponder):
         if AgeStartedIn == PtGetAgeName():
             ageSDL = PtGetAgeSDL()
             for variable in BooleanVARs:
-                PtDebugPrint("tying together %s" % (variable))
+                PtDebugPrint("grsnEmgrPhase0.OnServerInitComplete():  tying together {}".format(variable))
                 ageSDL.setNotify(self.key, variable, 0.0)
                 self.IManageBOOLs(variable, "")
 
@@ -85,26 +86,26 @@ class grsnEmgrPhase0(ptResponder):
         global variable
         global sdlvalue
 
-        PtDebugPrint("grsnEmgrPhase0.SDLNotify - name = %s, SDLname = %s" % (VARname, SDLname))
+        PtDebugPrint("grsnEmgrPhase0.OnSDLNotify():  name = {}, SDLname = {}".format(VARname, SDLname))
 
         if VARname in BooleanVARs:
-            PtDebugPrint("grsnEmgrPhase0.OnSDLNotify : %s is a BOOLEAN Variable" % (VARname))
+            PtDebugPrint("grsnEmgrPhase0.OnSDLNotify():  {} is a BOOLEAN Variable".format(VARname))
             self.IManageBOOLs(VARname, SDLname)
 
         else:
-            PtDebugPrint("grsnEmgrPhase0.OnSDLNotify:\tERROR: Variable %s was not recognized as a Boolean, Performance, or State Variable. " % (VARname))
+            PtDebugPrint("grsnEmgrPhase0.OnSDLNotify():  ERROR: Variable {} was not recognized as a Boolean, Performance, or State Variable. ".format(VARname))
             pass
 
     def IManageBOOLs(self, VARname, SDLname):
         if AgeStartedIn == PtGetAgeName():
             ageSDL = PtGetAgeSDL()
             if ageSDL[VARname][0] == 1:  # are we paging things in?
-                PtDebugPrint("grsnEmgrPhase0.OnSDLNotify:\tPaging in room ", VARname)
+                PtDebugPrint("grsnEmgrPhase0.IManageBOOLs():  Paging in room {}".format(VARname))
                 PtPageInNode(VARname)
             elif ageSDL[VARname][0] == 0:  # are we paging things out?
-                PtDebugPrint("variable = %s" % (VARname))
-                PtDebugPrint("grsnEmgrPhase0.OnSDLNotify:\tPaging out room ", VARname)
+                PtDebugPrint("grsnEmgrPhase0.IManageBOOLs():  variable = {}".format(VARname))
+                PtDebugPrint("grsnEmgrPhase0.IManageBOOLs():  Paging out room {}".format(VARname))
                 PtPageOutNode(VARname)
             else:
                 sdlvalue = ageSDL[VARname][0]
-                PtDebugPrint("grsnEmgrPhase0.OnSDLNotify:\tERROR: Variable %s had unexpected SDL value of %s" % (VARname, sdlvalue))
+                PtDebugPrint("grsnEmgrPhase0.IManageBOOLs():  ERROR: Variable {} had unexpected SDL value of {}".format(VARname, sdlvalue))

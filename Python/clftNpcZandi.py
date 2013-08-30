@@ -90,9 +90,10 @@ class clftNpcZandi(ptModifier):
     def __init__(self):
         ptModifier.__init__(self)
         self.id = 5217
-
-        self.version = 7
-        PtDebugPrint("__init__clftNpcZandi v.%d" % (self.version))
+        version = 7
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: clftNpcZandi v{}".format(self.version))
         self.NpcName = None
         self.ZandiFace = None
         random.seed()
@@ -116,18 +117,18 @@ class clftNpcZandi(ptModifier):
         PtAtTimeCallback(self.key, PageTurnInterval, TimerID.TurnPage)
 
     def OnNotify(self, state, id, events):
-        PtDebugPrint("OnNotify id = %d" % (id))
+        PtDebugPrint("clftNpcZandi.OnNotify():  id = {}".format(id))
         if id == NpcSpawner.id:  # Causes Zandi to Ilde even before avatar visits
             self.NpcName = PtFindAvatar(events)
             MultiStage01.run(self.NpcName)
 
         elif id == actZandiClick.id:
-            PtDebugPrint("Zandi was clicked")
+            PtDebugPrint("clftNpcZandi.OnNotify():  Zandi was clicked")
             if not self.IsTalking:
-                PtDebugPrint("Zandi will talk")
+                PtDebugPrint("clftNpcZandi.OnNotify():  Zandi will talk")
                 self.ZandiSpeaks(1)
             else:
-                PtDebugPrint("Zandi is already talking")
+                PtDebugPrint("clftNpcZandi.OnNotify():  Zandi is already talking")
 
         elif id == Activate.id:
             # Zandi himself will activate the region when he spawns...
@@ -146,55 +147,55 @@ class clftNpcZandi(ptModifier):
                     self.PlayWelcome2 = 0
 
         elif id == MultiStage01.id:
-            PtDebugPrint("notified by behavior")
+            PtDebugPrint("clftNpcZandi.OnNotify():  notified by behavior")
             for event in events:
                 if event[0] == 10 and event[2] == 3:  # A Zandi behavior just finished. Returning to idle animation.
-                    PtDebugPrint("zandi is done doing a behavior")
+                    PtDebugPrint("clftNpcZandi.OnNotify():  zandi is done doing a behavior")
                     self.DoingBehavior = 0
                     break
 
         elif id in (respBrakeNotReleased.id, respWindmillNotTurning.id, respVisionNotSeen.id, respNoTrailerJC.id,
                     respNoImagerJC.id, respNoBedroomJC.id, respNoWahrkJC.id, respNoSignJC.id, respNoBucketJC.id,
                     respNoDoorJC.id, respDoorNotOpen.id, respZandiSayings.id):
-            PtDebugPrint("zandi finished talking")
+            PtDebugPrint("clftNpcZandi.OnNotify():  zandi finished talking")
             if self.PlayOnFinish:
-                PtDebugPrint("zandi has more to say")
+                PtDebugPrint("clftNpcZandi.OnNotify():  zandi has more to say")
                 self.PlayOnFinish = 0
                 self.ZandiSpeaks()
             else:
-                PtDebugPrint("zandi really is done and is ready to say more")
+                PtDebugPrint("clftNpcZandi.OnNotify():  zandi really is done and is ready to say more")
                 self.IsTalking = 0
 
     def OnTimer(self, id):
         if id < 10:
-            PtDebugPrint("attempt behavior %d" % (id))
+            PtDebugPrint("clftNpcZandi.OnTimer():  attempt behavior {}".format(id))
             if not self.DoingBehavior:
-                PtDebugPrint("doing behavior %d" % (id))
+                PtDebugPrint("clftNpcZandi.OnTimer():  doing behavior {}".format(id))
                 self.DoingBehavior = 1
                 MultiStage01.gotoStage(self.NpcName, id, dirFlag=1, isForward=1)
             if type(self.ZandiFace) is str:
-                PtDebugPrint("using zandi face anim: %s" % (self.ZandiFace))
+                PtDebugPrint("clftNpcZandi.OnTimer():  using zandi face anim: {}".format(self.ZandiFace))
                 self.NpcName.avatar.playSimpleAnimation(self.ZandiFace)
 
         elif id == TimerID.TurnPage:
-            PtDebugPrint("attempt turn page")
+            PtDebugPrint("clftNpcZandi.OnTimer():  attempt turn page")
             if not self.DoingBehavior:
-                PtDebugPrint("do turn page")
+                PtDebugPrint("clftNpcZandi.OnTimer():  do turn page")
                 self.DoingBehavior = 1
                 MultiStage01.gotoStage(self.NpcName, 2, dirFlag=1, isForward=1)  # turn page
                 PtAtTimeCallback(self.key, PageTurnInterval, TimerID.TurnPage)
 
         elif id == TimerID.IgnoreFinished:
-            PtDebugPrint("timer ignorefinished")
+            PtDebugPrint("clftNpcZandi.OnTimer():  timer ignorefinished")
             if self.NearZandi:
                 if self.IsTalking:
-                    PtDebugPrint("zandi's talking, play on finish")
+                    PtDebugPrint("clftNpcZandi.OnTimer():  zandi's talking, play on finish")
                     self.PlayOnFinish = 1
                 else:
-                    "speak zandi speak!"
+                    "clftNpcZandi.OnTimer():  speak zandi speak!"
                     self.ZandiSpeaks()
             else:
-                PtDebugPrint("zandi's done ignoring")
+                PtDebugPrint("clftNpcZandi.OnTimer():  zandi's done ignoring")
                 self.IsIgnoring = 0
 
     def GetJCProgress(self):
@@ -214,39 +215,39 @@ class clftNpcZandi(ptModifier):
         return ""
 
     def CheckForJC(self, progress, jc):
-        PtDebugPrint("check for jc")
+        PtDebugPrint("clftNpcZandi.CheckForJC():  check for jc")
         if jcDict[jc] in progress:
             return 1
         else:
             return 0
 
     def BahroDoorStillClosed(self, sdl):
-        PtDebugPrint("in bahro door still closed")
+        PtDebugPrint("clftNpcZandi.BahroDoorStillClosed():  in bahro door still closed")
         if sdl["clftBahroDoorClosed"][0]:
             return 1
         else:
             return 0
 
     def BrakeNotReleased(self, sdl):
-        PtDebugPrint("in brake not released")
+        PtDebugPrint("clftNpcZandi.BrakeNotReleased():  in brake not released")
         if sdl["clftAgeSDLWindmillLocked"][0]:
             return 1
         else:
             return 0
 
     def WindmillNotTurning(self, sdl):
-        PtDebugPrint("in windmill not turning")
+        PtDebugPrint("clftNpcZandi.WindmillNotTurning():  in windmill not turning")
         if sdl["clftAgeSDLWindmillRunning"][0]:
             return 0
         else:
             return 1
 
     def HaventSeenImagerMessage(self):
-        PtDebugPrint("in haven't seen imager message")
+        PtDebugPrint("clftNpcZandi.HaventSeenImagerMessage():  in haven't seen imager message")
         vault = ptVault()
         entry = vault.findChronicleEntry("YeeshaVisionViewed")
         if entry is None:
-            PtDebugPrint("ERROR: clftNpcZandi.HaventSeenImagerMessage: cannot find YeeshaVisionViewed chronicle entry")
+            PtDebugPrint("ERROR: clftNpcZandi.HaventSeenImagerMessage():  cannot find YeeshaVisionViewed chronicle entry")
             return 1
 
         if entry.chronicleGetValue() == "1":
@@ -255,9 +256,9 @@ class clftNpcZandi(ptModifier):
             return 1
 
     def NeedsWelcome(self, clicked=0):
-        PtDebugPrint("in needs welcome")
+        PtDebugPrint("clftNpcZandi.NeedsWelcome():  in needs welcome")
         if self.LastSpeech < 0 and clicked:
-            PtDebugPrint("last speech less than 0 and clicked")
+            PtDebugPrint("clftNpcZandi.NeedsWelcome():  last speech less than 0 and clicked")
             return 1
 
         vault = ptVault()
@@ -292,7 +293,7 @@ class clftNpcZandi(ptModifier):
 
         useSpeech = "2"
 
-        PtDebugPrint("last speech: %s" % (self.LastSpeech))
+        PtDebugPrint("clftNpcZandi.ZandiSpeaks():  last speech: {}".format(self.LastSpeech))
 
         self.IsTalking = 1
         stage = random.randint(1, 5)
@@ -300,15 +301,15 @@ class clftNpcZandi(ptModifier):
 
         if self.PlayWelcome2 and clicked:
             if self.LastSpeech >= 0:
-                PtDebugPrint("we've moved past the welcome, so don't play welcome 2")
+                PtDebugPrint("clftNpcZandi.ZandiSpeaks():  we've moved past the welcome, so don't play welcome 2")
                 self.PlayWelcome2 = 0
             else:
-                PtDebugPrint("let's play welcome2")
+                PtDebugPrint("clftNpcZandi.ZandiSpeaks():  let's play welcome2")
                 self.PlaySecondWelcome()
                 stage = 4
 
         if self.NeedsWelcome(clicked):
-            PtDebugPrint("zandi playes the welcome")
+            PtDebugPrint("clftNpcZandi.ZandiSpeaks():  zandi playes the welcome")
             respZandiSayings.run(self.key, state="welcome")
             self.ZandiFace = "ZandiOpen01Face"
             self.PlayWelcome2 = 1
@@ -328,7 +329,7 @@ class clftNpcZandi(ptModifier):
                     else:
                         useSpeech = "1"
 
-            PtDebugPrint("playing brake not released, speech = %s" % (useSpeech))
+            PtDebugPrint("clftNpcZandi.ZandiSpeaks():  playing brake not released, speech = {}".format(useSpeech))
             respBrakeNotReleased.run(self.key, useSpeech)
             if useSpeech == "1":
                 self.ZandiFace = "ZandiRes01aFace"
@@ -348,7 +349,7 @@ class clftNpcZandi(ptModifier):
                         useSpeech = "2"
                     else:
                         useSpeech = "1"
-            PtDebugPrint("playing no windmill, speech = %s" % (useSpeech))
+            PtDebugPrint("clftNpcZandi.ZandiSpeaks():  playing no windmill, speech = {}".format(useSpeech))
             respWindmillNotTurning.run(self.key, useSpeech)
             if useSpeech == "1":
                 self.ZandiFace = "ZandiRes02aFace"
@@ -368,7 +369,7 @@ class clftNpcZandi(ptModifier):
                         useSpeech = "2"
                     else:
                         useSpeech = "1"
-            PtDebugPrint("playing no imager message, speech = %s" % (useSpeech))
+            PtDebugPrint("clftNpcZandi.ZandiSpeaks():  playing no imager message, speech = {}".format(useSpeech))
             respVisionNotSeen.run(self.key, useSpeech)
             if useSpeech == "1":
                 self.ZandiFace = "ZandiRes03aFace"
@@ -390,7 +391,7 @@ class clftNpcZandi(ptModifier):
                             useSpeech = "2"
                         else:
                             useSpeech = "1"
-                PtDebugPrint("playing no trailer jc, speech = %s" % (useSpeech))
+                PtDebugPrint("clftNpcZandi.ZandiSpeaks():  playing no trailer jc, speech = {}".format(useSpeech))
                 respNoTrailerJC.run(self.key, useSpeech)
 
                 if useSpeech == "1":
@@ -411,7 +412,7 @@ class clftNpcZandi(ptModifier):
                             useSpeech = "2"
                         else:
                             useSpeech = "1"
-                PtDebugPrint("playing no imager jc, speech = %s" % (useSpeech))
+                PtDebugPrint("clftNpcZandi.ZandiSpeaks():  playing no imager jc, speech = {}".format(useSpeech))
                 respNoImagerJC.run(self.key, useSpeech)
                 if useSpeech == "1":
                     self.ZandiFace = "ZandiJC02aFace"
@@ -431,7 +432,7 @@ class clftNpcZandi(ptModifier):
                             useSpeech = "2"
                         else:
                             useSpeech = "1"
-                PtDebugPrint("playing no bedroom jc, speech = %s" % (useSpeech))
+                PtDebugPrint("clftNpcZandi.ZandiSpeaks():  playing no bedroom jc, speech = {}".format(useSpeech))
                 respNoBedroomJC.run(self.key, useSpeech)
                 if useSpeech == "1":
                     self.ZandiFace = "ZandiJC03aFace"
@@ -451,7 +452,7 @@ class clftNpcZandi(ptModifier):
                             useSpeech = "2"
                         else:
                             useSpeech = "1"
-                PtDebugPrint("playing no whark jc, speech = %s" % (useSpeech))
+                PtDebugPrint("clftNpcZandi.ZandiSpeaks():  playing no whark jc, speech = {}".format(useSpeech))
                 respNoWahrkJC.run(self.key, useSpeech)
                 if useSpeech == "1":
                     self.ZandiFace = "ZandiJC04aFace"
@@ -471,7 +472,7 @@ class clftNpcZandi(ptModifier):
                             useSpeech = "2"
                         else:
                             useSpeech = "1"
-                PtDebugPrint("playing no sign jc, speech = %s" % (useSpeech))
+                PtDebugPrint("clftNpcZandi.ZandiSpeaks():  playing no sign jc, speech = {}".format(useSpeech))
                 respNoSignJC.run(self.key, useSpeech)
                 if useSpeech == "1":
                     self.ZandiFace = "ZandiJC05aFace"
@@ -491,7 +492,7 @@ class clftNpcZandi(ptModifier):
                             useSpeech = "2"
                         else:
                             useSpeech = "1"
-                PtDebugPrint("playing no bucket jc, speech = %s" % (useSpeech))
+                PtDebugPrint("clftNpcZandi.ZandiSpeaks():  playing no bucket jc, speech = {}".format(useSpeech))
                 respNoBucketJC.run(self.key, useSpeech)
                 if useSpeech == "1":
                     self.ZandiFace = "ZandiJC06aFace"
@@ -511,7 +512,7 @@ class clftNpcZandi(ptModifier):
                             useSpeech = "2"
                         else:
                             useSpeech = "1"
-                PtDebugPrint("playing no door jc, speech = %s" % (useSpeech))
+                PtDebugPrint("clftNpcZandi.ZandiSpeaks():  playing no door jc, speech = {}".format(useSpeech))
                 respNoDoorJC.run(self.key, useSpeech)
                 if useSpeech == "1":
                     self.ZandiFace = "ZandiJC07aFace"
@@ -531,7 +532,7 @@ class clftNpcZandi(ptModifier):
                             useSpeech = "2"
                         else:
                             useSpeech = "1"
-                PtDebugPrint("playing door not open speech")
+                PtDebugPrint("clftNpcZandi.ZandiSpeaks():  playing door not open speech")
                 respDoorNotOpen.run(self.key)
                 self.ZandiFace = "ZandiAllFace"
             else:
@@ -543,7 +544,7 @@ class clftNpcZandi(ptModifier):
                 self.ZandiFace = "ZandiRand0" + str(usesaying - 1) + "Face"
 
                 if useSpeech != "":
-                    PtDebugPrint("playing misc, speech = %s" % (useSpeech))
+                    PtDebugPrint("clftNpcZandi.ZandiSpeaks():  playing misc, speech = {}".format(useSpeech))
                     respZandiSayings.run(self.key, state=useSpeech)
 
         PtAtTimeCallback(self.key, 2, stage)

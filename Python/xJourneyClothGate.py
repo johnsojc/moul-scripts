@@ -96,7 +96,10 @@ class xJourneyClothGate(ptResponder):
     def __init__(self):
         ptResponder.__init__(self)
         self.id = 5309
-        self.version = 9
+        version = 9
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: xJourneyClothGate v{}".format(self.version))
 
     def OnFirstUpdate(self):
         # get the age we started in
@@ -104,14 +107,14 @@ class xJourneyClothGate(ptResponder):
         global AgeStartedIn
         AgeStartedIn = PtGetAgeName()
         if not (type(stringVarName.value) is str and stringVarName.value != ""):
-            PtDebugPrint("ERROR: xJourneyClothGate.OnFirstUpdate():\tERROR: missing SDL var name")
+            PtDebugPrint("xJourneyClothGate.OnFirstUpdate():  ERROR: missing SDL var name")
 
         if ClothsComplete.value is not None and ClothsComplete.value != "":
             AllCloths = ClothsComplete.value
-            PtDebugPrint("DEBUG: xJourneyClothGate.OnFirstUpdate:\tUsing Max specified all cloths")
+            PtDebugPrint("xJourneyClothGate.OnFirstUpdate():  DEBUG: Using Max specified all cloths")
         else:
             AllCloths = "abcdefg"
-            PtDebugPrint("DEBUG: xJourneyClothGate.OnFirstUpdate:\tUsing default all cloths")
+            PtDebugPrint("xJourneyClothGate.OnFirstUpdate():  DEBUG: Using default all cloths")
 
     def OnServerInitComplete(self):
         global GateCurrentlyClosed
@@ -126,13 +129,13 @@ class xJourneyClothGate(ptResponder):
                 try:
                     GateCurrentlyClosed = ageSDL[stringVarName.value][0]
                 except:
-                    PtDebugPrint("ERROR: xJourneyClothGate.OnServerInitComplete():\tERROR reading age SDL")
-                PtDebugPrint("DEBUG: xJourneyClothGate.OnServerInitComplete():\t%s = %d" % (stringVarName.value, GateCurrentlyClosed))
+                    PtDebugPrint("xJourneyClothGate.OnServerInitComplete():  ERROR: Error reading age SDL")
+                PtDebugPrint("xJourneyClothGate.OnServerInitComplete():  DEBUG: {} = {}".format(stringVarName.value, GateCurrentlyClosed))
 
                 if not GateCurrentlyClosed:
                     actTrigger.disable()
             else:
-                PtDebugPrint("ERROR: xJourneyClothGate.OnServerInitComplete():\tERROR: missing SDL var name")
+                PtDebugPrint("xJourneyClothGate.OnServerInitComplete():  ERROR: missing SDL var name")
 
     def OnNotify(self, state, id, events):
         global GateCurrentlyClosed
@@ -150,12 +153,12 @@ class xJourneyClothGate(ptResponder):
             if vault:  # is the Vault online?
                 entry = vault.findChronicleEntry("JourneyClothProgress")
                 if entry is None:
-                    PtDebugPrint("DEBUG: xJourneyClothGate.OnNotify: No JourneyClothProgress chronicle")
+                    PtDebugPrint("xJourneyClothGate.OnNotify():  DEBUG: No JourneyClothProgress chronicle")
                     pass
                 else:
                     entry = self.GetCurrentAgeChronicle(entry)
                     if entry is None:
-                        PtDebugPrint("DEBUG: xJourneyClothGate.OnNotify: Sorry, couldn't find journey cloth chronicle for this age")
+                        PtDebugPrint("xJourneyClothGate.OnNotify():  DEBUG: Sorry, couldn't find journey cloth chronicle for this age")
                         return
                     FoundJCs = entry.chronicleGetValue()
 
@@ -177,15 +180,15 @@ class xJourneyClothGate(ptResponder):
                 try:
                     GateCurrentlyClosed = ageSDL[stringVarName.value][0]
                 except:
-                    PtDebugPrint("ERROR: xJourneyClothGate.OnServerInitComplete():\tERROR reading age SDL")
+                    PtDebugPrint("xJourneyClothGate.OnNotify():  ERROR: Error reading age SDL")
 
-            PtDebugPrint("OnNotify: GateCurrentlyClosed = %d" % (GateCurrentlyClosed))
+            PtDebugPrint("xJourneyClothGate.OnNotify():  GateCurrentlyClosed = {}".format(GateCurrentlyClosed))
             if not GateCurrentlyClosed:
-                PtDebugPrint("The gate is already open.")
+                PtDebugPrint("xJourneyClothGate.OnNotify():  The gate is already open.")
                 return
 
             if GateInUse:
-                PtDebugPrint("Journey Cloth Gate has not yet reset.")
+                PtDebugPrint("xJourneyClothGate.OnNotify():  Journey Cloth Gate has not yet reset.")
                 return
             GateInUse = 1
             actTrigger.disable()
@@ -200,18 +203,18 @@ class xJourneyClothGate(ptResponder):
                 for event in events:
                     if event[0] == kCollisionEvent:
                         if event[1]:
-                            PtDebugPrint("Someone is in the region")
+                            PtDebugPrint("xJourneyClothGate.OnNotify():  Someone is in the region")
                             PersonInRegion = 1
                         else:
-                            PtDebugPrint("Noone in the region")
+                            PtDebugPrint("xJourneyClothGate.OnNotify():  Noone in the region")
                             PersonInRegion = 0
 
                 if GateInUse:
-                    PtDebugPrint("Gate currently opening...will wait until finished")
+                    PtDebugPrint("xJourneyClothGate.OnNotify():  Gate currently opening...will wait until finished")
                     PtAtTimeCallback(self.key, 1, TimerID.kCheckGateFinished)
                     return
 
-                PtDebugPrint("Autoclose Gate.")
+                PtDebugPrint("xJourneyClothGate.OnNotify():  Autoclose Gate.")
                 self.ToggleSDL(stringInfo.value)
                 GateInUse = 1
                 PtAtTimeCallback(self.key, 4, TimerID.kResetGate)
@@ -222,48 +225,48 @@ class xJourneyClothGate(ptResponder):
         PtAtTimeCallback(self.key, 5, TimerID.kResetGate)
 
         if not PtWasLocallyNotified(self.key):
-            PtDebugPrint("Somebody touched the Journey Cloth Gate")
+            PtDebugPrint("xJourneyClothGate.OnNotify():  Somebody touched the Journey Cloth Gate")
             return
 
-        PtDebugPrint("You clicked on the Gate")
+        PtDebugPrint("xJourneyClothGate.OnNotify():  You clicked on the Gate")
         vault = ptVault()
         if vault:  # is the Vault online?
 
             entry = vault.findChronicleEntry("JourneyClothProgress")
             if entry is None:
-                PtDebugPrint("DEBUG: xJourneyClothGate.OnNotify: No JourneyClothProgress chronicle")
+                PtDebugPrint("xJourneyClothGate.OnNotify():  DEBUG: No JourneyClothProgress chronicle")
                 pass
             else:
                 entry = self.GetCurrentAgeChronicle(entry)
                 if entry is None:
-                    PtDebugPrint("DEBUG: xJourneyClothGate.OnNotify: Sorry, couldn't find journey cloth chronicle for this age")
+                    PtDebugPrint("xJourneyClothGate.OnNotify():  DEBUG: Sorry, couldn't find journey cloth chronicle for this age")
                     return
                 FoundJCs = entry.chronicleGetValue()
                 length = len(FoundJCs)
                 all = len(AllCloths)
 
-                PtDebugPrint("You've found the following %d Journey Cloths: %s" % (length, FoundJCs))
+                PtDebugPrint("xJourneyClothGate.OnNotify():  You've found the following {} Journey Cloths: {}".format(length, FoundJCs))
 
                 if length < 0 or length > all:
-                    PtDebugPrint("xJourneyClothGate: ERROR: Unexpected length value received.")
+                    PtDebugPrint("xJourneyClothGate.OnNotify():  ERROR: Unexpected length value received.")
                     return
 
                 for each in FoundJCs:
                     if each not in AllCloths:
-                        PtDebugPrint("Unexpected value in the Chronicle:", each)
+                        PtDebugPrint("xJourneyClothGate.OnNotify():  Unexpected value in the Chronicle:{}".format(each))
                         return
 
                 if length < all:
-                    PtDebugPrint("There are more Cloths out there. Get to work.")
+                    PtDebugPrint("xJourneyClothGate.OnNotify():  There are more Cloths out there. Get to work.")
                     PalmGlowWeak.run(self.key)
 
                 elif length == all:
-                    PtDebugPrint("All expected Cloths were found. Opening Door.")
+                    PtDebugPrint("xJourneyClothGate.OnNotify():  All expected Cloths were found. Opening Door.")
                     PalmGlowStrong.run(self.key)
                     self.ToggleSDL("fromOutside")
 
         else:
-            PtDebugPrint("ERROR: xJourneyClothGate.OnNotify: Error trying to access the Vault. Can't access JourneyClothProgress chronicle.")
+            PtDebugPrint("xJourneyClothGate.OnNotify():  ERROR: Error trying to access the Vault. Can't access JourneyClothProgress chronicle.")
 
     def GetCurrentAgeChronicle(self, chron):
         ageChronRefList = chron.getChildNodeRefList()
@@ -286,10 +289,10 @@ class xJourneyClothGate(ptResponder):
             try:
                 GateCurrentlyClosed = ageSDL[stringVarName.value][0]
             except:
-                PtDebugPrint("ERROR: xJourneyClothGate.ToggleSDL():\tERROR reading age SDL")
+                PtDebugPrint("xJourneyClothGate.ToggleSDL():  ERROR: Error reading age SDL")
                 GateCurrentlyClosed = false
 
-            PtDebugPrint("ToggleSDL: GateCurrentlyClosed = %d" % (GateCurrentlyClosed))
+            PtDebugPrint("xJourneyClothGate.ToggleSDL():  GateCurrentlyClosed = {}".format(GateCurrentlyClosed))
 
             # Toggle the sdl value
             if GateCurrentlyClosed:
@@ -299,7 +302,7 @@ class xJourneyClothGate(ptResponder):
                 GateCurrentlyClosed = true
                 ageSDL.setTagString(stringVarName.value, hint)
             ageSDL[stringVarName.value] = (GateCurrentlyClosed,)
-            PtDebugPrint("xJourneyClothGate.OnNotify():\tset age SDL var %s to %d" % (stringVarName.value, GateCurrentlyClosed))
+            PtDebugPrint("xJourneyClothGate.ToggleSDL():  set age SDL var {} to {}".format(stringVarName.value, GateCurrentlyClosed))
 
     def OnSDLNotify(self, VARname, SDLname, playerID, tag):
         global GateCurrentlyClosed
@@ -307,7 +310,7 @@ class xJourneyClothGate(ptResponder):
         if VARname == stringVarName.value:
             if AgeStartedIn == PtGetAgeName():
                 ageSDL = PtGetAgeSDL()
-                PtDebugPrint("xJourneyClothGate.OnSDLNotify():\t VARname:%s, SDLname:%s, tag:%s, value:%d" % (VARname, SDLname, tag, ageSDL[stringVarName.value][0]))
+                PtDebugPrint("xJourneyClothGate.OnSDLNotify():  VARname:{}, SDLname:{}, tag:{}, value:{}".format(VARname, SDLname, tag, ageSDL[stringVarName.value][0]))
                 GateCurrentlyClosed = ageSDL[stringVarName.value][0]
 
                 if GateCurrentlyClosed and tag == "ignore":
@@ -318,21 +321,21 @@ class xJourneyClothGate(ptResponder):
         global GateCurrentlyClosed
 
         if id == TimerID.kResetGate:
-            PtDebugPrint("Gate reactivated.")
+            PtDebugPrint("xJourneyClothGate.OnTimer():  Gate reactivated.")
             GateInUse = 0
             if GateCurrentlyClosed:
                 actTrigger.enable()
         elif id == TimerID.kCheckGateFinished:
-            PtDebugPrint("Checking to see if the gate is done yet")
+            PtDebugPrint("xJourneyClothGate.OnTimer():  Checking to see if the gate is done yet")
 
             if GateInUse:
                 PtAtTimeCallback(self.key, 1, TimerID.kCheckGateFinished)
             else:
                 if PersonInRegion:
-                    PtDebugPrint("Sorry, can't close, someone is in the region")
+                    PtDebugPrint("xJourneyClothGate.OnTimer():  Sorry, can't close, someone is in the region")
                     pass
                 else:
-                    PtDebugPrint("Autoclose Gate.")
+                    PtDebugPrint("xJourneyClothGate.OnTimer():  Autoclose Gate.")
                     self.ToggleSDL(stringInfo.value)
                     GateInUse = 1
                     PtAtTimeCallback(self.key, 4, TimerID. kResetGate)

@@ -56,7 +56,10 @@ class Tetsonot(ptResponder):
     def __init__(self):
         ptResponder.__init__(self)
         self.id = 5256
-        self.version = 1
+        version = 1
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: Tetsonot v{}".format(self.version))
 
     def OnNotify(self, state, id, events):
         pass

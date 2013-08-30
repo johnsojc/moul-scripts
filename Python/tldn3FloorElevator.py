@@ -93,7 +93,9 @@ class tldn3FloorElevator(ptResponder):
         ptResponder.__init__(self)
         self.id = 5011
         version = 7
-        self.version = version
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: tldn3FloorElevator v{}".format(self.version))
 
     def OnFirstUpdate(self):
         # age sdl vars
@@ -110,7 +112,7 @@ class tldn3FloorElevator(ptResponder):
         if AgeStartedIn == PtGetAgeName():
             ageSDL = PtGetAgeSDL()
         else:
-            PtDebugPrint("tldn3FloorElevator.OnServerInitComplete():\tERROR -- not in the age we started in?")
+            PtDebugPrint("tldn3FloorElevator.OnServerInitComplete():  ERROR: not in the age we started in?")
             return
 
         # set flags on age SDL vars we'll be changing
@@ -134,19 +136,19 @@ class tldn3FloorElevator(ptResponder):
             elevLocked = true
             elevCurrFloor = 2
             elevIdle = 1
-            PtDebugPrint("tldn3FloorElevator.OnServerInitComplete():\tERROR: age sdl read failed, defaulting:")
+            PtDebugPrint("tldn3FloorElevator.OnServerInitComplete():  ERROR: age sdl read failed, defaulting:")
 
-        PtDebugPrint("tldn3FloorElevator.OnServerInitComplete():\t%s=%d, %s=%d" % (kStringAgeSDLPwrOn, elevPwrOn, kStringAgeSDLElvLocked, elevLocked))
-        PtDebugPrint("tldn3FloorElevator.OnServerInitComplete():\t%s=%d, %s=%d" % (kStringAgeSDLElvCurrFloor, elevCurrFloor, kStringAgeSDLElvIdle, elevIdle))
+        PtDebugPrint("tldn3FloorElevator.OnServerInitComplete():  {}={}, {}={}".format(kStringAgeSDLPwrOn, elevPwrOn, kStringAgeSDLElvLocked, elevLocked))
+        PtDebugPrint("tldn3FloorElevator.OnServerInitComplete():  {}={}, {}={}".format(kStringAgeSDLElvCurrFloor, elevCurrFloor, kStringAgeSDLElvIdle, elevIdle))
 
         # correct state if necessary - workaround for elev subworld seeming to fastforward itself and break itself...hopefully removable in future
         if len(PtGetPlayerList()) == 0:  # I'm the only person here
-            PtDebugPrint("tldn3FloorElevator.OnServerInitComplete():\tsolo player... initializing elevator state")
+            PtDebugPrint("tldn3FloorElevator.OnServerInitComplete():  solo player... initializing elevator state")
             if not elevIdle:
                 PtDebugPrint("\tmaking elevator idle")
                 ageSDL[kStringAgeSDLElvIdle] = (1,)
                 elevIdle = 1
-            PtDebugPrint("\tplacing elevator at floor %s" % (elevCurrFloor))
+            PtDebugPrint("\tplacing elevator at floor {}".format(elevCurrFloor))
             if elevCurrFloor == 1:
                 resp2to1.run(self.key, fastforward=true)
             elif elevCurrFloor == 2:
@@ -182,10 +184,10 @@ class tldn3FloorElevator(ptResponder):
         if AgeStartedIn == PtGetAgeName():
             ageSDL = PtGetAgeSDL()
         else:
-            PtDebugPrint("tldn3FloorElevator.OnSDLNotify():\tERROR -- not in the age we started in?")
+            PtDebugPrint("tldn3FloorElevator.OnSDLNotify():  ERROR: not in the age we started in?")
             return
 
-        PtDebugPrint("tldn3FloorElevator.OnSDLNotify():\t VARname:%s, SDLname:%s, tag:%s, value:%d, playerID:%d" % (VARname, SDLname, tag, ageSDL[VARname][0], playerID))
+        PtDebugPrint("tldn3FloorElevator.OnSDLNotify():  VARname:{}, SDLname:{}, tag:{}, value:{}, playerID:{}".format(VARname, SDLname, tag, ageSDL[VARname][0], playerID))
 
         if VARname == kStringAgeSDLPwrOn:
             elevPwrOn = ageSDL[kStringAgeSDLPwrOn][0]
@@ -243,7 +245,7 @@ class tldn3FloorElevator(ptResponder):
         if AgeStartedIn == PtGetAgeName():
             ageSDL = PtGetAgeSDL()
         else:
-            PtDebugPrint("tldn3FloorElevator.OnNotify():\tERROR -- not in the age we started in?")
+            PtDebugPrint("tldn3FloorElevator.OnNotify():  ERROR: not in the age we started in?")
             return
 
         ##################
@@ -258,7 +260,7 @@ class tldn3FloorElevator(ptResponder):
             if (id == actCall1.id and elevCurrFloor == 1) or (id == actCall2.id and elevCurrFloor == 2) or (id == actCall3.id and elevCurrFloor == 3):
                 return
             else:
-                PtDebugPrint("tldn3FloorElevator.ProcessRequests:\tlocked, cannot respond.")
+                PtDebugPrint("tldn3FloorElevator.OnNotify():  locked, cannot respond.")
                 respStrain.run(self.key)
                 return
 

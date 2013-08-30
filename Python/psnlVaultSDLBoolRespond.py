@@ -73,12 +73,15 @@ class psnlVaultSDLBoolRespond(ptResponder):
     def __init__(self):
         ptResponder.__init__(self)
         self.id = 5352
-        self.version = 1
+        version = 1
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: psnlVaultSDLBoolRespond v{}".format(self.version))
 
     def OnFirstUpdate(self):
-        PtDebugPrint("psnlVaultSDLBoolRespond.OnFirstUpdate():\t attached to sceneobject: %s" % self.sceneobject.getName())
+        PtDebugPrint("psnlVaultSDLBoolRespond.OnFirstUpdate():  attached to sceneobject: {}".format(self.sceneobject.getName()))
         if not (type(stringVarName.value) is str and stringVarName.value != ""):
-            PtDebugPrint("ERROR: psnlVaultSDLBoolRespond.OnFirstUpdate():\tERROR: missing SDL var name")
+            PtDebugPrint("psnlVaultSDLBoolRespond.OnFirstUpdate():  ERROR: missing SDL var name")
             pass
 
         if boolFirstUpdate.value == 1:
@@ -93,20 +96,20 @@ class psnlVaultSDLBoolRespond(ptResponder):
             ageSDL = xPsnlVaultSDL(1)
             if type(stringVarName.value) is str and stringVarName.value != "":
                 if ageSDL[stringVarName.value][0]:
-                    PtDebugPrint("DEBUG: psnlVaultSDLBoolRespond.IFinishInit():\tRunning true responder on %s, fastforward=%d" % (self.sceneobject.getName(), boolFFOnInit.value))
+                    PtDebugPrint("psnlVaultSDLBoolRespond.IFinishInit():  DEBUG: Running true responder on {}, fastforward={}".format(self.sceneobject.getName(), boolFFOnInit.value))
                     respBoolTrue.run(self.key, fastforward=boolFFOnInit.value)
                 else:
-                    PtDebugPrint("DEBUG: psnlVaultSDLBoolRespond.IFinishInit():\tRunning false responder on %s, fastforward=%d" % (self.sceneobject.getName(), boolFFOnInit.value))
+                    PtDebugPrint("psnlVaultSDLBoolRespond.IFinishInit():  DEBUG: Running false responder on {}, fastforward={}".format(self.sceneobject.getName(), boolFFOnInit.value))
                     respBoolFalse.run(self.key, fastforward=boolFFOnInit.value)
             else:
-                PtDebugPrint("ERROR: psnlVaultSDLBoolRespond.IFinishInit():\tERROR: missing SDL var name")
+                PtDebugPrint("psnlVaultSDLBoolRespond.IFinishInit():  ERROR: missing SDL var name")
                 self.runDefault()
                 pass
         except:
             self.runDefault()
 
     def runDefault(self):
-        PtDebugPrint("psnlVaultSDLBoolRespond: running internal default")
+        PtDebugPrint("psnlVaultSDLBoolRespond.runDefault():  running internal default")
         if boolDefault.value:
             respBoolTrue.run(self.key, fastforward=boolFFOnInit.value)
         else:
@@ -120,7 +123,7 @@ class psnlVaultSDLBoolRespond(ptResponder):
             return
 
         ageSDL = xPsnlVaultSDL(1)
-        PtDebugPrint("DEBUG: psnlVaultSDLBoolRespond.OnSDLNotify():\t VARname:%s, SDLname:%s, tag:%s, value:%d" % (VARname, SDLname, tag, ageSDL[stringVarName.value][0]))
+        PtDebugPrint("psnlVaultSDLBoolRespond.OnSDLNotify():  DEBUG: VARname:{}, SDLname:{}, tag:{}, value:{}".format(VARname, SDLname, tag, ageSDL[stringVarName.value][0]))
 
         # is state change from player or vault manager?
         if playerID:  # non-zero means it's a player
@@ -129,12 +132,12 @@ class psnlVaultSDLBoolRespond(ptResponder):
         else:  # invalid player aka Vault Manager
             objAvatar = None
             fastforward = boolVltMgrFastForward.value  # we need to skip any one-shots
-        PtDebugPrint("DEBUG: psnlVaultSDLBoolRespond.OnSDLNotify():\tnotification from playerID: %d" % (playerID))
+        PtDebugPrint("psnlVaultSDLBoolRespond.OnSDLNotify():  DEBUG: notification from playerID: {}".format(playerID))
 
         # run the appropriate responder!
         if ageSDL[stringVarName.value][0]:
-            PtDebugPrint("DEBUG: psnlVaultSDLBoolRespond.OnSDLNotify:\tRunning true responder on %s, fastforward=%d" % (self.sceneobject.getName(), fastforward))
+            PtDebugPrint("psnlVaultSDLBoolRespond.OnSDLNotify:  DEBUG: Running true responder on {}, fastforward={}".format(self.sceneobject.getName(), fastforward))
             respBoolTrue.run(self.key, avatar=objAvatar, fastforward=fastforward)
         else:
-            PtDebugPrint("DEBUG: psnlVaultSDLBoolRespond.OnSDLNotify:\tRunning false responder on %s, fastforward=%d" % (self.sceneobject.getName(), fastforward))
+            PtDebugPrint("psnlVaultSDLBoolRespond.OnSDLNotify:  DEBUG: Running false responder on {}, fastforward={}".format(self.sceneobject.getName(), fastforward))
             respBoolFalse.run(self.key, avatar=objAvatar, fastforward=fastforward)

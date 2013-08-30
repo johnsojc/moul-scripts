@@ -64,7 +64,10 @@ class xEventTrigger(ptResponder):
     def __init__(self):
         ptResponder.__init__(self)
         self.id = 202
-        self.version = 1
+        version = 1
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: xEventTrigger v{}".format(self.version))
 
     # hack - remove when clickable state manipulation via responder is persistentified
     def OnFirstUpdate(self):
@@ -79,9 +82,9 @@ class xEventTrigger(ptResponder):
     def OnSDLNotify(self, VARname, SDLname, playerID, tag):
         if AgeStartedIn == PtGetAgeName():
             ageSDL = PtGetAgeSDL()
-            PtDebugPrint("xEventTrigger: SDLNotify - name = %s, SDLname = %s" % (VARname, SDLname))
+            PtDebugPrint("xEventTrigger.OnSDLNotify():  name = {}, SDLname = {}".format(VARname, SDLname))
             if VARname == EventName.value:
-                PtDebugPrint("xEventTrigger: value is %f" % (ageSDL[EventName.value]))
+                PtDebugPrint("xEventTrigger.OnSDLNotify():  value is {:f}".format(ageSDL[EventName.value]))
                 if ageSDL[EventName.value][0]:
                     # are we paging things in?
                     if type(PageNames.value) is str and PageNames.value != "":

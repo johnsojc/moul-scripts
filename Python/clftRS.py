@@ -69,8 +69,8 @@ class clftRS(ptModifier):
         self.id = 150
         version = 4
         minorVersion = 1
-        self.version = version
-        PtDebugPrint("__init__clftRS v%d.%d" % (version, minorVersion))
+        self.version = "{}.{}".format(version, minorVersion)
+        PtDebugPrint("__init__: clftRS v{}".format(self.version))
 
     def OnFirstUpdate(self):
         pass
@@ -82,14 +82,14 @@ class clftRS(ptModifier):
     def OnNotify(self, state, id, events):
         "Activated... start telescope"
         global LocalAvatar
-        PtDebugPrint("xTelescope:OnNotify  state=%f id=%d events=" % (state, id), events, level=kDebugDumpLevel)
+        PtDebugPrint("clftRS.OnNotify():  state={} id={} events={}".format(state, id, events), level=kDebugDumpLevel)
         if state and id == Activate.id and PtWasLocallyNotified(self.key):
             LocalAvatar = PtFindAvatar(events)
             self.IStartTelescope()
 
     def OnGUINotify(self, id, control, event):
         "Notifications from the vignette"
-        PtDebugPrint("GUI Notify id=%d, event=%d control=" % (id, event), control, level=kDebugDumpLevel)
+        PtDebugPrint("clftRS.OnGUINotify():  id={}, event={} control={}".format(id, event, control), level=kDebugDumpLevel)
         if event == kDialogLoaded:
             # if the dialog was just loaded then show it
             control.show()
@@ -144,7 +144,7 @@ class clftRS(ptModifier):
         cam = ptCamera()
         cam.enableFirstPersonOverride()
         PtAtTimeCallback(self.key, 3, 1)  # wait for player to finish exit one-shot, then reenable clickable
-        PtDebugPrint("xTelescope.IQuitTelescope:\tdelaying clickable reenable", level=kDebugDumpLevel)
+        PtDebugPrint("clftRS.IQuitTelescope():  delaying clickable reenable", level=kDebugDumpLevel)
 
     def OnTimer(self, id):
         if id == 1:

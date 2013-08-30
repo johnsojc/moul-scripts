@@ -218,13 +218,14 @@ class kdshTreeRingsSolution(ptModifier):
         self.id = 5233
 
         version = 6
-        self.version = version
-        PtDebugPrint("__init__kdshTreeRingsSolution v.%d.2" % (version))
+        minor = 2
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: kdshTreeRingsSolution v{}".format(self.version))
 
     def OnServerInitComplete(self):
         ageSDL = PtGetAgeSDL()
         if ageSDL is None:
-            PtDebugPrint("kdshTreeRingsResp.OnFirstUpdate():\tERROR---missing age SDL (%s)" % (varstring.value))
+            PtDebugPrint("kdshTreeRingsResp.OnServerInitComplete():  ERROR: missing age SDL ({})".format(varstring.value))
 
         ageSDL.setNotify(self.key, "OuterRing01", 0.0)
         ageSDL.setNotify(self.key, "MiddleRing01", 0.0)
@@ -253,7 +254,7 @@ class kdshTreeRingsSolution(ptModifier):
         MiddleRing03 = ageSDL["MiddleRing03"][0]
         InnerRing03 = ageSDL["InnerRing03"][0]
 
-        PtDebugPrint("kdshTreeRingSolution: When I got here:")
+        PtDebugPrint("kdshTreeRingSolution.InitRings():  When I got here:")
 
         for i in ["Outer", "Middle", "Inner"]:
             for j in ["1", "2", "3"]:
@@ -264,7 +265,7 @@ class kdshTreeRingsSolution(ptModifier):
                 ffcode2 = i + "Ring0" + j + "_0" + str(InitState) + ".animation.skipToEnd()"
                 exec ffcode2
 
-                PtDebugPrint("\t%sRing0%s = %s" % (i, j, InitState))
+                PtDebugPrint("\t{}Ring0{} = {}".format(i, j, InitState))
 
     def OnSDLNotify(self, VARname, SDLname, playerID, tag):
         global StillSolved
@@ -295,16 +296,16 @@ class kdshTreeRingsSolution(ptModifier):
         MiddleRing03 = ageSDL["MiddleRing03"][0]
         InnerRing03 = ageSDL["InnerRing03"][0]
 
-        PtDebugPrint("Current Scope Positions [Outer, Middle, Inner]:")
-        PtDebugPrint("\tRing #1: [ %d, %d, %d ]" % (OuterRing01, MiddleRing01, InnerRing01))
-        PtDebugPrint("\tRing #2: [ %d, %d, %d ]" % (OuterRing02, MiddleRing02, InnerRing02))
-        PtDebugPrint("\tRing #3: [ %d, %d, %d ]" % (OuterRing03, MiddleRing03, InnerRing03))
+        PtDebugPrint("kdshTreeRingsResp.OnSDLNotify():  Current Scope Positions [Outer, Middle, Inner]:")
+        PtDebugPrint("\tRing #1: [ {}, {}, {} ]".format(OuterRing01, MiddleRing01, InnerRing01))
+        PtDebugPrint("\tRing #2: [ {}, {}, {} ]".format(OuterRing02, MiddleRing02, InnerRing02))
+        PtDebugPrint("\tRing #3: [ {}, {}, {} ]".format(OuterRing03, MiddleRing03, InnerRing03))
 
         if (OuterRing01 == 5 and MiddleRing01 == 6 and InnerRing01 == 3 and
                 OuterRing02 == 1 and MiddleRing02 == 1 and InnerRing02 == 4 and
                 OuterRing03 == 4 and MiddleRing03 == 3 and InnerRing03 == 6):
 
-            PtDebugPrint("Tree Ring Puzzle solved. Opening Door.")
+            PtDebugPrint("kdshTreeRingsResp.OnSDLNotify():  Tree Ring Puzzle solved. Opening Door.")
             StillSolved = true
             PtAtTimeCallback(self.key, kPatienceDelayToSolve, 1)  # Put in this delay to avoid people "speed clicking" past solution and opening door.
 
@@ -319,13 +320,13 @@ class kdshTreeRingsSolution(ptModifier):
         elif id == actScope3.id:
             ScopeNumber = 3
         else:
-            PtDebugPrint("ERROR: Not sure who the notify came from.")
-            PtDebugPrint("id = %d" % (id))
+            PtDebugPrint("kdshTreeRingsResp.OnNotify():  ERROR: Not sure who the notify came from.")
+            PtDebugPrint("kdshTreeRingsResp.OnNotify():  - id = {}".format(id))
             return
 
         ageSDL = PtGetAgeSDL()
         if ageSDL is None:
-            PtDebugPrint("kdshTreeRings.OnFirstUpdate():\tERROR---missing age SDL (%s)" % (varstring.value))
+            PtDebugPrint("kdshTreeRingsResp.OnNotify():  ERROR---missing age SDL ({})".format(varstring.value))
 
         Outerbearing = ageSDL["OuterRing0" + str(ScopeNumber-1)][0]
         Middlebearing = ageSDL["MiddleRing0" + str(ScopeNumber-1)][0]
@@ -348,4 +349,4 @@ class kdshTreeRingsSolution(ptModifier):
                 ageSDL.setTagString("TreeRingDoorClosed", "fromOutside")
                 ageSDL["TreeRingDoorClosed"] = (0,)
             else:
-                PtDebugPrint("Patience, grasshopper.")
+                PtDebugPrint("kdshTreeRingsResp.OnNotify():  Patience, grasshopper.")

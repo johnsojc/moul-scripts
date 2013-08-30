@@ -78,7 +78,10 @@ class GardenBugs(ptResponder):
     def __init__(self):
         ptResponder.__init__(self)
         self.id = 5360223
-        self.version = 2
+        version = 2
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: GardenBugs v{}".format(self.version))
         self.bugCount = 0
 
     def ISaveBugCount(self, count):
@@ -108,23 +111,23 @@ class GardenBugs(ptResponder):
         try:
             avatar = PtGetLocalAvatar()
         except:
-            PtDebugPrint("GardenBugs.OnFirstUpdate():\tfailed to get local avatar")
+            PtDebugPrint("GardenBugs.OnServerInitComplete():  failed to get local avatar")
             return
 
         avatar.avatar.registerForBehaviorNotify(self.key)
 
         self.bugCount = self.IGetBugCount()
-        PtDebugPrint("GardenBugs.OnFirstUpdate():\tStarting with %d bugs" % (self.bugCount))
+        PtDebugPrint("GardenBugs.OnServerInitComplete():  Starting with {} bugs".format(self.bugCount))
 
         # first, kill all bugs on the avatar that might have been brought over
         PtKillParticles(0, 1, avatar.getKey())
 
         if (self.bugCount > 0):
             PtSetLightAnimStart(avatar.getKey(), bugLightObjectName, true)
-            PtDebugPrint("GardenBugs.OnFirstUpdate():\tTurning lights on at start")
+            PtDebugPrint("GardenBugs.OnServerInitComplete():  Turning lights on at start")
         else:
             PtSetLightAnimStart(avatar.getKey(), bugLightObjectName, false)
-            PtDebugPrint("GardenBugs.OnFirstUpdate():\tTurning lights off at start")
+            PtDebugPrint("GardenBugs.OnServerInitComplete():  Turning lights off at start")
 
         # this will add the bugs back that we have
         PtAtTimeCallback(self.key, 0.1, kAddBugs)
@@ -154,11 +157,11 @@ class GardenBugs(ptResponder):
                 # kill some particles
                 particlesToKill = -particlesToTransfer
                 percentToKill = float(particlesToKill) / float(self.bugCount)
-                PtDebugPrint("GardenBugs.OnTimer() - Particles to kill: %s (%s%)" % (str(particlesToKill), str(percentToKill * 100)))
+                PtDebugPrint("GardenBugs.OnTimer():  Particles to kill: {} ({}%)".format(particlesToKill, percentToKill * 100))
                 PtKillParticles(0, percentToKill, avatar.getKey())
             elif (particlesToTransfer != 0):
                 # add some particles
-                PtDebugPrint("GardenBugs.OnTimer() - Particles to add: %s" % (str(particlesToTransfer)))
+                PtDebugPrint("GardenBugs.OnTimer():  Particles to add: {}".format(particlesToTransfer))
                 PtTransferParticlesToObject(bugEmitter.value.getKey(), avatar.getKey(), particlesToTransfer)
             PtSetParticleDissentPoint(0, 0, 10000, avatar.getKey())
             return
@@ -167,9 +170,9 @@ class GardenBugs(ptResponder):
             self.ageSDL = PtGetAgeSDL()
             self.ageSDL[raining.value] = (1,)
             PtSetParticleOffset(0, 0, 100, bugEmitter.value.getKey())
-            PtDebugPrint("GardenBugs.OnTimer():\tIt's rain, bug cloud gone")
+            PtDebugPrint("GardenBugs.OnTimer():  It's rain, bug cloud gone")
             if (localInTunnel or self.bugCount == 0):
-                PtDebugPrint("GardenBugs.OnTimer():\tIn tunnel, bugs safe for now or no local bugs")
+                PtDebugPrint("GardenBugs.OnTimer():  In tunnel, bugs safe for now or no local bugs")
                 return
             PtSetParticleDissentPoint(0, 0, 100, avatar.getKey())
             PtKillParticles(3.0, 1, avatar.getKey())
@@ -185,7 +188,7 @@ class GardenBugs(ptResponder):
 
             if (id == PtBehaviorTypes.kBehaviorTypeRun):
                 if (running or (PtLocalAvatarRunKeyDown() and PtLocalAvatarIsMoving())):
-                    PtDebugPrint("GardenBugs.OnTimer():\tRunning, kill more bugs")
+                    PtDebugPrint("GardenBugs.OnTimer():  Running, kill more bugs")
                     PtKillParticles(3.0, 0.1, avatar.getKey())
                     PtAtTimeCallback(self.key, 0.4, PtBehaviorTypes.kBehaviorTypeRun)
                     self.bugCount = self.bugCount * 0.1
@@ -205,45 +208,45 @@ class GardenBugs(ptResponder):
         triggerer = PtFindAvatar(events)
         avatar = PtGetLocalAvatar()
         if (avatar != triggerer):
-            PtDebugPrint("GardenBugs.OnNotify():\tWrong avatar, notifies run locally")
+            PtDebugPrint("GardenBugs.OnNotify():  Wrong avatar, notifies run locally")
             return
 
         self.bugCount = PtGetNumParticles(avatar.getKey())
 
         if (id == bugRgn.id):
-            PtDebugPrint("GardenBugs.OnNotify():\tEntered bug cloud region")
+            PtDebugPrint("GardenBugs.OnNotify():  Entered bug cloud region")
 
             if (self.bugCount > 19):
                 return
             self.ageSDL = PtGetAgeSDL()
             rain = self.ageSDL[raining.value][0]
             if (rain):
-                PtDebugPrint("gardenBugs.OnNotify()-->\tnope, it's raining")
+                PtDebugPrint("GardenBugs.OnNotify():  nope, it's raining")
                 return
             if running:
-                PtDebugPrint("gardenBugs.OnNotify()-->\tcan't add bugs as we're still running")
+                PtDebugPrint("GardenBugs.OnNotify():  can't add bugs as we're still running")
                 return
             if PtLocalAvatarRunKeyDown() and PtLocalAvatarIsMoving():
-                PtDebugPrint("gardenBugs.OnNotify()-->\tcan't add bugs as we're still running (but our running flag is false?)")
+                PtDebugPrint("GardenBugs.OnNotify():  can't add bugs as we're still running (but our running flag is false?)")
                 return
 
-            PtDebugPrint("gardenBugs.OnNotify()-->\ttansferring Bugs!")
+            PtDebugPrint("GardenBugs.OnNotify():  tansferring Bugs!")
             avatar = PtFindAvatar(events)
             PtTransferParticlesToObject(bugEmitter.value.getKey(), avatar.getKey(), 10)
             PtSetParticleDissentPoint(0, 0, 10000, avatar.getKey())
-            PtDebugPrint("gardenBugs.OnNotify()-->\tset bugs at 10")
+            PtDebugPrint("GardenBugs.OnNotify():  -->  set bugs at 10")
             PtAtTimeCallback(self.key, 0.1, kCheckForBugs)
             numJumps = 0
             self.bugCount = self.bugCount + 10
             self.ISaveBugCount(self.bugCount)
 
         if (id == rainStart.id):
-            PtDebugPrint("gardenBugs.OnNotify()-->\tstart rain timer")
+            PtDebugPrint("GardenBugs.OnNotify():  start rain timer")
             PtAtTimeCallback(self.key, 30.0, kRainStarting)
             return
 
         if (id == rainEnd.id):
-            PtDebugPrint("gardenBugs.OnNotify()-->\train stopping")
+            PtDebugPrint("GardenBugs.OnNotify():  rain stopping")
             self.ageSDL = PtGetAgeSDL()
             self.ageSDL[raining.value] = (0,)
             PtSetParticleOffset(0, 0, 4, bugEmitter.value.getKey())
@@ -252,7 +255,7 @@ class GardenBugs(ptResponder):
             PtSetParticleDissentPoint(0, 0, 100, avatar.getKey())
             PtKillParticles(3.0, 1, avatar.getKey())
             PtSetLightAnimStart(avatar.getKey(), bugLightObjectName, false)
-            PtDebugPrint("gardenBugs.OnNotify()-->\tbharo cave too scary for bugs!")
+            PtDebugPrint("GardenBugs.OnNotify():  bharo cave too scary for bugs!")
             self.bugCount = 0
             self.ISaveBugCount(self.bugCount)
             import xSndLogTracks
@@ -263,11 +266,11 @@ class GardenBugs(ptResponder):
             for event in events:
                 if event[0] == 1 and event[1] == 1:
                     localInTunnel = true
-                    PtDebugPrint("gardenBugs.OnNotify()-->\tlocal in tunnel")
+                    PtDebugPrint("GardenBugs.OnNotify():  local in tunnel")
                     return
                 elif event[0] == 1 and event[1] == 0:
                     localInTunnel = false
-                    PtDebugPrint("gardenBugs.OnNotify()-->\tlocal exit tunnel")
+                    PtDebugPrint("GardenBugs.OnNotify():  local exit tunnel")
                     self.ageSDL = PtGetAgeSDL()
                     rain = self.ageSDL[raining.value][0]
                     if (rain):
@@ -283,14 +286,14 @@ class GardenBugs(ptResponder):
         try:
             local = PtGetLocalAvatar()
         except:
-            PtDebugPrint("gardenBugs.BeginAgeUnLoad()-->\tfailed to get local avatar")
+            PtDebugPrint("GardenBugs.BeginAgeUnLoad():  failed to get local avatar")
             return
         if (local == avObj):
-            PtDebugPrint("gardenBugs.BeginAgeUnLoad()-->\tavatar page out")
+            PtDebugPrint("GardenBugs.BeginAgeUnLoad():  avatar page out")
 
             # update with the number currently on the avatar and save it to the chronicle
             self.bugCount = PtGetNumParticles(local.getKey())
-            PtDebugPrint("gardenBugs.BeginAgeUnLoad()-->\tparticles at age unload %d" % (self.bugCount))
+            PtDebugPrint("GardenBugs.BeginAgeUnLoad():  particles at age unload {}".format(self.bugCount))
             self.ISaveBugCount(self.bugCount)
 
             # help ensure all bugs are dead
@@ -310,7 +313,7 @@ class GardenBugs(ptResponder):
             if (behavior == PtBehaviorTypes.kBehaviorTypeRun):
                 running = false
                 if PtLocalAvatarRunKeyDown() and PtLocalAvatarIsMoving():
-                    PtDebugPrint("gardenBugs.OnBehaviorNotify()-->\tWARN: Running behavior turned off, but avatar still reports run and movement keys are held down")
+                    PtDebugPrint("GardenBugs.OnBehaviorNotify():  WARN: Running behavior turned off, but avatar still reports run and movement keys are held down")
             return
         else:
             currentBehavior = behavior
@@ -340,7 +343,7 @@ class GardenBugs(ptResponder):
                     return
 
             if (behavior == PtBehaviorTypes.kBehaviorTypeRunningImpact or behavior == PtBehaviorTypes.kBehaviorTypeRunningJump):
-                PtDebugPrint("gardenBugs.BehaviorNotify()-->\tkill all bugs")
+                PtDebugPrint("GardenBugs.OnBehaviorNotify():  kill all bugs")
                 PtSetParticleDissentPoint(0, 0, 10000, avatar.getKey())
                 PtKillParticles(3.0, 1, avatar.getKey())
                 PtSetLightAnimStart(avatar.getKey(), bugLightObjectName, false)
@@ -349,8 +352,8 @@ class GardenBugs(ptResponder):
                 return
 
             if (running or (PtLocalAvatarRunKeyDown() and PtLocalAvatarIsMoving())):
-                #kill some of them and set a timer
-                PtDebugPrint("gardenBugs.BehaviorNotify()-->\tstarted running, kill some bugs")
+                # kill some of them and set a timer
+                PtDebugPrint("GardenBugs.OnBehaviorNotify():  started running, kill some bugs")
                 PtSetParticleDissentPoint(0, 0, 10000, avatar.getKey())
                 PtKillParticles(3.0, 0.1, avatar.getKey())
                 PtAtTimeCallback(self.key, 0.4, PtBehaviorTypes.kBehaviorTypeRun)

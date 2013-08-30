@@ -53,10 +53,9 @@ import PlasmaControlKeys
 import string
 import time
 
-
-sdlGZActive = ptAttribString(1,"sdl: GZ active (beam)")
-respGZActive = ptAttribResponder(2,"resp: GZ active",['Off','On'])
-respGZActiveAtStart = ptAttribResponder(3,"resp: GZ active ON INIT",['Off','On'])
+sdlGZActive = ptAttribString(1, "sdl: GZ active (beam)")
+respGZActive = ptAttribResponder(2, "resp: GZ active", ['Off', 'On'])
+respGZActiveAtStart = ptAttribResponder(3, "resp: GZ active ON INIT", ['Off', 'On'])
 
 boolGZActive = 0
 
@@ -66,73 +65,54 @@ class grtzGZMaster(ptResponder):
     def __init__(self):
         ptResponder.__init__(self)
         self.id = 215
-        self.version = 1
-        PtDebugPrint("grtzGZMaster__init__(): version# %d" % (self.version))
-
+        version = 1
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: grtzGZMaster v{}".format(self.version))
 
     def OnFirstUpdate(self):
         pass
-
 
     def OnServerInitComplete(self):
         global boolGZActive
         ageSDL = PtGetAgeSDL()
 
-        ageSDL.setFlags(sdlGZActive.value,1,1)
+        ageSDL.setFlags(sdlGZActive.value, 1, 1)
         ageSDL.sendToClients(sdlGZActive.value)
-        ageSDL.setNotify(self.key,sdlGZActive.value,0.0)
+        ageSDL.setNotify(self.key, sdlGZActive.value, 0.0)
 
         try:
             boolGZActive = ageSDL[sdlGZActive.value][0]
         except:
-            PtDebugPrint("ERROR: grtzGZMaster.OnServerInitComplete():\tERROR reading SDL name for GZActive")
+            PtDebugPrint("grtzGZMaster.OnServerInitComplete():  ERROR: Error reading SDL name for GZActive")
             boolGZActive = 0
-        PtDebugPrint("DEBUG: grtzGZMaster.OnServerInitComplete():\t grtzGZActive = %d" % (ageSDL[sdlGZActive.value][0]) )
-        
+
+        PtDebugPrint("grtzGZMaster.OnServerInitComplete():  DEBUG: grtzGZActive = {}".format(ageSDL[sdlGZActive.value][0]))
+
         if boolGZActive:
-            respGZActiveAtStart.run(self.key,state="On")
+            respGZActiveAtStart.run(self.key, state="On")
         else:
-            respGZActiveAtStart.run(self.key,state="Off")
-        
-        #self.AddSharperJournalChron("sjGreatZeroVisited")
+            respGZActiveAtStart.run(self.key, state="Off")
 
-
-#    def AddSharperJournalChron(self, var):
-#        vault = ptVault()
-#        entry = vault.findChronicleEntry(var)
-#        if not entry:
-#            vault.addChronicleEntry(var, 0, str(int( time.time() )) )
-
-
-    def OnSDLNotify(self,VARname,SDLname,playerID,tag):
+    def OnSDLNotify(self, VARname, SDLname, playerID, tag):
         global boolGZActive
 
         if VARname == sdlGZActive.value:
             ageSDL = PtGetAgeSDL()
             boolGZActive = ageSDL[sdlGZActive.value][0]
-            #LocalAvatar = PtGetLocalAvatar()
             if boolGZActive:
-                #respGZActive.run(self.key,state="On",avatar=LocalAvatar)
-                respGZActive.run(self.key,state="On")
-                #PtDisableMovementKeys()
-                #PtSendKIMessage(kDisableKIandBB,0)
+                respGZActive.run(self.key, state="On")
             else:
-                #respGZActive.run(self.key,state="Off",avatar=LocalAvatar)
-                respGZActive.run(self.key,state="Off")
+                respGZActive.run(self.key, state="Off")
 
-
-    def OnNotify(self,state,id,events):
-        PtDebugPrint("grtzGZMaster:OnNotify(): state=%f id=%d events=" % (state,id),events,level=kDebugDumpLevel)
+    def OnNotify(self, state, id, events):
+        PtDebugPrint("grtzGZMaster:OnNotify():  state={:f} id={} events={}".format(state, idx, str(events)), level=kDebugDumpLevel)
 
         if not (state and PtWasLocallyNotified(self.key)):
             return
-  
+
         if id == respGZActive.id:
             pass
-            #print "grtzGZMaster:OnNotify(): got callback from resp"
-            #PtEnableMovementKeys()
-            #PtSendKIMessage(kEnableKIandBB,0)
-
 
     def OnBackdoorMsg(self, target, param):
         if target == "gzactive":
@@ -146,9 +126,9 @@ class grtzGZMaster(ptResponder):
                     ageSDL[sdlGZActive.value] = (0,)
         elif target == "gzstate":
             ageSDL = PtGetAgeSDL()
-            ageSDL.setFlags("grtzGreatZeroState",1,1)
+            ageSDL.setFlags("grtzGreatZeroState", 1, 1)
             ageSDL.sendToClients("grtzGreatZeroState")
-            ageSDL.setNotify(self.key,"grtzGreatZeroState",0.0)
+            ageSDL.setNotify(self.key, "grtzGreatZeroState", 0.0)
             tmpmachine = ageSDL["grtzGreatZeroState"][0]
             if param == "on" or param == "1":
                 if not tmpmachine:
@@ -156,4 +136,3 @@ class grtzGZMaster(ptResponder):
             elif param == "off" or param == "0":
                 if tmpmachine:
                     ageSDL["grtzGreatZeroState"] = (0,)
-

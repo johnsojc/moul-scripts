@@ -82,8 +82,9 @@ class ahnyPressurePlates(ptModifier):
         ptModifier.__init__(self)
         self.id = 5947
         version = 1
-        self.version = version
-        PtDebugPrint("__init__ahnyPressurePlates v%d " % (version))
+        minor = 0
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: ahnyPressurePlates v{}".format(self.version))
 
     ###########################
     def OnFirstUpdate(self):
@@ -95,7 +96,7 @@ class ahnyPressurePlates(ptModifier):
             ageSDL = PtGetAgeSDL()
             ageSDL[SDLOccupied.value][0]
         except:
-            PtDebugPrint("ahnyPressurePlates.OnFirstUpdate(): ERROR --- Cannot find the Ahnonay Age SDL")
+            PtDebugPrint("ahnyPressurePlates.OnFirstUpdate():  ERROR: Cannot find the Ahnonay Age SDL")
             ageSDL[SDLOccupied.value] = (0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
 
         ageSDL.setFlags("ahnyCurrentSphere", 1, 1)
@@ -128,7 +129,7 @@ class ahnyPressurePlates(ptModifier):
             try:
                 ageSDL[SDLTrees.value][0]
             except:
-                PtDebugPrint("ahnyPressurePlates.OnFirstUpdate(): ERROR --- Cannot find the Ahnonay Age SDL")
+                PtDebugPrint("ahnyPressurePlates.OnFirstUpdate():  ERROR: Cannot find the Ahnonay Age SDL")
                 ageSDL[SDLTrees.value] = (1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)
 
             ageSDL.setFlags(SDLTrees.value, 1, 1)
@@ -149,7 +150,7 @@ class ahnyPressurePlates(ptModifier):
     ###########################
     def OnSDLNotify(self, VARname, SDLname, playerID, tag):
         if VARname == "ahnyCurrentSphere" and respSphereRotate.value != []:
-            PtDebugPrint("ahnyPressurePlates.OnSDLNotify(): playing audio SFX")
+            PtDebugPrint("ahnyPressurePlates.OnSDLNotify():  playing audio SFX")
             respSphereRotate.run(self.key)
 
     ###########################
@@ -175,7 +176,7 @@ class ahnyPressurePlates(ptModifier):
                                     occupiedZones[index] = occupiedZones[index] + 1
                                 if respLightList and occupiedZones[index] == 1:  # if we are now equal to one run the responder
                                     respClockLights.run(self.key, state='on', objectName=respLightList[index], netForce=1)
-                                PtDebugPrint("%s - enter %s" % (str(occupiedZones), str(index)))
+                                PtDebugPrint("ahnyPressurePlates.OnNotify():  {} - enter {}".format(occupiedZones, index))
                             else:  # this should be exiting
                                 if occupiedZones[index] != 0:  # only subtract if we are not zero don't want to overflow
                                     occupiedZones[index] = occupiedZones[index]-1
@@ -187,7 +188,7 @@ class ahnyPressurePlates(ptModifier):
 
                                     if respLightList and (occupiedZones[index] == 0):
                                         respClockLights.run(self.key, state='off', objectName=respLightList[index], netForce=1)
-                                PtDebugPrint("%s - exit %s" % (str(occupiedZones), str(index)))
+                                PtDebugPrint("ahnyPressurePlates.OnNotify():  {} - exit {}".format(occupiedZones, index))
                             ageSDL[SDLOccupied.value] = tuple(occupiedZones)
 
         # is it a clickable book on a pedestal?
@@ -208,16 +209,16 @@ class ahnyPressurePlates(ptModifier):
             for event in events:
                 # is it from the OpenBook? (we only have one book to worry about)
                 if event[0] == PtEventType.kBook:
-                    PtDebugPrint("ahnyPressurePlates: BookNotify  event=%d, id=%d" % (event[1], event[2]))
+                    PtDebugPrint("ahnyPressurePlates.OnNotify():  BookNotify  event={}, id={}".format(event[1], event[2]))
                     if event[1] == PtBookEventTypes.kNotifyImageLink:
                         if event[2] >= xLinkingBookDefs.kFirstLinkPanelID or event[2] == xLinkingBookDefs.kBookMarkID:
-                            PtDebugPrint("ahnyPressurePlates:Book: hit linking panel %s" % (event[2]))
+                            PtDebugPrint("ahnyPressurePlates.OnNotify():  Book: hit linking panel {}".format(event[2]))
                             self.HideBook(1)
 
                             ageSDL = PtGetAgeSDL()
-                            PtDebugPrint(ageSDL[SDLOccupied.value])
+                            PtDebugPrint("ahnyPressurePlates.OnNotify():  {}".format(ageSDL[SDLOccupied.value]))
                             if self.RegionsEmpty():
-                                PtDebugPrint("Sphere rotating")
+                                PtDebugPrint("ahnyPressurePlates.OnNotify():  Sphere rotating")
                                 ageSDL = PtGetAgeSDL()
                                 currentSphere = ageSDL["ahnyCurrentSphere"][0]
                                 if currentSphere == 3 or currentSphere == 4:
@@ -225,16 +226,16 @@ class ahnyPressurePlates(ptModifier):
                                 else:
                                     ageSDL["ahnyCurrentSphere"] = ((currentSphere + 1),)
                             else:
-                                PtDebugPrint("Sphere staying put")
+                                PtDebugPrint("ahnyPressurePlates.OnNotify():  Sphere staying put")
 
                             respLinkResponder.run(self.key, avatar=PtGetLocalAvatar(), netPropagate=0)
 
                     elif event[1] == PtBookEventTypes.kNotifyShow:
-                        PtDebugPrint("ahnyLinkBookGUIPopup:Book: NotifyShow")
+                        PtDebugPrint("ahnyPressurePlates.OnNotify():  Book: NotifyShow")
                         PtSendKIMessage(kEnableKIandBB, 0)
 
                     elif event[1] == PtBookEventTypes.kNotifyHide:
-                        PtDebugPrint("ahnyLinkBookGUIPopup:Book: NotifyHide")
+                        PtDebugPrint("ahnyPressurePlates.OnNotify():  Book: NotifyHide")
                         PtToggleAvatarClickability(true)
                         bookClickable.enable()
 
@@ -246,24 +247,24 @@ class ahnyPressurePlates(ptModifier):
         if Sphere.value == "Sphere01":
             quabs = ageSDL["ahnyQuabs"][0]
             if quabs:
-                PtDebugPrint("ahnyPressurePlates: not all quabs kicked off")
+                PtDebugPrint("ahnyPressurePlates.RegionsEmpty():  not all quabs kicked off")
                 return false
         elif Sphere.value == "Sphere02":
             treeList = list(ageSDL[SDLTrees.value])
             for tree in treeList:
                 if tree:
-                    PtDebugPrint("ahnyPressurePlates: not all trees knocked over")
+                    PtDebugPrint("ahnyPressurePlates.RegionsEmpty():  not all trees knocked over")
                     return false
 
         for zone in occupantList[1:]:
             if zone:
-                PtDebugPrint("ahnyPressurePlates: some zones still occupied")
+                PtDebugPrint("ahnyPressurePlates.RegionsEmpty():  some zones still occupied")
                 return false
 
         if occupantList[0] == 1:
             return true
 
-        PtDebugPrint("ahnyPressurePlates: book zone still occupied")
+        PtDebugPrint("ahnyPressurePlates.RegionsEmpty():  book zone still occupied")
         return false
 
     ###########################
@@ -282,14 +283,14 @@ class ahnyPressurePlates(ptModifier):
                 return
 
             PtSendKIMessage(kDisableKIandBB, 0)
-            bookdef = bookdef.replace("%s", "")
+            bookdef = bookdef.replace("{}", "")
             gLinkingBook = ptBook(bookdef, self.key)
             gLinkingBook.setSize(width, height)
             gLinkingBook.setGUI(gui)
             gLinkingBook.show(1)
 
         except LookupError:
-            PtDebugPrint("ahnyLinkBookGUIPopup: could not find age AhnonayCathedral's linking panel")
+            PtDebugPrint("ahnyPressurePlates.IShowBook():  ERROR: could not find age AhnonayCathedral's linking panel")
 
     ###########################
     def HideBook(self, islinking=0):

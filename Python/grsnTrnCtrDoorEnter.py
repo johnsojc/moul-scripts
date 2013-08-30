@@ -65,8 +65,10 @@ class grsnTrnCtrDoorEnter(ptResponder):
     def __init__(self):
         ptResponder.__init__(self)
         self.id = 3276
-        self.version = 1
-        PtDebugPrint("grsnTrnCtrDoorEnter: Max version %d - minor version %d" % (self.version, 2))
+        version = 1
+        minor = 2
+        self.version = "{}.{}".format(version, minor)
+        PtDebugPrint("__init__: grsnTrnCtrDoorEnter v{}".format(self.version))
 
     def OnNotify(self, state, id, events):
         global avatarEntering
@@ -74,25 +76,25 @@ class grsnTrnCtrDoorEnter(ptResponder):
         if id == triggerRgn1.id:
             if (PtFindAvatar(events) != PtGetLocalAvatar()):
                 return
-            PtDebugPrint(" must have ki")
+            PtDebugPrint("grsnTrnCtrDoorEnter.OnNotify():  must have ki")
             kiLevel = PtGetLocalKILevel()
             if kiLevel < 2:
                 return
             for event in events:
                 if event[0] == 1 and event[1] == 1:
                     avatarEntering = PtFindAvatar(events)
-                    PtDebugPrint("entered the region, disable this one and the other door's triggers")
+                    PtDebugPrint("grsnTrnCtrDoorEnter.OnNotify():  entered the region, disable this one and the other door's triggers")
                     triggerRgn1.disable()
                     triggerRgn2.disable()
                     if (avatarEntering == PtGetLocalAvatar()):
-                        PtDebugPrint("stop this avatar")
+                        PtDebugPrint("grsnTrnCtrDoorEnter.OnNotify():  stop this avatar")
                         PtDisableMovementKeys()
-                        PtDebugPrint("take away first person")
+                        PtDebugPrint("grsnTrnCtrDoorEnter.OnNotify():  take away first person")
                         cam = ptCamera()
                         cam.disableFirstPersonOverride()
                         cam.undoFirstPerson()
                         PtSendKIMessage(kDisableEntireYeeshaBook, 0)
-                    PtDebugPrint("open the door")
+                    PtDebugPrint("grsnTrnCtrDoorEnter.OnNotify():  open the door")
                     door1OpenResponder.run(self.key, avatar=avatarEntering)
                     return
 
@@ -100,7 +102,7 @@ class grsnTrnCtrDoorEnter(ptResponder):
             if avatarEntering != PtGetLocalAvatar():
                 return
 
-            PtDebugPrint(" door is open, walk in")
+            PtDebugPrint("grsnTrnCtrDoorEnter.OnNotify():  door is open, walk in")
             avatarEntering.avatar.runBehaviorSetNotify(behaviorWalkIn.value, self.key, behaviorWalkIn.netForce)
             return
 
@@ -110,7 +112,7 @@ class grsnTrnCtrDoorEnter(ptResponder):
 
             for event in events:
                 if event[0] == kMultiStageEvent and event[2] == kAdvanceNextStage:
-                    PtDebugPrint(" Smart seek completed. Exit multistage, close exterior door")
+                    PtDebugPrint("grsnTrnCtrDoorEnter.OnNotify():  Smart seek completed. Exit multistage, close exterior door")
                     behaviorWalkIn.gotoStage(avatarEntering, -1)
                     door1CloseResponder.run(self.key, avatar=avatarEntering)
                     return
@@ -119,7 +121,7 @@ class grsnTrnCtrDoorEnter(ptResponder):
             if (avatarEntering != PtGetLocalAvatar()):
                 return
 
-            PtDebugPrint("door closed, teleport and open other door")
+            PtDebugPrint("grsnTrnCtrDoorEnter.OnNotify():  door closed, teleport and open other door")
             if (avatarEntering == PtGetLocalAvatar()):
                 camera.value.pushCameraCut(avatarEntering.getKey())
             avatarEntering.avatar.exitSubWorld()
@@ -131,7 +133,7 @@ class grsnTrnCtrDoorEnter(ptResponder):
             if (avatarEntering != PtGetLocalAvatar()):
                 return
 
-            PtDebugPrint("interior door open, walk out")
+            PtDebugPrint("grsnTrnCtrDoorEnter.OnNotify():  interior door open, walk out")
             avatarEntering.avatar.runBehaviorSetNotify(behaviorWalkOut.value, self.key, behaviorWalkOut.netForce)
             return
 
@@ -141,7 +143,7 @@ class grsnTrnCtrDoorEnter(ptResponder):
 
             for event in events:
                 if event[0] == kMultiStageEvent and event[2] == kAdvanceNextStage:
-                    PtDebugPrint(" Smart seek completed. Exit multistage, close interior door")
+                    PtDebugPrint("grsnTrnCtrDoorEnter.OnNotify():  Smart seek completed. Exit multistage, close interior door")
                     door2CloseResponder.run(self.key, avatar=avatarEntering)
                     behaviorWalkOut.gotoStage(avatarEntering, -1)
                     return
@@ -150,7 +152,7 @@ class grsnTrnCtrDoorEnter(ptResponder):
             if (avatarEntering != PtGetLocalAvatar()):
                 return
 
-            PtDebugPrint(" process complete, re-enable detectors and free avatar ")
+            PtDebugPrint("grsnTrnCtrDoorEnter.OnNotify():  process complete, re-enable detectors and free avatar ")
             triggerRgn1.enable()
             triggerRgn2.enable()
             if (avatarEntering == PtGetLocalAvatar()):
