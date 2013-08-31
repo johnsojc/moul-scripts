@@ -738,15 +738,16 @@ class nb01RPSGame(ptResponder):
                 childreflist = heekScores.getChildNodeRefList()
                 for childref in childreflist:
                     chron = childref.getChild().upcastToChronicleNode()
-                    PtDebugPrint("nb01RPSGame.UpdateImager():  chron:".format(chron))
+                    PtDebugPrint("nb01RPSGame.UpdateImager():  chron:{}".format(chron))
                     if chron:
-                        ownerNode = chron.getOwnerNode()
+                        ownerNode = chron.getOwnerNode()  # this always returns none!
+                        # This script is broken at this point so Imager does not update
                         if ownerNode:  # apparently a chronicle node doesn't have a parent sometimes?
                             ownerNode = ownerNode.upcastToPlayerInfoNode()
                         if ownerNode:
                             if ageOwnerList.playerlistHasPlayer(ownerNode.playerGetID()):
                                 ownerNode = ownerNode.upcastToPlayerInfoNode()
-                                PtDebugPrint("nb01RPSGame.UpdateImager():  owner node:".format(ownerNode))
+                                PtDebugPrint("nb01RPSGame.UpdateImager():  owner node:{}".format(ownerNode))
                                 if ownerNode:
                                     scorelist.append((int(chron.chronicleGetValue()), ownerNode.playerGetName()))
                                     PtDebugPrint("nb01RPSGame.UpdateImager():  scorelist: {}".format(scorelist))

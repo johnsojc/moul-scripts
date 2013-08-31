@@ -829,7 +829,7 @@ class CommandsProcessor:
             v = "is"
             if message[-1:] == "s":
                 v = "are"
-            self.chatMgr.AddChatLine(None, "The %s %s too heavy to lift. Maybe you should stick to feathers." % (message[len("/get "):], v), 0)
+            self.chatMgr.AddChatLine(None, "The {} {} too heavy to lift. Maybe you should stick to feathers.".format(message[len("/get "):], v), 0)
             return None
         elif PtIsInternalRelease() and msg.startswith("/system "):
             send = message[len("/system "):]
