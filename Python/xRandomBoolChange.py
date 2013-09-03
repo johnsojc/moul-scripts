@@ -121,7 +121,7 @@ class xRandomBoolChange(ptModifier):
             PtDebugPrint("xRandomBoolChange.OnServerInitComplete():  ERROR: Error accessing nearby ageSDL on {}. Using default.".format(self.sceneobject.getName()))
             nearby = 0
 
-        PtDebugPrint("xRandomBoolChange.OnServerInitComplete():")
+        PtDebugPrint("xRandomBoolChange.OnServerInitComplete(): ...")
         PtDebugPrint("\tRandomBoolChange script on object {}".format(self.sceneobject.getName()))
         PtDebugPrint("\tVisible:{}".format(visible))
         PtDebugPrint("\tEnabled:{}".format(enabled))

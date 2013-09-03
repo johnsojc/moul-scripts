@@ -240,10 +240,10 @@ class nb01UpdateHoodInfoImager(ptResponder):
 
             if pelletscores and pelletscores.getID() > 0:
                 sname = "Update={}".format(pelletscores.getID())
-                PtDebugPrint("tldn3FloorElevator.IUpdatePelletScores():  Sending notify to update node: {}".format(pelletscores.getID()))
+                PtDebugPrint("nb01UpdateHoodInfoImager.IUpdatePelletScores():  Sending notify to update node: {}".format(pelletscores.getID()))
                 self.ISendNotify(HoodInfoImagerScript.value, sname, 1.0)
             else:
-                PtDebugPrint("tldn3FloorElevator.IUpdatePelletScores():  Not sending notify because we don't have a valid pelletscore node")
+                PtDebugPrint("nb01UpdateHoodInfoImager.IUpdatePelletScores():  Not sending notify because we don't have a valid pelletscore node")
 
             self.IUpdateHoodImager()
 

@@ -850,7 +850,7 @@ class xLinkingBookGUIPopup(ptModifier):
 
         SpawnPointName_Dict = {}
         SpawnPointTitle_Dict = {}
-        PtDebugPrint("xLinkingBookGUI.BuildTreasureLinks():  The {} book has the following {} pages: ".format(ageRequested, len(spawnPoints)))
+        PtDebugPrint("xLinkingBookGUIPopup.BuildTreasureLinks():  The {} book has the following {} pages: ".format(ageRequested, len(spawnPoints)))
         # assume that we didn't find the original link
         HasFoundOriginalBook = false
         # Step 2: Determine what other links they have to this age.
@@ -858,7 +858,7 @@ class xLinkingBookGUIPopup(ptModifier):
             #toss this is it's the "default" link. We've already processed that in step #1 above
             if spawnPoint.getTitle() == "Default":
                 HasFoundOriginalBook = true
-                PtDebugPrint("\tPage #1: You've found the original book. The first panel shows {}".format(ageRequested), level=kDebugDumpLevel)
+                PtDebugPrint("\tPage #1: You've found the original book. The first panel shows {}".format(ageRequested))
                 # goes in the front of the list
                 SpawnPointName_Dict[xLinkingBookDefs.kFirstLinkPanelID] = "LinkInPointDefault"
                 SpawnPointTitle_Dict[xLinkingBookDefs.kFirstLinkPanelID] = "Default"
