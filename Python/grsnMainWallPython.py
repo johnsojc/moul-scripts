@@ -45,7 +45,7 @@ from Plasma import *
 from PlasmaTypes import *
 
 # for save/load
-#import cPickle  # not used
+import cPickle
 
 ## COMMENTED OUT by Jeff due to the re-write in the garrison wall
 
@@ -61,8 +61,8 @@ southBlocker = ptAttribSceneobjectList(4, "South Wall Blockers", byObject=1)
 ##############################################################
 
 ## keep track of what to draw
-NorthBlockers = [-1]*20
-SouthBlockers = [-1]*20
+NorthBlockers = [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
+SouthBlockers = [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
 
 ReceiveInit = false
 """
@@ -89,157 +89,185 @@ kSouthPlayerEntry = 8
 kGameInProgress = 9
 kNorthWin = 10
 kSouthWin = 11
-kNorthQuit = 12
-kSouthQuit = 13
-
-# uncomment to enable wall code using ageSDLs
-"""
-NorthState = kWaiting
-SouthState = kWaiting
-"""
+kSouthQuit = 12
+kNorthQuit = 13
 
 
 class grsnMainWallPython(ptResponder):
 
+    # constants
+
     def __init__(self):
         "construction"
+        # PtDebugPrint("grsnMainWallPython.__init__() begin")
         ptResponder.__init__(self)
         self.id = 52394
         version = 1
         minor = 0
         self.version = "{}.{}".format(version, minor)
         PtDebugPrint("__init__: grsnMainWallPython v{}".format(self.version))
-
-# uncomment to enable wall code using ageSDLs
+        # PtDebugPrint("grsnMainWallPython.__init__() end")
 """
     def OnServerInitComplete(self):
         global ReceiveInit
 
-        ageSDL = PtGetAgeSDL()
-        PtDebugPrint("grsnMainWallPython.OnServerInitComplete():  running...")
+        PtDebugPrint("grsnWallPython::OnServerInitComplete")
         solo = true
         if len(PtGetPlayerList()):
             solo = false
             ReceiveInit = true
             return
         else:
-            PtDebugPrint("grsnMainWallPython.OnServerInitComplete():  solo in climbing wall")
+            print"solo in climbing wall"
 
-        # Set up notifiers
-        ageSDL.setNotify(self.key, "nState", 0.0)
-        ageSDL.setNotify(self.key, "sState", 0.0)
-        ageSDL.setNotify(self.key, "NumBlockers", 0.0)
-        ageSDL.setNotify(self.key, "nBlockerChange", 0.0)
-        ageSDL.setNotify(self.key, "sBlockerChange", 0.0)
+    def OnClimbingBlockerEvent(self,blocker):
 
-    def OnClimbingBlockerEvent(self, blocker):  # Does this ever run???
-
-        PtDebugPrint("grsnMainWallPython.OnClimbingBlockerEvent():  looking for blocker named {}".format(blocker.getName()))
+        print"looking for blocker named ",blocker.getName()
         i = 0
         while i < 171:
             if (northBlocker.value[i] == blocker):
                 northWall.value[i].runAttachedResponder(kTeamLightsBlink)
-                PtDebugPrint("grsnMainWallPython.OnClimbingBlockerEvent():  found matching texture named {}".format(northWall.value[i].getName()))
+                print"found matching texture named ",northWall.value[i].getName()
                 return
             elif (southBlocker.value[i] == blocker):
                 southWall.value[i].runAttachedResponder(kTeamLightsBlink)
-                PtDebugPrint("grsnMainWallPython.OnClimbingBlockerEvent():  found matching texture named {}".format(southWall.value[i].getName()))
+                print"found matching texture named ",southWall.value[i].getName()
                 return
             i = i + 1
 
-    def OnSDLNotify(self, VARname, SDLname, playerID, tag):
+
+    def OnClimbingWallInit(self,type,state,value):
+        global ReceiveInit
+        global SouthState
+        global NorthState
+
+        print"grsnMainClimbingWall::OnClimbingWallInit type ",type," state ",state," value ",value
+        if (ReceiveInit == false):
+            print"failed to receive init"
+            return
+        if (type == ptClimbingWallMsgType.kEndGameState):
+            ReceiveInit = false
+            print "finished receiving total game state"
+            # update lights display
+            if (SouthState == ptClimbingWallMsgState.kSouthWin or \
+                NorthState == ptClimbingWallMsgState.kNorthWin or \
+                NorthState == ptClimbingWallMsgState.kNorthQuit or \
+                SouthState == ptClimbingWallMsgState.kSouthQuit):
+                    #display wall settings
+                i = 0
+                while (i < 20):
+                    value = SouthBlockers[i]
+                    if (value > -1):
+                        southWall.value[value].runAttachedResponder(kTeamLightsOn)
+                        print"drawing s wall index",value
+                    value = NorthBlockers[i]
+                    if (value >  -1):
+                        northWall.value[value].runAttachedResponder(kTeamLightsOn)
+                        print"drawing n wall index",value
+                    i = i + 1
+
+        if (type == ptClimbingWallMsgType.kTotalGameState):
+            SouthState = state
+            NorthState = value
+            print "begin receiving total game state"
+
+        elif (type == ptClimbingWallMsgType.kAddBlocker and state > 0):
+            self.SetWallIndex(state,true,value)
+
+
+    def OnClimbingWallEvent(self,type,state,value):
         global NorthState
         global SouthState
+        global NorthBlockers
+        global SouthBlockers
 
-        ageSDL = PtGetAgeSDL()
-        value = ageSDL[VARname][0]
-        PtDebugPrint("grsnMainWallPython.OnSDLNotify():  VARname = {} SDLname = {} playerID = {} value = {}".format(VARname, SDLname, playerID, value))
+        print"grsnMainClimbingWall::OnClimbingWallInit type ",type," state ",state," value ",value
 
-        if VARname == "nBlockerChange":
-            team = 1
-            index = ageSDL[VARname][0]
-            on = ageSDL[VARname][1]
-            self.SetWallIndex(index, on, team)
-
-        elif VARname == "sBlockerChange":
-            team = 0
-            index = ageSDL[VARname][0]
-            on = ageSDL[VARname][1]
-            self.SetWallIndex(index, on, team)
-
-        elif (VARname == "nState" or VARname == "sState"):
-            state = value
-            if VARname == "nState":
+        if (type == ptClimbingWallMsgType.kNewState):
+            if (value == 1):
                 NorthState = state
             else:
                 SouthState = state
-            if (state == kSouthWin or state == kNorthWin or state == kNorthQuit or state == kSouthQuit):
-                # display wall settings
+            if (state == ptClimbingWallMsgState.kSouthWin or \
+                state == ptClimbingWallMsgState.kNorthWin or \
+                state == ptClimbingWallMsgState.kNorthQuit or \
+                state == ptClimbingWallMsgState.kSouthQuit):
+                    #display wall settings
                 i = 0
-                while i < 20:
+                while (i < 20):
                     value = SouthBlockers[i]
-                    if value > -1:
+                    if (value > -1):
                         southWall.value[value].runAttachedResponder(kTeamLightsOn)
-                        PtDebugPrint("grsnMainWallPython.OnSDLNotify():  drawing s wall index {}".format(value))
+                        print"drawing s wall index",value
                     value = NorthBlockers[i]
-                    if value > -1:
+                    if (value >  -1):
                         northWall.value[value].runAttachedResponder(kTeamLightsOn)
-                        PtDebugPrint("grsnMainWallPython.OnSDLNotify():  drawing n wall index {}".format(value))
+                        print"drawing n wall index",value
                     i = i + 1
-            elif state == kSouthSelect:
-                # clear wall settings
+            elif (state == ptClimbingWallMsgState.kSouthSelect):
+                #clear wall settings
                 i = 0
-                while i < 171:
+                while (i < 171):
                     southWall.value[i].runAttachedResponder(kTeamLightsOff)
-                    if i < 20:
+                    if (i < 20):
                         SouthBlockers[i] = -1
                     i = i + 1
-            elif state == kNorthSelect:
-                # clear wall settings
+            elif (state == ptClimbingWallMsgState.kNorthSelect):
+                #clear wall settings
                 i = 0
-                while i < 171:
-                    if i < 20:
+                while (i < 171):
+                    if (i < 20):
                         NorthBlockers[i] = -1
                     northWall.value[i].runAttachedResponder(kTeamLightsOff)
                     i = i + 1
 
-    def SetWallIndex(self, index, value, north):
+        elif (type == ptClimbingWallMsgType.kAddBlocker):
+            self.SetWallIndex(state,true,value)
+
+
+        elif (type == ptClimbingWallMsgType.kRemoveBlocker):
+            self.SetWallIndex(state,false,value)
+
+    def SetWallIndex(self,index,value,north):
         global SouthBlockers
         global NorthBlockers
 
         i = 0
-        if value:
-            if north:
-                while NorthBlockers[i] >= 0:
+        if (value):
+            if (north):
+                while (NorthBlockers[i] >= 0):
                     i = i + 1
-                    if i == 20:
-                        PtDebugPrint("grsnMainWallPython.SetWallIndex():  yikes - somehow overran the array!")
+                    if (i == 20):
+                        print"yikes - somehow overran the array!"
                         return
                 NorthBlockers[i] = index
-                PtDebugPrint("grsnMainWallPython.SetWallIndex():  set north wall index {} in slot {} to true".format(index, i))
+                print"set north wall index ",index," in slot ",i," to true"
             else:
                 while (SouthBlockers[i] >= 0):
                     i = i + 1
                     if (i == 20):
-                        PtDebugPrint("grsnMainWallPython.SetWallIndex():  yikes - somehow overran the array!")
+                        print"yikes - somehow overran the array!"
                         return
                 SouthBlockers[i] = index
-                PtDebugPrint("grsnMainWallPython.SetWallIndex():  set south wall index {} in slot {} to true".format(index, i))
+                print"set south wall index ",index," in slot ",i," to true"
         else:
-            if north:
-                while NorthBlockers[i] != index:
+            if (north):
+                while (NorthBlockers[i] != index):
                     i = i + 1
                     if (i == 20):
-                        PtDebugPrint("grsnMainWallPython.SetWallIndex():  this should not get hit - looked for non-existent NorthWall entry!")
+                        print"this should not get hit - looked for non-existent NorthWall entry!"
                         return
                 NorthBlockers[i] = -1
-                PtDebugPrint("grsnMainWallPython.SetWallIndex():  removed index {} from list slot {}".format(index, i))
+                print"removed index ",index," from list slot ",i
             else:
                 while (SouthBlockers[i] != index):
                     i = i + 1
                     if (i == 20):
-                        print"grsnMainWallPython.SetWallIndex():  this should not get hit - looked for non-existent SouthWall entry!"
+                        print"this should not get hit - looked for non-existent SouthWall entry!"
                         return
                 SouthBlockers[i] = -1
-                PtDebugPrint("grsnMainWallPython.SetWallIndex():  removed index {} from list slot {}".format(index, i))
-"""
+                print"removed index ",index," from list slot ",i
+
+
+
+        """
